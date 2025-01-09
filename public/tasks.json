@@ -1,0 +1,48 @@
+{
+  "Tasks": [
+    {
+      "id": "1",
+      "title": "Task 1",
+      "completed": false,
+      "progress": 25,
+      "duration": 6,
+      "category": {
+        "id": "1",
+        "name": "Development"
+      }
+    },
+    {
+      "id": "2",
+      "title": "Task 2",
+      "completed": false,
+      "progress": 50,
+      "duration": 3,
+      "category": {
+        "id": "2",
+        "name": "Design"
+      }
+    },
+    {
+      "id": "3",
+      "title": "Task 3",
+      "completed": false,
+      "progress": 75,
+      "duration": 2,
+      "category": {
+        "id": "1",
+        "name": "Development"
+      }
+    },
+    {
+      "id": "4",
+      "title": "Task 4",
+      "completed": true,
+      "progress": 100,
+      "duration": 9,
+      "category": {
+        "id": "3",
+        "name": "Testing"
+      }
+    }
+  ]
+}

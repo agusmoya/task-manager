@@ -1,0 +1,225 @@
+:root {
+  --header-height: 4.5rem;
+
+  /* ========== FONT AND TYPOGRAPHY ========== */
+  /*.5rem = 8px | 1rem = 16px ...*/
+  --body-font: "Poppins", sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-xxl: 2rem;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  --h1-font-size: 1.75rem;
+  --h2-font-size: 1.5rem;
+  --h3-font-size: 1.25rem;
+
+  /* ========== SPACING ========== */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+
+  /*========== Z INDEX ==========*/
+  --z-tooltip: 10;
+  --z-fixed: 100;
+  --z-modal: 1000;
+
+  /* ========== SHADOWS ========== */
+  --box-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --box-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --box-shadow-lg: 0 8px 12px rgba(0, 0, 0, 0.2);
+
+  /* #5247ed */
+  /* ========== COLOR PALETTE ========== */
+  /* --- light theme (default) --- */
+  --primary-color: hsl(45, 48%, 70%);
+  --secondary-color: hsl(111, 25%, 72%);
+  --accent-color: hsl(0, 75%, 60%);
+
+  --border-color: hsl(0, 0%, 20%);
+  --bg-color: hsl(0, 0%, 90%);
+  --text-color: hsl(220, 16%, 22%);
+
+  --neutral-color-dark: hsl(223, 6%, 78%);
+  --neutral-color-ligth: hsl(0, 14%, 91%);
+
+  --scrollbar-thumb-color: hsl(0, 0%, 41%);
+  --scrollbar-thumb-color-darker: hsl(0, 1%, 29%);
+  --scrollbar-color: hsl(0, 1%, 65%);
+
+}
+
+[data-theme="dark"] {
+  --primary-color: hsl(45, 30%, 48%);
+  --secondary-color: hsl(111, 23%, 59%);
+  --accent-color: hsl(0, 77%, 63%);
+
+  --border-color: hsl(0, 1%, 69%);
+  --bg-color: hsl(220, 16%, 22%);
+  --text-color: hsl(0, 0%, 90%);
+
+}
+
+/*========== BASE (reset) ==========*/
+/* --- scroll bar --- */
+::-webkit-scrollbar {
+  background-color: var(--scrollbar-color);
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-color);
+  border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-color-darker);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+button,
+input,
+textarea {
+  font-family: var(--body-font);
+  font-size: var(--normal-font-size);
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  /* for light mode animation */
+  transition: 0.4s;
+}
+
+img,
+picture,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+}
+
+h1 {
+  font-size: var(--h1-font-size);
+}
+
+h2 {
+  font-size: var(--h2-font-size);
+}
+
+h3 {
+  font-size: var(--h3-font-size);
+}
+
+h1,
+h2,
+h3 {
+  font-weight: var(--font-weight-medium);
+}
+
+a:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+}
+
+/* =============== REUSABLE CSS CLASSES =============== */
+.flex {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.grid {
+  display: grid;
+  gap: var(--spacing-md);
+}
+
+.section {
+  padding: var(--spacing-md) 0 var(--spacing-sm);
+}
+
+.container {
+  max-width: 968px;
+  margin: 0 var(--spacing-md);
+}
+
+.main {
+  overflow: hidden;
+}
+
+/* =============== BREAKPOINTS =============== */
+/* xs devices */
+@media screen and (max-width: 360px) {}
+
+/* sm devices */
+@media screen and (min-width: 361px) {}
+
+/* md devices */
+@media screen and (min-width: 576px) {
+  .ongoing .ongoing__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* lg devices */
+@media screen and (min-width: 767px) {
+  .ongoing .ongoing__list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* xlg devices */
+@media screen and (min-width: 992px) {
+
+  /* no funciona */
+  .header-app .header-app__nav {
+    height: calc(var(--header-height) + 1rem);
+  }
+
+  .container {
+    margin: 0 auto;
+  }
+
+  /* agrego padding para que no se pegue tanto a los margenes */
+  .section {
+    padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+  }
+
+  .ongoing .ongoing__list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

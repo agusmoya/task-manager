@@ -1,0 +1,41 @@
+import './Search.css'
+
+import { useSearch } from '../../hooks/useSearch';
+import { ControlIcon, SearchIcon } from '../icons/Icons';
+
+export const Search: React.FC = () => {
+  const { search, updateSearch } = useSearch()
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    console.log('submit action')
+    event.preventDefault()
+  }
+
+  const startWithBlanks = (text: string): boolean => text.startsWith(' ')
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuery = event.target.value
+    if (startWithBlanks(newQuery)) return
+    updateSearch(newQuery)
+  }
+
+  return (
+    <section className="search section">
+      <div className="search__container container flex">
+        <form className="search__form" onSubmit={handleSubmit}>
+          <SearchIcon className="search__icon-search" />
+          <input
+            className="search__input"
+            name='query'
+            value={search}
+            onChange={handleChange}
+            placeholder='Search categories or tasks...'
+          />
+        </form>
+        <button className="search__button-settings">
+          <ControlIcon className="search__icon-settings" />
+        </button>
+      </div>
+    </section>
+  )
+}
