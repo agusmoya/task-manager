@@ -10,7 +10,7 @@ interface Props {
 export const Header: React.FC<Props> = ({ userName, pendingTasks }) => {
   return (
     <header className="header-app" id="header-app">
-      <nav className="header-app__nav container">
+      <nav className="nav container">
         <div className="user-info">
           <h1>Hi {userName}</h1>
           <small>{pendingTasks.length} pending tasks</small>

@@ -1,0 +1,104 @@
+:root {
+  --header-height: 4.5rem;
+  /* ========== FONT AND TYPOGRAPHY ========== */
+  /*.5rem = 8px | 1rem = 16px ...*/
+  --body-font: "Roboto", sans-serif;
+  --biggest-font-size: 1.75rem;
+  --h1-font-size: 1.5rem;
+  --h2-font-size: 1.25rem;
+  --h3-font-size: 1rem;
+
+  --text-md: 0.9rem;
+  --text-sm: 0.85rem;
+  --text-xs: 0.8rem;
+
+  --font-weight-bold: 700;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+
+  /* ========== SPACING ========== */
+  --spacing-12: 3rem; /* 48px */
+  --spacing-11: 2.75rem; /* 44px */
+  --spacing-10: 2.5rem; /* 40px */
+  --spacing-9: 2.25rem; /* 36px */
+  --spacing-8: 2rem; /* 32px */
+  --spacing-7: 1.75rem; /* 28px */
+  --spacing-6: 1.5rem; /* 24px */
+  --spacing-5: 1.25rem; /* 20px */
+  --spacing-4: 1rem; /* 16px */
+  --spacing-3: 0.75rem; /* 12px */
+  --spacing-2: 0.5rem; /* 8px */
+  --spacing-1: 0.25rem; /* 4px */
+  --spacing-0: 0;
+
+  /* ========== Z INDEX ========== */
+  --z-modal: 1000;
+  --z-fixed: 100;
+  --z-tooltip: 10;
+
+  /* ========== SCROLL BAR ========== */
+  --scrollbar-thumb-color: hsl(0, 0%, 40%);
+  --scrollbar-thumb-color-darker: hsl(0, 1%, 30%);
+  --scrollbar-color: hsl(0, 1%, 60%);
+
+  /* ========== COLOR PALETTE => M3 design based on: #5247ed ========== */
+  /* --- LIGHT THEME --- */
+  --color-surface-tint: hsl(242, 24%, 46%);
+
+  --color-primary: hsl(242, 24%, 46%);
+  --color-on-primary: hsl(0, 0%, 100%);
+  --color-primary-container: hsl(246, 100%, 95%);
+  --color-on-primary-container: hsl(243, 59%, 18%);
+
+  --color-secondary: hsl(246, 10%, 40%);
+  --color-on-secondary: hsl(0, 0%, 100%);
+  --color-secondary-container: hsl(247, 68%, 93%);
+  --color-on-secondary-container: hsl(240, 26%, 14%);
+
+  --color-surface: hsl(274, 100%, 99%);
+  --color-on-surface: hsl(250, 10%, 12%);
+  --color-surface-variant: hsl(256, 22%, 90%);
+  --color-on-surface-variant: hsl(247, 6%, 29%);
+
+  --color-outline: hsl(252, 4%, 48%);
+  --color-outline-variant: hsl(256, 10%, 79%);
+
+  --shadow-lg: 0 8px 16px var(--color-shadow-3);
+  --shadow-md: 0 4px 8px var(--color-shadow-2);
+  --shadow-sm: 0 2px 4px var(--color-shadow-1);
+
+  --color-shadow-3: hsla(0, 0%, 0%, 0.12); /* Elevación alta */
+  --color-shadow-2: hsla(0, 0%, 0%, 0.08); /* Elevación media */
+  --color-shadow-1: hsla(0, 0%, 0%, 0.04); /* Elevación baja */
+}
+
+/* --- DARK THEME --- */
+[data-theme="dark"] {
+  --color-surface-tint: hsl(243, 100%, 88%);
+
+  --color-primary: hsl(243, 100%, 88%);
+  --color-on-primary: hsl(242, 39%, 27%);
+  --color-primary-container: hsl(242, 30%, 36%);
+  --color-on-primary-container: hsl(246, 100%, 94%);
+
+  --color-secondary: hsl(247, 27%, 82%);
+  --color-on-secondary: hsl(243, 18%, 22%);
+  --color-secondary-container: hsl(243, 13%, 31%);
+  --color-on-secondary-container: hsl(247, 68%, 93%);
+
+  --color-surface: hsla(240, 12%, 8%, 0.98);
+  --color-on-surface: hsl(270, 15%, 90%);
+  --color-surface-variant: hsl(247, 6%, 29%);
+  --color-on-surface-variant: hsl(256, 10%, 79%);
+
+  --color-outline: hsl(256, 5%, 58%);
+  --color-outline-variant: hsl(247, 6%, 29%);
+
+  --shadow-lg: 0 8px 16px var(--color-shadow-3);
+  --shadow-md: 0 4px 8px var(--color-shadow-2);
+  --shadow-sm: 0 2px 4px var(--color-shadow-1);
+
+  --color-shadow-3: hsla(0, 0%, 75%, 0.12); /* Elevación alta */
+  --color-shadow-2: hsla(0, 0%, 75%, 0.08); /* Elevación media */
+  --color-shadow-1: hsla(0, 0%, 75%, 0.04); /* Elevación baja */
+}

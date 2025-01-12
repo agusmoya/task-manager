@@ -2,13 +2,13 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: var(--z-fixed);
   width: 100%;
-  background-color: var(--bg-color);
-  box-shadow: var(--box-shadow-sm);
+  transition: 0.4s;
+  z-index: var(--z-fixed);
+  box-shadow: var(--shadow-sm);
 }
 
-.header-app__nav {
+.nav {
   height: var(--header-height);
   display: flex;
   align-items: center;
@@ -19,6 +19,4 @@
   width: 3.25rem;
   height: 3.25rem;
   border-radius: 50%;
-  outline: 1.5px solid var(--border-color);
-  border: 1.5px solid var(--bg-color);
 }

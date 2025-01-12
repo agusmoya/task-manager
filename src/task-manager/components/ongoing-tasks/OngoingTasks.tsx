@@ -12,7 +12,7 @@ export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
     task.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  const areOngoingTasksPresent = filteredTasks.length;
+  const areOngoingTasks = filteredTasks.length;
   return (
     <section className="ongoing section" id="ongoing-tasks">
       <div className="ongoing__container container">
@@ -22,24 +22,24 @@ export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
         </header>
         <ul
           className={`ongoing__list ${
-            !areOngoingTasksPresent ? "ongoing__list--no-result" : ""
+            !areOngoingTasks ? "ongoing__list--no-result" : ""
           }`}
         >
-          {areOngoingTasksPresent > 0 ? (
+          {areOngoingTasks ? (
             filteredTasks.map((task) => (
               <li className="ongoing__item" key={task.id}>
-                <article className="ongoin__card">
+                <section className="ongoin__card">
                   <h3>{task.title}</h3>
                   <small className="ongoing__duration">{task.duration}d</small>
-                </article>
-                <article className="ongoin__card">
+                </section>
+                <section className="ongoin__card">
                   <small className="ongoing__schedule">14:30 a 17:00 hs</small>
                   <span className="ongoing__progress">{task.progress}%</span>
-                </article>
+                </section>
               </li>
             ))
           ) : (
-            <em>No tasks found...</em>
+            <li>No tasks found...</li>
           )}
         </ul>
       </div>

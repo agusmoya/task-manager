@@ -18,8 +18,8 @@ export function HomePage() {
           <p>Loading...</p>
         ) : (
           <>
-            <Categories categories={relatedCategories} />
             <OngoingTasks tasks={tasks || []} />
+            <Categories categories={relatedCategories} />
           </>
         )}
       </SearchProvider>
