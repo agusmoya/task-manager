@@ -7,7 +7,6 @@ export const Search: React.FC = () => {
   const { search, updateSearch } = useSearch();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-    console.log("submit action");
     event.preventDefault();
   };
 

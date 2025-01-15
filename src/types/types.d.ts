@@ -39,3 +39,8 @@ export interface ErrorFetch {
     status: number;
     statusText: string;
 }
+
+export interface WeekDay {
+    date: string;
+    isToday: boolean;
+}

@@ -1,0 +1,4 @@
+.date-pills {
+  display: flex;
+  justify-content: space-between;
+}

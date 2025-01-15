@@ -1,5 +1,6 @@
 import { Tasks } from "../../../types/types";
-import { ButtonTheme } from "../theme/button-theme";
+import { ButtonTheme } from "../button-theme/ButtonTheme";
+
 import "./Header.css";
 
 interface Props {
@@ -8,6 +9,9 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ userName, pendingTasks }) => {
+  // const params = useParams();
+  // console.log(params['*']);
+
   return (
     <header className="header-app" id="header-app">
       <nav className="nav container">
@@ -17,7 +21,7 @@ export const Header: React.FC<Props> = ({ userName, pendingTasks }) => {
         </div>
         <img
           className="user-profile__image"
-          src="images/photo-user-random.webp"
+          src="/images/members/user-1.webp"
           alt="random user profile photo"
         />
         <ButtonTheme />

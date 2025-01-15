@@ -1,10 +1,9 @@
-import './App.css'
 import { AppRouter } from './router/AppRouter.tsx'
 
-function App() {
+function TaskManagerApp() {
   return (
     <AppRouter />
   )
 }
 
-export default App
+export default TaskManagerApp

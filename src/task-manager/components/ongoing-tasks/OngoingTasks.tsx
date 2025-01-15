@@ -1,6 +1,7 @@
 import { useSearch } from "../../hooks/useSearch";
 import { type Tasks } from "../../../types/types";
 import "./OngoingTasks.css";
+import { Link } from "react-router-dom";
 
 interface Props {
   tasks: Tasks;
@@ -21,15 +22,16 @@ export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
           <a>See all</a>
         </header>
         <ul
-          className={`ongoing__list ${
-            !areOngoingTasks ? "ongoing__list--no-result" : ""
-          }`}
+          className={`ongoing__list ${!areOngoingTasks ? "ongoing__list--no-result" : ""
+            }`}
         >
           {areOngoingTasks ? (
             filteredTasks.map((task) => (
               <li className="ongoing__item" key={task.id}>
                 <section className="ongoin__card">
-                  <h3>{task.title}</h3>
+                  <Link to={`/task-day/${task.id}`}>
+                    <h3>{task.title}</h3>
+                  </Link>
                   <small className="ongoing__duration">{task.duration}d</small>
                 </section>
                 <section className="ongoin__card">

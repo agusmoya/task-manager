@@ -12,7 +12,7 @@ export function useSearch() {
   const [error, setError] = useState<string | null>('')
   const isFirstInput = useRef(true)
 
-  console.log('search: ', isFirstInput);
+  // console.log('search: ', isFirstInput);
   // useEffect(() => {
   //   console.log('search: ', search);
 

@@ -17,6 +17,7 @@
   --font-weight-normal: 400;
 
   /* ========== SPACING ========== */
+  --spacing-13: 5rem; /* 48px */
   --spacing-12: 3rem; /* 48px */
   --spacing-11: 2.75rem; /* 44px */
   --spacing-10: 2.5rem; /* 40px */
@@ -29,7 +30,6 @@
   --spacing-3: 0.75rem; /* 12px */
   --spacing-2: 0.5rem; /* 8px */
   --spacing-1: 0.25rem; /* 4px */
-  --spacing-0: 0;
 
   /* ========== Z INDEX ========== */
   --z-modal: 1000;
@@ -52,6 +52,9 @@
 
   --color-secondary: hsl(246, 10%, 40%);
   --color-on-secondary: hsl(0, 0%, 100%);
+
+  --color-on-surface-transparent: hsl(0, 0%, 100%, 0.3);
+
   --color-secondary-container: hsl(247, 68%, 93%);
   --color-on-secondary-container: hsl(240, 26%, 14%);
 

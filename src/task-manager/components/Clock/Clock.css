@@ -1,0 +1,10 @@
+.clock {
+  display: block;
+  font-weight: var(--font-weight-bold);
+}
+
+.separator {
+  width: 3rem;
+  margin: 0.5rem 0;
+  opacity: 0.5;
+}

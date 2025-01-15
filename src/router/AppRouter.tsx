@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom"
-import { AppRoutes } from "../task-manager/routes/AppRoutes"
+import { TaskManagerRoutes } from "../task-manager/routes/TaskManagerRoutes"
 
 export const AppRouter = () => {
   return (
@@ -8,7 +8,7 @@ export const AppRouter = () => {
       {/* <Route path="/auth/*" element={<AuthRoutes />} /> */}
 
       {/* TaskManagerApp */}
-      <Route path="/*" element={<AppRoutes />} />
+      <Route path="/*" element={<TaskManagerRoutes />} />
     </Routes>
   )
 }
