@@ -1,0 +1,195 @@
+.login {
+  position: relative;
+  height: 100vh;
+  align-items: center;
+  overflow: hidden;
+}
+
+.login__blob {
+  display: none;
+}
+
+.login__title {
+  font-size: var(--h1-font-size);
+  color: var(--color-on-surface);
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+}
+
+.login__box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--color-primary-container);
+  border-radius: 1rem;
+}
+
+.login__input {
+  background: none;
+  border: none;
+  width: 100%;
+  padding: var(--spacing-6) var(--spacing-10) var(--spacing-6) var(--spacing-5);
+  font-weight: var(--font-weight-medium);
+  border-radius: 1rem;
+  z-index: var(--z-normal);
+}
+
+.login__input:autofill {
+  /* trick for hidden default background-color
+  provided for browser */
+  transition: background-color 6000s, color 6000s;
+}
+
+.login__label {
+  color: var(--color-surface-tint);
+  position: absolute;
+  left: var(--spacing-5);
+  font-weight: var(--font-weight-medium);
+  transition: transform 0.4s, font-size 0.4s, color 0.4s;
+}
+
+.login__icon {
+  color: var(--color-surface-tint);
+  position: absolute;
+  right: var(--spacing-4);
+  transition: color 0.4s;
+}
+
+.login__icon-btn {
+  display: grid;
+  place-items: center;
+  z-index: var(--z-normal);
+}
+
+.login__forgot {
+  display: block;
+  width: max-content;
+  margin: var(--spacing-4) 0 0 auto;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-surface-tint);
+  transition: color 0.4s;
+}
+
+.login__forgot:hover {
+  color: var(--color-on-surface);
+}
+
+.login__button {
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding-block: var(--spacing-6);
+  border-radius: 4rem;
+  margin-block: var(--spacing-8);
+  transition: background-color 0.4s, box-shadow 0.4s;
+}
+
+.login__button:hover {
+  background-color: var(--color-on-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.login__social {
+  margin-bottom: var(--spacing-8);
+}
+
+.login__social-title {
+  /* color: var(--color-on-surface); */
+  text-align: center;
+  font-size: var(--text-sm);
+  margin-bottom: var(--spacing-4);
+}
+
+.login__social-img {
+  width: 1rem;
+}
+
+.login__social-links {
+  display: flex;
+  justify-content: center;
+  column-gap: var(--spacing-6);
+}
+
+.login__social-link {
+  /* background-color: var(--color-surface); */
+  padding: 0.5rem;
+  box-shadow: var(--shadow-md);
+  border-radius: 0.5rem;
+  display: grid;
+  place-items: center;
+  transition: transform 0.4s;
+}
+
+.login__social-link:hover {
+  transform: translateY(-0.25rem);
+}
+
+.login__switch {
+  /* color: var(--color-on-surface); */
+  text-align: center;
+  font-size: var(--text-xs);
+}
+
+.login__switch a {
+  /* color: var(--color-on-surface); */
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Input focus move up label */
+.login__input:focus ~ .login__label {
+  transform: translateY(-20px);
+  font-size: var(--text-xs);
+}
+
+.login__input:focus {
+  padding-block: var(--spacing-8) var(--spacing-4);
+}
+
+/* Input focus sticky top label */
+.login__input:not(:placeholder-shown).login__input:not(:focus) ~ .login__label {
+  transform: translateY(-20px);
+  font-size: var(--text-xs);
+}
+.login__input:not(:placeholder-shown).login__input:not(:focus) {
+  padding-block: var(--spacing-8) var(--spacing-4);
+}
+
+/* Input focus color */
+.login__input:focus {
+  outline-color: var(--color-on-surface);
+}
+
+.login__input:focus ~ .login__icon-btn .login__icon,
+.login__input:focus ~ .login__label,
+.login__input:focus ~ .login__icon {
+  color: var(--color-on-surface);
+}
+
+.login__area {
+  padding: var(--spacing-5);
+}
+
+/* Show hide login & create account */
+.page {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  transition: transform ease-in-out 0.3s, opacity 0.3s 0.1s;
+}
+
+.page-enter {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: initial;
+}
+
+.page-exit {
+  opacity: 0;
+  transform: translateX(100%);
+  pointer-events: none;
+}

@@ -1,3 +1,4 @@
+import { TASK_STATUS } from "../../types/types.d";
 import { Header } from "../components";
 import { useTasks } from "../hooks/useTasks";
 
@@ -8,7 +9,8 @@ type Props = {
 export const TaskManagerLayout = ({ children }: Props) => {
   const userName = "Natt";
   const { tasks } = useTasks();
-  const pendingTasks = tasks?.filter((task) => !task.completed) || [];
+  const pendingTasks =
+    tasks?.filter((task) => task.status !== TASK_STATUS.COMPLETED) || [];
 
   return (
     <>
