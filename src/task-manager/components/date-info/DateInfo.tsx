@@ -1,7 +1,9 @@
-import { type Dayjs } from "dayjs";
-import { ButtonCalendar } from "../button-calendar/ButtonCalendar";
+import { Link } from "react-router-dom";
 
-import { Clock } from "../Clock/Clock";
+import { type Dayjs } from "dayjs";
+
+import { Clock } from "../clock/Clock.tsx";
+import { CalendarIcon } from "../icons/Icons.tsx";
 
 import './DateInfo.css'
 
@@ -25,7 +27,11 @@ export const DateInfo = ({ taskId, today }: Props) => {
           10 tasks today
         </small>
       </div>
-      <ButtonCalendar />
+      <div>
+        <Link to='/calendar'>
+          <CalendarIcon />
+        </Link>
+      </div>
     </section>
   );
 }

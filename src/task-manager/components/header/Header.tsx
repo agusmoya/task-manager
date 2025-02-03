@@ -5,10 +5,10 @@ import "./Header.css";
 
 interface Props {
   userName: string;
-  pendingTasks: Tasks;
+  pendingTasks?: Tasks;
 }
 
-export const Header: React.FC<Props> = ({ userName, pendingTasks }) => {
+export const Header: React.FC<Props> = ({ userName, pendingTasks = [] }) => {
   // const params = useParams();
   // console.log(params['*']);
 
@@ -17,7 +17,7 @@ export const Header: React.FC<Props> = ({ userName, pendingTasks }) => {
       <nav className="nav container">
         <div className="user-info">
           <h1>Hi {userName}</h1>
-          <small>{pendingTasks.length} pending tasks</small>
+          <small>{pendingTasks?.length} pending tasks</small>
         </div>
         <img
           className="user-profile__image"

@@ -1,0 +1,6 @@
+.button-theme {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: var(--z-normal);
+}

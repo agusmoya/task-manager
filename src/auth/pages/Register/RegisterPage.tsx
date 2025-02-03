@@ -24,8 +24,8 @@ export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPage
   return (
     <AuthLayout>
       <div className={`login__register ${transitionClass}`} onTransitionEnd={handleTransition}>
-        <h1 className="login__title">Create new account.</h1>
         <div className="login__area">
+          <h1 className="login__title">Create new account.</h1>
           <form action="" className="login__form">
             <div className="login__content grid">
               <div className="login__group grid">
@@ -78,7 +78,7 @@ export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPage
               <div className="login__box">
                 <input
                   id="passwordCreate"
-                  type="password"
+                  type={`${showPassword ? 'text' : 'password'}`}
                   className="login__input"
                   placeholder=""
                   autoComplete="new-password"
@@ -87,17 +87,15 @@ export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPage
                 <label htmlFor="passwordCreate" className="login__label">
                   Password
                 </label>
-                <a className="login__icon-btn" onClick={handleClick}>
+                <button type="button" className="login__icon-btn" onClick={handleClick}>
                   {showPassword ? (
                     <EyeIcon className="login__icon" id="loginPassword" />
                   ) : (
                     <EyeOffIcon className="login__icon" id="loginPassword" />
                   )}
-                </a>
+                </button>
               </div>
-
             </div>
-
             <button className="login__button">Create account</button>
           </form>
 

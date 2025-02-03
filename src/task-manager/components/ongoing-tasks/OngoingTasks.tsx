@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
+
 import { useSearch } from "../../hooks/useSearch";
 import { type Tasks } from "../../../types/types";
+
 import "./OngoingTasks.css";
-import { Link } from "react-router-dom";
 
 interface Props {
   tasks: Tasks;

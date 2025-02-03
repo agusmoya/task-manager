@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { MoonIcon, SunIcon } from "../icons/Icons";
 
+import "./ButtonTheme.css";
+
 export const ButtonTheme = () => {
   const lightTheme = "light";
   const darkTheme = "dark";
@@ -28,7 +30,7 @@ export const ButtonTheme = () => {
 
   return (
     <button
-      className="header__button-theme"
+      className="button-theme"
       id="theme-button"
       onClick={toggleTheme}
     >

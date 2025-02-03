@@ -1,26 +1,13 @@
-import { Route, Routes, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
 
 import { LoginPage, RegisterPage } from "./pages";
 
+import { useTransitionPage } from "../hooks/useTransitionPage";
+
 
 export const AuthRoutes = () => {
-  const location = useLocation()
-  const [displayLocation, setDisplayLocation] = useState(location)
-  const [transitionPage, setTransitionPage] = useState("page page-enter")
 
-  useEffect(() => {
-    if (location.pathname !== displayLocation.pathname) {
-      setTransitionPage("page page-exit")
-    }
-  }, [location, displayLocation])
-
-  const handleTransitionEnd = () => {
-    if (transitionPage === "page page-exit") {
-      setDisplayLocation(location)
-      setTransitionPage("page page-enter")
-    }
-  }
+  const { displayLocation, transitionPage, handleTransitionEnd } = useTransitionPage()
 
   return (
     <Routes location={displayLocation}>

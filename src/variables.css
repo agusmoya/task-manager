@@ -45,7 +45,7 @@
 
   /* ========== COLOR PALETTE => M3 design based on: #5247ed ========== */
   /* --- LIGHT THEME --- */
-  --color-surface-tint: hsl(242, 24%, 46%);
+  --color-surface-tint: hsl(249, 41%, 3%);
 
   --color-primary: hsl(242, 24%, 46%);
   --color-on-primary: hsl(0, 0%, 100%);
@@ -68,13 +68,14 @@
   --color-outline: hsl(252, 4%, 48%);
   --color-outline-variant: hsl(256, 10%, 79%);
 
+  /* Elevations */
+  --color-shadow-3: hsla(0, 0%, 0%, 0.12);
+  --color-shadow-2: hsla(0, 0%, 0%, 0.08);
+  --color-shadow-1: hsla(0, 0%, 0%, 0.04);
+
   --shadow-lg: 0 8px 24px var(--color-shadow-3);
   --shadow-md: 0 4px 12px var(--color-shadow-2);
   --shadow-sm: 0 2px 6px var(--color-shadow-1);
-
-  --color-shadow-3: hsla(0, 0%, 0%, 0.2); /* Elevación alta */
-  --color-shadow-2: hsla(0, 0%, 0%, 0.1); /* Elevación media */
-  --color-shadow-1: hsla(0, 0%, 0%, 0.05); /* Elevación baja */
 }
 
 /* --- DARK THEME --- */
@@ -91,7 +92,7 @@
   --color-secondary-container: hsl(243, 13%, 31%);
   --color-on-secondary-container: hsl(247, 68%, 93%);
 
-  --color-surface: hsla(240, 12%, 8%, 0.98);
+  --color-surface: hsla(240, 12%, 8%);
   --color-on-surface: hsl(270, 15%, 90%);
   --color-surface-variant: hsl(247, 6%, 29%);
   --color-on-surface-variant: hsl(256, 10%, 79%);
@@ -99,11 +100,11 @@
   --color-outline: hsl(256, 5%, 58%);
   --color-outline-variant: hsl(247, 6%, 29%);
 
+  --color-shadow-3: hsla(0, 0%, 75%, 0.12);
+  --color-shadow-2: hsla(0, 0%, 75%, 0.08);
+  --color-shadow-1: hsla(0, 0%, 75%, 0.04);
+
   --shadow-lg: 0 8px 16px var(--color-shadow-3);
   --shadow-md: 0 4px 8px var(--color-shadow-2);
   --shadow-sm: 0 2px 4px var(--color-shadow-1);
-
-  --color-shadow-3: hsla(0, 0%, 75%, 0.12); /* Elevación alta */
-  --color-shadow-2: hsla(0, 0%, 75%, 0.08); /* Elevación media */
-  --color-shadow-1: hsla(0, 0%, 75%, 0.04); /* Elevación baja */
 }

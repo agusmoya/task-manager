@@ -10,7 +10,7 @@ import {
   GoogleIcon,
 } from "../../components/icons/Icons";
 
-import "./Login.css";
+import "./LoginPage.css";
 
 interface LoginPageProps {
   transitionClass: string;
@@ -26,9 +26,8 @@ export const LoginPage = ({ transitionClass, handleTransition }: LoginPageProps)
   return (
     <AuthLayout>
       <div className={`login__access ${transitionClass}`} onTransitionEnd={handleTransition}>
-        <h1 className="login__title">Log in to your account.</h1>
-
         <div className="login__area">
+          <h1 className="login__title">Log in to your account.</h1>
           <form action="" className="login__form">
             <div className="login__content grid">
               <div className="login__box">
@@ -89,6 +88,7 @@ export const LoginPage = ({ transitionClass, handleTransition }: LoginPageProps)
             <Link to="/auth/register" id="loginButtonRegister">
               Create account
             </Link>
+            .
           </p>
         </div>
       </div>
