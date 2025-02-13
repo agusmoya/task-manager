@@ -45,17 +45,21 @@
 
   /* ========== COLOR PALETTE => M3 design based on: #5247ed ========== */
   /* --- LIGHT THEME --- */
-  --color-surface-tint: hsl(249, 41%, 3%);
+  --color-surface-tint: hsl(242, 24%, 46%);
 
   --color-primary: hsl(242, 24%, 46%);
+  --color-primary-hover: hsl(243, 22%, 52%);
+  --color-primary-active: hsla(242, 24%, 40%, 0.64);
+
   --color-on-primary: hsl(0, 0%, 100%);
   --color-primary-container: hsl(246, 100%, 95%);
   --color-on-primary-container: hsl(243, 59%, 18%);
 
   --color-secondary: hsl(246, 10%, 40%);
-  --color-on-secondary: hsl(0, 0%, 100%);
+  --color-secondary-hover: hsl(247, 8%, 46%);
+  --color-secondary-active: hsl(246, 10%, 40%, 0.12);
 
-  --color-on-surface-transparent: hsl(0, 0%, 100%, 0.3);
+  --color-on-secondary: hsl(0, 0%, 100%);
 
   --color-secondary-container: hsl(247, 68%, 93%);
   --color-on-secondary-container: hsl(240, 26%, 14%);
@@ -68,14 +72,19 @@
   --color-outline: hsl(252, 4%, 48%);
   --color-outline-variant: hsl(256, 10%, 79%);
 
-  /* Elevations */
-  --color-shadow-3: hsla(0, 0%, 0%, 0.12);
-  --color-shadow-2: hsla(0, 0%, 0%, 0.08);
-  --color-shadow-1: hsla(0, 0%, 0%, 0.04);
+  --color-scrim: hsla(0, 0%, 0%, 0.75);
 
-  --shadow-lg: 0 8px 24px var(--color-shadow-3);
-  --shadow-md: 0 4px 12px var(--color-shadow-2);
-  --shadow-sm: 0 2px 6px var(--color-shadow-1);
+  --elevation-3: 5px 14px 15px hsla(0, 0%, 0%, 0.16);
+  --elevation-2: 4px 10px 10px hsla(0, 0%, 0%, 0.12);
+  --elevation-1: 3px 6px 5px hsla(0, 0%, 0%, 0.08);
+
+  --color-error: hsl(0, 75%, 42%);
+  --color-error-hover: hsl(1, 72%, 48%);
+  --color-error-active: hsla(0, 44%, 44%, 0.69);
+
+  --color-on-error: hsl(0, 0%, 100%);
+  --color-error-container: hsl(6, 100%, 92%);
+  --color-on-error-container: hsl(358, 100%, 13%);
 }
 
 /* --- DARK THEME --- */
@@ -83,11 +92,17 @@
   --color-surface-tint: hsl(243, 100%, 88%);
 
   --color-primary: hsl(243, 100%, 88%);
+  --color-primary-hover: hsl(244, 98%, 94%);
+  --color-primary-active: hsl(243, 100%, 90%, 0.12);
+
   --color-on-primary: hsl(242, 39%, 27%);
   --color-primary-container: hsl(242, 30%, 36%);
   --color-on-primary-container: hsl(246, 100%, 94%);
 
   --color-secondary: hsl(247, 27%, 82%);
+  --color-secondary-hover: hsl(248, 25%, 84%);
+  --color-secondary-active: hsl(247, 27%, 82%, 0.12);
+
   --color-on-secondary: hsl(243, 18%, 22%);
   --color-secondary-container: hsl(243, 13%, 31%);
   --color-on-secondary-container: hsl(247, 68%, 93%);
@@ -100,11 +115,17 @@
   --color-outline: hsl(256, 5%, 58%);
   --color-outline-variant: hsl(247, 6%, 29%);
 
-  --color-shadow-3: hsla(0, 0%, 75%, 0.12);
-  --color-shadow-2: hsla(0, 0%, 75%, 0.08);
-  --color-shadow-1: hsla(0, 0%, 75%, 0.04);
+  --color-scrim: hsla(0, 0%, 0%, 0.75);
 
-  --shadow-lg: 0 8px 16px var(--color-shadow-3);
-  --shadow-md: 0 4px 8px var(--color-shadow-2);
-  --shadow-sm: 0 2px 4px var(--color-shadow-1);
+  --elevation-3: 5px 14px 15px hsla(0, 0%, 100%, 0.16);
+  --elevation-2: 4px 10px 10px hsla(0, 0%, 100%, 0.12);
+  --elevation-1: 3px 6px 5px hsla(0, 0%, 100%, 0.08);
+
+  --color-error: hsl(6, 100%, 84%);
+  --color-error-hover: hsl(5, 98%, 90%);
+  --color-error-active: hsl(6, 100%, 84%, 0.12);
+
+  --color-on-error: hsl(357, 100%, 21%);
+  --color-error-container: hsl(356, 100%, 29%);
+  --color-on-error-container: hsl(6, 100%, 92%);
 }

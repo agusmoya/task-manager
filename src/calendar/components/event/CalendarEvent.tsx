@@ -1,10 +1,10 @@
 import { EventProps } from "react-big-calendar";
-import { CustomEvent } from "../types/event";
+
+import { type CustomEvent } from "../../types/event.ts";
+
+import "./CalendarEvent.css";
 
 export const CalendarEvent = ({ event }: EventProps<CustomEvent>) => {
-  console.log(event);
-
-
   const { user, title } = event
 
   return (

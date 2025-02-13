@@ -5,7 +5,7 @@
   width: 100%;
   transition: 0.4s;
   z-index: var(--z-fixed);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--elevation-1);
   background-color: var(--color-surface);
 }
 

@@ -4,13 +4,13 @@ interface User {
 }
 
 export interface CustomEvent {
-  id: number;
+  _id?: number;
   title: string;
   start: Date;
   end: Date;
-  desc?: string;
-  user: User;
-  bgColor: string;
+  notes?: string;
+  user?: User;
+  bgColor?: string;
 }
 
 export type EventStyleGetter<TEvent> = (
@@ -19,3 +19,10 @@ export type EventStyleGetter<TEvent> = (
   end: Date,
   isSelected: boolean
 ) => React.HTMLAttributes<HTMLDivElement>;
+
+interface EventForm {
+  title: string;
+  start: Date;
+  end: Date;
+  notes?: string;
+}

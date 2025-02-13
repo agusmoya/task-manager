@@ -33,7 +33,7 @@ export const LoginPage = ({ transitionClass, handleTransition }: LoginPageProps)
               <div className="login__box">
                 <input
                   id="email"
-                  type="text"
+                  type="email"
                   className="login__input"
                   placeholder=""
                   autoComplete="email"

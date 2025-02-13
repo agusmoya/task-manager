@@ -5,7 +5,7 @@ import { type Dayjs } from "dayjs";
 import { Clock } from "../clock/Clock.tsx";
 import { CalendarIcon } from "../icons/Icons.tsx";
 
-import './DateInfo.css'
+import './DateInfo.css';
 
 interface Props {
   taskId: string;
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const DateInfo = ({ taskId, today }: Props) => {
-  const currentDate = today.format('dddd, DD/MM/YYYY');
+  const currentDate = today.format('dddd, DD/MM/YYYY')
 
   return (
     <section className="date-info section container">
@@ -33,5 +33,5 @@ export const DateInfo = ({ taskId, today }: Props) => {
         </Link>
       </div>
     </section>
-  );
+  )
 }

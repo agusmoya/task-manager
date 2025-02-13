@@ -17,7 +17,6 @@
 }
 
 .login__box {
-  backdrop-filter: blur(10px);
   position: relative;
   display: flex;
   align-items: center;
@@ -90,11 +89,11 @@ provided for browser */
 .login__button:hover {
   color: var(--color-on-secondary);
   background-color: var(--color-secondary);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--elevation-3);
 }
 
 .login__social {
-  margin-bottom: var(--spacing-8);
+  margin-bottom: var(--spacing-4);
 }
 
 .login__social-title {
@@ -115,7 +114,7 @@ provided for browser */
 
 .login__social-link {
   padding: 0.5rem;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--elevation-2);
   border-radius: 0.5rem;
   display: grid;
   place-items: center;
