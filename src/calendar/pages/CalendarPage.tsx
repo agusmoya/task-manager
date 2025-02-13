@@ -8,9 +8,10 @@ import { CustomModal } from '../../component/modal/CustomModal.tsx';
 import { EventCalendarForm } from '../components/form/EventForm.tsx';
 import { CalendarEvent } from '../components/event/CalendarEvent.tsx';
 import { type CustomEvent, type EventStyleGetter } from '../types/event.ts';
-import { useUiStore, useCalendarStore } from '../../store/hooks';
 import { FabNewEvent } from '../components/fabNewEvent/FabNewEvent.tsx';
 import { FabDeleteEvent } from '../components/fabDeleteEvent/FabDeleteEvent.tsx';
+import { useUiStore } from '../../store/hooks/useUiStore.ts';
+import { useCalendarStore } from '../../store/hooks/useCalendarStore.ts';
 
 
 export const CalendarPage = () => {

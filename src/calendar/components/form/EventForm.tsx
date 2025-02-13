@@ -6,7 +6,9 @@ import { es } from "date-fns/locale";
 
 import { useEventFormValidation } from "../../hooks/useEventFormValidation.ts";
 import { EventForm } from "../../types/event.ts";
-import { useCalendarStore, useUiStore } from "../../../store/hooks";
+import { useCalendarStore } from "../../../store/hooks/useCalendarStore.ts";
+import { useUiStore } from "../../../store/hooks/useUiStore.ts";
+
 import "./EventForm.css"
 
 registerLocale('es', es)

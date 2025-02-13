@@ -1,4 +1,6 @@
-import { Categories, OngoingTasks, Search } from "../components";
+import { Categories } from "../components/categories/Categories";
+import { OngoingTasks } from "../components/ongoing-tasks/OngoingTasks";
+import { Search } from "../components/search/Search";
 import { SearchProvider } from "../context/search/searchProvider";
 
 import { useTasks } from "../hooks/useTasks";

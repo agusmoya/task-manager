@@ -1,4 +1,4 @@
-import { useCalendarStore } from '../../../store/hooks';
+import { useCalendarStore } from '../../../store/hooks/useCalendarStore';
 import { DeleteIcon } from '../icons/Icons';
 
 import './FabDeleteEvent.css'

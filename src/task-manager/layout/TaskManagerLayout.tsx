@@ -1,5 +1,5 @@
 import { TASK_STATUS } from "../../types/types.d";
-import { Header } from "../components";
+import { Header } from "../components/header/Header";
 import { useTasks } from "../hooks/useTasks";
 
 type Props = {

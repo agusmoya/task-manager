@@ -1,13 +1,14 @@
 // import "./LoginPage.css"; <- Mismos estilos de Login Page
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import {
   CardIdIcon,
   EmailIcon,
+  EyeIcon,
   EyeOffIcon,
-} from "../../components/icons/Icons";
-import { AuthLayout } from "../../layout/AuthLayout";
-import { EyeIcon } from "../../../task-manager/components";
-import { Link } from "react-router-dom";
+} from "../../components/icons/Icons.tsx";
+import { AuthLayout } from "../../layout/AuthLayout.tsx";
 
 interface RegisterPageProps {
   transitionClass: string;

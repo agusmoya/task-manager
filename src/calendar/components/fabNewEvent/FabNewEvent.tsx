@@ -1,6 +1,8 @@
 import { addHours } from 'date-fns';
-import { useUiStore, useCalendarStore } from '../../../store/hooks';
 import { PencilIcon } from '../icons/Icons';
+
+import { useUiStore } from '../../../store/hooks/useUiStore';
+import { useCalendarStore } from '../../../store/hooks/useCalendarStore';
 
 import './FabNewEvent.css'
 
