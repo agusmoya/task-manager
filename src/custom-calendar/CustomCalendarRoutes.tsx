@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 
-import { CalendarPage } from "../calendar/pages/CalendarPage.tsx";
+import { CustomCalendarPage } from "./pages/custom-calendar-page/CustomCalendarPage.tsx";
 
 
-export const CalendarRoutes = () => {
+export const CustomCalendarRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<CalendarPage />} />
+      <Route path="/" element={<CustomCalendarPage />} />
     </Routes>
   );
 }

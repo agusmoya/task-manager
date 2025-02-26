@@ -18,19 +18,19 @@
   --font-weight-normal: 400;
 
   /* ========== SPACING ========== */
-  --spacing-13: 5rem; /* 48px */
-  --spacing-12: 3rem; /* 48px */
-  --spacing-11: 2.75rem; /* 44px */
-  --spacing-10: 2.5rem; /* 40px */
-  --spacing-9: 2.25rem; /* 36px */
+  --spacing-13: 5rem;
+  --spacing-12: 3rem;
+  --spacing-11: 2.75rem;
+  --spacing-10: 2.5rem;
+  --spacing-9: 2.25rem;
   --spacing-8: 2rem; /* 32px */
-  --spacing-7: 1.75rem; /* 28px */
-  --spacing-6: 1.5rem; /* 24px */
-  --spacing-5: 1.25rem; /* 20px */
+  --spacing-7: 1.75rem;
+  --spacing-6: 1.5rem;
+  --spacing-5: 1.25rem;
   --spacing-4: 1rem; /* 16px */
-  --spacing-3: 0.75rem; /* 12px */
-  --spacing-2: 0.5rem; /* 8px */
-  --spacing-1: 0.25rem; /* 4px */
+  --spacing-3: 0.75rem;
+  --spacing-2: 0.5rem;
+  --spacing-1: 0.25rem;
 
   /* ========== Z INDEX ========== */
   --z-modal: 1000;
@@ -42,6 +42,15 @@
   --scrollbar-thumb-color: hsl(0, 0%, 40%);
   --scrollbar-thumb-color-darker: hsl(0, 1%, 30%);
   --scrollbar-color: hsl(0, 1%, 60%);
+
+  /* ========== SHADOW ========== */
+  --color-scrim: hsla(0, 0%, 0%, 0.75);
+
+  --color-shadow: rgba(0, 0, 0, 0.5);
+
+  --elevation-3: 2px 2px 2.25px var(--color-shadow);
+  --elevation-2: 1.5px 1.5px 1.5px var(--color-shadow);
+  --elevation-1: 1px 1px 1.25px var(--color-shadow);
 
   /* ========== COLOR PALETTE => M3 design based on: #5247ed ========== */
   /* --- LIGHT THEME --- */
@@ -71,12 +80,6 @@
 
   --color-outline: hsl(252, 4%, 48%);
   --color-outline-variant: hsl(256, 10%, 79%);
-
-  --color-scrim: hsla(0, 0%, 0%, 0.75);
-
-  --elevation-3: 5px 14px 15px hsla(0, 0%, 0%, 0.16);
-  --elevation-2: 4px 10px 10px hsla(0, 0%, 0%, 0.12);
-  --elevation-1: 3px 6px 5px hsla(0, 0%, 0%, 0.08);
 
   --color-error: hsl(0, 75%, 42%);
   --color-error-hover: hsl(1, 72%, 48%);
@@ -114,12 +117,6 @@
 
   --color-outline: hsl(256, 5%, 58%);
   --color-outline-variant: hsl(247, 6%, 29%);
-
-  --color-scrim: hsla(0, 0%, 0%, 0.75);
-
-  --elevation-3: 5px 14px 15px hsla(0, 0%, 100%, 0.16);
-  --elevation-2: 4px 10px 10px hsla(0, 0%, 100%, 0.12);
-  --elevation-1: 3px 6px 5px hsla(0, 0%, 100%, 0.08);
 
   --color-error: hsl(6, 100%, 84%);
   --color-error-hover: hsl(5, 98%, 90%);

@@ -1,7 +1,8 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { TaskManagerRoutes } from "../task-manager/routes/TaskManagerRoutes";
-import { AuthRoutes } from "../auth/AuthRoutes";
-import { CalendarRoutes } from "../calendar/CalendarRoutes";
+
+import { AuthRoutes } from "../auth/AuthRoutes.tsx";
+import { CustomCalendarRoutes } from "../custom-calendar/CustomCalendarRoutes.tsx";
+import { TaskManagerRoutes } from "../task-manager/routes/TaskManagerRoutes.tsx";
 
 
 export const AppRouter = () => {
@@ -10,7 +11,7 @@ export const AppRouter = () => {
   return (
     <Routes>
       <Route path="/auth/*" element={<AuthRoutes />} />
-      <Route path="/calendar/*" element={<CalendarRoutes />} />
+      <Route path="/calendar/*" element={<CustomCalendarRoutes />} />
       <Route path="/*" element={<TaskManagerRoutes />} />
       {/* {
         (authStatus === "not-authenticated")

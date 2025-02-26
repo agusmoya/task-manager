@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
-import { LoginPage, RegisterPage } from "./pages";
+import { LoginPage } from "./pages/Login/LoginPage.tsx";
+import { RegisterPage } from "./pages/Register/RegisterPage.tsx";
 
 import { useTransitionPage } from "../hooks/useTransitionPage";
 
