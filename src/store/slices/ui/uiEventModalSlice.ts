@@ -23,5 +23,3 @@ export const eventModalSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { onOpenModal, onClouseModal } = eventModalSlice.actions
-
-// export default eventModalSlice.reducer

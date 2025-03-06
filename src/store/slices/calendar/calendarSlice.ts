@@ -1,7 +1,8 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import { CustomEvent } from '../../calendar/types/event';
-import { getEvents } from '../../calendar/mocks/events';
+import { type CustomEvent } from '../../../calendar/types/event';
+
+import { getEvents } from '../../../calendar/mocks/events.ts';
 
 export interface CalendarState {
   events: CustomEvent[]

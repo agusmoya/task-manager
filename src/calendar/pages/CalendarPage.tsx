@@ -10,7 +10,7 @@ import { CalendarEvent } from '../components/event/CalendarEvent.tsx';
 import { type CustomEvent, type EventStyleGetter } from '../types/event.ts';
 import { FabNewEvent } from '../components/fabNewEvent/FabNewEvent.tsx';
 import { FabDeleteEvent } from '../components/fabDeleteEvent/FabDeleteEvent.tsx';
-import { useUiStore } from '../../store/hooks/useUiStore.ts';
+import { useUiStore } from '../../store/hooks/useEventModalStore.ts';
 import { useCalendarStore } from '../../store/hooks/useCalendarStore.ts';
 
 

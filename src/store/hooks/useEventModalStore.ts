@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "../store"
-import { onClouseModal, onOpenModal } from "../ui/uiSlice"
 
-export const useUiStore = () => {
+import { RootState } from "../store"
+import { onClouseModal, onOpenModal } from "../slices/ui/uiEventModalSlice"
+
+export const useEventModalStore = () => {
   const dispatch = useDispatch()
   const { isModalOpen } = useSelector((state: RootState) => state.ui)
 

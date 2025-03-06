@@ -4,10 +4,11 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { es } from "date-fns/locale";
 
-import { useEventFormValidation } from "../../hooks/useEventFormValidation.ts";
-import { EventForm } from "../../types/event.ts";
 import { useCalendarStore } from "../../../store/hooks/useCalendarStore.ts";
 import { useEventModalStore } from "../../../store/hooks/useEventModalStore.ts";
+import { useEventFormValidation } from "../../hooks/useEventFormValidation.ts";
+
+import { type EventForm } from "../../types/event.d";
 
 import "./EventForm.css"
 

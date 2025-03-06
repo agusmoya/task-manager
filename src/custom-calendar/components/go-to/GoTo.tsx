@@ -9,45 +9,49 @@ interface GoToProps {
 }
 
 export const GoTo = ({ today, setMonth, setYear }: GoToProps) => {
-
   const [inputValue, setInputValue] = useState('')
+  const [error, setError] = useState('')
 
-  const handleSubmitGoDate = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (inputValue.length !== 6) return
+  const handleSubmitGoDate = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (inputValue.length !== 7) return
     const dateArray = inputValue.split('/')
     const [month, year] = dateArray
+
+    if (Number(month) > 12 || Number(month) < 1) {
+      setError('Invalid month')
+      return
+    }
     setMonth(Number(month) - 1)
     setYear(Number(year))
   }
 
   const handleClickGoToday = () => {
     setMonth(today.getMonth())
+    setYear(today.getFullYear())
   }
 
   const handleOnChangeGoToDate = (event: ChangeEvent<HTMLInputElement>) => {
+    setError('')
     const { value } = event.target
-    let onlyNumbersValue = value.replace(/[^0-9/]/g, "")
-    setInputValue(onlyNumbersValue)
+    const inputEvent = event.nativeEvent as InputEvent
 
-    if (onlyNumbersValue.length === 2) {
-      setInputValue(onlyNumbersValue + '/')
+    // Extraer solo números
+    let onlyNumbers = value.replace(/[^0-9]/g, "")
+
+    // Asegurar que no haya más de un "/"
+    if (onlyNumbers.length > 2) {
+      onlyNumbers = onlyNumbers.slice(0, 2) + '/' + onlyNumbers.slice(2)
     }
 
-    if (onlyNumbersValue.length === 7) {
-      onlyNumbersValue = onlyNumbersValue.slice(0, 7)
-      setInputValue(onlyNumbersValue)
+    // Limitar a 7 caracteres (mm/yyyy)
+    let formattedValue = onlyNumbers.slice(0, 7)
+    // Manejo de borrado (evitar que al borrar el "/" se reescriba)
+    if (inputEvent.inputType === "deleteContentBackward" && formattedValue.length === 3) {
+      formattedValue = formattedValue.slice(0, 3)
     }
 
-    const { nativeEvent } = event
-    const inputEvent = nativeEvent as InputEvent
-    if (
-      inputEvent.inputType === 'deleteContentBackward'
-      && onlyNumbersValue.length === 3
-    ) {
-      setInputValue(onlyNumbersValue.slice(0, 2))
-    }
-
+    setInputValue(formattedValue)
   }
 
   return (
@@ -62,6 +66,7 @@ export const GoTo = ({ today, setMonth, setYear }: GoToProps) => {
         />
         <button className="goto__form-btn">Go</button>
       </form>
+      {error && <span className="goto__form-error">{error}</span>}
       <button type="button" className="goto__btn-today" onClick={handleClickGoToday}>Today</button>
     </div>
   )

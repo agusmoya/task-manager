@@ -1,0 +1,98 @@
+.calendar-events {
+  position: relative;
+  width: 40%;
+  min-height: 100%;
+}
+
+.calendar-events__info {
+  background: linear-gradient(90deg, #896161, transparent);
+  width: 100%;
+  height: 50px;
+  gap: var(--spacing-3);
+  padding: 0 40px;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  text-transform: capitalize;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calendar-events__day {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.calendar-events__date {
+  font-size: var(--text-md);
+  font-weight: 400;
+}
+
+.calendar-events__events {
+  width: 100%;
+  height: 100%;
+  max-height: 600px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-events__event {
+  position: relative;
+  min-height: 70px;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: 0 20px;
+  padding-left: 50px;
+  background: linear-gradient(90deg, #3f4458, transparent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.calendar-events__event:nth-child(even) {
+  background: transparent;
+}
+
+.calendar-events__event:hover {
+  background: linear-gradient(90deg, #7387d0, transparent);
+}
+
+.calendar-events__event-title {
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.events .event .event-time {
+  font-size: var(--text-xs);
+  pointer-events: none;
+}
+
+.calendar-events__event::after {
+  content: "#########";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.3;
+  transform: translateY(-50%);
+}
+
+.calendar-events__event::after:hover {
+  display: flex;
+}
+
+.calendar-events__events-none {
+  width: 100%;
+  height: 100%;
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

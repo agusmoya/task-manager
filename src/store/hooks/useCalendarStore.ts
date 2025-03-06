@@ -1,8 +1,14 @@
 import { useDispatch, useSelector } from "react-redux"
 
-import { RootState } from "../store"
-import { onAddNewEvent, onDeleteEvent, onSetActiveEvent, onUpdateEvent } from "../calendar/calendarSlice"
-import { CustomEvent } from "../../calendar/types/event"
+import { RootState } from "../store.ts"
+import {
+  onAddNewEvent,
+  onDeleteEvent,
+  onSetActiveEvent,
+  onUpdateEvent
+} from "../slices/calendar/calendarSlice.ts"
+
+import { type CustomEvent } from "../../calendar/types/event.d"
 
 export const useCalendarStore = () => {
   const dispatch = useDispatch()
@@ -13,8 +19,6 @@ export const useCalendarStore = () => {
   }
 
   const startSavignEvent = async (calendarEvent: CustomEvent) => {
-    console.log(calendarEvent)
-
     if (calendarEvent._id) {
       //update
       dispatch(onUpdateEvent({ ...calendarEvent }))
@@ -35,7 +39,6 @@ export const useCalendarStore = () => {
     // properties
     events,
     activeEvent,
-    // hasEventSelected: !!activeEvent,
     // methods
     setActiveEvent,
     startSavignEvent,

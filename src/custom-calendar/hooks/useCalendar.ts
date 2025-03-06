@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 
-import { CalendarDay } from "../types/DayCalendar.tsx";
 import { WEEKDAYS, MONTHS } from "../constants.ts";
+import { useCalendarStore } from "../../store/hooks/useCalendarStore.ts";
+
+import { type CalendarDay } from "../types/day-calendar.d";
 
 export const useCalendar = () => {
   const [today, setToday] = useState(new Date())
@@ -9,13 +11,25 @@ export const useCalendar = () => {
   const [monthName, setMonthName] = useState(MONTHS[month])
   const [year, setYear] = useState(today.getFullYear())
   const [calendarDays, setCalendarDays] = useState<CalendarDay[]>([])
+  const [activeCalendarDay, setActiveCalendarDay] = useState<CalendarDay>({
+    dayNumber: today.getDate(),
+    dayName: WEEKDAYS[today.getDay()],
+    type: 'current',
+    events: []
+  })
+  const { events } = useCalendarStore()
+
 
   const getPrevDaysMonth = (startDay: number): CalendarDay[] => {
     const prevDays: CalendarDay[] = []
     const lastPrevMonthDate = new Date(year, month, 0)
     const lastPrevMonthDay = lastPrevMonthDate.getDate()
+
     for (let x = startDay; x > 0; x--) {
-      prevDays.push({ day: lastPrevMonthDay - x + 1, type: "prev" })
+      const dayNumber = lastPrevMonthDay - x + 1;
+      const dayOfWeek = new Date(year, month - 1, dayNumber).getDay();
+      const dayName = WEEKDAYS[dayOfWeek];
+      prevDays.push({ dayNumber, dayName, type: "prev", events: [] })
     }
     return prevDays
   }
@@ -23,7 +37,10 @@ export const useCalendar = () => {
   const getCurrentDaysMonth = (lastMonthDay: number): CalendarDay[] => {
     const currentDays: CalendarDay[] = []
     for (let i = 1; i <= lastMonthDay; i++) {
-      currentDays.push({ day: i, type: "current" })
+      const dayNumber = i;
+      const dayOfWeek = new Date(year, month - 1, dayNumber).getDay();
+      const dayName = WEEKDAYS[dayOfWeek];
+      currentDays.push({ dayNumber, dayName, type: "current", events: [] })
     }
     return currentDays
   }
@@ -33,9 +50,27 @@ export const useCalendar = () => {
     const totalCalendarDays = 42
     const remainingNextDays = totalCalendarDays - startDay - lastMonthDay
     for (let i = 1; i <= remainingNextDays; i++) {
-      nextDays.push({ day: i, type: "next" })
+      const dayNumber = i;
+      const dayOfWeek = new Date(year, month - 1, dayNumber).getDay();
+      const dayName = WEEKDAYS[dayOfWeek];
+      nextDays.push({ dayNumber: i, dayName, type: "next", events: [] })
     }
     return nextDays
+  }
+
+  const assignEventsToDays = (days: CalendarDay[]): CalendarDay[] => {
+    const daysWithEvents = days.map(
+      (cd) => {
+        const dayEvents = events.filter((event) => {
+          const eventDate = new Date(event.start)
+          return eventDate.getDate() === cd.dayNumber
+            && eventDate.getMonth() === month
+            && eventDate.getFullYear() === year
+        })
+        return { ...cd, events: dayEvents }
+      })
+
+    return daysWithEvents
   }
 
   const generateCalendar = () => {
@@ -44,16 +79,27 @@ export const useCalendar = () => {
     const startDay = firstMonthDate.getDay()
     const lastMonthDay = lastMonthDate.getDate()
     const prevDays = getPrevDaysMonth(startDay)
-    const currentDays = getCurrentDaysMonth(lastMonthDay)
     const nextDays = getNextDaysMonth(startDay, lastMonthDay)
-    setCalendarDays([...prevDays, ...currentDays, ...nextDays])
+    const currentDays = getCurrentDaysMonth(lastMonthDay)
+    const currentDaysWithEvents = assignEventsToDays(currentDays)
+    const totalDaysForCalendar = [...prevDays, ...currentDaysWithEvents, ...nextDays]
+    setCalendarDays(totalDaysForCalendar)
   }
+
+  // to avoid undefined active day
+  useEffect(() => {
+    const newActiveDay = calendarDays.find(cd => cd.dayNumber === today.getDate());
+    if (newActiveDay) {
+      setActiveCalendarDay(newActiveDay);
+    }
+  }, [calendarDays, today]);
 
   // Init calendar
   useEffect(() => {
     generateCalendar()
     setMonthName(MONTHS[month])
-  }, [month, year])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [today, month, year, events])
 
   const getPreviousMonth = () => {
     setMonth((prevMonth) => {
@@ -84,6 +130,8 @@ export const useCalendar = () => {
     monthName,
     year,
     calendarDays,
+    activeCalendarDay,
+    setActiveCalendarDay,
     setToday,
     setMonth,
     setYear,

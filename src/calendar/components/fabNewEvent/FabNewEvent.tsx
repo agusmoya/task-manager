@@ -1,15 +1,15 @@
 import { addHours } from 'date-fns';
+
 import { PencilIcon } from '../icons/Icons';
 
-import { useUiStore } from '../../../store/hooks/useUiStore';
-import { useCalendarStore } from '../../../store/hooks/useCalendarStore';
+import { useEventModalStore } from '../../../store/hooks/useEventModalStore.ts';
+import { useCalendarStore } from '../../../store/hooks/useCalendarStore.ts';
 
 import './FabNewEvent.css'
 
 
 export const FabNewEvent = () => {
-
-  const { openModal } = useUiStore()
+  const { openModal } = useEventModalStore()
   const { setActiveEvent } = useCalendarStore()
 
   const handleClickNewEvent = () => {

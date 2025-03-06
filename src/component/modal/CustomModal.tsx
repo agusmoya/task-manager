@@ -1,18 +1,18 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, KeyboardEvent } from "react";
 
 import './CustomModal.css';
+import { useEventModalStore } from '../../store/hooks/useEventModalStore';
 
 type ModalProps = {
-  data?: string;
+  title: string;
   isOpen: boolean;
-  onClose: () => void;
   children: React.ReactNode;
 }
 
-export const CustomModal = ({ data = 'Info de modal', isOpen, onClose, children }: ModalProps) => {
+export const CustomModal = ({ title, isOpen, children }: ModalProps) => {
   const modalRef = useRef<HTMLDialogElement>(null)
+  const { closeModal } = useEventModalStore()
 
-  // open/close
   useEffect(() => {
     const modal = modalRef.current;
     if (isOpen) {
@@ -21,27 +21,24 @@ export const CustomModal = ({ data = 'Info de modal', isOpen, onClose, children 
       modal?.close()
     }
   }, [isOpen])
-  // close with Esc key
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose()
-      }
-    }
 
-    const modal = document.getElementById("modal")
-    modal?.addEventListener("keydown", handleKeyDown);
-    return () => {
-      modal?.removeEventListener("keydown", handleKeyDown);
+  const handleClickCloseModal = () => {
+    closeModal()
+  }
+
+  const handleKeydownCloseModal = (event: KeyboardEvent<HTMLDialogElement>) => {
+    const modal = modalRef.current;
+    if (event.key === "Escape") {
+      modal?.close()
     }
-  }, [onClose])
+  }
 
   return (
-    <dialog id="modal" ref={modalRef} className="modal">
+    <dialog id="modal" ref={modalRef} className="modal" onKeyDown={handleKeydownCloseModal}>
       <div className="modal__content">
-        <h1 className="modal__title">Modal data: {data}</h1>
+        <h1 className="modal__title">{title}</h1>
         {children}
-        <button className="modal__button-close" onClick={onClose}>
+        <button className="modal__button-close" onClick={handleClickCloseModal}>
           Close <small>(or <i>Esc</i> key)</small>
         </button>
       </div>
