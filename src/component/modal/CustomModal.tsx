@@ -1,40 +1,50 @@
-import { useEffect, useRef, KeyboardEvent } from "react";
+import { useRef, KeyboardEvent, useEffect } from "react";
 
 import './CustomModal.css';
-import { useEventModalStore } from '../../store/hooks/useEventModalStore';
 
 type ModalProps = {
   title: string;
   isOpen: boolean;
+  onClose: () => void;
   children: React.ReactNode;
 }
 
-export const CustomModal = ({ title, isOpen, children }: ModalProps) => {
+export const CustomModal = ({ title, isOpen, children, onClose }: ModalProps) => {
   const modalRef = useRef<HTMLDialogElement>(null)
-  const { closeModal } = useEventModalStore()
 
   useEffect(() => {
-    const modal = modalRef.current;
-    if (isOpen) {
-      modal?.showModal()
-    } else {
-      modal?.close()
+    const modal = modalRef.current
+    if (!modal) return
+
+    const handleClose = () => {
+      onClose() // Cuando se cierra manualmente o con Esc, avisamos al padre
     }
-  }, [isOpen])
+
+    modal.addEventListener("close", handleClose)
+    if (isOpen && !modal.open) modal.showModal()
+    if (!isOpen && modal.open) modal.close()
+
+    return () => {
+      modal.removeEventListener("close", handleClose)
+    }
+
+  }, [isOpen, onClose])
 
   const handleClickCloseModal = () => {
-    closeModal()
+    modalRef.current?.close()
   }
 
   const handleKeydownCloseModal = (event: KeyboardEvent<HTMLDialogElement>) => {
-    const modal = modalRef.current;
-    if (event.key === "Escape") {
-      modal?.close()
-    }
+    if (event.key === "Escape") modalRef.current?.close()
   }
 
   return (
-    <dialog id="modal" ref={modalRef} className="modal" onKeyDown={handleKeydownCloseModal}>
+    <dialog
+      id="modal"
+      ref={modalRef}
+      className="modal"
+      onKeyDown={handleKeydownCloseModal}
+    >
       <div className="modal__content">
         <h1 className="modal__title">{title}</h1>
         {children}

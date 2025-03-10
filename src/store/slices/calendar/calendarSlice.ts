@@ -1,8 +1,8 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import { type CustomEvent } from '../../../calendar/types/event';
+import { type CustomEvent } from '../../../calendar/types/event.d';
 
-import { getEvents } from '../../../calendar/mocks/events.ts';
+import { addHours } from "date-fns";
 
 export interface CalendarState {
   events: CustomEvent[]
@@ -10,7 +10,19 @@ export interface CalendarState {
 }
 
 const initialState: CalendarState = {
-  events: getEvents(),
+  events: [
+    {
+      _id: new Date().getTime(),
+      title: 'Conference',
+      start: new Date(),
+      end: addHours(new Date(), 2),
+      notes: 'Big conference for important people',
+      user: {
+        _id: 1,
+        name: 'Natt'
+      }
+    },
+  ],
   activeEvent: null
 }
 
@@ -33,11 +45,9 @@ export const calendarSlice = createSlice({
         return event
       })
     },
-    onDeleteEvent: (state) => {
-      if (state.activeEvent) {
-        state.events = state.events.filter((event) => event._id !== state.activeEvent?._id)
-        state.activeEvent = null
-      }
+    onDeleteEvent: (state, { payload }: PayloadAction<CustomEvent>) => {
+      const { _id } = payload
+      state.events = state.events.filter((event) => event._id !== _id)
     }
   },
 })

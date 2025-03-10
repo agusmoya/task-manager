@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { type EventForm } from "../types/event"
+
+import { type EventForm } from "../types/event.d"
 
 export const useEventFormValidation = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({})

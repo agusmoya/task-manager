@@ -1,0 +1,109 @@
+.calendar-month {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--spacing-2);
+  color: var(--color-on-secondary-container);
+  text-transform: capitalize;
+  font-size: var(--text-lg);
+}
+
+.calendar-weekdays {
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-transform: capitalize;
+}
+
+.calendar-weekdays__weekday {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14.28%;
+  font-weight: var(--font-weight-medium);
+}
+
+.calendar-days {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.calendar-days__day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-medium);
+  border-radius: 0.5rem;
+  width: 14.28%;
+  height: 90px;
+  cursor: pointer;
+  border: 2px dotted hsla(0, 0%, 56%, 0.05);
+}
+
+.calendar-days__day:not(
+    .calendar-days__day--prev-day,
+    .calendar-days__day--next-day,
+    .calendar-days__day--active
+  ):hover {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-on-primary-container);
+  background-color: var(--color-primary-container);
+}
+
+.calendar-days__day--prev-day,
+.calendar-days__day--next-day {
+  color: var(--color-outline);
+}
+
+.calendar-days__day--prev-day:hover,
+.calendar-days__day--next-day:hover {
+  cursor: not-allowed;
+  color: var(--color-on-primary-container);
+}
+
+.calendar-days__day--today {
+  font-size: var(--text-lg);
+  box-shadow: var(--elevation-1);
+  background-color: var(--color-primary-container);
+  z-index: var(--z-normal);
+}
+
+.calendar-days__day--event {
+  position: relative;
+}
+
+.calendar-days__day--event::after {
+  content: "";
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  width: 75%;
+  height: 6px;
+  border-radius: 10px;
+  transform: translateX(-50%);
+  background-color: #982828;
+}
+
+.calendar-days__day--event:hover::after {
+  background-color: #896161;
+}
+
+.calendar-days__day--active.calendar-days__day--event::after {
+  background-color: #897676;
+  bottom: 20%;
+}
+
+.calendar-days__day--active {
+  position: relative;
+  font-size: var(--text-lg);
+  border-radius: 0.5rem;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.calendar-days__day--active.event {
+  padding-bottom: 10px;
+}

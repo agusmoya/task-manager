@@ -10,7 +10,6 @@ export interface CustomEvent {
   end: Date;
   notes?: string;
   user?: User;
-  bgColor?: string;
 }
 
 export type EventStyleGetter<TEvent> = (

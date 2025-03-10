@@ -1,0 +1,9 @@
+.calendar-container {
+  padding-block: var(--spacing-6);
+  padding-left: var(--spacing-9);
+  padding-right: var(--spacing-5);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  position: relative;
+}

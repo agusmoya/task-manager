@@ -1,0 +1,106 @@
+.calendar-events {
+  position: relative;
+  width: 40%;
+  min-height: 100%;
+}
+
+.calendar-events__info {
+  background: linear-gradient(90deg, #896161, transparent);
+  height: 50px;
+  gap: var(--spacing-3);
+  padding-inline: var(--spacing-10);
+  margin-block: var(--spacing-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calendar-events__day {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-medium);
+}
+
+.calendar-events__date {
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-normal);
+}
+
+.calendar-events__events {
+  width: 100%;
+  height: 100%;
+  max-height: 600px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-events__item {
+  min-height: 70px;
+  background: linear-gradient(90deg, #3f4458, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.calendar-events__item:nth-child(even) {
+  background: transparent;
+}
+
+.calendar-events__item-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+}
+
+.calendar-events__item-time {
+  font-size: var(--text-md);
+}
+
+.calendar-events__item-edit-btn,
+.calendar-events__item-delete-btn {
+  opacity: 0;
+  display: grid;
+  place-content: center;
+  font-size: 1rem;
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(75px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(-75px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.calendar-events__item:hover .calendar-events__item-edit-btn {
+  animation: slideRight 0.3s forwards;
+}
+
+.calendar-events__item:hover .calendar-events__item-delete-btn {
+  animation: slideLeft 0.3s forwards;
+}
+
+.calendar-events__no-events {
+  height: 100%;
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-medium);
+  display: grid;
+  place-content: center;
+}

@@ -1,0 +1,26 @@
+.calendar-container__page {
+  position: relative;
+  background-color: var(--color-secondary-container);
+  width: 60%;
+  padding: var(--spacing-6);
+  border-radius: var(--spacing-2);
+}
+
+.calendar-container__page::after,
+.calendar-container__page::before {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 98%;
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  border-radius: var(--spacing-2) 0 0 var(--spacing-2);
+  background-color: var(--color-outline);
+}
+
+.calendar-container__page::before {
+  height: 95%;
+  right: calc(100% + 8px);
+  background-color: var(--color-on-surface-variant);
+}
