@@ -1,4 +1,4 @@
-import { type CustomEvent } from "./event.d";
+import { type CustomEvent } from "./event";
 
 
 export interface CalendarDay {

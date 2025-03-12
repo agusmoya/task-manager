@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 
 import { WEEKDAYS, MONTHS } from "../constants/constants.ts";
 
-import { type CalendarDay } from "../types/day-calendar.d";
-import { useAppSelector } from "../../store/hooks/reduxStore.ts";
+import { useCalendarActions } from "../../store/hooks/useCalendarActions.ts";
+
+import { type CalendarDay } from "../types/calendar-day.d";
+
 
 export const useCalendar = () => {
   const [today, setToday] = useState(new Date())
@@ -11,15 +13,14 @@ export const useCalendar = () => {
   const [monthName, setMonthName] = useState(MONTHS[month])
   const [year, setYear] = useState(today.getFullYear())
   const [calendarDays, setCalendarDays] = useState<CalendarDay[]>([])
-  const [activeCalendarDay, setActiveCalendarDay] = useState<CalendarDay | undefined>(undefined)
-  const { events } = useAppSelector((state) => state.calendar);
+  const { calendarEvents } = useCalendarActions()
 
   // Init calendar
   useEffect(() => {
     generateCalendar()
     setMonthName(MONTHS[month])
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [today, month, year, events])
+  }, [today, month, year, calendarEvents])
 
   const getPrevDaysMonth = (startDay: number): CalendarDay[] => {
     const prevDays: CalendarDay[] = []
@@ -34,7 +35,7 @@ export const useCalendar = () => {
         dayNumber,
         dayName,
         type: "prev",
-        events: [],
+        events: [], // no events for previous days
         month: month === 0 ? 11 : month - 1,
         year: month === 0 ? year - 1 : year
       })
@@ -52,7 +53,7 @@ export const useCalendar = () => {
         dayNumber,
         dayName,
         type: "current",
-        events: [],
+        events: [], // only visualize current month events
         month: month,
         year: year
       })
@@ -60,7 +61,10 @@ export const useCalendar = () => {
     return currentDays
   }
 
-  const getNextDaysMonth = (startDay: number, lastMonthDay: number): CalendarDay[] => {
+  const getNextDaysMonth = (
+    startDay: number,
+    lastMonthDay: number
+  ): CalendarDay[] => {
     const nextDays: CalendarDay[] = []
     const totalCalendarDays = 42
     const remainingNextDays = totalCalendarDays - startDay - lastMonthDay
@@ -73,7 +77,7 @@ export const useCalendar = () => {
         dayNumber: i,
         dayName,
         type: "next",
-        events: [],
+        events: [], // no events for next days
         month: month === 11 ? 0 : month + 1,
         year: month === 11 ? year + 1 : year
       })
@@ -81,19 +85,17 @@ export const useCalendar = () => {
     return nextDays
   }
 
-  const assignEventsToDays = (days: CalendarDay[]): CalendarDay[] => {
-    const daysWithEvents = days.map(
+  const assignEventsToCurrentMonth = (days: CalendarDay[]): CalendarDay[] => {
+    return days.map(
       (cd) => {
-        const dayEvents = events.filter((event) => {
-          const eventDate = new Date(event.start)
-          return eventDate.getDate() === cd.dayNumber
-            && eventDate.getMonth() === cd.month
-            && eventDate.getFullYear() === cd.year
+        const events = calendarEvents.filter((event) => {
+          const { start } = event
+          return start.getDate() === cd.dayNumber
+            && start.getMonth() === cd.month
+            && start.getFullYear() === cd.year
         })
-        return { ...cd, events: dayEvents }
+        return { ...cd, events }
       })
-
-    return daysWithEvents
   }
 
   const generateCalendar = () => {
@@ -101,11 +103,15 @@ export const useCalendar = () => {
     const lastMonthDate = new Date(year, month + 1, 0)
     const startDay = firstMonthDate.getDay()
     const lastMonthDay = lastMonthDate.getDate()
-    const prevDays = getPrevDaysMonth(startDay)
-    const nextDays = getNextDaysMonth(startDay, lastMonthDay)
-    const currentDays = getCurrentDaysMonth(lastMonthDay)
-    const currentDaysWithEvents = assignEventsToDays(currentDays)
-    const totalDaysForCalendar = [...prevDays, ...currentDaysWithEvents, ...nextDays]
+    const prevMonthDays = getPrevDaysMonth(startDay)
+    const nextMonthDays = getNextDaysMonth(startDay, lastMonthDay)
+    const currentMonthDays = getCurrentDaysMonth(lastMonthDay)
+    const currentMonthDaysWithEvents = assignEventsToCurrentMonth(currentMonthDays)
+    const totalDaysForCalendar = [
+      ...prevMonthDays,
+      ...currentMonthDaysWithEvents,
+      ...nextMonthDays
+    ]
     setCalendarDays(totalDaysForCalendar)
   }
 
@@ -138,8 +144,6 @@ export const useCalendar = () => {
     monthName,
     year,
     calendarDays,
-    activeCalendarDay,
-    setActiveCalendarDay,
     setToday,
     setMonth,
     setYear,

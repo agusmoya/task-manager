@@ -1,10 +1,8 @@
-import { useState } from "react";
-
 import { CalendarGridDays } from "../../components/calendar-grid-days/CalendarGridDays.tsx";
 import { CalendarLayout } from "../../layouts/CalendarLayout.tsx"
 import { GoTo } from "../../components/go-to/GoTo.tsx";
 import { FabAddEvent } from "../../components/add-event-btn/FabAddEvent.tsx";
-import { CustomModal } from "../../../component/modal/CustomModal.tsx";
+import { CalendarModal } from "../../../component/modal/CalendarModal.tsx";
 import { EventCalendarForm } from "../../components/event-form/EventForm.tsx";
 import { CalendarEvents } from "../../components/calendar-events/CalendarEvents.tsx";
 
@@ -14,7 +12,6 @@ import './CalendarPage.css'
 
 
 export const CalendarPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const {
     today,
     weekDays,
@@ -22,25 +19,14 @@ export const CalendarPage = () => {
     monthName,
     year,
     calendarDays,
-    activeCalendarDay,
-    setActiveCalendarDay,
     setMonth,
     getPreviousMonth,
     getNextMonth,
     setYear
   } = useCalendar()
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true)
-  }
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-  }
-
   return (
     <CalendarLayout>
-
       <div className="calendar-container__page">
         <CalendarGridDays
           today={today}
@@ -51,24 +37,18 @@ export const CalendarPage = () => {
           calendarDays={calendarDays}
           getPreviousMonth={getPreviousMonth}
           getNextMonth={getNextMonth}
-          setActiveCalendarDay={setActiveCalendarDay}
         />
         <GoTo today={today} setMonth={setMonth} setYear={setYear} />
       </div>
 
-      <FabAddEvent onOpen={handleOpenModal} />
+      <FabAddEvent />
 
-      <CustomModal title="New Event" isOpen={isModalOpen} onClose={handleCloseModal}>
-        <EventCalendarForm onClose={handleCloseModal} />
-      </CustomModal>
-      {
-        activeCalendarDay &&
-        (<CalendarEvents
-          activeCalendarDay={activeCalendarDay}
-          monthName={monthName}
-          year={year}
-        />)
-      }
+      <CalendarModal title="New Event">
+        <EventCalendarForm />
+      </CalendarModal>
+
+      <CalendarEvents monthName={monthName} year={year} />
+
     </CalendarLayout>
   )
 }

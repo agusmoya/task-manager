@@ -1,23 +1,23 @@
 import { addHours } from "date-fns";
 
-import { useCalendarActions } from "../../../store/hooks/useCalendarActions.ts";
-
 import { PlusIcon } from "../../icons/Icons";
+
+import { useCalendarActions } from "../../../store/hooks/useCalendarActions.ts";
+import { useEventModalActions } from "../../../store/hooks/useEventModalActions.ts";
+import { useCalendar } from "../../hooks/useCalendar.ts";
 
 import './FabAddEvent.css'
 
-interface Props {
-  onOpen: () => void
-}
-
-export const FabAddEvent = ({ onOpen }: Props) => {
+export const FabAddEvent = () => {
+  const { today } = useCalendar()
   const { setActiveEvent } = useCalendarActions()
+  const { openModal } = useEventModalActions()
 
   const handleClickNewEvent = () => {
     const activeEvent = {
       title: '',
-      start: new Date(),
-      end: addHours(new Date(), 2),
+      start: today,
+      end: addHours(today, 2),
       notes: '',
       user: {
         _id: 1,
@@ -25,8 +25,7 @@ export const FabAddEvent = ({ onOpen }: Props) => {
       }
     }
     setActiveEvent(activeEvent)
-    onOpen()
-    // openModal()
+    openModal()
   }
 
   return (

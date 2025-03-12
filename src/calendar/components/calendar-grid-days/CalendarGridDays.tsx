@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
-
 import { FabNextMonth } from "../fab-next/FabNextMonth.tsx";
 import { FabPreviousMonth } from "../fab-previous/FabPreviousMonth.tsx";
 
-import { type CalendarDay } from "../../types/day-calendar.d";
+import { type CalendarDay } from "../../types/calendar-day.d";
+
+import { useCalendarActions } from "../../../store/hooks/useCalendarActions.ts";
 
 import './CalendarGridDays.css';
 
@@ -16,7 +16,6 @@ interface CalendarGridDayProps {
   calendarDays: CalendarDay[];
   getPreviousMonth: () => void;
   getNextMonth: () => void;
-  setActiveCalendarDay: Dispatch<SetStateAction<CalendarDay | undefined>>;
 }
 
 export const CalendarGridDays = (
@@ -29,14 +28,17 @@ export const CalendarGridDays = (
     calendarDays,
     getPreviousMonth,
     getNextMonth,
-    setActiveCalendarDay
   }: CalendarGridDayProps
 ) => {
-  const handleDayClick = (event: React.MouseEvent<HTMLDivElement>, day: CalendarDay) => {
-    if (day.type === 'prev' || day.type === 'next') return
-    // Find previous active day and remove active class
-    const prevActive = document.querySelector('.calendar-days__day--active')
-    if (prevActive) prevActive.classList.remove('calendar-days__day--active')
+  const { setActiveCalendarDay } = useCalendarActions()
+
+  const handleDayClick = (
+    event: React.MouseEvent<HTMLDivElement>,
+    day: CalendarDay
+  ) => {
+    if (day.type !== 'current') return
+    const prevDayActive = document.querySelector('.calendar-days__day--active')
+    prevDayActive?.classList.remove('calendar-days__day--active')
     event.currentTarget.classList.add('calendar-days__day--active')
     setActiveCalendarDay(day)
   }

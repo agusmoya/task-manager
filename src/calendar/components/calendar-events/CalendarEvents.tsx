@@ -1,26 +1,21 @@
 import { useCalendarActions } from '../../../store/hooks/useCalendarActions.ts';
+import { useEventModalActions } from '../../../store/hooks/useEventModalActions.ts';
 
 import { DeleteIcon, EditIcon } from '../../icons/Icons.tsx';
 
-import { type CalendarDay } from '../../types/day-calendar.d';
 import { type CustomEvent } from '../../types/event.d';
 
 import './CalendarEvents.css';
 
 type CalendarEventsProps = {
-  activeCalendarDay: CalendarDay;
   monthName: string;
   year: number;
 }
-export const CalendarEvents = ({ activeCalendarDay, monthName, year }: CalendarEventsProps) => {
-  const { startDeletingEvent } = useCalendarActions()
+export const CalendarEvents = ({ monthName, year }: CalendarEventsProps) => {
+  const { activeCalendarDay, startDeletingEvent, setActiveEvent } = useCalendarActions()
+  const { openModal } = useEventModalActions()
+
   const { dayNumber, dayName, events } = activeCalendarDay
-
-  const formatEventTime = (event: CustomEvent): string => {
-    const { start, end } = event
-    return `${start.getHours()}:${start.getMinutes()} hs - ${end.getHours()}:${end.getMinutes()} hs`
-  }
-
   const eventDate = `${dayNumber} ${monthName} ${year}`
 
   const handleClickDeleteEvent = (event: CustomEvent) => {
@@ -28,8 +23,15 @@ export const CalendarEvents = ({ activeCalendarDay, monthName, year }: CalendarE
   }
 
   const handleClickEditEvent = (event: CustomEvent) => {
-    console.log('Edit event', event)
-    // startSavignEvent(event)
+    setActiveEvent(event)
+    openModal()
+  }
+
+  const formatEventTime = (event: CustomEvent): string => {
+    const { start, end } = event
+    const startMinutes = start.getMinutes() < 10 ? `${'0' + start.getMinutes()}` : start.getMinutes()
+    const endMinutes = end.getMinutes() < 10 ? `${'0' + end.getMinutes()}` : end.getMinutes()
+    return `${start.getHours()}:${startMinutes} hs - ${end.getHours()}:${endMinutes} hs`
   }
 
   return (
@@ -40,7 +42,7 @@ export const CalendarEvents = ({ activeCalendarDay, monthName, year }: CalendarE
       </div>
       <div className="calendar-events__events">
         {
-          (events.length > 0)
+          (events && events.length > 0)
             ?
             events.map(event => {
               const { _id, title } = event

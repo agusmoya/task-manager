@@ -1,23 +1,35 @@
 
 import { useAppDispatch, useAppSelector } from "./reduxStore.ts"
 import {
+  onSetActiveCalendarDay,
+  onSetActiveEvent,
   onAddNewEvent,
   onDeleteEvent,
-  onSetActiveEvent,
   onUpdateEvent
 } from "../slices/calendar/calendarSlice.ts"
 
-import { type CustomEvent } from "../../calendar/types/event"
+import { type CustomEvent } from "../../calendar/types/event.d"
+import { type CalendarDay } from "../../calendar/types/calendar-day"
 
 export const useCalendarActions = () => {
   const dispatch = useAppDispatch()
-  const { events, activeEvent } = useAppSelector((state) => state.calendar)
+  const {
+    activeCalendarDay,
+    activeCalendarEvent,
+    calendarEvents
+  } = useAppSelector((state) => state.calendar)
 
-  const setActiveEvent = (activeEvent: CustomEvent) => {
-    dispatch(onSetActiveEvent(activeEvent))
+  const setActiveEvent = (event: CustomEvent) => {
+    dispatch(onSetActiveEvent(event))
+  }
+
+  const setActiveCalendarDay = (activeCalendarDay: CalendarDay) => {
+    dispatch(onSetActiveCalendarDay(activeCalendarDay))
   }
 
   const startSavignEvent = async (calendarEvent: CustomEvent) => {
+    console.log(calendarEvent);
+
     if (calendarEvent._id) {
       //update
       dispatch(onUpdateEvent({ ...calendarEvent }))
@@ -30,15 +42,17 @@ export const useCalendarActions = () => {
     }
   }
 
-  const startDeletingEvent = (event: CustomEvent) => {
-    dispatch(onDeleteEvent(event))
+  const startDeletingEvent = async (calendarEvent: CustomEvent) => {
+    dispatch(onDeleteEvent(calendarEvent))
   }
 
   return {
     // properties
-    events,
-    activeEvent,
+    activeCalendarDay,
+    activeCalendarEvent,
+    calendarEvents,
     // methods
+    setActiveCalendarDay,
     setActiveEvent,
     startSavignEvent,
     startDeletingEvent

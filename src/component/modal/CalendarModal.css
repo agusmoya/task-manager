@@ -1,4 +1,4 @@
-#modal {
+.calendar-modal {
   align-content: center;
   background-color: var(--color-surface);
   color: var(--color-on-surface);
@@ -15,9 +15,10 @@
     translate 0.4s, opacity 0.4s;
   translate: 0 50%;
   will-change: translate, opacity;
+  z-index: var(--z-modal);
 }
 
-#modal[open] {
+.calendar-modal[open] {
   opacity: 1;
   translate: 0;
 
@@ -27,7 +28,7 @@
   }
 }
 
-#modal::backdrop {
+.calendar-modal::backdrop {
   background: var(--color-scrim);
   opacity: 1;
   transition: display 0.5s allow-discrete, opacity 0.5s;
@@ -37,7 +38,7 @@
   }
 }
 
-#modal:not([open])::backdrop {
+.calendar-modal:not([open])::backdrop {
   opacity: 0;
 }
 

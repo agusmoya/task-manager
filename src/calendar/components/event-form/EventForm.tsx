@@ -6,6 +6,7 @@ import { es } from "date-fns/locale";
 
 import { useCalendarActions } from "../../../store/hooks/useCalendarActions.ts";
 import { useEventFormValidation } from "../../hooks/useEventFormValidation.ts";
+import { useEventModalActions } from "../../../store/hooks/useEventModalActions.ts";
 
 import { type EventForm } from "../../types/event.d";
 
@@ -13,11 +14,8 @@ import "./EventForm.css"
 
 registerLocale('es', es)
 
-interface Props {
-  onClose: () => void
-}
 
-export const EventCalendarForm = ({ onClose }: Props) => {
+export const EventCalendarForm = () => {
   const [formValues, setFormValues] = useState<EventForm>({
     title: "",
     notes: "",
@@ -26,15 +24,16 @@ export const EventCalendarForm = ({ onClose }: Props) => {
   })
   const { title, start, end, notes } = formValues
   const { errors, setErrors, validateForm } = useEventFormValidation()
-  const { activeEvent, startSavignEvent } = useCalendarActions()
+  const { activeCalendarEvent, startSavignEvent } = useCalendarActions()
+  const { closeModal } = useEventModalActions()
 
   useEffect(() => {
-    if (activeEvent) {
-      setFormValues({ ...activeEvent })
+    if (activeCalendarEvent) {
+      setFormValues({ ...activeCalendarEvent })
       setErrors({}) // clean previous errors
     }
 
-  }, [activeEvent, setErrors])
+  }, [activeCalendarEvent, setErrors])
 
   const onInputChange = ({ target }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = target
@@ -88,7 +87,7 @@ export const EventCalendarForm = ({ onClose }: Props) => {
 
     await startSavignEvent(formValues)
     handleReset()
-    onClose()
+    closeModal()
   }
 
   return (
