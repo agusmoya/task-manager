@@ -8,7 +8,7 @@ import { useCalendarActions } from "../../../store/hooks/useCalendarActions.ts";
 import { useEventFormValidation } from "../../hooks/useEventFormValidation.ts";
 import { useEventModalActions } from "../../../store/hooks/useEventModalActions.ts";
 
-import { type EventForm } from "../../types/event.d";
+import { type EventForm } from "../../types/calendar-event.d";
 
 import "./EventForm.css"
 
@@ -24,7 +24,7 @@ export const EventCalendarForm = () => {
   })
   const { title, start, end, notes } = formValues
   const { errors, setErrors, validateForm } = useEventFormValidation()
-  const { activeCalendarEvent, startSavignEvent } = useCalendarActions()
+  const { activeCalendarEvent, startSavingEvent } = useCalendarActions()
   const { closeModal } = useEventModalActions()
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export const EventCalendarForm = () => {
       return
     }
 
-    await startSavignEvent(formValues)
+    await startSavingEvent(formValues)
     handleReset()
     closeModal()
   }

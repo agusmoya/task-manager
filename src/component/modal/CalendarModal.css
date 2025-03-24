@@ -16,6 +16,7 @@
   translate: 0 50%;
   will-change: translate, opacity;
   z-index: var(--z-modal);
+  border: 1px solid var(--color-surface-variant);
 }
 
 .calendar-modal[open] {

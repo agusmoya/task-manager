@@ -1,14 +1,10 @@
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
 
 import './GoTo.css'
+import { useCalendarActions } from "../../../store/hooks/useCalendarActions";
 
-interface GoToProps {
-  today: Date;
-  setMonth: Dispatch<SetStateAction<number>>;
-  setYear: Dispatch<SetStateAction<number>>;
-}
-
-export const GoTo = ({ today, setMonth, setYear }: GoToProps) => {
+export const GoTo = () => {
+  const { today, setMonth, setYear } = useCalendarActions()
   const [inputValue, setInputValue] = useState('')
   const [error, setError] = useState('')
 

@@ -1,5 +1,4 @@
 .calendar-events {
-  position: relative;
   width: 40%;
   min-height: 100%;
 }
@@ -97,6 +96,7 @@
   animation: slideLeft 0.3s forwards;
 }
 
+.calendar-events__no-day-selected,
 .calendar-events__no-events {
   height: 100%;
   font-size: var(--text-lg);

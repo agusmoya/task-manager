@@ -190,6 +190,7 @@ ol {
     position: absolute;
     top: 0;
     right: 0;
+    cursor: default;
   }
 
   /* change the position of the image */

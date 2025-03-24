@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import './index.css'
+import './styles.css'
 
 import TaskManagerApp from './TaskManagerApp.tsx'
 // import { StrictMode } from 'react'

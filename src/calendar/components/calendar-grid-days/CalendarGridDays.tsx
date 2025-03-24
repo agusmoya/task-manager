@@ -1,46 +1,77 @@
+import { useEffect } from "react";
+
+import { type CalendarDay } from "../../types/calendar-day.d";
+import { type CalendarEvent } from "../../types/calendar-event.d";
+
 import { FabNextMonth } from "../fab-next/FabNextMonth.tsx";
 import { FabPreviousMonth } from "../fab-previous/FabPreviousMonth.tsx";
 
-import { type CalendarDay } from "../../types/calendar-day.d";
-
+import { MONTHS } from "../../constants/constants.ts";
 import { useCalendarActions } from "../../../store/hooks/useCalendarActions.ts";
 
 import './CalendarGridDays.css';
 
-interface CalendarGridDayProps {
-  today: Date;
-  weekDays: string[];
-  month: number;
-  monthName: string;
-  year: number;
-  calendarDays: CalendarDay[];
-  getPreviousMonth: () => void;
-  getNextMonth: () => void;
-}
 
-export const CalendarGridDays = (
-  {
+export const CalendarGridDays = () => {
+  const {
     today,
     weekDays,
     month,
-    monthName,
     year,
     calendarDays,
+    events,
+    activeCalendarDay,
+    generateCalendar,
+    setActiveCalendarDay,
     getPreviousMonth,
-    getNextMonth,
-  }: CalendarGridDayProps
-) => {
-  const { setActiveCalendarDay } = useCalendarActions()
+    getNextMonth
+  } = useCalendarActions()
 
-  const handleDayClick = (
-    event: React.MouseEvent<HTMLDivElement>,
-    day: CalendarDay
-  ) => {
+  useEffect(() => {
+    generateCalendar()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [month, events])
+
+  const handleDayClick = (day: CalendarDay) => {
     if (day.type !== 'current') return
-    const prevDayActive = document.querySelector('.calendar-days__day--active')
-    prevDayActive?.classList.remove('calendar-days__day--active')
-    event.currentTarget.classList.add('calendar-days__day--active')
     setActiveCalendarDay(day)
+  }
+
+  const isToday = (cd: CalendarDay) => {
+    const { dayNumber, month, year } = cd
+    return (
+      today.getDate() === dayNumber
+      && today.getMonth() === month
+      && today.getFullYear() === year
+    )
+  }
+
+  const isPrevDay = (type: string) => {
+    return type === 'prev'
+  }
+
+  const isNextDay = (type: string) => {
+    return type === 'next'
+  }
+
+  const isActiveDay = (activeCalendarDay: CalendarDay, day: CalendarDay) => {
+    if (!activeCalendarDay) return
+    const { dayNumber, month, year } = day
+    return (
+      activeCalendarDay.dayNumber === dayNumber
+      && activeCalendarDay.month === month
+      && activeCalendarDay.year === year
+    )
+  }
+
+  const filterEventsByDays = (events: CalendarEvent[], day: CalendarDay) => {
+    const { dayNumber, month, year } = day
+    return events.filter(
+      ({ start }) => (
+        start.getDate() === dayNumber
+        && start.getMonth() === month
+        && start.getFullYear() === year
+      ))
   }
 
   return (
@@ -48,7 +79,7 @@ export const CalendarGridDays = (
       <div className="calendar-month">
         <FabPreviousMonth onClickPrev={getPreviousMonth} />
         <span className="calendar-month__date">
-          {`${monthName} ${year}`}
+          {`${MONTHS[month]} ${year}`}
         </span>
         <FabNextMonth onClickNext={getNextMonth} />
       </div>
@@ -63,26 +94,24 @@ export const CalendarGridDays = (
       </div>
       <div className="calendar-days">
         {
-          calendarDays.map((cd: CalendarDay) => {
-            const dayHasEvents = cd.events.length > 0
-            const isToday =
-              today.getDate() === cd.dayNumber &&
-              today.getMonth() === month &&
-              today.getFullYear() === year
+          calendarDays.map((day: CalendarDay) => {
+            const { dayNumber, month, year, type } = day
+            const dayHasEvents = filterEventsByDays(events, day).length > 0
 
             return (
               <div
-                key={`${cd.type}-${year}-${month}-${cd.dayNumber}`}
-                className={
-                  `calendar-days__day
-                  ${isToday ? 'calendar-days__day--today' : ''}
-                  ${cd.type === 'prev' ? 'calendar-days__day--prev-day' : ''}
-                  ${cd.type === 'next' ? 'calendar-days__day--next-day' : ''}
-                  ${dayHasEvents ? 'calendar-days__day--event' : ''}`
-                }
-                onClick={(event) => handleDayClick(event, cd)}
+                key={`${type}-${year}-${month}-${dayNumber}`}
+                className={[
+                  'calendar-days__day',
+                  isActiveDay(activeCalendarDay!, day) && 'calendar-days__day--active',
+                  isToday(day) && 'calendar-days__day--today',
+                  isPrevDay(type) && 'calendar-days__day--prev-day',
+                  isNextDay(type) && 'calendar-days__day--next-day',
+                  dayHasEvents && 'calendar-days__day--event'
+                ].filter(Boolean).join(' ')}
+                onClick={() => handleDayClick(day)}
               >
-                {cd.dayNumber}
+                {dayNumber}
               </div>
             )
           })

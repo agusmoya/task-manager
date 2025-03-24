@@ -4,20 +4,21 @@ import { PlusIcon } from "../../icons/Icons";
 
 import { useCalendarActions } from "../../../store/hooks/useCalendarActions.ts";
 import { useEventModalActions } from "../../../store/hooks/useEventModalActions.ts";
-import { useCalendar } from "../../hooks/useCalendar.ts";
 
 import './FabAddEvent.css'
 
 export const FabAddEvent = () => {
-  const { today } = useCalendar()
-  const { setActiveEvent } = useCalendarActions()
+  const { setActiveEvent, activeCalendarDay } = useCalendarActions()
   const { openModal } = useEventModalActions()
 
   const handleClickNewEvent = () => {
+    if (!activeCalendarDay) return
+    const { dayNumber, month, year } = activeCalendarDay
+    const selecetedDayDate = new Date(year, month, dayNumber)
     const activeEvent = {
       title: '',
-      start: today,
-      end: addHours(today, 2),
+      start: selecetedDayDate,
+      end: addHours(selecetedDayDate, 2),
       notes: '',
       user: {
         _id: 1,
@@ -29,8 +30,12 @@ export const FabAddEvent = () => {
   }
 
   return (
-    <button className="add-event-btn" onClick={handleClickNewEvent}>
-      <PlusIcon className="add-event-icon" />
-    </button>
+    <>
+      {activeCalendarDay ? (
+        <button className="add-event-btn" onClick={handleClickNewEvent}>
+          <PlusIcon className="add-event-icon" />
+        </button>
+      ) : null}
+    </>
   )
 }

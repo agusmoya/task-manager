@@ -30,31 +30,22 @@
 }
 
 .calendar-days__day {
+  cursor: pointer;
+  width: 14.28%;
+  aspect-ratio: 1 / 1;
+  border-radius: 0.5rem;
+  border: 2px dotted hsla(0, 0%, 50%, 0.05);
+  font-size: var(--text-lg);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--text-md);
-  font-weight: var(--font-weight-medium);
-  border-radius: 0.5rem;
-  width: 14.28%;
-  height: 90px;
-  cursor: pointer;
-  border: 2px dotted hsla(0, 0%, 56%, 0.05);
-}
-
-.calendar-days__day:not(
-    .calendar-days__day--prev-day,
-    .calendar-days__day--next-day,
-    .calendar-days__day--active
-  ):hover {
-  font-size: var(--text-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-on-primary-container);
-  background-color: var(--color-primary-container);
+  will-change: transform;
+  transition: transform 0.3s, background-color 0.3s, color 0.3s;
 }
 
 .calendar-days__day--prev-day,
 .calendar-days__day--next-day {
+  font-size: var(--text-lg);
   color: var(--color-outline);
 }
 
@@ -64,9 +55,27 @@
   color: var(--color-on-primary-container);
 }
 
-.calendar-days__day--today {
-  font-size: var(--text-lg);
-  box-shadow: var(--elevation-1);
+.calendar-days__day:not(
+    .calendar-days__day--prev-day,
+    .calendar-days__day--next-day,
+    .calendar-days__day--active
+  ):hover {
+  color: var(--color-on-primary-container);
+  background-color: var(--color-primary-container);
+  transform: scale(1.04);
+}
+
+.calendar-days__day--active {
+  position: relative;
+  border-radius: 0.5rem;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  z-index: var(--z-tooltip);
+  transform: scale(1.04);
+}
+
+.calendar-days__day--today:not(.calendar-days__day--active) {
+  box-shadow: var(--elevation-2);
   background-color: var(--color-primary-container);
   z-index: var(--z-normal);
 }
@@ -78,9 +87,9 @@
 .calendar-days__day--event::after {
   content: "";
   position: absolute;
-  bottom: 10%;
+  bottom: 15%;
   left: 50%;
-  width: 75%;
+  width: 50%;
   height: 6px;
   border-radius: 10px;
   transform: translateX(-50%);
@@ -94,16 +103,4 @@
 .calendar-days__day--active.calendar-days__day--event::after {
   background-color: #897676;
   bottom: 20%;
-}
-
-.calendar-days__day--active {
-  position: relative;
-  font-size: var(--text-lg);
-  border-radius: 0.5rem;
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
-}
-
-.calendar-days__day--active.event {
-  padding-bottom: 10px;
 }

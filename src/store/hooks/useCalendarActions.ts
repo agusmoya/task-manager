@@ -1,25 +1,60 @@
 
 import { useAppDispatch, useAppSelector } from "./reduxStore.ts"
 import {
+  onGenerateCalendar,
+  onGetNextMonth,
+  onGetPreviousMonth,
   onSetActiveCalendarDay,
-  onSetActiveEvent,
+  onSetMonth,
+  onSetYear,
+} from "../slices/calendar/calendarDaysSlice.ts"
+import {
   onAddNewEvent,
+  onUpdateEvent,
   onDeleteEvent,
-  onUpdateEvent
-} from "../slices/calendar/calendarSlice.ts"
+  onSetActiveEvent,
+} from "../slices/events/calendarEventsSlice.ts"
 
-import { type CustomEvent } from "../../calendar/types/event.d"
-import { type CalendarDay } from "../../calendar/types/calendar-day"
+import { type CalendarEvent } from "../../calendar/types/calendar-event.d"
+import { type CalendarDay } from "../../calendar/types/calendar-day.d"
 
 export const useCalendarActions = () => {
   const dispatch = useAppDispatch()
   const {
+    today,
+    weekDays,
+    month,
+    year,
+    calendarDays,
     activeCalendarDay,
-    activeCalendarEvent,
-    calendarEvents
-  } = useAppSelector((state) => state.calendar)
+  } = useAppSelector((state) => state.calendarDays)
 
-  const setActiveEvent = (event: CustomEvent) => {
+  const {
+    events,
+    activeCalendarEvent
+  } = useAppSelector(state => state.calendarEvents)
+
+  const generateCalendar = () => {
+    dispatch(onGenerateCalendar())
+  }
+
+  const setMonth = (month: number) => {
+    dispatch(onSetMonth(month))
+  }
+
+  const setYear = (year: number) => {
+    dispatch(onSetYear(year))
+  }
+
+  const getNextMonth = () => {
+    dispatch(onGetNextMonth())
+  }
+
+  const getPreviousMonth = () => {
+    dispatch(onGetPreviousMonth())
+  }
+
+  const setActiveEvent = (event: CalendarEvent) => {
     dispatch(onSetActiveEvent(event))
   }
 
@@ -27,34 +62,39 @@ export const useCalendarActions = () => {
     dispatch(onSetActiveCalendarDay(activeCalendarDay))
   }
 
-  const startSavignEvent = async (calendarEvent: CustomEvent) => {
-    console.log(calendarEvent);
-
+  const startSavingEvent = async (calendarEvent: CalendarEvent) => {
     if (calendarEvent._id) {
-      //update
       dispatch(onUpdateEvent({ ...calendarEvent }))
     } else {
-      //create
-      dispatch(onAddNewEvent({
-        ...calendarEvent,
-        _id: new Date().getTime()
-      }))
+      dispatch(onAddNewEvent({ ...calendarEvent, _id: new Date().getTime() }))
     }
   }
 
-  const startDeletingEvent = async (calendarEvent: CustomEvent) => {
+  const startDeletingEvent = async (calendarEvent: CalendarEvent) => {
     dispatch(onDeleteEvent(calendarEvent))
   }
 
   return {
-    // properties
+    //* Properties:
+    // days
+    today,
+    weekDays,
+    month,
+    year,
+    calendarDays,
     activeCalendarDay,
+    // events
+    events,
     activeCalendarEvent,
-    calendarEvents,
-    // methods
+    //* Methods:
+    generateCalendar,
+    setMonth,
+    setYear,
+    getNextMonth,
+    getPreviousMonth,
     setActiveCalendarDay,
     setActiveEvent,
-    startSavignEvent,
+    startSavingEvent,
     startDeletingEvent
   }
 }

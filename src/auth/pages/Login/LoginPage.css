@@ -126,8 +126,11 @@ provided for browser */
 }
 
 .login__switch {
-  text-align: center;
+  display: inline-block;
   font-size: var(--text-xs);
+  background-color: var(--color-surface);
+  padding: var(--spacing-1);
+  border-radius: 1rem;
 }
 
 .login__switch a {
@@ -167,7 +170,13 @@ provided for browser */
 }
 
 .login__area {
-  padding: var(--spacing-5);
+  text-align: center;
+}
+
+.login__error {
+  color: var(--color-error);
+  font-size: var(--text-sm);
+  margin-top: var(--spacing-4);
 }
 
 /* Show hide login & create account */

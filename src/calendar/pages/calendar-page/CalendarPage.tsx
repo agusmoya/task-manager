@@ -6,39 +6,15 @@ import { CalendarModal } from "../../../component/modal/CalendarModal.tsx";
 import { EventCalendarForm } from "../../components/event-form/EventForm.tsx";
 import { CalendarEvents } from "../../components/calendar-events/CalendarEvents.tsx";
 
-import { useCalendar } from "../../hooks/useCalendar.ts";
-
 import './CalendarPage.css'
 
 
 export const CalendarPage = () => {
-  const {
-    today,
-    weekDays,
-    month,
-    monthName,
-    year,
-    calendarDays,
-    setMonth,
-    getPreviousMonth,
-    getNextMonth,
-    setYear
-  } = useCalendar()
-
   return (
     <CalendarLayout>
       <div className="calendar-container__page">
-        <CalendarGridDays
-          today={today}
-          weekDays={weekDays}
-          month={month}
-          monthName={monthName}
-          year={year}
-          calendarDays={calendarDays}
-          getPreviousMonth={getPreviousMonth}
-          getNextMonth={getNextMonth}
-        />
-        <GoTo today={today} setMonth={setMonth} setYear={setYear} />
+        <CalendarGridDays />
+        <GoTo />
       </div>
 
       <FabAddEvent />
@@ -47,7 +23,7 @@ export const CalendarPage = () => {
         <EventCalendarForm />
       </CalendarModal>
 
-      <CalendarEvents monthName={monthName} year={year} />
+      <CalendarEvents />
 
     </CalendarLayout>
   )

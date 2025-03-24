@@ -1,3 +1,4 @@
+import { useAuthActions } from "../../../store/hooks/useAuthActions";
 import { Tasks } from "../../../types/types";
 import { ButtonTheme } from "../button-theme/ButtonTheme";
 
@@ -9,8 +10,8 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ userName, pendingTasks = [] }) => {
-  // const params = useParams();
-  // console.log(params['*']);
+  const { user } = useAuthActions()
+  console.log({ user })
 
   return (
     <header className="header-app" id="header-app">
@@ -27,5 +28,5 @@ export const Header: React.FC<Props> = ({ userName, pendingTasks = [] }) => {
         <ButtonTheme />
       </nav>
     </header>
-  );
-};
+  )
+}

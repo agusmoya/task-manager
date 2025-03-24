@@ -4,6 +4,5 @@
   padding-right: var(--spacing-5);
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  position: relative;
+  justify-content: center;
 }

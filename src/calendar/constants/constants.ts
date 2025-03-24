@@ -1,3 +1,5 @@
+export const TODAY = new Date()
+
 export const WEEKDAYS = [
   "Sunday",
   "Monday",

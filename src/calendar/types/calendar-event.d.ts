@@ -3,7 +3,7 @@ interface User {
   name: string;
 }
 
-export interface CustomEvent {
+export interface CalendarEvent {
   _id?: number;
   title: string;
   start: Date;
