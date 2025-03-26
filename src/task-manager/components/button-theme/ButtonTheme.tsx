@@ -34,6 +34,7 @@ export const ButtonTheme = () => {
       id="theme-button"
       onClick={toggleTheme}
     >
+      {theme === lightTheme ? 'Dark' : 'Light'} theme&nbsp;
       {theme === lightTheme ? <MoonIcon /> : <SunIcon />}
     </button>
   );

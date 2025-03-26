@@ -1,6 +1,6 @@
 import { addHours } from "date-fns";
 
-import { PlusIcon } from "../../icons/Icons";
+import { PlusIcon } from "../../../component/icons/Icons.tsx";
 
 import { useCalendarActions } from "../../../store/hooks/useCalendarActions.ts";
 import { useEventModalActions } from "../../../store/hooks/useEventModalActions.ts";

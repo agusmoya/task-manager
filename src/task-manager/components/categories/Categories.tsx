@@ -1,5 +1,10 @@
-import { useSearch } from "../../hooks/useSearch";
-import { Category, CountingCategories } from "../../../types/types";
+import { Link } from "react-router-dom";
+
+import { PlusIcon } from "../../../component/icons/Icons.tsx";
+
+import { type Category, type CountingCategories } from "../../../types/types.d";
+
+import { useSearch } from "../../hooks/useSearch.ts";
 
 import "./Categories.css";
 
@@ -8,9 +13,9 @@ interface Props {
 }
 
 export function Categories({ categories = [] }: Props) {
-  const { search } = useSearch();
+  const { search } = useSearch()
 
-  const organizedCategories: { [key: string]: CountingCategories } = {};
+  const organizedCategories: { [key: string]: CountingCategories } = {}
 
   categories.forEach((cat) => {
     const { name } = cat;
@@ -20,15 +25,16 @@ export function Categories({ categories = [] }: Props) {
         quantity: 1,
       };
     } else {
-      organizedCategories[name].quantity++;
+      organizedCategories[name].quantity++
     }
-  });
+  })
 
-  const filteredCategories = Object.values(organizedCategories).filter((cat) =>
-    cat.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredCategories = Object.values(organizedCategories)
+    .filter(
+      ({ name }) => name.toLowerCase().includes(search.toLowerCase())
+    )
 
-  const areCategoriesPresent = filteredCategories.length;
+  const areCategoriesPresent = filteredCategories.length
 
   return (
     <section className="categories section" id="categories">
@@ -38,22 +44,40 @@ export function Categories({ categories = [] }: Props) {
           <a>See all</a>
         </header>
         <ul
-          className={`categories__list ${
-            !areCategoriesPresent ? "categories__list--no-result" : ""
-          }`}
+          className={[
+            'categories__list',
+            !areCategoriesPresent && 'categories__list--no-result'
+          ].filter(Boolean).join(' ')}
         >
-          {filteredCategories.length > 0 ? (
-            filteredCategories.map((cat) => (
-              <li className="category__item" key={cat.id}>
-                <h3 className="section__subtitle">{cat.name}</h3>
-                <small>{cat.quantity} task(s)</small>
-              </li>
-            ))
-          ) : (
-            <span>No categories found...</span>
-          )}
+          {
+            <li
+              key="newCategory"
+              className="category__item category__item--new-category"
+            >
+              <h3>New Category</h3>
+              <section className="category__card">
+                <Link to='/new-category'>
+                  <PlusIcon className="category__card-new-icon" />
+                </Link>
+              </section>
+            </li>
+          }
+          {
+            filteredCategories.length > 0
+              ?
+              filteredCategories.map(
+                ({ id, name, quantity }) => (
+                  <li className="category__item" key={id}>
+                    <section className="category__card">
+                      <h3 className="section__subtitle">{name}</h3>
+                      <small>{quantity} task(s)</small>
+                    </section>
+                  </li>
+                ))
+              : <span>No categories found...</span>
+          }
         </ul>
       </div>
     </section>
-  );
+  )
 }

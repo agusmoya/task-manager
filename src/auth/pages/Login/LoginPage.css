@@ -16,12 +16,32 @@
   margin-bottom: var(--spacing-8);
 }
 
+/* .login__content {
+  display: flex;
+  flex-direction: column;
+} */
+
 .login__box {
   position: relative;
   display: flex;
   align-items: center;
   background-color: var(--color-surface-variant);
   border-radius: 1rem;
+}
+
+.login__error {
+  color: var(--color-error);
+  font-size: var(--text-sm);
+  min-height: var(--spacing-7); /* Espacio reservado para el error */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: var(--spacing-1);
+  visibility: hidden;
+}
+
+.login__error.show {
+  visibility: visible;
 }
 
 .login__input {
@@ -31,6 +51,10 @@
   font-weight: var(--font-weight-medium);
   border-radius: 1rem;
   z-index: var(--z-normal);
+}
+
+.login__input--error {
+  outline: 3px solid var(--color-error);
 }
 
 /* trick for hidden default background-color
@@ -84,6 +108,7 @@ provided for browser */
   border-radius: 4rem;
   margin-block: var(--spacing-8);
   transition: background-color 0.4s, box-shadow 0.4s;
+  font-weight: var(--font-weight-bold);
 }
 
 .login__button:hover {
@@ -158,8 +183,8 @@ provided for browser */
   padding-block: var(--spacing-8) var(--spacing-4);
 }
 
-/* Input focus color */
-.login__input:focus {
+/* Input focus color without errors */
+.login__input:focus:not(.login__input--error) {
   outline-color: var(--color-on-surface);
 }
 
@@ -171,12 +196,7 @@ provided for browser */
 
 .login__area {
   text-align: center;
-}
-
-.login__error {
-  color: var(--color-error);
-  font-size: var(--text-sm);
-  margin-top: var(--spacing-4);
+  padding: var(--spacing-2);
 }
 
 /* Show hide login & create account */

@@ -1,3 +1,5 @@
+import { TODO_FILTERS } from "../task-manager/consts/consts";
+
 export interface Category {
   id: string;
   name: string;
@@ -24,6 +26,7 @@ export interface Task {
   duration: number;
   category: Category;
   creationDate: Date;
+  userId: string;
 }
 
 export interface TasksResponse {

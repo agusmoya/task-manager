@@ -13,12 +13,12 @@ interface Props {
 }
 
 export const DateInfo = ({ taskId, today }: Props) => {
-  const currentDate = today.format('dddd, DD/MM/YYYY')
+  // const currentDate = today.format('dddd, DD/MM/YYYY')
 
   return (
     <section className="date-info section container">
       <div className="date-info__time">
-        <time className="curren-date">{currentDate}</time>
+        {/* <time className="curren-date">{currentDate}</time> */}
         <Clock today={today} />
         <h2 className="date-info__title">
           <p>Task ID: {taskId}</p>

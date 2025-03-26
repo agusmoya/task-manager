@@ -1,12 +1,12 @@
-import axios from "axios";
+import axios from "axios"
 
 import { useAppDispatch, useAppSelector } from "./reduxStore.ts"
 import { clearErrorMessage, onChecking, onLogin, onLogout } from "../slices/auth/authSlice.ts"
-
 import todoApi from "../../api/taskManagerApi.ts"
 
 interface RegisterProps {
   name: string;
+  surname: string;
   email: string;
   password: string;
 }
@@ -28,40 +28,25 @@ export const useAuthActions = () => {
       const { name, uid } = data
       dispatch(onLogin({ name, uid }))
     } catch (error) {
-      console.log({ error })
-      dispatch(onLogout('Invalid credentials.'))
-      setTimeout(() => {
-        dispatch(clearErrorMessage())
-      }, 10000)
+      manageError(error)
     }
   }
 
-  const startRegister = async ({ name, email, password }: RegisterProps) => {
+  const startRegister = async ({ name, surname, email, password }: RegisterProps) => {
     dispatch(onChecking())
     try {
-      const { data } = await todoApi.post("/auth/register", { name, email, password })
+      const { data } = await todoApi.post("/auth/register", { name, surname, email, password })
       saveTokenLocalStorage(data.token)
       dispatch(onLogin({ name, uid: data.uid }))
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response && error.response.data) {
-        const responseError = error.response.data.errors ? error.response.data.errors[0] : error.response.data.error
-        const errorMsg = responseError || 'Unknown error'
-        dispatch(onLogout(errorMsg))
-      } else {
-        dispatch(onLogout('An unexpected error occurred.'))
-      }
-      setTimeout(() => {
-        dispatch(clearErrorMessage())
-      }, 10000)
+      manageError(error)
     }
   }
 
   const checkAuthToken = async () => {
     const token = localStorage.getItem("token")
-
-    if (!token) {
-      return dispatch(onLogout('Token not found.'))
-    }
+    // if (!token) return dispatch(onLogout('Token not found.'))
+    if (!token) return
 
     try {
       const { data } = await todoApi.get("/auth/renew")
@@ -74,10 +59,8 @@ export const useAuthActions = () => {
   }
 
   const saveTokenLocalStorage = (token: string) => {
-    if (!token) {
-      dispatch(onLogout('No se pudo renovar el token.'))
-      return
-    }
+    if (!token) return
+    // return dispatch(onLogout('Token not found LS.'))
     localStorage.setItem("token", token)
     localStorage.setItem("token-init-date", new Date().getTime().toString())
   }
@@ -85,7 +68,29 @@ export const useAuthActions = () => {
   const startLogout = () => {
     localStorage.removeItem("token")
     localStorage.removeItem("token-init-date")
-    dispatch(onLogout('no-token'))
+    // dispatch(onLogout('no-token'))
+  }
+
+  const manageError = (responseError: unknown) => {
+    if (axios.isAxiosError(responseError) && responseError.response && responseError.response.data) {
+      const { errors, msg } = responseError.response.data
+      let errorMessage = ''
+      // console.log(errors, error);
+
+      if (errors) {
+        errorMessage = errors[0].msg
+      } else if (msg) {
+        errorMessage = msg
+      } else {
+        errorMessage = 'An unexpected axios error occurred.'
+      }
+      dispatch(onLogout(errorMessage))
+    } else {
+      dispatch(onLogout('An unexpected error occurred.'))
+    }
+    setTimeout(() => {
+      dispatch(clearErrorMessage())
+    }, 10000)
   }
 
   return {

@@ -1,4 +1,3 @@
-// import "./LoginPage.css"; <- Mismos estilos de Login Page
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -9,17 +8,12 @@ import {
   EyeOffIcon,
 } from "../../components/icons/Icons.tsx";
 import { AuthLayout } from "../../layout/AuthLayout.tsx";
-import { useForm } from "../../hooks/useForm.tsx";
 
+import { useForm } from "../../hooks/useForm.ts";
 import { useAuthActions } from "../../../store/hooks/useAuthActions.ts";
+import { registerFormFields } from "../../../helpers/getRegisterFormValidations.ts";
 
-const registerFormFields = {
-  registerName: "",
-  registerSurname: "",
-  registerEmail: "",
-  registerPassword: "",
-  // registerPasswordRepeate: "",
-}
+// import "./LoginPage.css"; // <- Same styles that Login Page
 
 interface RegisterPageProps {
   transitionClass: string;
@@ -27,8 +21,14 @@ interface RegisterPageProps {
 }
 
 export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPageProps) => {
+  const {
+    name,
+    surname,
+    email,
+    password,
+    onInputChange
+  } = useForm(registerFormFields)
   const [showPassword, setShowPassword] = useState(false)
-  const { registerName, registerSurname, registerEmail, registerPassword, onInputChange: onRegisterInputChange } = useForm(registerFormFields)
   const { startRegister } = useAuthActions()
 
   const handleClick = () => {
@@ -37,8 +37,12 @@ export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPage
 
   const handleRegisterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log("Register: ", registerName, registerSurname, registerEmail, registerPassword)
-    startRegister({ name: registerName, email: registerEmail, password: registerPassword })
+    startRegister({
+      name,
+      surname,
+      email,
+      password
+    })
   }
 
   return (
@@ -60,9 +64,9 @@ export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPage
                     placeholder=""
                     autoComplete="name"
                     required
-                    name="registerName"
-                    value={registerName}
-                    onChange={onRegisterInputChange}
+                    name="name"
+                    value={name}
+                    onChange={onInputChange}
                   />
                   <label htmlFor="name" className="login__label">
                     Name
@@ -78,9 +82,9 @@ export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPage
                     placeholder=""
                     autoComplete="name"
                     required
-                    name="registerSurname"
-                    value={registerSurname}
-                    onChange={onRegisterInputChange}
+                    name="surname"
+                    value={surname}
+                    onChange={onInputChange}
                   />
                   <label htmlFor="surname" className="login__label">
                     Surname
@@ -97,9 +101,9 @@ export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPage
                   placeholder=""
                   autoComplete="email"
                   required
-                  name="registerEmail"
-                  value={registerEmail}
-                  onChange={onRegisterInputChange}
+                  name="email"
+                  value={email}
+                  onChange={onInputChange}
                 />
                 <label htmlFor="emailCreate" className="login__label">
                   Email
@@ -115,9 +119,9 @@ export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPage
                   placeholder=""
                   autoComplete="new-password"
                   required
-                  name="registerPassword"
-                  value={registerPassword}
-                  onChange={onRegisterInputChange}
+                  name="password"
+                  value={password}
+                  onChange={onInputChange}
                 />
                 <label htmlFor="passwordCreate" className="login__label">
                   Password
@@ -137,7 +141,7 @@ export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPage
           <p className="login__switch">
             Already have an account?&nbsp;
             <Link id="loginButtonAccess" to="/auth/login">
-              Log in
+              Log in.
             </Link>
           </p>
         </div>

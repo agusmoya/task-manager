@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import dayjs, { Dayjs } from 'dayjs';
 
 import './Clock.css';
@@ -8,15 +9,15 @@ interface Props {
 }
 
 export const Clock = ({ today }: Props) => {
-  const [currentTime, setCurrentTime] = useState(today.format('hh:mm:ss A'));
+  const [currentTime, setCurrentTime] = useState(today.format('hh:mm:ss A'))
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTime(dayjs().format('hh:mm:ss A'));
-    }, 1000); // Actualiza cada segundo
+      setCurrentTime(dayjs().format('hh:mm:ss A'))
+    }, 1000) // Actualiza cada segundo
 
-    return () => clearInterval(interval); // Limpia el intervalo al desmontar
-  }, []);
+    return () => clearInterval(interval) // Limpia el intervalo al desmontar
+  }, [])
 
   return (
     <>
@@ -26,5 +27,5 @@ export const Clock = ({ today }: Props) => {
       <hr className="separator" />
     </>
 
-  );
-};
+  )
+}

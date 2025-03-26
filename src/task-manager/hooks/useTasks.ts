@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from "react"
 
-import { type Task } from "../../types/types"
-import { getTasks } from "../services/tasks"
+import { type Task } from "../../types/types.d"
+
+import { getTasks } from "../services/tasks.ts"
 
 export const useTasks = () => {
-  const [tasks, setTasks] = useState<Task[] | undefined>([])
+  const [tasks, setTasks] = useState<Task[]>([])
   const [error, setError] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState(false)
 
@@ -13,7 +14,8 @@ export const useTasks = () => {
       setLoading(true)
       setError(undefined)
       const tasks = await getTasks()
-      setTasks(tasks!)
+      if (!tasks) throw new Error('Failed to fetch tasks')
+      setTasks(tasks)
     } catch (error) {
       console.error('Error fetching tasks', error)
       setError(`'Error fetching tasks ::[ ${JSON.stringify(error)}]::`)
@@ -26,7 +28,8 @@ export const useTasks = () => {
 
   useEffect(() => {
     taskList()
-  }, [taskList])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return { tasks, loading, error }
 }

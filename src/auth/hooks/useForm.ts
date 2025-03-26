@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 // Tipado de la función de validación y las validaciones en general
 type ValidationFunction<T> = (value: T[keyof T]) => boolean
 
-type FormValidations<T> = {
+export type FormValidations<T> = {
   [K in keyof T]?: [ValidationFunction<T>, string]
 }
 
@@ -18,6 +18,7 @@ export const useForm = <T extends Record<string, unknown>>(
 ) => {
   const [formState, setFormState] = useState<T>(initialForm)
   const [formValidation, setFormValidation] = useState<ValidationState<T>>({} as ValidationState<T>)
+  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
 
   //? Cada vez que cambia el formState, volvemos a crear las validaciones
   useEffect(() => {
@@ -32,15 +33,7 @@ export const useForm = <T extends Record<string, unknown>>(
 
   const isFormValid = useMemo(() => {
     return Object.values(formValidation).every((value) => value === null);
-  }, [formValidation]);
-
-  // const isFormValid = useMemo(() => {
-  //   for (const formValue of Object.keys(formValidation)) {
-  //     if (formValidation[formValue as keyof typeof formValidation] !== null) return false
-  //   }
-
-  //   return true
-  // }, [formValidation])
+  }, [formValidation])
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = event.target
@@ -49,10 +42,16 @@ export const useForm = <T extends Record<string, unknown>>(
         ...prevState,
         [name]: value
       }))
+
+    setTouchedFields((prevState) => ({
+      ...prevState,
+      [name]: true,
+    }))
   }
 
   const onResetForm = () => {
-    setFormState(initialForm);
+    setFormState(initialForm)
+    setTouchedFields({})
   }
 
   // Crea los mensajes de validación según el estado actual del formulario
@@ -75,9 +74,10 @@ export const useForm = <T extends Record<string, unknown>>(
   return {
     ...formState,
     formState,
+    touchedFields,
+    isFormValid,
     onInputChange,
     onResetForm,
     ...formValidation,
-    isFormValid
   }
 }

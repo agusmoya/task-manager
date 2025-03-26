@@ -9,7 +9,7 @@ import './CalendarLayout.css';
 export const CalendarLayout = ({ children }: Props) => {
   return (
     <>
-      <Header userName='Natt' />
+      <Header />
       <main className="main">
         <div className="calendar-container">
           {children}
