@@ -31,6 +31,7 @@
   background-color: var(--color-primary);
   border-radius: 1rem;
   padding: var(--spacing-4);
+  min-height: 175px;
 }
 
 .ongoing__card {

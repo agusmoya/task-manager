@@ -54,3 +54,23 @@ export interface WeekDay {
   date: string;
   isToday: boolean;
 }
+
+export type InputProps = {
+  required?: boolean
+  id: string
+  type: string
+  name: string
+  labelName: string
+  placeholder: string
+  value: string
+  hint?: string
+  error?: string | null
+  disabled?: boolean
+  fieldValid: boolean
+  autoComplete: string
+  touchedFields: Record<string, boolean>
+  toggleShowInputButton?: boolean | null
+  initialStateIcon?: React.ElementType | null
+  finalStateIcon?: React.ElementType | null
+  onChange: React.ChangeEventHandler<HTMLInputElement>
+}

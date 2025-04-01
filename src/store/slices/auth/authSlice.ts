@@ -1,22 +1,23 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { AUTH_STATUS } from '../../../auth/constants/status';
+
+import { AUTH_STATUS } from '../../../auth/constants/status.ts';
 
 
 export interface LoginUserResponse {
-  name: string;
+  firstName: string;
   uid: string;
 }
 
 export interface AuthState {
   status: string;
   user: LoginUserResponse | undefined;
-  errorMessage: string | undefined;
+  backendErrorMessage: string | undefined;
 }
 
 const initialState: AuthState = {
-  status: 'checking',
+  status: AUTH_STATUS.CHECKING,
   user: undefined,
-  errorMessage: undefined,
+  backendErrorMessage: undefined,
 }
 
 export const authSlice = createSlice({
@@ -24,28 +25,24 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     onChecking: (state) => {
-      console.log('CHECKING')
       state.status = AUTH_STATUS.CHECKING
       state.user = undefined
-      state.errorMessage = undefined
+      state.backendErrorMessage = undefined
     },
     onLogin: (state, { payload }: PayloadAction<LoginUserResponse>) => {
-      console.log('LOGIN: ', payload)
       state.status = AUTH_STATUS.AUTHORIZED
       state.user = payload
-      state.errorMessage = undefined
+      state.backendErrorMessage = undefined
     },
     onLogout: (state, { payload }: PayloadAction<string | undefined>) => {
-      console.log('onLogout: ', payload)
       state.status = AUTH_STATUS.UNAUTHORIZED
       state.user = undefined
-      state.errorMessage = payload
+      state.backendErrorMessage = payload
     },
     clearErrorMessage: (state) => {
-      state.errorMessage = undefined
+      state.backendErrorMessage = undefined
     }
   },
-
 })
 
 // Action creators are generated for each case reducer function

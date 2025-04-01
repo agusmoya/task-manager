@@ -1,6 +1,8 @@
 import { Dayjs } from 'dayjs';
-import { PhoneIcon } from '../icons/Icons';
-import './Schedule.css'
+
+import { PhoneIcon } from '../icons/Icons.tsx';
+
+import './Schedule.css';
 
 const userImages = [
   "/images/members/user-2.webp",

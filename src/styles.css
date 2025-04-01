@@ -105,12 +105,10 @@ ol {
 /* =============== REUSABLE CSS CLASSES =============== */
 .flex {
   display: flex;
-  gap: var(--spacing-2);
 }
 
 .grid {
   display: grid;
-  gap: var(--spacing-6);
 }
 
 .section {
@@ -138,10 +136,6 @@ ol {
 
 /* md devices */
 @media screen and (min-width: 576px) {
-  .login__area {
-    width: 500px;
-    margin-inline: auto;
-  }
 }
 
 /* lg devices */
@@ -162,39 +156,35 @@ ol {
     height: calc(var(--header-height) + var(--spacing-4));
   }
 
-  .login__area {
-    width: 550px;
-    margin: initial;
+  svg.auth__blob {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    cursor: default;
   }
 
-  .login__access,
-  .login__register {
-    width: 600px;
+  div.auth__container {
+    width: 475px;
+    margin-inline: var(--spacing-20) auto;
   }
 
-  h1.login__title {
-    margin-bottom: var(--spacing-12);
+  h1.auth__title {
+    margin-bottom: var(--spacing-8);
   }
 
   button.login__button {
     margin-bottom: 3rem;
   }
 
-  .login__group {
+  .register__group {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  svg.login__blob {
-    display: block;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    right: 0;
-    cursor: default;
+    gap: var(--spacing-4);
   }
 
   /* change the position of the image */
-  .login__img {
-    transform: translate(-3rem, 0rem);
+  .auth__img {
+    transform: translate(-2rem, -3rem);
   }
 }

@@ -2,6 +2,6 @@ export const AUTH_STATUS = {
   CHECKING: 'checking',
   AUTHORIZED: 'authorized',
   UNAUTHORIZED: 'unauthorized',
-} as const;
+} as const
 
-export type AuthStatusType = typeof AUTH_STATUS[keyof typeof AUTH_STATUS];
+export type AuthStatusType = typeof AUTH_STATUS[keyof typeof AUTH_STATUS]

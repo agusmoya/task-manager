@@ -1,7 +1,7 @@
 .button-theme {
-  /* position: absolute;
-  top: 1rem;
-  left: 1rem; */
-
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 50%;
+  padding: var(--spacing-2);
   z-index: var(--z-normal);
+  box-shadow: var(--elevation-3);
 }

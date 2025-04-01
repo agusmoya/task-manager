@@ -1,16 +1,27 @@
-import { FormValidations } from "../auth/hooks/useForm"
+import { FormValidations } from "../auth/hooks/useForm.ts"
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export const registerFormFields = {
-  name: "",
-  surname: "",
+  firstName: "",
+  lastName: "",
   email: "",
   password: "",
   // passwordRepeate: "",
 }
 
 export const registerFormValidations: FormValidations<typeof registerFormFields> = {
-  name: [(value) => value.length === 0, "Name is required."],
-  surname: [(value) => value.length >= 6, "Surname is required."],
-  email: [(value) => value.includes("@"), "Email must have a valid format."],
-  password: [(value) => value.length >= 6, "Password should have at least 6 characters"],
+  firstName: [
+    [(value) => value.length === 0, "Name is required."],
+  ],
+  lastName: [
+    [(value) => value.length >= 6, "Last name is required."],
+  ],
+  email: [
+    [(value) => value.trim() === '', "Email can not be empty."],
+    [(value) => !emailRegex.test(value), "Email is not valid."],
+  ],
+  password: [
+    [(value) => value.length < 6, "Password should have at least 6 characters"],
+  ],
 }

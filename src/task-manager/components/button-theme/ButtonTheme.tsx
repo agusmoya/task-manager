@@ -1,32 +1,27 @@
 import { useEffect, useState } from "react";
-import { MoonIcon, SunIcon } from "../icons/Icons";
+
+import { MoonIcon, SunIcon } from "../icons/Icons.tsx";
 
 import "./ButtonTheme.css";
 
 export const ButtonTheme = () => {
-  const lightTheme = "light";
-  const darkTheme = "dark";
+  const lightTheme = "light"
+  const darkTheme = "dark"
 
-  // Estado inicial del tema
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("selected-theme") || lightTheme;
+    return localStorage.getItem("selected-theme") || lightTheme
   });
 
-  // Efecto para aplicar el tema guardado
   useEffect(() => {
-    // Cambiar el atributo data-theme en el body
-    document.body.setAttribute("data-theme", theme);
+    document.body.setAttribute("data-theme", theme)
+    localStorage.setItem("selected-theme", theme)
+  }, [theme])
 
-    // Guardar el tema actual en localStorage
-    localStorage.setItem("selected-theme", theme);
-  }, [theme]);
-
-  // Alternar tema
   const toggleTheme = () => {
     setTheme((prevTheme) =>
       prevTheme === lightTheme ? darkTheme : lightTheme
-    );
-  };
+    )
+  }
 
   return (
     <button
@@ -34,8 +29,7 @@ export const ButtonTheme = () => {
       id="theme-button"
       onClick={toggleTheme}
     >
-      {theme === lightTheme ? 'Dark' : 'Light'} theme&nbsp;
       {theme === lightTheme ? <MoonIcon /> : <SunIcon />}
     </button>
-  );
-};
+  )
+}

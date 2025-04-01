@@ -7,6 +7,7 @@
   z-index: var(--z-fixed);
   box-shadow: var(--elevation-1);
   background-color: var(--color-surface);
+  margin-bottom: 2rem;
 }
 
 .nav {
@@ -14,4 +15,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.nav__logo {
+  padding: var(--spacing-1);
+}
+
+.nav__logo-text {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.nav__logo-img {
+  width: 3rem;
 }

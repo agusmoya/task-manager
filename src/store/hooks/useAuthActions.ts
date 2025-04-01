@@ -5,8 +5,8 @@ import { clearErrorMessage, onChecking, onLogin, onLogout } from "../slices/auth
 import todoApi from "../../api/taskManagerApi.ts"
 
 interface RegisterProps {
-  name: string;
-  surname: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
 }
@@ -17,7 +17,7 @@ interface LoginProps {
 }
 
 export const useAuthActions = () => {
-  const { status, user, errorMessage } = useAppSelector(state => state.auth)
+  const { status, user, backendErrorMessage } = useAppSelector(state => state.auth)
   const dispatch = useAppDispatch()
 
   const startLogin = async ({ email, password }: LoginProps) => {
@@ -25,19 +25,19 @@ export const useAuthActions = () => {
     try {
       const { data } = await todoApi.post("/auth/login", { email, password })
       saveTokenLocalStorage(data.token)
-      const { name, uid } = data
-      dispatch(onLogin({ name, uid }))
+      const { firstName, uid } = data
+      dispatch(onLogin({ firstName, uid }))
     } catch (error) {
       manageError(error)
     }
   }
 
-  const startRegister = async ({ name, surname, email, password }: RegisterProps) => {
+  const startRegister = async ({ firstName, lastName, email, password }: RegisterProps) => {
     dispatch(onChecking())
     try {
-      const { data } = await todoApi.post("/auth/register", { name, surname, email, password })
+      const { data } = await todoApi.post("/auth/register", { firstName, lastName, email, password })
       saveTokenLocalStorage(data.token)
-      dispatch(onLogin({ name, uid: data.uid }))
+      dispatch(onLogin({ firstName: data.firstName, uid: data.uid }))
     } catch (error) {
       manageError(error)
     }
@@ -45,14 +45,12 @@ export const useAuthActions = () => {
 
   const checkAuthToken = async () => {
     const token = localStorage.getItem("token")
-    // if (!token) return dispatch(onLogout('Token not found.'))
     if (!token) return
-
     try {
       const { data } = await todoApi.get("/auth/renew")
       saveTokenLocalStorage(data.token)
-      const { name, uid } = data
-      dispatch(onLogin({ name, uid }))
+      const { firstName, uid } = data
+      dispatch(onLogin({ firstName, uid }))
     } catch (error) {
       dispatch(onLogout(`Token credentials error. Error: ${error}`))
     }
@@ -60,7 +58,6 @@ export const useAuthActions = () => {
 
   const saveTokenLocalStorage = (token: string) => {
     if (!token) return
-    // return dispatch(onLogout('Token not found LS.'))
     localStorage.setItem("token", token)
     localStorage.setItem("token-init-date", new Date().getTime().toString())
   }
@@ -68,20 +65,19 @@ export const useAuthActions = () => {
   const startLogout = () => {
     localStorage.removeItem("token")
     localStorage.removeItem("token-init-date")
-    // dispatch(onLogout('no-token'))
+    dispatch(onLogout())
   }
 
   const manageError = (responseError: unknown) => {
     if (axios.isAxiosError(responseError) && responseError.response && responseError.response.data) {
       const { errors, msg } = responseError.response.data
       let errorMessage = ''
-      // console.log(errors, error);
-
       if (errors) {
         errorMessage = errors[0].msg
       } else if (msg) {
         errorMessage = msg
       } else {
+        console.log(responseError)
         errorMessage = 'An unexpected axios error occurred.'
       }
       dispatch(onLogout(errorMessage))
@@ -97,7 +93,7 @@ export const useAuthActions = () => {
     //* Properties:
     status,
     user,
-    errorMessage,
+    backendErrorMessage,
     //* Methods:
     startLogin,
     startRegister,

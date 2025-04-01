@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -8,12 +7,14 @@ import {
   EyeOffIcon,
 } from "../../components/icons/Icons.tsx";
 import { AuthLayout } from "../../layout/AuthLayout.tsx";
+import { Input } from "../../../component/input/Input.tsx";
 
 import { useForm } from "../../hooks/useForm.ts";
 import { useAuthActions } from "../../../store/hooks/useAuthActions.ts";
-import { registerFormFields } from "../../../helpers/getRegisterFormValidations.ts";
-
-// import "./LoginPage.css"; // <- Same styles that Login Page
+import {
+  registerFormFields,
+  registerFormValidations
+} from "../../../helpers/getRegisterFormValidations.ts";
 
 interface RegisterPageProps {
   transitionClass: string;
@@ -22,130 +23,113 @@ interface RegisterPageProps {
 
 export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPageProps) => {
   const {
-    name,
-    surname,
+    firstName,
+    firstNameValid,
+    lastName,
+    lastNameValid,
     email,
+    emailValid,
     password,
+    passwordValid,
+    touchedFields,
     onInputChange
-  } = useForm(registerFormFields)
-  const [showPassword, setShowPassword] = useState(false)
-  const { startRegister } = useAuthActions()
-
-  const handleClick = () => {
-    setShowPassword((prevState) => !prevState)
-  }
+  } = useForm(registerFormFields, registerFormValidations)
+  const { startRegister, backendErrorMessage } = useAuthActions()
 
   const handleRegisterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     startRegister({
-      name,
-      surname,
+      firstName,
+      lastName,
       email,
       password
     })
   }
 
   return (
-    <AuthLayout>
-      <section className={`login__register ${transitionClass}`} onTransitionEnd={handleTransition}>
-        <div className="login__area">
-          <h1 className="login__title">Create new account.</h1>
-          <form
-            className="login__form"
-            onSubmit={handleRegisterSubmit}
-          >
-            <div className="login__content grid">
-              <div className="login__group grid">
-                <div className="login__box">
-                  <input
-                    id="name"
-                    type="text"
-                    className="login__input"
-                    placeholder=""
-                    autoComplete="name"
-                    required
-                    name="name"
-                    value={name}
-                    onChange={onInputChange}
-                  />
-                  <label htmlFor="name" className="login__label">
-                    Name
-                  </label>
-                  <CardIdIcon className="login__icon" />
-                </div>
+    <AuthLayout title="Create new account." transitionClass={transitionClass} handleTransition={handleTransition}>
+      <form
+        className="register__form"
+        onSubmit={handleRegisterSubmit}
+      >
+        <div className="register__group grid">
+          <Input
+            id="firstName"
+            required
+            type="text"
+            name="firstName"
+            labelName="First name"
+            placeholder=""
+            value={firstName}
+            autoComplete="given-name"
+            error={firstNameValid}
+            fieldValid={!!firstNameValid}
+            touchedFields={touchedFields}
+            finalStateIcon={CardIdIcon}
+            onChange={onInputChange}
+          />
 
-                <div className="login__box">
-                  <input
-                    id="surname"
-                    type="text"
-                    className="login__input"
-                    placeholder=""
-                    autoComplete="name"
-                    required
-                    name="surname"
-                    value={surname}
-                    onChange={onInputChange}
-                  />
-                  <label htmlFor="surname" className="login__label">
-                    Surname
-                  </label>
-                  <CardIdIcon className="login__icon" />
-                </div>
-              </div>
-
-              <div className="login__box">
-                <input
-                  id="emailCreate"
-                  type="email"
-                  className="login__input"
-                  placeholder=""
-                  autoComplete="email"
-                  required
-                  name="email"
-                  value={email}
-                  onChange={onInputChange}
-                />
-                <label htmlFor="emailCreate" className="login__label">
-                  Email
-                </label>
-                <EmailIcon className="login__icon" />
-              </div>
-
-              <div className="login__box">
-                <input
-                  id="passwordCreate"
-                  type={`${showPassword ? 'text' : 'password'}`}
-                  className="login__input"
-                  placeholder=""
-                  autoComplete="new-password"
-                  required
-                  name="password"
-                  value={password}
-                  onChange={onInputChange}
-                />
-                <label htmlFor="passwordCreate" className="login__label">
-                  Password
-                </label>
-                <button type="button" className="login__icon-btn" onClick={handleClick}>
-                  {
-                    showPassword
-                      ? <EyeIcon className="login__icon" id="loginPassword" />
-                      : <EyeOffIcon className="login__icon" id="loginPassword" />
-                  }
-                </button>
-              </div>
-            </div>
-            <button className="login__button">Create account</button>
-          </form>
-
-          <p className="login__switch">
-            Already have an account?&nbsp;
-            <Link id="loginButtonAccess" to="/auth/login">
-              Log in.
-            </Link>
-          </p>
+          <Input
+            id="lastName"
+            required
+            type="text"
+            name="lastName"
+            labelName="Last name"
+            placeholder=""
+            value={lastName}
+            autoComplete="family-name"
+            error={lastNameValid}
+            fieldValid={!!lastNameValid}
+            touchedFields={touchedFields}
+            finalStateIcon={CardIdIcon}
+            onChange={onInputChange}
+          />
         </div>
-      </section>
+
+        <Input
+          id="email"
+          required
+          type="email"
+          name="email"
+          labelName="Email"
+          placeholder=""
+          value={email}
+          autoComplete="off"
+          hint="user@mail.com"
+          error={emailValid}
+          fieldValid={!!emailValid}
+          touchedFields={touchedFields}
+          finalStateIcon={EmailIcon}
+          onChange={onInputChange}
+        />
+
+        <Input
+          id="password"
+          required
+          type="password"
+          name="password"
+          labelName="Password"
+          placeholder=""
+          value={password}
+          autoComplete="new-password"
+          error={passwordValid}
+          fieldValid={!!passwordValid}
+          touchedFields={touchedFields}
+          toggleShowInputButton
+          initialStateIcon={EyeIcon}
+          finalStateIcon={EyeOffIcon}
+          onChange={onInputChange}
+        />
+        {backendErrorMessage && <p className="response__error">{backendErrorMessage}</p>}
+        <button className="login__button">Create account</button>
+      </form>
+
+      <p className="login__switch">
+        Already have an account?&nbsp;
+        <Link id="loginButtonAccess" to="/auth/login">
+          Log in.
+        </Link>
+      </p>
     </AuthLayout>
   )
 }

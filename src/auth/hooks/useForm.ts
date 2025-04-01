@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 type ValidationFunction<T> = (value: T[keyof T]) => boolean
 
 export type FormValidations<T> = {
-  [K in keyof T]?: [ValidationFunction<T>, string]
+  [K in keyof T]?: Array<[ValidationFunction<T>, string]>
 }
 
 // Estado de validaciones: Cada campo se transforma en campoValid que puede ser string o null
@@ -18,7 +18,7 @@ export const useForm = <T extends Record<string, unknown>>(
 ) => {
   const [formState, setFormState] = useState<T>(initialForm)
   const [formValidation, setFormValidation] = useState<ValidationState<T>>({} as ValidationState<T>)
-  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
+  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({})
 
   //? Cada vez que cambia el formState, volvemos a crear las validaciones
   useEffect(() => {
@@ -32,10 +32,12 @@ export const useForm = <T extends Record<string, unknown>>(
   }, [initialForm])
 
   const isFormValid = useMemo(() => {
-    return Object.values(formValidation).every((value) => value === null);
+    return Object.values(formValidation).every((value) => value === null)
   }, [formValidation])
 
-  const onInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const onInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = event.target
     setFormState(
       (prevState) => ({
@@ -60,15 +62,16 @@ export const useForm = <T extends Record<string, unknown>>(
     const formCheckedValues: Record<string, string | null> = {}
 
     for (const formField of Object.keys(formValidations) as Array<keyof T>) {
-      const [fn, errorMessage] = formValidations[formField]!
+      const validations = formValidations[formField]!
       const fieldValue = formState[formField]
       // ✅ Esto fuerza el nombre del campo a la key del ValidationState<T>
       const validationKey = `${String(formField)}Valid` as keyof ValidationState<T>
       // ✅ Ahora asignamos null o string (según lo que diga ValidationState<T>)
-      formCheckedValues[validationKey] = fn(fieldValue) ? null : errorMessage
+      const firstError = validations.find(([fn]) => fn(fieldValue));
+      formCheckedValues[validationKey] = firstError ? firstError[1] : null;
     }
 
-    setFormValidation(formCheckedValues as ValidationState<T>);
+    setFormValidation(formCheckedValues as ValidationState<T>)
   }
 
   return {

@@ -1,6 +1,7 @@
 .search__container {
   justify-content: center;
   align-items: center;
+  gap: var(--spacing-5);
 }
 
 .search__form {

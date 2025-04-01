@@ -18,6 +18,7 @@
   --font-weight-normal: 400;
 
   /* ========== SPACING ========== */
+  --spacing-20: 19rem;
   --spacing-13: 5rem;
   --spacing-12: 3rem;
   --spacing-11: 2.75rem;
@@ -37,6 +38,7 @@
   --z-fixed: 100;
   --z-tooltip: 10;
   --z-normal: 1;
+  --z-deep: -1;
 
   --color-scrim: hsla(0, 0%, 0%, 0.75);
 

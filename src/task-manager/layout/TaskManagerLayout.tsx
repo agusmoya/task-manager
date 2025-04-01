@@ -3,7 +3,7 @@ import { Header } from "../components/header/Header";
 import { useTasks } from "../hooks/useTasks";
 
 type Props = {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export const TaskManagerLayout = ({ children }: Props) => {
@@ -12,10 +12,10 @@ export const TaskManagerLayout = ({ children }: Props) => {
 
   return (
     <>
-      <div className="task-manager-app">
-        <Header pendingTasks={pendingTasks} />
-        <main className="main">{children}</main>
-      </div>
+      <Header pendingTasks={pendingTasks} />
+      <main className="main">
+        {children}
+      </main>
     </>
-  );
-};
+  )
+}
