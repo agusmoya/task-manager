@@ -1,4 +1,4 @@
-import { AuthBlob } from '../components/icons/auth-blob/AuthBlob.tsx';
+import { AuthBlob } from '../components/auth-blob/AuthBlob.tsx';
 import { Header } from '../../task-manager/components/header/Header.tsx'
 
 

@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
 
-import { PhoneIcon } from '../icons/Icons.tsx';
+import { PhoneIcon } from '../../../component/icons/Icons.tsx';
 
 import './Schedule.css';
 

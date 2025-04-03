@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
+import { DeleteIcon, EditIcon } from '../../../component/icons/Icons.tsx';
+
 import { useCalendarActions } from '../../../store/hooks/useCalendarActions.ts';
 import { useEventModalActions } from '../../../store/hooks/useEventModalActions.ts';
 import { MONTHS } from '../../constants/constants.ts';
 import { isSameDay } from '../../utils/isSameDay.ts';
-
-import { DeleteIcon, EditIcon } from '../../icons/Icons.tsx';
 
 import { type CalendarEvent } from '../../types/calendar-event.d';
 

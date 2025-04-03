@@ -1,0 +1,16 @@
+.scrollable-container {
+  position: relative;
+}
+
+.scrollable-container__list {
+  display: flex;
+  /* min-height: 200px; */
+  gap: var(--spacing-2);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.scrollable-container__list::-webkit-scrollbar {
+  display: none;
+}

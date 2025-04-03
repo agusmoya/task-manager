@@ -1,7 +1,9 @@
+import { ControlIcon, SearchIcon } from "../../../component/icons/Icons.tsx";
+
+import { useSearch } from "../../hooks/useSearch.ts";
+
 import "./Search.css";
 
-import { useSearch } from "../../hooks/useSearch";
-import { ControlIcon, SearchIcon } from "../icons/Icons";
 
 export const Search: React.FC = () => {
   const { search, updateSearch } = useSearch();

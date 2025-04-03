@@ -33,6 +33,10 @@ image {
   pointer-events: painted;
 }
 
+svg {
+  pointer-events: none;
+}
+
 img,
 picture,
 svg,

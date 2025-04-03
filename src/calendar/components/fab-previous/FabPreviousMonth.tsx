@@ -1,4 +1,4 @@
-import { PreviousIcon } from "../../icons/Icons.tsx";
+import { PreviousIcon } from '../../../component/icons/Icons.tsx';
 
 import './FabPreviousMonth.css';
 

@@ -1,8 +1,8 @@
-import { DatePill } from '../date-pill/DatePill';
+import { DatePill } from '../date-pill/DatePill.tsx';
 
+import { type WeekDay } from '../../../types/types.d';
 
 import './DatePills.css'
-import { WeekDay } from '../../../types/types';
 
 interface Props {
   weekDays: WeekDay[];
@@ -19,5 +19,5 @@ export const DatePills = ({ weekDays }: Props) => {
         )
       }
     </section>
-  );
+  )
 }

@@ -4,10 +4,10 @@ import { AuthLayout } from "../../layout/AuthLayout.tsx";
 import { Input } from '../../../component/input/Input.tsx';
 import {
   EmailIcon,
-  EyeOffIcon,
   EyeIcon,
-  GoogleIcon,
-} from "../../components/icons/Icons.tsx";
+  EyeOffIcon,
+  GoogleIcon
+} from "../../../component/icons/Icons.tsx";
 
 import {
   loginFormFields,

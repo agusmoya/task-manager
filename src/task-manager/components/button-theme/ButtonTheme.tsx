@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { MoonIcon, SunIcon } from "../icons/Icons.tsx";
+import { MoonIcon, SunIcon } from "../../../component/icons/Icons.tsx";
 
 import "./ButtonTheme.css";
 

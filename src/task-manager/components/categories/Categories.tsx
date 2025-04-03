@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { PlusIcon } from "../../../component/icons/Icons.tsx";
+import { ScrollableContainer } from "../scrollable-container/ScrollableContainer.tsx";
 
 import { type Category, type CountingCategories } from "../../../types/types.d";
 
@@ -18,21 +19,20 @@ export function Categories({ categories = [] }: Props) {
   const organizedCategories: { [key: string]: CountingCategories } = {}
 
   categories.forEach((cat) => {
-    const { name } = cat;
+    const { name } = cat
     if (!organizedCategories[name]) {
       organizedCategories[name] = {
         ...cat,
         quantity: 1,
-      };
+      }
     } else {
       organizedCategories[name].quantity++
     }
   })
 
-  const filteredCategories = Object.values(organizedCategories)
-    .filter(
-      ({ name }) => name.toLowerCase().includes(search.toLowerCase())
-    )
+  const filteredCategories = Object.values(organizedCategories).filter(
+    ({ name }) => name.toLowerCase().includes(search.toLowerCase())
+  )
 
   const areCategoriesPresent = filteredCategories.length
 
@@ -43,29 +43,27 @@ export function Categories({ categories = [] }: Props) {
           <h2 className="section__title">Categories</h2>
           <a>See all</a>
         </header>
-        <ul
+        <ScrollableContainer
+          itemClass="category__item"
           className={[
             'categories__list',
             !areCategoriesPresent && 'categories__list--no-result'
           ].filter(Boolean).join(' ')}
         >
+          <li
+            key="newCategory"
+            className="category__item category__item--new-category"
+          >
+            <h3>New Category</h3>
+            <section className="category__card">
+              <Link to='/new-category'>
+                <PlusIcon className="category__card-new-icon" />
+              </Link>
+            </section>
+          </li>
           {
-            <li
-              key="newCategory"
-              className="category__item category__item--new-category"
-            >
-              <h3>New Category</h3>
-              <section className="category__card">
-                <Link to='/new-category'>
-                  <PlusIcon className="category__card-new-icon" />
-                </Link>
-              </section>
-            </li>
-          }
-          {
-            filteredCategories.length > 0
-              ?
-              filteredCategories.map(
+            (filteredCategories.length > 0)
+              ? filteredCategories.map(
                 ({ id, name, quantity }) => (
                   <li className="category__item" key={id}>
                     <section className="category__card">
@@ -76,7 +74,8 @@ export function Categories({ categories = [] }: Props) {
                 ))
               : <span>No categories found...</span>
           }
-        </ul>
+
+        </ScrollableContainer>
       </div>
     </section>
   )

@@ -1,11 +1,6 @@
 import { Link } from "react-router-dom";
 
-import {
-  CardIdIcon,
-  EmailIcon,
-  EyeIcon,
-  EyeOffIcon,
-} from "../../components/icons/Icons.tsx";
+import { CardIdIcon, EmailIcon, EyeIcon, EyeOffIcon } from "../../../component/icons/Icons.tsx";
 import { AuthLayout } from "../../layout/AuthLayout.tsx";
 import { Input } from "../../../component/input/Input.tsx";
 

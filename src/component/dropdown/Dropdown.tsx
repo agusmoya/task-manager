@@ -65,7 +65,7 @@ export const Dropdown = ({
         aria-expanded={isOpen}
       >
         <div className="nav__user-info">
-          <h1>Hi {user?.name}</h1>
+          <h1>Hi {user?.firstName}</h1>
           <small>5 pending tasks</small>
         </div>
         {image && <img className="dropdown__img" src={image} alt={altText} />}

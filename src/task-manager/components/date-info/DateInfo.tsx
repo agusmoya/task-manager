@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { type Dayjs } from "dayjs";
 
 import { Clock } from "../clock/Clock.tsx";
-import { CalendarIcon } from "../icons/Icons.tsx";
+import { CalendarIcon } from "../../../component/icons/Icons.tsx";
 
 import './DateInfo.css';
 

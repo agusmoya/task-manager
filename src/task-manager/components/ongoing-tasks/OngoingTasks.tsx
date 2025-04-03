@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+import { ExternalLinkIcon } from '../../../component/icons/Icons.tsx';
 import { PlusIcon } from "../../../component/icons/Icons.tsx";
 
 import { type Tasks } from "../../../types/types.d";
@@ -8,9 +9,11 @@ import { useSearch } from "../../hooks/useSearch.ts";
 
 
 import "./OngoingTasks.css";
+import { ScrollableContainer } from "../scrollable-container/ScrollableContainer.tsx";
+import { CircularProgress } from "../circular-progress/CircularProgress.tsx";
 
 interface Props {
-  tasks: Tasks;
+  tasks: Tasks
 }
 
 export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
@@ -24,16 +27,16 @@ export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
     <section className="ongoing section" id="ongoing-tasks">
       <div className="ongoing__container container">
         <header className="ongoing__header">
-          <h2>Ongoing Tasks</h2>
-          <a>See all</a>
+          <h2 className="ongoing__title">Ongoing Tasks</h2>
+          <a className="ongoing__see-all">See all</a>
         </header>
-        <ul
-          className={
-            `ongoing__list ${!areOngoingTasks
-              ? "ongoing__list--no-result"
-              : ""
-            }`
-          }
+
+        <ScrollableContainer
+          itemClass="ongoing__item"
+          className={[
+            'ongoing__list',
+            !areOngoingTasks && 'ongoing__list--no-result',
+          ].filter(Boolean).join(' ')}
         >
           {
             <li
@@ -55,7 +58,9 @@ export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
                 <li className="ongoing__item" key={task.id}>
                   <section className="ongoing__card">
                     <Link to={`/task-day/${task.id}`}>
-                      <h3>{task.title}</h3>
+                      <h3 className="ongoing__title">
+                        {task.title}&nbsp;<ExternalLinkIcon size={18} />
+                      </h3>
                     </Link>
                     <small className="ongoing__duration">
                       {task.duration}&nbsp;d
@@ -65,16 +70,20 @@ export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
                     <small className="ongoing__schedule">
                       14:30 hs a 17:00 hs
                     </small>
-                    <span className="ongoing__progress">
+                    {/* <span className="ongoing__progress">
                       {task.progress}%
-                    </span>
+                    </span> */}
+                    <CircularProgress
+                      progress={task.progress}
+                    />
                   </section>
                 </li>
               ))
               :
               <li>No tasks found...</li>
           }
-        </ul>
+        </ScrollableContainer>
+
       </div>
     </section>
   )
