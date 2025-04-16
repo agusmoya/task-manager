@@ -1,21 +1,21 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
-import { type CalendarEvent } from '../../../calendar/types/calendar-event';
-import { type CalendarDay } from '../../../calendar/types/calendar-day';
+import { type CalendarDay } from '../../../types/calendar-day.d'
+import { type CalendarEvent } from '../../../types/calendar-event.d'
 
-import { WEEKDAYS, TODAY } from '../../../calendar/constants/constants.ts';
-import { getPreviousDaysMonth } from '../../../calendar/utils/getPrevDaysMonth.ts';
-import { getNextDaysMonth } from '../../../calendar/utils/getNextDaysMonth.ts';
-import { getCurrentDaysMonth } from '../../../calendar/utils/getCurrentDaysMonth.ts';
+import { WEEKDAYS, TODAY } from '../../../calendar/constants/constants.ts'
+import { getPreviousDaysMonth } from '../../../calendar/utils/getPrevDaysMonth.ts'
+import { getNextDaysMonth } from '../../../calendar/utils/getNextDaysMonth.ts'
+import { getCurrentDaysMonth } from '../../../calendar/utils/getCurrentDaysMonth.ts'
 
 export interface CalendarDaysState {
-  today: Date;
-  weekDays: string[];
-  month: number;
-  year: number,
-  calendarDays: CalendarDay[];
-  activeCalendarDay: CalendarDay | null;
-  activeCalendarEvent: CalendarEvent | null;
+  today: Date
+  weekDays: string[]
+  month: number
+  year: number
+  calendarDays: CalendarDay[]
+  activeCalendarDay: CalendarDay | undefined
+  activeCalendarEvent: CalendarEvent | undefined
 }
 
 const initialState: CalendarDaysState = {
@@ -24,8 +24,8 @@ const initialState: CalendarDaysState = {
   month: TODAY.getMonth(),
   year: TODAY.getFullYear(),
   calendarDays: [],
-  activeCalendarDay: null,
-  activeCalendarEvent: null,
+  activeCalendarDay: undefined,
+  activeCalendarEvent: undefined,
 }
 
 export const calendarDaysSlice = createSlice({
@@ -70,7 +70,7 @@ export const calendarDaysSlice = createSlice({
         state.month -= 1
       }
     },
-    onSetActiveCalendarDay: (state, { payload }: PayloadAction<CalendarDay>) => {
+    onSetActiveCalendarDay: (state, { payload }: PayloadAction<CalendarDay | undefined>) => {
       state.activeCalendarDay = payload
     },
   },

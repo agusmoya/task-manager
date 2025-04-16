@@ -1,7 +1,7 @@
+import { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 
-import { useEffect, useState } from "react"
-
+// Related to: transition-page.css
 export const useTransitionPage = () => {
   const location = useLocation()
   const [displayLocation, setDisplayLocation] = useState(location)

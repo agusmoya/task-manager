@@ -1,20 +1,37 @@
-import { Header } from '../../task-manager/components/header/Header';
+import { Navigate, Route, Routes } from 'react-router-dom'
 
-type Props = {
-  children: React.ReactNode;
-};
+import { Breadcrumb } from '../../components/breadcrumb/Breadcrumb.tsx'
+import { Header } from '../../task-manager/components/header/Header.tsx'
 
-import './CalendarLayout.css';
+import { CalendarPage } from '../../router/lazy-pages.ts'
+import { useTransitionPage } from '../../hooks/useTransitionPage.ts'
 
-export const CalendarLayout = ({ children }: Props) => {
+import './CalendarLayout.css'
+
+
+export const CalendarLayout = () => {
+  const {
+    displayLocation,
+    transitionPage,
+    handleTransitionEnd
+  } = useTransitionPage()
+
   return (
     <>
       <Header />
       <main className="main">
-        <div className="calendar-container">
-          {children}
-        </div>
+        <Breadcrumb />
+        <section
+          className={`calendar section ${transitionPage}`}
+          onAnimationEnd={handleTransitionEnd}
+        >
+          {/* <Outlet /> */}
+          <Routes location={displayLocation}>
+            <Route index element={<CalendarPage />} />
+            <Route path="*" element={<Navigate to="" replace />} />
+          </Routes>
+        </section>
       </main>
     </>
-  );
+  )
 }

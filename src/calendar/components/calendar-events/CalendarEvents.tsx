@@ -1,15 +1,19 @@
-import { useMemo } from 'react';
+import { useMemo } from 'react'
 
-import { DeleteIcon, EditIcon } from '../../../component/icons/Icons.tsx';
+import { DeleteIcon, EditIcon } from '../../../components/icons/Icons.tsx'
 
-import { useCalendarActions } from '../../../store/hooks/useCalendarActions.ts';
-import { useEventModalActions } from '../../../store/hooks/useEventModalActions.ts';
-import { MONTHS } from '../../constants/constants.ts';
-import { isSameDay } from '../../utils/isSameDay.ts';
+import { type CalendarEvent } from '../../../types/calendar-event.d'
 
-import { type CalendarEvent } from '../../types/calendar-event.d';
+import { MONTHS } from '../../constants/constants.ts'
 
-import './CalendarEvents.css';
+import { useCalendarActions } from '../../../store/hooks/useCalendarActions.ts'
+import { useEventModalActions } from '../../../store/hooks/useEventModalActions.ts'
+import { isSameDay } from '../../utils/validateManagmentDate.ts'
+import { fromDateToDatetimeLocal } from '../../../helpers/form-validations/getEventFormValidations.ts'
+
+
+import './CalendarEvents.css'
+
 
 export const CalendarEvents = () => {
   const { openModal } = useEventModalActions()
@@ -30,8 +34,8 @@ export const CalendarEvents = () => {
     [events, activeCalendarDay]
   )
 
-  const { dayNumber, dayName } = activeCalendarDay || {}
-  const eventDate = `${dayNumber} ${MONTHS[month]} ${year}`
+  const { day, dayName } = activeCalendarDay || {}
+  const eventDate = `${day} ${MONTHS[month]} ${year}`
 
   const handleClickDeleteEvent = (event: CalendarEvent) => {
     startDeletingEvent(event)
@@ -43,23 +47,29 @@ export const CalendarEvents = () => {
   }
 
   const formatEventTime = (event: CalendarEvent): string => {
-    const { start, end } = event
-    const startMinutes = start.getMinutes() < 10 ? `${'0' + start.getMinutes()}` : start.getMinutes()
-    const endMinutes = end.getMinutes() < 10 ? `${'0' + end.getMinutes()}` : end.getMinutes()
-    return `${start.getHours()}:${startMinutes} hs - ${end.getHours()}:${endMinutes} hs`
+    const { startDate, endDate } = event
+    const safeStartDate = fromDateToDatetimeLocal(startDate)
+    const safeEndDate = fromDateToDatetimeLocal(endDate)
+    const newStartDate = new Date(safeStartDate)
+    const newEndDate = new Date(safeEndDate)
+
+    const startMinutes = newStartDate.getMinutes().toString().padStart(2, '0')
+    const endMinutes = newEndDate.getMinutes().toString().padStart(2, '0')
+
+    return `${newStartDate.getHours()}:${startMinutes} hs - ${newEndDate.getHours()}:${endMinutes} hs`
   }
 
   return (
-    <section className="calendar-events">
+    <aside className="calendar-events">
       {
         (activeCalendarDay)
           ?
           <>
-            <div className="calendar-events__info">
+            <header className="calendar-events__info">
               <span className="calendar-events__day">{dayName}</span>
               <span className="calendar-events__date">{eventDate}</span>
-            </div>
-            <div className="calendar-events__events">
+            </header>
+            <section className="calendar-events__list">
               {
                 (eventsForActiveDay && eventsForActiveDay.length > 0)
                   ?
@@ -95,13 +105,13 @@ export const CalendarEvents = () => {
                     No events
                   </span>
               }
-            </div>
+            </section>
           </>
           :
           <span className="calendar-events__no-day-selected">
             No day selected
           </span>
       }
-    </section>
+    </aside>
   )
 }

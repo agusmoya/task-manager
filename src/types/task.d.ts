@@ -1,0 +1,44 @@
+import { TODO_FILTERS } from "../task-manager/consts/consts"
+
+export const TASK_STATUS = {
+  PENDING: "pending",
+  ACTIVE: "active",
+  COMPLETED: "completed",
+} as const
+
+export interface Task {
+  id: string
+  title: string
+  status: (typeof TODO_FILTERS)[keyof typeof TODO_FILTERS]
+  progress: number
+  duration: number
+  category: Category
+  creationDate: Date
+  userId: string
+}
+
+export interface TasksResponse {
+  Tasks: Task[]
+}
+
+export type TaskId = Pick<Task, "id">
+export type TaskTitle = Pick<Task, "title">
+
+export type Tasks = Task[]
+
+export interface FetchState {
+  data: undefined | null
+  error: ErrorFetch | null
+  isLoading: boolean
+  hasError: boolean
+}
+
+export interface ErrorFetch {
+  status: number
+  statusText: string
+}
+
+export interface WeekDay {
+  date: string
+  isToday: boolean
+}

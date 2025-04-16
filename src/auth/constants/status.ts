@@ -1,7 +1,7 @@
 export const AUTH_STATUS = {
   CHECKING: 'checking',
-  AUTHORIZED: 'authorized',
-  UNAUTHORIZED: 'unauthorized',
+  AUTHENTICATED: 'authenticated',
+  NOT_AUTHENTICATED: 'not-authenticated',
 } as const
 
 export type AuthStatusType = typeof AUTH_STATUS[keyof typeof AUTH_STATUS]

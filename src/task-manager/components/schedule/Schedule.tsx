@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
 
-import { PhoneIcon } from '../../../component/icons/Icons.tsx';
+import { PhoneIcon } from '../../../components/icons/Icons.tsx';
 
 import './Schedule.css';
 
@@ -20,7 +20,7 @@ export const Schedule = ({ today }: Props) => {
 
 
   return (
-    <section className="calendar section container">
+    <section className="schedule section container">
       <aside className="calendar__schedule">
         <small>{currentHour}:00 AM</small>
         <small>09:00 AM</small>

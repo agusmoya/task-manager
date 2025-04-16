@@ -1,0 +1,6 @@
+.fab-month {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  padding: var(--spacing-1);
+}

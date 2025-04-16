@@ -1,4 +1,4 @@
-import { ControlIcon, SearchIcon } from "../../../component/icons/Icons.tsx";
+import { ControlIcon, SearchIcon } from "../../../components/icons/Icons.tsx";
 
 import { useSearch } from "../../hooks/useSearch.ts";
 
@@ -6,19 +6,19 @@ import "./Search.css";
 
 
 export const Search: React.FC = () => {
-  const { search, updateSearch } = useSearch();
+  const { search, updateSearch } = useSearch()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-    event.preventDefault();
-  };
+    event.preventDefault()
+  }
 
-  const startWithBlanks = (text: string): boolean => text.startsWith(" ");
+  const startWithBlanks = (text: string): boolean => text.startsWith(" ")
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newQuery = event.target.value;
-    if (startWithBlanks(newQuery)) return;
-    updateSearch(newQuery);
-  };
+    const newQuery = event.target.value
+    if (startWithBlanks(newQuery)) return
+    updateSearch(newQuery)
+  }
 
   return (
     <section className="search section">
@@ -40,5 +40,5 @@ export const Search: React.FC = () => {
         </button>
       </div>
     </section>
-  );
-};
+  )
+}

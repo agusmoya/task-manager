@@ -1,4 +1,4 @@
-import { type TasksResponse, type Tasks } from '../../types/types';
+import { type TasksResponse, type Tasks } from '../../types/task';
 
 export const getTasks = async (): Promise<Tasks | null> => {
   try {

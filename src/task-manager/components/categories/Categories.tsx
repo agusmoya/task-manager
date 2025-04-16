@@ -1,13 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
-import { PlusIcon } from "../../../component/icons/Icons.tsx";
-import { ScrollableContainer } from "../scrollable-container/ScrollableContainer.tsx";
+import { PlusIcon } from "../../../components/icons/Icons.tsx"
+import { ScrollableContainer } from "../scrollable-container/ScrollableContainer.tsx"
 
-import { type Category, type CountingCategories } from "../../../types/types.d";
+import { type Category, type CountingCategories } from "../../../types/category.d"
 
-import { useSearch } from "../../hooks/useSearch.ts";
+import { useSearch } from "../../hooks/useSearch.ts"
 
-import "./Categories.css";
+
+import "./Categories.css"
 
 interface Props {
   categories: Category[];

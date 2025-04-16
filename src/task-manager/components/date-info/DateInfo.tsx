@@ -1,15 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
-import { type Dayjs } from "dayjs";
+import { type Dayjs } from "dayjs"
 
-import { Clock } from "../clock/Clock.tsx";
-import { CalendarIcon } from "../../../component/icons/Icons.tsx";
+import { Clock } from "../clock/Clock.tsx"
+import { CalendarIcon } from "../../../components/icons/Icons.tsx"
 
-import './DateInfo.css';
+import './DateInfo.css'
 
 interface Props {
-  taskId: string;
-  today: Dayjs;
+  taskId: string
+  today: Dayjs
 }
 
 export const DateInfo = ({ taskId, today }: Props) => {

@@ -1,14 +1,13 @@
 .calendar-events {
-  width: 40%;
-  min-height: 100%;
+  margin-block: var(--spacing-3) 0;
+  flex: 1 1 50%;
 }
 
 .calendar-events__info {
-  background: linear-gradient(90deg, #896161, transparent);
+  color: var(--color-on-surface-variant);
+  background: var(--color-surface-variant);
   height: 50px;
-  gap: var(--spacing-3);
   padding-inline: var(--spacing-10);
-  margin-block: var(--spacing-5);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -24,11 +23,7 @@
   font-weight: var(--font-weight-normal);
 }
 
-.calendar-events__events {
-  width: 100%;
-  height: 100%;
-  max-height: 600px;
-  overflow-x: hidden;
+.calendar-events__list {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -36,13 +31,19 @@
 
 .calendar-events__item {
   min-height: 70px;
-  background: linear-gradient(90deg, #3f4458, transparent);
+  color: var(--color-on-secondary-container);
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-primary-container) 50%,
+    transparent
+  );
   display: flex;
   align-items: center;
   justify-content: space-evenly;
 }
 
-.calendar-events__item:nth-child(even) {
+.calendar-events__item:nth-child(odd) {
   background: transparent;
 }
 
@@ -103,4 +104,5 @@
   font-weight: var(--font-weight-medium);
   display: grid;
   place-content: center;
+  padding-block: var(--spacing-4);
 }

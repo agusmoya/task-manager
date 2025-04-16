@@ -1,15 +1,15 @@
 import dayjs, { Dayjs } from 'dayjs';
 
-import { WeekDay } from '../../types/types';
+import { WeekDay } from '../../types/task';
 import { useEffect, useMemo, useState } from 'react';
 
 interface Props {
-  currentWeek: WeekDay[];
-  today: Dayjs;
+  currentWeek: WeekDay[]
+  today: Dayjs
 }
 
 export const useCurrentWeek = (): Props => {
-  const [today, setToday] = useState<Dayjs>(dayjs());
+  const [today, setToday] = useState<Dayjs>(dayjs())
 
   // ⏰ Update 'today' to change the day (+ 1000 ms)
   useEffect(() => {
@@ -27,19 +27,19 @@ export const useCurrentWeek = (): Props => {
   // 📅 Generate days of the current week
   const currentWeek = useMemo(() => {
     // By default, starts in sunday, but +1, starts in monday
-    const startOfWeek = today.startOf('week').add(1, 'day');
+    const startOfWeek = today.startOf('week').add(1, 'day')
 
     return Array.from({ length: 7 },
       (_, i) => {
-        const currentDay = startOfWeek.add(i, 'day');
+        const currentDay = startOfWeek.add(i, 'day')
         return {
           date: currentDay.format('dddd, DD/MM/YYYY'),
           isToday: today.isSame(currentDay, 'day'),
           today: today
-        };
+        }
       })
   }, [today])
 
   // 📤 Devuelve la semana actual
-  return { currentWeek, today };
-};
+  return { currentWeek, today }
+}

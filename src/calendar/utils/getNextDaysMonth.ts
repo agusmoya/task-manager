@@ -1,6 +1,6 @@
 import { WEEKDAYS } from "../constants/constants.ts"
 
-import { type CalendarDay } from "../types/calendar-day.d"
+import { type CalendarDay } from "../../types/calendar-day"
 
 export const getNextDaysMonth = (
   startDay: number,
@@ -13,11 +13,11 @@ export const getNextDaysMonth = (
   const remainingNextDays = totalCalendarDays - startDay - lastMonthDay
 
   for (let i = 1; i <= remainingNextDays; i++) {
-    const dayNumber = i
-    const dayOfWeek = new Date(year, month - 1, dayNumber).getDay()
+    const day = i
+    const dayOfWeek = new Date(year, month - 1, day).getDay()
     const dayName = WEEKDAYS[dayOfWeek]
     nextDays.push({
-      dayNumber: i,
+      day: i,
       dayName,
       type: "next",
       events: [], // no events for next days

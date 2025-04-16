@@ -10,7 +10,15 @@
 }
 
 .ongoing__list {
+  display: flex;
+  gap: var(--spacing-2);
   min-height: 200px;
+  overflow-x: auto;
+  padding-bottom: var(--spacing-2);
+}
+
+.ongoing__list::-webkit-scrollbar {
+  display: none;
 }
 
 .ongoing__list--no-result {

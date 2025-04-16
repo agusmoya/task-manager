@@ -1,8 +1,6 @@
-.calendar-container {
-  padding-block: var(--spacing-6);
-  padding-left: var(--spacing-9);
-  padding-right: var(--spacing-5);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+@import url("/src/styles/transition-page.css");
+
+.calendar {
+  max-width: 1600px;
+  margin: 0 var(--spacing-7);
 }

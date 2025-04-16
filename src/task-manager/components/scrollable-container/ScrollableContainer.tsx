@@ -1,8 +1,8 @@
-import { useRef } from 'react';
+import { useRef } from 'react'
 
-import { ArrowButton } from '../../../component/fab-arrow/FabArrow.tsx';
+import { FabArrow } from '../../../components/fab-arrow/FabArrow.tsx'
 
-import './ScrollableContainer.css';
+import './ScrollableContainer.css'
 
 type ScrollableContainerProps = {
   children: React.ReactNode
@@ -15,11 +15,11 @@ export const ScrollableContainer = ({ children, itemClass, className = '' }: Scr
 
   return (
     <div className="scrollable-container">
-      <ArrowButton direction="left" scrollContainerRef={scrollContainerRef} widthItemClass={itemClass} />
+      <FabArrow direction="left" scrollContainerRef={scrollContainerRef} widthItemClass={itemClass} />
       <ul className={`scrollable-container__list ${className}`} ref={scrollContainerRef}>
         {children}
       </ul>
-      <ArrowButton direction="right" scrollContainerRef={scrollContainerRef} widthItemClass={itemClass} />
+      <FabArrow direction="right" scrollContainerRef={scrollContainerRef} widthItemClass={itemClass} />
     </div>
   )
 }

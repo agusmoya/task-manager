@@ -1,0 +1,63 @@
+.modal {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  width: 400px;
+  inset: 0;
+  margin: auto;
+  border: none;
+  border-radius: 0.5rem;
+  padding-block: 3rem 2rem;
+  padding-inline: 2rem;
+  pointer-events: auto;
+  box-shadow: var(--elevation-3);
+  /* animation */
+  opacity: 0;
+  transition: display 0.3s allow-discrete, overlay 0.3s allow-discrete,
+    translate 0.3s, opacity 0.3s;
+  translate: 0 50%;
+  will-change: translate, opacity;
+  z-index: var(--z-modal);
+}
+
+.modal[open] {
+  opacity: 1;
+  translate: 0;
+
+  @starting-style {
+    opacity: 0;
+    translate: 0 50%;
+  }
+}
+
+.modal::backdrop {
+  background: var(--color-scrim);
+  opacity: 1;
+  transition: display 0.3s allow-discrete, opacity 0.3s;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.modal:not([open])::backdrop {
+  opacity: 0;
+}
+
+.modal__title {
+  font-size: var(--h2-font-size);
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+}
+
+.modal__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal__button-close {
+  position: absolute;
+  top: var(--spacing-3);
+  right: var(--spacing-3);
+  width: 1.25rem;
+}

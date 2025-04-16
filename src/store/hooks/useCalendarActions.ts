@@ -1,4 +1,3 @@
-
 import { useAppDispatch, useAppSelector } from "./reduxStore.ts"
 import {
   onGenerateCalendar,
@@ -15,8 +14,8 @@ import {
   onSetActiveEvent,
 } from "../slices/events/calendarEventsSlice.ts"
 
-import { type CalendarEvent } from "../../calendar/types/calendar-event.d"
-import { type CalendarDay } from "../../calendar/types/calendar-day.d"
+import { type CalendarEvent } from "../../types/calendar-event"
+import { type CalendarDay } from "../../types/calendar-day"
 
 export const useCalendarActions = () => {
   const dispatch = useAppDispatch()
@@ -58,15 +57,17 @@ export const useCalendarActions = () => {
     dispatch(onSetActiveEvent(event))
   }
 
-  const setActiveCalendarDay = (activeCalendarDay: CalendarDay) => {
+  const setActiveCalendarDay = (activeCalendarDay: CalendarDay | undefined) => {
     dispatch(onSetActiveCalendarDay(activeCalendarDay))
   }
 
   const startSavingEvent = async (calendarEvent: CalendarEvent) => {
+    console.log(calendarEvent)
+
     if (calendarEvent._id) {
       dispatch(onUpdateEvent({ ...calendarEvent }))
     } else {
-      dispatch(onAddNewEvent({ ...calendarEvent, _id: new Date().getTime() }))
+      dispatch(onAddNewEvent({ ...calendarEvent, _id: new Date().getTime().toString() }))
     }
   }
 

@@ -1,22 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
-import { CardIdIcon, EmailIcon, EyeIcon, EyeOffIcon } from "../../../component/icons/Icons.tsx";
-import { AuthLayout } from "../../layout/AuthLayout.tsx";
-import { Input } from "../../../component/input/Input.tsx";
+import { CardIdIcon, EmailIcon, EyeIcon, EyeOffIcon } from "../../../components/icons/Icons.tsx"
+import { Input } from "../../../components/input/Input.tsx"
 
-import { useForm } from "../../hooks/useForm.ts";
-import { useAuthActions } from "../../../store/hooks/useAuthActions.ts";
+import { useForm } from "../../hooks/useForm.ts"
+import { useAuthActions } from "../../../store/hooks/useAuthActions.ts"
 import {
   registerFormFields,
   registerFormValidations
-} from "../../../helpers/getRegisterFormValidations.ts";
+} from "../../../helpers/form-validations/getRegisterFormValidations.ts"
 
-interface RegisterPageProps {
-  transitionClass: string;
-  handleTransition: () => void;
-}
 
-export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPageProps) => {
+import "./RegisterPage.css"
+
+
+const RegisterPage = () => {
   const {
     firstName,
     firstNameValid,
@@ -42,24 +40,34 @@ export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPage
   }
 
   return (
-    <AuthLayout title="Create new account." transitionClass={transitionClass} handleTransition={handleTransition}>
+    <>
+      <h1 className="register__title">
+        Create new account.
+      </h1>
+      {
+        backendErrorMessage
+        &&
+        <p className="register__error">
+          {backendErrorMessage}
+        </p>
+      }
       <form
         className="register__form"
         onSubmit={handleRegisterSubmit}
       >
-        <div className="register__group grid">
+        <div className="register__group">
           <Input
             id="firstName"
             required
             type="text"
             name="firstName"
-            labelName="First name"
+            label="First name"
             placeholder=""
             value={firstName}
             autoComplete="given-name"
             error={firstNameValid}
             fieldValid={!!firstNameValid}
-            touchedFields={touchedFields}
+            touched={touchedFields.firstName}
             finalStateIcon={CardIdIcon}
             onChange={onInputChange}
           />
@@ -69,13 +77,13 @@ export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPage
             required
             type="text"
             name="lastName"
-            labelName="Last name"
+            label="Last name"
             placeholder=""
             value={lastName}
             autoComplete="family-name"
             error={lastNameValid}
             fieldValid={!!lastNameValid}
-            touchedFields={touchedFields}
+            touched={touchedFields.lastName}
             finalStateIcon={CardIdIcon}
             onChange={onInputChange}
           />
@@ -86,14 +94,14 @@ export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPage
           required
           type="email"
           name="email"
-          labelName="Email"
+          label="Email"
           placeholder=""
           value={email}
           autoComplete="off"
           hint="user@mail.com"
           error={emailValid}
           fieldValid={!!emailValid}
-          touchedFields={touchedFields}
+          touched={touchedFields.email}
           finalStateIcon={EmailIcon}
           onChange={onInputChange}
         />
@@ -103,28 +111,30 @@ export const RegisterPage = ({ transitionClass, handleTransition }: RegisterPage
           required
           type="password"
           name="password"
-          labelName="Password"
+          label="Password"
           placeholder=""
           value={password}
           autoComplete="new-password"
           error={passwordValid}
           fieldValid={!!passwordValid}
-          touchedFields={touchedFields}
+          touched={touchedFields.password}
           toggleShowInputButton
           initialStateIcon={EyeIcon}
           finalStateIcon={EyeOffIcon}
           onChange={onInputChange}
         />
-        {backendErrorMessage && <p className="response__error">{backendErrorMessage}</p>}
-        <button className="login__button">Create account</button>
+
+        <button className="btn btn--filled register__button">Create account</button>
       </form>
 
       <p className="login__switch">
         Already have an account?&nbsp;
-        <Link id="loginButtonAccess" to="/auth/login">
+        <Link to="/auth/login">
           Log in.
         </Link>
       </p>
-    </AuthLayout>
+    </>
   )
 }
+
+export default RegisterPage

@@ -1,5 +1,5 @@
 import { useContext, useRef, useState } from "react"
-import { SearchContext } from "../context/search/searchContext"
+import { SearchContext } from "../../context/search/searchContext"
 
 
 export function useSearch() {

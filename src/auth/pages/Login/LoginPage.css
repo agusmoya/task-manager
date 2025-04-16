@@ -1,5 +1,5 @@
-.auth__blob {
-  display: none;
+.login__title {
+  margin-block: var(--spacing-4) var(--spacing-4);
 }
 
 .login__forgot {
@@ -20,19 +20,9 @@
   background-color: var(--color-primary);
   color: var(--color-on-primary);
   width: 100%;
-  display: inline-flex;
-  justify-content: center;
   padding-block: var(--spacing-6);
-  border-radius: 4rem;
   margin-block: var(--spacing-8);
-  transition: background-color 0.4s, box-shadow 0.4s;
-  font-weight: var(--font-weight-bold);
-}
-
-.login__button:hover {
-  color: var(--color-on-secondary);
-  background-color: var(--color-secondary);
-  box-shadow: var(--elevation-3);
+  border-radius: 2rem;
 }
 
 .login__social {

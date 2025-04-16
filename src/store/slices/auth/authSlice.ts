@@ -4,14 +4,14 @@ import { AUTH_STATUS } from '../../../auth/constants/status.ts';
 
 
 export interface LoginUserResponse {
-  firstName: string;
-  uid: string;
+  firstName: string
+  uid: string
 }
 
 export interface AuthState {
-  status: string;
-  user: LoginUserResponse | undefined;
-  backendErrorMessage: string | undefined;
+  status: string
+  user: LoginUserResponse | undefined
+  backendErrorMessage: string | undefined
 }
 
 const initialState: AuthState = {
@@ -30,12 +30,12 @@ export const authSlice = createSlice({
       state.backendErrorMessage = undefined
     },
     onLogin: (state, { payload }: PayloadAction<LoginUserResponse>) => {
-      state.status = AUTH_STATUS.AUTHORIZED
+      state.status = AUTH_STATUS.AUTHENTICATED
       state.user = payload
       state.backendErrorMessage = undefined
     },
     onLogout: (state, { payload }: PayloadAction<string | undefined>) => {
-      state.status = AUTH_STATUS.UNAUTHORIZED
+      state.status = AUTH_STATUS.NOT_AUTHENTICATED
       state.user = undefined
       state.backendErrorMessage = payload
     },

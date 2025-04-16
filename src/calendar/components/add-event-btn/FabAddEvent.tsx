@@ -1,9 +1,10 @@
-import { addHours } from "date-fns";
+import { addHours } from "date-fns"
 
-import { PlusIcon } from "../../../component/icons/Icons.tsx";
+import { PlusIcon } from "../../../components/icons/Icons.tsx"
 
-import { useCalendarActions } from "../../../store/hooks/useCalendarActions.ts";
-import { useEventModalActions } from "../../../store/hooks/useEventModalActions.ts";
+import { useCalendarActions } from "../../../store/hooks/useCalendarActions.ts"
+import { useEventModalActions } from "../../../store/hooks/useEventModalActions.ts"
+
 
 import './FabAddEvent.css'
 
@@ -13,19 +14,20 @@ export const FabAddEvent = () => {
 
   const handleClickNewEvent = () => {
     if (!activeCalendarDay) return
-    const { dayNumber, month, year } = activeCalendarDay
-    const selecetedDayDate = new Date(year, month, dayNumber)
-    const activeEvent = {
+    const { day, month, year } = activeCalendarDay
+    const selecetedDayDate = new Date(year, month, day)
+
+    const activeCalendarEvent = {
       title: '',
-      start: selecetedDayDate,
-      end: addHours(selecetedDayDate, 2),
+      startDate: selecetedDayDate,
+      endDate: addHours(selecetedDayDate, 2),
       notes: '',
       user: {
         _id: 1,
         name: 'Natt'
       }
     }
-    setActiveEvent(activeEvent)
+    setActiveEvent(activeCalendarEvent)
     openModal()
   }
 

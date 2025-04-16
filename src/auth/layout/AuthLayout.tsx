@@ -1,27 +1,41 @@
-import { AuthBlob } from '../components/auth-blob/AuthBlob.tsx';
+import { Navigate, Route, Routes } from 'react-router-dom'
+
+import { AuthBlob } from '../components/auth-blob/AuthBlob.tsx'
 import { Header } from '../../task-manager/components/header/Header.tsx'
 
+import { useTransitionPage } from '../../hooks/useTransitionPage.ts'
+
+import {
+  LoginPage,
+  RegisterPage,
+} from "../../router/lazy-pages.ts"
 
 import './AuthLayout.css'
 
-type AuthLayoutProps = {
-  title: string
-  transitionClass: string
-  handleTransition: () => void
-  children: React.ReactNode
-}
-export const AuthLayout = ({ title, transitionClass, handleTransition, children }: AuthLayoutProps) => {
+
+export const AuthLayout = () => {
+  const {
+    displayLocation,
+    transitionPage,
+    handleTransitionEnd
+  } = useTransitionPage()
+
   return (
     <>
       <Header />
       <main className="main">
-        <AuthBlob />
-        <section className={`auth ${transitionClass}`} onTransitionEnd={handleTransition}>
-          <div className="auth__container container">
-            <h1 className="auth__title">
-              {title}
-            </h1>
-            {children}
+        <section className="auth">
+          <AuthBlob />
+          <div
+            className={`auth__container ${transitionPage}`}
+            onAnimationEnd={handleTransitionEnd}
+          >
+            {/* <Outlet /> */}
+            <Routes location={displayLocation}>
+              <Route path="login" element={<LoginPage />} />
+              <Route path="register" element={<RegisterPage />} />
+              <Route path="*" element={<Navigate to="/auth/login" replace />} />
+            </Routes>
           </div>
         </section>
       </main>

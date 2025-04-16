@@ -3,14 +3,13 @@
   top: 0;
   left: 0;
   width: 100%;
-  transition: 0.4s;
   z-index: var(--z-fixed);
   box-shadow: var(--elevation-1);
   background-color: var(--color-surface);
-  margin-bottom: 2rem;
+  /* transition: 0.4s; */
 }
 
-.nav {
+.header-app__nav {
   height: var(--header-height);
   display: flex;
   align-items: center;

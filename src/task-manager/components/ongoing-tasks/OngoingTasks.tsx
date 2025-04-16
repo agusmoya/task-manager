@@ -1,16 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
-import { ExternalLinkIcon } from '../../../component/icons/Icons.tsx';
-import { PlusIcon } from "../../../component/icons/Icons.tsx";
+import { ExternalLinkIcon } from '../../../components/icons/Icons.tsx'
+import { PlusIcon } from "../../../components/icons/Icons.tsx"
+import { ScrollableContainer } from "../scrollable-container/ScrollableContainer.tsx"
+import { CircularProgress } from "../circular-progress/CircularProgress.tsx"
 
-import { type Tasks } from "../../../types/types.d";
+import { type Tasks } from "../../../types/task.d"
 
-import { useSearch } from "../../hooks/useSearch.ts";
+import { useSearch } from "../../hooks/useSearch.ts"
 
 
-import "./OngoingTasks.css";
-import { ScrollableContainer } from "../scrollable-container/ScrollableContainer.tsx";
-import { CircularProgress } from "../circular-progress/CircularProgress.tsx";
+import "./OngoingTasks.css"
 
 interface Props {
   tasks: Tasks
@@ -57,7 +57,7 @@ export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
               filteredTasks.map(task => (
                 <li className="ongoing__item" key={task.id}>
                   <section className="ongoing__card">
-                    <Link to={`/task-day/${task.id}`}>
+                    <Link to={`task/${task.id}`}>
                       <h3 className="ongoing__title">
                         {task.title}&nbsp;<ExternalLinkIcon size={18} />
                       </h3>
@@ -70,12 +70,7 @@ export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
                     <small className="ongoing__schedule">
                       14:30 hs a 17:00 hs
                     </small>
-                    {/* <span className="ongoing__progress">
-                      {task.progress}%
-                    </span> */}
-                    <CircularProgress
-                      progress={task.progress}
-                    />
+                    <CircularProgress progress={task.progress} />
                   </section>
                 </li>
               ))
@@ -83,7 +78,6 @@ export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
               <li>No tasks found...</li>
           }
         </ScrollableContainer>
-
       </div>
     </section>
   )

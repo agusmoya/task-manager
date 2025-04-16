@@ -2,18 +2,19 @@ import axios from "axios"
 
 import { useAppDispatch, useAppSelector } from "./reduxStore.ts"
 import { clearErrorMessage, onChecking, onLogin, onLogout } from "../slices/auth/authSlice.ts"
+
 import todoApi from "../../api/taskManagerApi.ts"
 
 interface RegisterProps {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
+  firstName: string
+  lastName: string
+  email: string
+  password: string
 }
 
 interface LoginProps {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export const useAuthActions = () => {
@@ -45,14 +46,18 @@ export const useAuthActions = () => {
 
   const checkAuthToken = async () => {
     const token = localStorage.getItem("token")
-    if (!token) return
+    if (!token) {
+      dispatch(onLogout("Token credentials not found. Please, log in again."))
+      return
+    }
     try {
       const { data } = await todoApi.get("/auth/renew")
       saveTokenLocalStorage(data.token)
       const { firstName, uid } = data
       dispatch(onLogin({ firstName, uid }))
     } catch (error) {
-      dispatch(onLogout(`Token credentials error. Error: ${error}`))
+      dispatch(onLogout(`Token expired. Please, log in again.`))
+      console.error(`Error: ${error}`)
     }
   }
 
@@ -65,11 +70,16 @@ export const useAuthActions = () => {
   const startLogout = () => {
     localStorage.removeItem("token")
     localStorage.removeItem("token-init-date")
-    dispatch(onLogout())
+    dispatch(onLogout('Session closed.'))
+    handleClearErrorMessage()
   }
 
   const manageError = (responseError: unknown) => {
-    if (axios.isAxiosError(responseError) && responseError.response && responseError.response.data) {
+    if (
+      axios.isAxiosError(responseError)
+      && responseError.response
+      && responseError.response.data
+    ) {
       const { errors, msg } = responseError.response.data
       let errorMessage = ''
       if (errors) {
@@ -77,13 +87,18 @@ export const useAuthActions = () => {
       } else if (msg) {
         errorMessage = msg
       } else {
-        console.log(responseError)
+        console.error(responseError)
         errorMessage = 'An unexpected axios error occurred.'
       }
       dispatch(onLogout(errorMessage))
     } else {
+      console.error(responseError)
       dispatch(onLogout('An unexpected error occurred.'))
     }
+    handleClearErrorMessage()
+  }
+
+  const handleClearErrorMessage = () => {
     setTimeout(() => {
       dispatch(clearErrorMessage())
     }, 10000)

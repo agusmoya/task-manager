@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
 
-import { type Task } from "../../types/types.d"
+import { type Task } from "../../types/task"
 
 import { getTasks } from "../services/tasks.ts"
 

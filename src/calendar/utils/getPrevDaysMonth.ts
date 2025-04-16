@@ -1,5 +1,5 @@
 import { WEEKDAYS } from "../constants/constants"
-import { type CalendarDay } from "../types/calendar-day.d"
+import { type CalendarDay } from "../../types/calendar-day"
 
 export const getPreviousDaysMonth = (
   startDay: number,
@@ -11,11 +11,11 @@ export const getPreviousDaysMonth = (
   const lastPrevMonthDay = lastPrevMonthDate.getDate()
 
   for (let x = startDay; x > 0; x--) {
-    const dayNumber = lastPrevMonthDay - x + 1
-    const dayOfWeek = new Date(year, month - 1, dayNumber).getDay()
+    const day = lastPrevMonthDay - x + 1
+    const dayOfWeek = new Date(year, month - 1, day).getDay()
     const dayName = WEEKDAYS[dayOfWeek]
     prevDays.push({
-      dayNumber,
+      day,
       dayName,
       type: "prev",
       events: [],

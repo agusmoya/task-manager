@@ -1,6 +1,6 @@
 import { WEEKDAYS } from "../constants/constants.ts";
 
-import { type CalendarDay } from "../types/calendar-day.d";
+import { type CalendarDay } from "../../types/calendar-day";
 
 export const getCurrentDaysMonth = (
   lastMonthDay: number,
@@ -9,11 +9,11 @@ export const getCurrentDaysMonth = (
 ): CalendarDay[] => {
   const currentDays: CalendarDay[] = []
   for (let i = 1; i <= lastMonthDay; i++) {
-    const dayNumber = i;
-    const dayOfWeek = new Date(year, month - 1, dayNumber).getDay()
+    const day = i;
+    const dayOfWeek = new Date(year, month - 1, day).getDay()
     const dayName = WEEKDAYS[dayOfWeek]
     currentDays.push({
-      dayNumber,
+      day,
       dayName,
       type: "current",
       events: [],

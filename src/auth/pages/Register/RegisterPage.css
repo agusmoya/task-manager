@@ -1,0 +1,18 @@
+.register__title {
+  margin-block: var(--spacing-4) var(--spacing-4);
+}
+
+.register__button {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  width: 100%;
+  padding-block: var(--spacing-6);
+  margin-block: var(--spacing-8);
+  border-radius: 2rem;
+}
+
+.register__error {
+  color: var(--color-error);
+  padding-block: 0 var(--spacing-3);
+  font-weight: var(--font-weight-bold);
+}

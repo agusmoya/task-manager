@@ -2,8 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { addHours } from "date-fns"
 
-import { type CalendarEvent } from "../../../calendar/types/calendar-event.d"
 import { TODAY } from "../../../calendar/constants/constants.ts"
+
+import { type CalendarEvent } from "../../../types/calendar-event"
 
 export interface CalendarEventsState {
   events: CalendarEvent[]
@@ -13,10 +14,10 @@ export interface CalendarEventsState {
 const initialState: CalendarEventsState = {
   events: [
     {
-      _id: TODAY.getDate(),
+      _id: TODAY.getTime().toString(),
       title: 'Conference',
-      start: TODAY,
-      end: addHours(TODAY, 2),
+      startDate: TODAY,
+      endDate: addHours(TODAY, 4),
       notes: 'Big conference for important people',
       user: {
         _id: 1,

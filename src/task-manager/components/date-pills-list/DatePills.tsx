@@ -1,6 +1,6 @@
 import { DatePill } from '../date-pill/DatePill.tsx';
 
-import { type WeekDay } from '../../../types/types.d';
+import { type WeekDay } from '../../../types/task';
 
 import './DatePills.css'
 

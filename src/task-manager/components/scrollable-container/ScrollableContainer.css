@@ -1,3 +1,23 @@
+.scrollable-container::before,
+.scrollable-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  pointer-events: none;
+}
+
+.scrollable-container::before {
+  left: 0;
+  background: linear-gradient(to right, var(--color-surface), transparent);
+}
+
+.scrollable-container::after {
+  right: 0;
+  background: linear-gradient(to left, var(--color-surface), transparent);
+}
+
 .scrollable-container {
   position: relative;
 }

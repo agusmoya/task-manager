@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 
 // Tipado de la función de validación y las validaciones en general
-type ValidationFunction<T> = (value: T[keyof T]) => boolean
+type ValidationFunction<T, K extends keyof T> = (value: T[K], formState: T) => boolean
+// type ValidationFunction<T> = (value: T[keyof T]) => boolean
 
 export type FormValidations<T> = {
-  [K in keyof T]?: Array<[ValidationFunction<T>, string]>
+  [K in keyof T]?: Array<[ValidationFunction<T, K>, string]>
+  // [K in keyof T]?: Array<[ValidationFunction<T>, string]>
 }
 
 // Estado de validaciones: Cada campo se transforma en campoValid que puede ser string o null
@@ -12,7 +14,8 @@ type ValidationState<T> = {
   [K in keyof T as `${string & K}Valid`]: string | null
 }
 
-export const useForm = <T extends Record<string, unknown>>(
+export const useForm = <T extends object>(
+  // export const useForm = <T extends Record<string, unknown>>(
   initialForm: T,
   formValidations: FormValidations<T> = {}
 ) => {
@@ -28,7 +31,9 @@ export const useForm = <T extends Record<string, unknown>>(
 
   //? Si cambian los valores iniciales, reseteamos el formState
   useEffect(() => {
-    setFormState(initialForm)
+    onResetForm()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialForm])
 
   const isFormValid = useMemo(() => {
@@ -67,8 +72,11 @@ export const useForm = <T extends Record<string, unknown>>(
       // ✅ Esto fuerza el nombre del campo a la key del ValidationState<T>
       const validationKey = `${String(formField)}Valid` as keyof ValidationState<T>
       // ✅ Ahora asignamos null o string (según lo que diga ValidationState<T>)
-      const firstError = validations.find(([fn]) => fn(fieldValue));
-      formCheckedValues[validationKey] = firstError ? firstError[1] : null;
+
+      const firstError = validations.find(([fn]) => fn(fieldValue, formState))
+      // const firstError = validations.find(([fn]) => fn(fieldValue))
+
+      formCheckedValues[validationKey] = firstError ? firstError[1] : null
     }
 
     setFormValidation(formCheckedValues as ValidationState<T>)
@@ -76,11 +84,12 @@ export const useForm = <T extends Record<string, unknown>>(
 
   return {
     ...formState,
+    ...formValidation,
     formState,
     touchedFields,
     isFormValid,
+    setFormState,
     onInputChange,
     onResetForm,
-    ...formValidation,
   }
 }

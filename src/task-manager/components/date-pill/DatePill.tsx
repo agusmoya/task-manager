@@ -1,8 +1,8 @@
 import './DatePill.css'
 
 type Props = {
-  isToday: boolean;
-  date: string;
+  isToday: boolean
+  date: string
 }
 
 export const DatePill = ({ date, isToday }: Props) => {
@@ -15,5 +15,5 @@ export const DatePill = ({ date, isToday }: Props) => {
       <small>{dayTxt.slice(0, 3)}</small>
       <div className={`${isToday ? 'pill__dot' : ''}`}></div>
     </div>
-  );
+  )
 }

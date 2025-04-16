@@ -1,0 +1,84 @@
+:root {
+  --md-sys-color-primary: #6200ee;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-surface: #ffffff;
+  --md-sys-color-on-surface: #000000;
+  --md-sys-color-outline: #6200ee;
+  --md-sys-color-disabled: #f1f1f1;
+  --md-sys-color-on-disabled: #9e9e9e;
+}
+
+/* Tema oscuro */
+[data-theme="dark"] {
+  --md-sys-color-primary: #bb86fc;
+  --md-sys-color-on-primary: #000000;
+  --md-sys-color-surface: #121212;
+  --md-sys-color-on-surface: #ffffff;
+  --md-sys-color-outline: #bb86fc;
+  --md-sys-color-disabled: #2c2c2c;
+  --md-sys-color-on-disabled: #666666;
+}
+
+.button {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Variantes */
+.button--filled {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.button--filled:hover {
+  background-color: #3700b3;
+}
+
+.button--outlined {
+  background-color: transparent;
+  color: var(--md-sys-color-primary);
+  border: 1px solid var(--md-sys-color-outline);
+}
+
+.button--outlined:hover {
+  background-color: rgba(98, 0, 238, 0.04);
+}
+
+.button--text {
+  background-color: transparent;
+  color: var(--md-sys-color-primary);
+}
+
+.button--text:hover {
+  background-color: rgba(98, 0, 238, 0.04);
+}
+
+/* Tamaños */
+.button--small {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.button--medium {
+  padding: 10px 16px;
+  font-size: 14px;
+}
+
+.button--large {
+  padding: 14px 20px;
+  font-size: 16px;
+}
+
+/* Estado deshabilitado */
+.button--disabled {
+  background-color: var(--md-sys-color-disabled);
+  color: var(--md-sys-color-on-disabled);
+  cursor: not-allowed;
+  border: none;
+}

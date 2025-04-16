@@ -1,29 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
-import { AuthLayout } from "../../layout/AuthLayout.tsx";
-import { Input } from '../../../component/input/Input.tsx';
 import {
   EmailIcon,
   EyeIcon,
   EyeOffIcon,
   GoogleIcon
-} from "../../../component/icons/Icons.tsx";
+} from "../../../components/icons/Icons.tsx"
+import { Input } from '../../../components/input/Input.tsx'
 
 import {
   loginFormFields,
   loginFormValidations
-} from "../../../helpers/getLoginFormValidations.ts";
-import { useForm } from '../../hooks/useForm.ts';
-import { useAuthActions } from "../../../store/hooks/useAuthActions.ts";
+} from "../../../helpers/form-validations/getLoginFormValidations.ts"
+import { useForm } from '../../hooks/useForm.ts'
+import { useAuthActions } from "../../../store/hooks/useAuthActions.ts"
 
-import "./LoginPage.css";
 
-interface LoginPageProps {
-  transitionClass: string;
-  handleTransition: () => void;
-}
+import "./LoginPage.css"
 
-export const LoginPage = ({ transitionClass, handleTransition }: LoginPageProps) => {
+
+const LoginPage = () => {
   const {
     email,
     emailValid,
@@ -35,13 +31,27 @@ export const LoginPage = ({ transitionClass, handleTransition }: LoginPageProps)
   } = useForm(loginFormFields, loginFormValidations)
   const { startLogin, backendErrorMessage } = useAuthActions()
 
-  const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    startLogin({ email, password })
+    if (!isFormValid) {
+      console.error('Form with errors')
+      return
+    }
+    await startLogin({ email, password })
   }
 
   return (
-    <AuthLayout title="Log in to your account." transitionClass={transitionClass} handleTransition={handleTransition}>
+    <>
+      <h1 className="login__title">
+        Log in to your account.
+      </h1>
+      {
+        backendErrorMessage
+        &&
+        <p className="login__error">
+          {backendErrorMessage}
+        </p>
+      }
       <form
         className="login__form"
         onSubmit={handleLoginSubmit}
@@ -49,33 +59,33 @@ export const LoginPage = ({ transitionClass, handleTransition }: LoginPageProps)
         <div className="login__content">
           <Input
             id="email"
-            required
             type="email"
             name="email"
-            labelName="Email"
+            label="Email"
             placeholder=""
+            required
             value={email}
             autoComplete="email"
             hint="user@mail.com"
             error={emailValid}
             fieldValid={!!emailValid}
-            touchedFields={touchedFields}
+            touched={touchedFields.email}
             finalStateIcon={EmailIcon}
             onChange={onInputChange}
           />
 
           <Input
             id="password"
-            required
             type="password"
             name="password"
-            labelName="Password"
+            label="Password"
             placeholder=""
+            required
             value={password}
             autoComplete="current-password"
             error={passwordValid}
             fieldValid={!!passwordValid}
-            touchedFields={touchedFields}
+            touched={touchedFields.password}
             toggleShowInputButton
             initialStateIcon={EyeIcon}
             finalStateIcon={EyeOffIcon}
@@ -83,12 +93,14 @@ export const LoginPage = ({ transitionClass, handleTransition }: LoginPageProps)
           />
         </div>
 
-        {backendErrorMessage && <p className="login__error">{backendErrorMessage}</p>}
         <a href="#" className="login__forgot">
           Forgot your password?
         </a>
-        <button type="submit" className="login__button" disabled={!isFormValid}>
-          Login
+        <button type="submit" className="btn login__button">
+          <span className="btn__state-layer"></span>
+          <span className="btn__content">
+            Login
+          </span>
         </button>
       </form>
 
@@ -103,10 +115,12 @@ export const LoginPage = ({ transitionClass, handleTransition }: LoginPageProps)
 
       <p className="login__switch">
         Don't have an account?&nbsp;
-        <Link to="/auth/register" id="loginButtonRegister">
+        <Link to="/auth/register" >
           Create account.
         </Link>
       </p>
-    </AuthLayout>
+    </>
   )
 }
+
+export default LoginPage
