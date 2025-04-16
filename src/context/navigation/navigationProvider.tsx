@@ -9,7 +9,8 @@ type Props = {
 }
 
 export const NavigationProvider = ({ children }: Props) => {
-  const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbItem[]>([])
+  const breadcrumbsInitialState = JSON.parse(localStorage.getItem('breadcrumbs') || '[]')
+  const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbItem[]>(breadcrumbsInitialState)
 
   return (
     <NavigationContext.Provider

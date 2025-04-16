@@ -9,14 +9,14 @@ import { breadcrumbMap } from "../helpers/getBreadcrumbsLabels.ts"
 
 
 export function useNavigation(): BreadcrumbNavigation {
-  const location = useLocation()
-  // const matches = useMatches()
-  const navigate = useNavigate()
 
   const navigationContext = useContext(NavigationContext)
   if (!navigationContext) {
     throw new Error("NavigationContext must be used within a NavigationProvider")
   }
+
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const { breadcrumbs, setBreadcrumbs } = navigationContext
 
@@ -32,10 +32,8 @@ export function useNavigation(): BreadcrumbNavigation {
         return crumb
       }
     }
-
     return ''
-
-    //? useMatches() with -> createBrowserRouter() 
+    //? const matches = useMatches() with -> createBrowserRouter() 
     // const currentMatch = matches[matches.length - 1] as MatchWithCrumb | undefined
     // const currentMatch = [...matches]
     //   .reverse()
@@ -70,10 +68,16 @@ export function useNavigation(): BreadcrumbNavigation {
     })
   }
 
+  const saveBreadcrumbLocalStorage = () => {
+    console.log(breadcrumbs)
+    localStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs))
+  }
+
   // Efecto para sincronizar con la ubicación actual
   useEffect(() => {
     handleNavigation()
     // TODO:::guardar en session el breadcrumb
+    saveBreadcrumbLocalStorage()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])
 
