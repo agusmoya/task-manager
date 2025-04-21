@@ -19,3 +19,25 @@ export type InputProps = {
   finalStateIcon?: React.ElementType | null
   onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void
 }
+
+interface InputWithSuggestionsProps {
+  id: string
+  name: string
+  label: string
+  placeholder?: string
+  value: string
+  hint?: string
+  error?: string | null
+  touched?: boolean
+  required?: boolean
+  disabled?: boolean
+  fieldValid: boolean
+  autoComplete?: string
+  suggestionData: string[]
+  allowCreateIfNotExists: boolean
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onSuggestionClick?: (value: string) => void
+  onCreateNew?: (value: string) => void
+  loading?: boolean
+  backendError?: string | null
+}

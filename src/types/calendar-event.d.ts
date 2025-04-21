@@ -1,7 +1,7 @@
 import { User } from "./user"
 
 export interface CalendarEvent {
-  _id?: string
+  id?: string
   title: string
   startDate: Date
   endDate: Date

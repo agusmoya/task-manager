@@ -22,7 +22,7 @@ export const Search: React.FC = () => {
 
   return (
     <section className="search section">
-      <div className="search__container container flex">
+      <div className="search__container container">
         <form className="search__form" onSubmit={handleSubmit}>
           <SearchIcon className="search__icon-search" />
           <input

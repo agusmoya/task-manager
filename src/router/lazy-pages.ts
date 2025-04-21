@@ -8,4 +8,4 @@ export const CalendarPage = lazy(() => import('../calendar/pages/calendar-page/C
 // TASKS
 export const HomePage = lazy(() => import('../task-manager/pages/HomePage.tsx'))
 export const TaskPage = lazy(() => import('../task-manager/pages/TaskPage.tsx'))
-
+export const TaskFormPage = lazy(() => import('../task-manager/pages/TaskFormPage/TaskFormPage.tsx'))

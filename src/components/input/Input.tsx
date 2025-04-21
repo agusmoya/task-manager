@@ -77,20 +77,27 @@ export const Input = (
             className="input__button"
             onClick={handleClick}
           >
-            {(stateInput) ? <InitialStateIcon /> : <FinalStateIcon />}
+            {
+              (stateInput)
+                ? <InitialStateIcon />
+                : <FinalStateIcon />
+            }
           </button>
         }
       </div>
       <div className="input__feedback">
         {
           fieldValid && touched && (
-            <span id={`${name}-error`} className="input__error-message">
+            <span
+              id={`${name}-error`}
+              className="input__error-message"
+            >
               {error}
             </span>
           )
         }
         {
-          (hint)
+          hint && !error
           && <span className='input__hint'>
             Eg: {hint}
           </span>

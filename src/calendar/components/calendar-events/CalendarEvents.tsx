@@ -74,9 +74,9 @@ export const CalendarEvents = () => {
                 (eventsForActiveDay && eventsForActiveDay.length > 0)
                   ?
                   eventsForActiveDay.map(event => {
-                    const { _id, title } = event
+                    const { id, title } = event
                     return (
-                      <article className="calendar-events__item" key={_id}>
+                      <article className="calendar-events__item" key={id}>
                         <button
                           className="calendar-events__item-edit-btn"
                           onClick={() => handleClickEditEvent(event)}

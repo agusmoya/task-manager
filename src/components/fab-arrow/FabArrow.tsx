@@ -65,6 +65,7 @@ export const FabArrow = ({ direction, scrollContainerRef, widthItemClass }: Arro
   }
 
   return (
+    !scrollDisabled &&
     <button
       className={`btn btn--fab arrow-button arrow-button--${direction}`}
       onClick={handleScroll}

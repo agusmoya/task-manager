@@ -38,6 +38,7 @@ export const authSlice = createSlice({
       state.status = AUTH_STATUS.NOT_AUTHENTICATED
       state.user = undefined
       state.backendErrorMessage = payload
+      localStorage.removeItem('breadcrumb')
     },
     clearErrorMessage: (state) => {
       state.backendErrorMessage = undefined

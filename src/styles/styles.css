@@ -14,8 +14,14 @@ html {
 
 textarea,
 input {
-  background: none;
   border: none;
+  outline: 2px solid var(--color-surface);
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit; /* hereda fuente del body */
+  color: inherit;
+  box-sizing: border-box;
 }
 
 body,
@@ -74,6 +80,10 @@ h3 {
   font-weight: var(--font-weight-medium);
 }
 
+small {
+  font-size: var(--text-xs);
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -123,9 +133,6 @@ ol {
   padding-top: var(--header-height);
 }
 
-.btn {
-}
-
 /* =============== BREAKPOINTS =============== */
 /* xs devices */
 @media screen and (max-width: 360px) {
@@ -137,6 +144,22 @@ ol {
 
 /* md devices */
 @media screen and (min-width: 576px) {
+  .ongoing__header-content .ongoing__card-new-button {
+    display: none;
+  }
+
+  li.ongoing__item--new-task {
+    display: flex;
+  }
+
+  .categories__header-content .categories__card-new-button {
+    display: none;
+  }
+
+  li.categories__item--new-category {
+    display: flex;
+  }
+
   .calendar-wrapper__days .calendar-wrapper__day {
     font-size: var(--text-lg);
   }

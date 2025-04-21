@@ -69,14 +69,12 @@ export function useNavigation(): BreadcrumbNavigation {
   }
 
   const saveBreadcrumbLocalStorage = () => {
-    console.log(breadcrumbs)
     localStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs))
   }
 
   // Efecto para sincronizar con la ubicación actual
   useEffect(() => {
     handleNavigation()
-    // TODO:::guardar en session el breadcrumb
     saveBreadcrumbLocalStorage()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])

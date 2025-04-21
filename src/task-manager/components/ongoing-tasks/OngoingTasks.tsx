@@ -27,7 +27,15 @@ export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
     <section className="ongoing section" id="ongoing-tasks">
       <div className="ongoing__container container">
         <header className="ongoing__header">
-          <h2 className="ongoing__title">Ongoing Tasks</h2>
+          <div className="ongoing__header-content">
+            <h2 className="ongoing__title">Ongoing Tasks</h2>
+            <Link to='new-task' className="btn btn--outlined ongoing__card-new-button">
+              <span className="btn__state-layer"></span>
+              <span className="btn__content">
+                <PlusIcon />
+              </span>
+            </Link>
+          </div>
           <a className="ongoing__see-all">See all</a>
         </header>
 
@@ -43,12 +51,15 @@ export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
               key="newTask"
               className="ongoing__item ongoing__item--new-task"
             >
-              <h3>New Task</h3>
-              <section className="ongoing__card">
-                <Link to='/new-task'>
-                  <PlusIcon className="ongoing__card-new-icon" />
+              <h3 className="ongoing__item-title">New Task</h3>
+              <div className="ongoing__card ongoing__card--new">
+                <Link to='new-task' className="btn btn--outlined ongoing__card-new-button">
+                  <span className="btn__state-layer"></span>
+                  <span className="btn__content">
+                    <PlusIcon />
+                  </span>
                 </Link>
-              </section>
+              </div>
             </li>
           }
           {
@@ -58,7 +69,7 @@ export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
                 <li className="ongoing__item" key={task.id}>
                   <section className="ongoing__card">
                     <Link to={`task/${task.id}`}>
-                      <h3 className="ongoing__title">
+                      <h3 className="ongoing__item-title">
                         {task.title}&nbsp;<ExternalLinkIcon size={18} />
                       </h3>
                     </Link>

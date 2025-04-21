@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react'
 
 // Tipado de la función de validación y las validaciones en general
 type ValidationFunction<T, K extends keyof T> = (value: T[K], formState: T) => boolean

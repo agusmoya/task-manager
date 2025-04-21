@@ -1,20 +1,32 @@
-import { TODO_FILTERS } from "../task-manager/consts/consts"
+import { type Category } from "./category.d"
 
 export const TASK_STATUS = {
   PENDING: "pending",
   ACTIVE: "active",
+  PROGRESS: "in-progress",
   COMPLETED: "completed",
 } as const
 
 export interface Task {
-  id: string
+  id: string | undefined
   title: string
-  status: (typeof TODO_FILTERS)[keyof typeof TODO_FILTERS]
+  status: (typeof TASK_STATUS)[keyof typeof TASK_STATUS]
   progress: number
   duration: number
-  category: Category
+  category: Category | undefined
   creationDate: Date
-  userId: string
+  userId: string | undefined
+}
+
+export interface TaskForm {
+  id: string,
+  category: string,
+  userId: string,
+  creationDate: Date,
+  title: "",
+  status: string,
+  progress: number,
+  duration: number,
 }
 
 export interface TasksResponse {
@@ -23,7 +35,7 @@ export interface TasksResponse {
 
 export type TaskId = Pick<Task, "id">
 export type TaskTitle = Pick<Task, "title">
-
+export type TaskStatus = Pick<Task, "status">
 export type Tasks = Task[]
 
 export interface FetchState {
@@ -36,9 +48,4 @@ export interface FetchState {
 export interface ErrorFetch {
   status: number
   statusText: string
-}
-
-export interface WeekDay {
-  date: string
-  isToday: boolean
 }

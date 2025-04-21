@@ -39,8 +39,8 @@
 }
 
 .btn:focus {
-  outline: 2px solid var(--color-outline);
-  outline-offset: 2px;
+  outline: 1px solid var(--color-outline);
+  outline-offset: 1px;
 }
 
 .btn:focus .btn__state-layer {
@@ -73,7 +73,7 @@
 .btn--outlined {
   background-color: transparent;
   color: var(--color-primary);
-  border: 1px solid var(--color-outline);
+  border: 2px solid var(--color-outline);
 }
 
 .btn--text {
@@ -102,6 +102,7 @@
   will-change: scale;
 }
 
+.btn--elevated:not(:disabled):active,
 .btn--fab:not(:disabled):active {
   scale: 0.98;
 }

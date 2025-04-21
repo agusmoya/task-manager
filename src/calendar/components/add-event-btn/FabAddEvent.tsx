@@ -23,7 +23,7 @@ export const FabAddEvent = () => {
       endDate: addHours(selecetedDayDate, 2),
       notes: '',
       user: {
-        _id: 1,
+        id: 1,
         name: 'Natt'
       }
     }

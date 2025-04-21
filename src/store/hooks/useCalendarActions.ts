@@ -62,12 +62,10 @@ export const useCalendarActions = () => {
   }
 
   const startSavingEvent = async (calendarEvent: CalendarEvent) => {
-    console.log(calendarEvent)
-
-    if (calendarEvent._id) {
+    if (calendarEvent.id) {
       dispatch(onUpdateEvent({ ...calendarEvent }))
     } else {
-      dispatch(onAddNewEvent({ ...calendarEvent, _id: new Date().getTime().toString() }))
+      dispatch(onAddNewEvent({ ...calendarEvent, id: new Date().getTime().toString() }))
     }
   }
 

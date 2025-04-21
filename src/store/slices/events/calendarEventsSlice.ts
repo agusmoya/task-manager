@@ -14,13 +14,13 @@ export interface CalendarEventsState {
 const initialState: CalendarEventsState = {
   events: [
     {
-      _id: TODAY.getTime().toString(),
+      id: TODAY.getTime().toString(),
       title: 'Conference',
       startDate: TODAY,
       endDate: addHours(TODAY, 4),
       notes: 'Big conference for important people',
       user: {
-        _id: 1,
+        id: 1,
         name: 'Natt'
       }
     }
@@ -40,17 +40,14 @@ export const calendarEventsSlice = createSlice({
     },
     onUpdateEvent: (state, { payload }: PayloadAction<CalendarEvent>) => {
       state.events = state.events.map(event =>
-        event._id === payload._id ? payload : event
+        event.id === payload.id ? payload : event
       )
     },
     onDeleteEvent: (state, { payload }: PayloadAction<CalendarEvent>) => {
       state.events = state.events.filter(event =>
-        event._id !== payload._id
+        event.id !== payload.id
       )
     },
-    onLoadEvents: (state, { payload }: PayloadAction<CalendarEvent[]>) => {
-      state.events = payload
-    }
   }
 })
 
@@ -59,5 +56,5 @@ export const {
   onAddNewEvent,
   onUpdateEvent,
   onDeleteEvent,
-  onLoadEvents,
+
 } = calendarEventsSlice.actions

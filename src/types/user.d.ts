@@ -1,4 +1,4 @@
 export interface User {
-  _id: number
+  id: number
   name: string
 }

@@ -8,14 +8,15 @@
   /*.5rem = 8px | 1rem = 16px ...*/
   --body-font: "Roboto", sans-serif;
   --biggest-font-size: 1.75rem;
-  --h1-font-size: 1.5rem;
-  --h2-font-size: 1.3rem;
-  --h3-font-size: 1.2rem;
 
-  --text-lg: 1.1rem;
-  --text-md: 0.9rem;
-  --text-sm: 0.85rem;
-  --text-xs: 0.8rem;
+  --h1-font-size: 1.25rem;
+  --h2-font-size: 1.15rem;
+  --h3-font-size: 1.1rem;
+
+  --text-lg: 0.9rem;
+  --text-md: 0.85rem;
+  --text-sm: 0.8rem;
+  --text-xs: 0.75rem;
 
   --font-weight-bold: 700;
   --font-weight-medium: 500;

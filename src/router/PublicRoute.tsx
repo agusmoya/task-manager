@@ -14,7 +14,7 @@ export const PublicRoute = ({ children }: Props) => {
   const { status, checkAuthToken } = useAuthActions()
 
   useEffect(() => {
-    console.log(status)
+    // console.log(status)
     if (status === AUTH_STATUS.CHECKING) {
       checkAuthToken()
     }

@@ -31,9 +31,10 @@ export function Categories({ categories = [] }: Props) {
     }
   })
 
-  const filteredCategories = Object.values(organizedCategories).filter(
-    ({ name }) => name.toLowerCase().includes(search.toLowerCase())
-  )
+  const filteredCategories = Object.values(organizedCategories)
+    .filter(({ name }) =>
+      name.toLowerCase().includes(search.toLowerCase())
+    )
 
   const areCategoriesPresent = filteredCategories.length
 
@@ -41,11 +42,19 @@ export function Categories({ categories = [] }: Props) {
     <section className="categories section" id="categories">
       <div className="categories__container container">
         <header className="categories__header">
-          <h2 className="section__title">Categories</h2>
+          <div className="categories__header-content">
+            <h2 className="categories__title">Categories</h2>
+            <Link to='new-category' className="btn btn--outlined categories__card-new-button">
+              <span className="btn__state-layer"></span>
+              <span className="btn__content">
+                <PlusIcon />
+              </span>
+            </Link>
+          </div>
           <a>See all</a>
         </header>
         <ScrollableContainer
-          itemClass="category__item"
+          itemClass="categories__item"
           className={[
             'categories__list',
             !areCategoriesPresent && 'categories__list--no-result'
@@ -53,24 +62,27 @@ export function Categories({ categories = [] }: Props) {
         >
           <li
             key="newCategory"
-            className="category__item category__item--new-category"
+            className="categories__item categories__item--new-category"
           >
             <h3>New Category</h3>
-            <section className="category__card">
-              <Link to='/new-category'>
-                <PlusIcon className="category__card-new-icon" />
+            <div className="categories__card">
+              <Link to='new-category' className="btn btn--outlined categories__card-new-button">
+                <span className="btn__state-layer"></span>
+                <span className="btn__content">
+                  <PlusIcon />
+                </span>
               </Link>
-            </section>
+            </div>
           </li>
           {
             (filteredCategories.length > 0)
               ? filteredCategories.map(
                 ({ id, name, quantity }) => (
-                  <li className="category__item" key={id}>
-                    <section className="category__card">
+                  <li className="categories__item" key={id}>
+                    <div className="categories__card">
                       <h3 className="section__subtitle">{name}</h3>
                       <small>{quantity} task(s)</small>
-                    </section>
+                    </div>
                   </li>
                 ))
               : <span>No categories found...</span>
