@@ -1,3 +1,4 @@
+import { Button } from '../../../components/button/button.tsx'
 import { NextIcon, PreviousIcon } from '../../../components/icons/Icons.tsx'
 
 import './FabMonth.css'
@@ -13,14 +14,11 @@ export const FabMonth = ({ direction, onHandleClick }: FabMonthProps) => {
   }
 
   return (
-    <button
+    <Button
       className="btn btn--fab fab-month"
       onClick={handleClickNext}
     >
-      <span className="btn__state-layer"></span>
-      <span className="btn__content">
-        {direction === 'left' ? <PreviousIcon /> : <NextIcon />}
-      </span>
-    </button>
+      {direction === 'left' ? <PreviousIcon /> : <NextIcon />}
+    </Button>
   )
 }

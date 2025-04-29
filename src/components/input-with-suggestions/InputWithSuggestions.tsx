@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { type InputWithSuggestionsProps } from '../../types/input.d'
 
 import '../input/Input.css'
+import './inputWithSuggestions.css'
 
 
 export const InputWithSuggestions = ({
@@ -134,7 +135,7 @@ export const InputWithSuggestions = ({
           </ul>
         }
 
-        {loading && <span>Creating category...</span>}
+        {loading && <span>Loading...</span>}
         {
           backendError
           && <span id={`${name}-error`} className="input__error-message">
@@ -151,7 +152,7 @@ export const InputWithSuggestions = ({
         }
 
         {
-          !showSuggestions && hint && !touched
+          !showSuggestions && hint
           && (
             <span className="input__hint">
               Eg: {hint}

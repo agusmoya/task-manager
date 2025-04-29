@@ -1,4 +1,6 @@
+import { type CalendarEvent } from "./calendar-event.d"
 import { type Category } from "./category.d"
+import { type User } from "./user.d"
 
 export const TASK_STATUS = {
   PENDING: "pending",
@@ -8,25 +10,23 @@ export const TASK_STATUS = {
 } as const
 
 export interface Task {
-  id: string | undefined
+  id: string
   title: string
   status: (typeof TASK_STATUS)[keyof typeof TASK_STATUS]
+  creationDate: Date
   progress: number
   duration: number
-  category: Category | undefined
-  creationDate: Date
-  userId: string | undefined
+  category: Category
+  ownerUserId: string
+  participants: User[]
+  events: CalendarEvent[]
 }
 
 export interface TaskForm {
-  id: string,
-  category: string,
-  userId: string,
-  creationDate: Date,
-  title: "",
-  status: string,
-  progress: number,
-  duration: number,
+  title: string
+  category: string
+  events: CalendarEvent[]
+  participants: User[]
 }
 
 export interface TasksResponse {

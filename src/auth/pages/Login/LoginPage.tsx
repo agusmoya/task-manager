@@ -1,18 +1,11 @@
 import { Link } from "react-router-dom"
 
-import {
-  EmailIcon,
-  EyeIcon,
-  EyeOffIcon,
-  GoogleIcon
-} from "../../../components/icons/Icons.tsx"
+import { EmailIcon, EyeIcon, EyeOffIcon, GoogleIcon } from "../../../components/icons/Icons.tsx"
 import { Input } from '../../../components/input/Input.tsx'
+import { Button } from "../../../components/button/button.tsx"
 
-import {
-  loginFormFields,
-  loginFormValidations
-} from "../../../helpers/form-validations/getLoginFormValidations.ts"
-import { useForm } from '../../hooks/useForm.ts'
+import { loginFormFields, loginFormValidations } from "../../../helpers/form-validations/getLoginFormValidations.ts"
+import { useForm } from "../../../hooks/useForm.ts"
 import { useAuthActions } from "../../../store/hooks/useAuthActions.ts"
 
 
@@ -27,7 +20,8 @@ const LoginPage = () => {
     passwordValid,
     isFormValid,
     touchedFields,
-    onInputChange
+    onInputChange,
+    onBlurField,
   } = useForm(loginFormFields, loginFormValidations)
   const { startLogin, backendErrorMessage } = useAuthActions()
 
@@ -72,6 +66,7 @@ const LoginPage = () => {
             touched={touchedFields.email}
             finalStateIcon={EmailIcon}
             onChange={onInputChange}
+            onBlur={() => onBlurField('email')}
           />
 
           <Input
@@ -86,22 +81,23 @@ const LoginPage = () => {
             error={passwordValid}
             fieldValid={!!passwordValid}
             touched={touchedFields.password}
-            toggleShowInputButton
             initialStateIcon={EyeIcon}
             finalStateIcon={EyeOffIcon}
             onChange={onInputChange}
+            onBlur={() => onBlurField('password')}
           />
         </div>
 
         <a href="#" className="login__forgot">
           Forgot your password?
         </a>
-        <button type="submit" className="btn login__button">
-          <span className="btn__state-layer"></span>
-          <span className="btn__content">
-            Login
-          </span>
-        </button>
+        <Button
+          type="submit"
+          className="btn login__button"
+          disabled={!isFormValid}
+        >
+          Login
+        </Button>
       </form>
 
       <div className="login__social">

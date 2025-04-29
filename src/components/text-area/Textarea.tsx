@@ -18,6 +18,7 @@ export const Textarea = (
     rows = 4,
     cols,
     onChange,
+    onBlur,
     // autoResize = false,
   }: TextareaProps
 ) => {
@@ -38,6 +39,7 @@ export const Textarea = (
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          onBlur={onBlur}
           disabled={disabled}
           required={required}
           rows={rows}

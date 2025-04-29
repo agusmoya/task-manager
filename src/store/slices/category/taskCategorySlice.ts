@@ -10,7 +10,6 @@ interface CategoriesState {
   categories: Category[]
   loading: boolean
   backendErrorMessage: string | undefined
-
 }
 
 const initialState: CategoriesState = {
@@ -18,37 +17,6 @@ const initialState: CategoriesState = {
   loading: false,
   backendErrorMessage: undefined,
 }
-
-export const onFetchCategories = createAsyncThunk(
-  'categories/fetchCategories',
-  async (_, thunkAPI) => {
-    try {
-      const res = await todoApi.get('/category/all')
-      return res.data as Category[]
-    } catch (error) {
-      const err = error as AxiosError<{ message: string }>
-      return thunkAPI.rejectWithValue(err.response?.data?.message || 'Error al cargar categorías')
-    }
-  }
-)
-
-// Category, -> tipo que devuelve
-// string,   -> argumento que recibe
-// { rejectValue: string } -> tipo del error
-export const onCreateCategory = createAsyncThunk<Category, Category, { rejectValue: string }>(
-  'categories/createCategory',
-  async (category, thunkAPI) => {
-    try {
-      const res = await todoApi.post('/category/new', category)
-      return res.data as Category
-    } catch (error) {
-      console.log("Error creating cat.:", error);
-
-      const err = error as AxiosError<{ message: string }>
-      return thunkAPI.rejectWithValue(err.response?.data?.message || 'Error creating category.')
-    }
-  }
-)
 
 export const taskCategorySlice = createSlice({
   name: 'category',
@@ -101,6 +69,35 @@ export const taskCategorySlice = createSlice({
       })
   },
 })
+
+export const onFetchCategories = createAsyncThunk(
+  'categories/fetchCategories',
+  async (_, thunkAPI) => {
+    try {
+      const res = await todoApi.get('/category/all')
+      return res.data as Category[]
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>
+      return thunkAPI.rejectWithValue(err.response?.data?.message || 'Error al cargar categorías')
+    }
+  }
+)
+
+// Category, -> tipo que devuelve
+// string,   -> argumento que recibe
+// { rejectValue: string } -> tipo del error
+export const onCreateCategory = createAsyncThunk<Category, Category, { rejectValue: string }>(
+  'categories/createCategory',
+  async (category, thunkAPI) => {
+    try {
+      const res = await todoApi.post('/category/new', category)
+      return res.data as Category
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>
+      return thunkAPI.rejectWithValue(err.response?.data?.message || 'Error creating category.')
+    }
+  }
+)
 
 export const {
   onAddNewCategory,

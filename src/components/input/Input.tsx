@@ -23,10 +23,10 @@ export const Input = (
     fieldValid = false,
     autoComplete,
     touched = false,
-    toggleShowInputButton = null,
     initialStateIcon: InitialStateIcon = null,
     finalStateIcon: FinalStateIcon = null,
     onChange,
+    onBlur,
   }: InputProps) => {
 
   const [stateInput, setStateInput] = useState(false)
@@ -49,28 +49,29 @@ export const Input = (
           min={type === 'datetime-local' ? min : ''}
           max={type === 'datetime-local' ? max : ''}
           disabled={disabled}
-          onChange={onChange}
-          aria-describedby={
-            error && touched ? `${name}-error` : undefined
-          }
           className={[
             'input__field',
-            error && touched ? 'input__field--error' : '',
+            fieldValid && touched ? 'input__field--error' : '',
             disabled ? 'input__field--disabled' : '',
           ].filter(Boolean).join(' ')}
+          aria-describedby={
+            fieldValid && touched ? `${name}-error` : undefined
+          }
+          onChange={onChange}
+          onBlur={onBlur}
         />
         <label htmlFor={name} className="input__label">
           {label}
         </label>
         {
           /* For common input */
-          toggleShowInputButton
+          !InitialStateIcon
           && FinalStateIcon
           && <FinalStateIcon className="input__icon" />
         }
         {
           /* For password type input */
-          (InitialStateIcon && FinalStateIcon)
+          (type === 'password' && InitialStateIcon && FinalStateIcon)
           &&
           <button
             type="button"
@@ -87,17 +88,17 @@ export const Input = (
       </div>
       <div className="input__feedback">
         {
-          fieldValid && touched && (
-            <span
-              id={`${name}-error`}
-              className="input__error-message"
-            >
-              {error}
-            </span>
-          )
+          fieldValid && touched
+          &&
+          <span
+            id={`${name}-error`}
+            className="input__error-message"
+          >
+            {error}
+          </span>
         }
         {
-          hint && !error
+          hint
           && <span className='input__hint'>
             Eg: {hint}
           </span>

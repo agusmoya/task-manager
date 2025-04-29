@@ -1,8 +1,7 @@
 import axios from "axios"
 
 import { useAppDispatch, useAppSelector } from "./reduxStore.ts"
-import { clearErrorMessage, onChecking, onLogin, onLogout } from "../slices/auth/authSlice.ts"
-
+import { onClearErrorMessage, onChecking, onLogin, onLogout } from "../slices/auth/authSlice.ts"
 import todoApi from "../../api/taskManagerApi.ts"
 
 interface RegisterProps {
@@ -18,18 +17,33 @@ interface LoginProps {
 }
 
 export const useAuthActions = () => {
-  const { status, user, backendErrorMessage } = useAppSelector(state => state.auth)
   const dispatch = useAppDispatch()
+  const { status, user, backendErrorMessage } = useAppSelector(state => state.auth)
 
   const startLogin = async ({ email, password }: LoginProps) => {
     dispatch(onChecking())
     try {
       const { data } = await todoApi.post("/auth/login", { email, password })
-      saveTokenLocalStorage(data.token)
-      const { firstName, uid } = data
-      dispatch(onLogin({ firstName, uid }))
+      dispatch(onLogin({
+        uid: data.uid,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        accessToken: data.accessToken,
+      }))
     } catch (error) {
       manageError(error)
+    }
+  }
+
+  const startLogout = async () => {
+    try {
+      await todoApi.post('/auth/logout')
+    } finally {
+      localStorage.removeItem('breadcrumb')
+      localStorage.removeItem("token-init-time")
+      dispatch(onLogout('Session closed.'))
+      handleClearErrorMessage()
     }
   }
 
@@ -37,41 +51,27 @@ export const useAuthActions = () => {
     dispatch(onChecking())
     try {
       const { data } = await todoApi.post("/auth/register", { firstName, lastName, email, password })
-      saveTokenLocalStorage(data.token)
-      dispatch(onLogin({ firstName: data.firstName, uid: data.uid }))
+      dispatch(onLogin({
+        uid: data.uid,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        accessToken: data.token,
+      }))
     } catch (error) {
       manageError(error)
     }
   }
 
   const checkAuthToken = async () => {
-    const token = localStorage.getItem("token")
-    if (!token) {
-      dispatch(onLogout("Token credentials not found. Please, log in again."))
-      return
-    }
     try {
-      const { data } = await todoApi.get("/auth/renew")
-      saveTokenLocalStorage(data.token)
-      const { firstName, uid } = data
-      dispatch(onLogin({ firstName, uid }))
+      const { data } = await todoApi.post("/auth/refresh")
+      const { uid, firstName, lastName, email, accessToken } = data
+      dispatch(onLogin({ uid, firstName, lastName, email, accessToken }))
     } catch (error) {
-      dispatch(onLogout(`Token expired. Please, log in again.`))
-      console.error(`Error: ${error}`)
+      console.error("Error renewing token:", error)
+      dispatch(onLogout("Token expired or invalid. Please, log in again."))
     }
-  }
-
-  const saveTokenLocalStorage = (token: string) => {
-    if (!token) return
-    localStorage.setItem("token", token)
-    localStorage.setItem("token-init-date", new Date().getTime().toString())
-  }
-
-  const startLogout = () => {
-    localStorage.removeItem("token")
-    localStorage.removeItem("token-init-date")
-    dispatch(onLogout('Session closed.'))
-    handleClearErrorMessage()
   }
 
   const manageError = (responseError: unknown) => {
@@ -100,7 +100,7 @@ export const useAuthActions = () => {
 
   const handleClearErrorMessage = () => {
     setTimeout(() => {
-      dispatch(clearErrorMessage())
+      dispatch(onClearErrorMessage())
     }, 10000)
   }
 

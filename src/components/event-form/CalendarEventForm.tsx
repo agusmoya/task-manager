@@ -2,8 +2,9 @@ import { useEffect } from "react"
 
 import { Input } from "../input/Input.tsx"
 import { Textarea } from "../text-area/Textarea.tsx"
+import { Button } from "../button/button.tsx"
 
-import { useForm } from "../../auth/hooks/useForm.ts"
+import { useForm } from "../../hooks/useForm.ts"
 import { useCalendarActions } from "../../store/hooks/useCalendarActions.ts"
 import { useEventModalActions } from "../../store/hooks/useEventModalActions.ts"
 import {
@@ -14,6 +15,7 @@ import {
 
 
 import "./CalendarEventForm.css"
+import { TODAY } from "../../calendar/constants/constants.ts"
 
 
 export const CalendarEventForm = () => {
@@ -31,9 +33,10 @@ export const CalendarEventForm = () => {
     formState,
     setFormState,
     onInputChange,
+    onBlurField,
     onResetForm
   } = useForm(eventFormFields, eventFormValidations)
-  const { activeCalendarEvent, startSavingEvent } = useCalendarActions()
+  const { activeCalendarEvent, saveEventState } = useCalendarActions()
   const { closeModal } = useEventModalActions()
 
   useEffect(() => {
@@ -48,16 +51,17 @@ export const CalendarEventForm = () => {
   const handleEventSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!isFormValid) {
-      console.error('Form with errors')
-      return
+      return console.error('Form with errors')
     }
-    await startSavingEvent(formState)
+
+    await saveEventState(formState)
     onResetForm()
     closeModal()
   }
 
   const formattedStartDate = fromDateToDatetimeLocal(startDate)
   const formattedEndDate = fromDateToDatetimeLocal(endDate)
+  const formattedTodayDate = fromDateToDatetimeLocal(TODAY)
 
   return (
     <>
@@ -78,6 +82,7 @@ export const CalendarEventForm = () => {
           fieldValid={!!titleValid}
           touched={touchedFields.title}
           onChange={onInputChange}
+          onBlur={() => onBlurField('title')}
         />
 
         <Input
@@ -88,12 +93,13 @@ export const CalendarEventForm = () => {
           required
           placeholder=""
           value={formattedStartDate}
-          max={formattedEndDate}
+          min={formattedTodayDate}
           autoComplete="off"
           error={startDateValid}
           fieldValid={!!startDateValid}
           touched={touchedFields.endDate}
           onChange={onInputChange}
+          onBlur={() => onBlurField('startDate')}
         />
 
         <Input
@@ -110,6 +116,7 @@ export const CalendarEventForm = () => {
           fieldValid={!!endDateValid}
           touched={touchedFields.endDate}
           onChange={onInputChange}
+          onBlur={() => onBlurField('endDate')}
         />
 
         <Textarea
@@ -123,24 +130,23 @@ export const CalendarEventForm = () => {
           error={notesValid}
           touched={touchedFields.notes}
           autoResize={true}
+          onBlur={() => onBlurField('notes')}
         />
         <footer className="event__form-footer">
-          <button
+          <Button
             type="submit"
             className="btn btn--filled event__form-button"
             disabled={!isFormValid}
           >
-            <span className="btn__state-layer"></span>
-            <span className="btn__content">Create</span>
-          </button>
-          <button
+            Create
+          </Button>
+          <Button
             type="reset"
             className="btn btn--text event__form-button"
             onClick={onResetForm}
           >
-            <span className="btn__state-layer"></span>
-            <span className="btn__content">Reset</span>
-          </button>
+            Reset
+          </Button>
         </footer>
       </form>
     </>

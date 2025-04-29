@@ -1,3 +1,4 @@
+import { Button } from "../../../components/button/button.tsx";
 import { ControlIcon, SearchIcon } from "../../../components/icons/Icons.tsx";
 
 import { useSearch } from "../../hooks/useSearch.ts";
@@ -35,9 +36,12 @@ export const Search: React.FC = () => {
             placeholder="Search categories or tasks..."
           />
         </form>
-        <button className="search__button-settings">
+        <Button
+          type="submit"
+          className="btn btn--filled search__button-settings"
+        >
           <ControlIcon className="search__icon-settings" />
-        </button>
+        </Button>
       </div>
     </section>
   )

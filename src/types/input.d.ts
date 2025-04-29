@@ -14,10 +14,10 @@ export type InputProps = {
   disabled?: boolean
   fieldValid: boolean
   autoComplete: string
-  toggleShowInputButton?: boolean | null
   initialStateIcon?: React.ElementType | null
   finalStateIcon?: React.ElementType | null
-  onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void
+  onChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  onBlur: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 }
 
 interface InputWithSuggestionsProps {
@@ -35,9 +35,10 @@ interface InputWithSuggestionsProps {
   autoComplete?: string
   suggestionData: string[]
   allowCreateIfNotExists: boolean
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
   onSuggestionClick?: (value: string) => void
   onCreateNew?: (value: string) => void
   loading?: boolean
   backendError?: string | null
+  onBlur?: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 }

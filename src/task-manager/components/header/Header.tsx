@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
 import { Dropdown } from '../../../components/dropdown/Dropdown.tsx'
-import { ButtonTheme } from '../button-theme/ButtonTheme.tsx'
+import { ButtonTheme } from '../../../components/button-theme/ButtonTheme.tsx'
 
 import { type Tasks } from "../../../types/task.d"
 

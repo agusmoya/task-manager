@@ -2,8 +2,9 @@ import { Link } from "react-router-dom"
 
 import { CardIdIcon, EmailIcon, EyeIcon, EyeOffIcon } from "../../../components/icons/Icons.tsx"
 import { Input } from "../../../components/input/Input.tsx"
+import { Button } from "../../../components/button/button.tsx"
 
-import { useForm } from "../../hooks/useForm.ts"
+import { useForm } from "../../../hooks/useForm.ts"
 import { useAuthActions } from "../../../store/hooks/useAuthActions.ts"
 import {
   registerFormFields,
@@ -24,8 +25,10 @@ const RegisterPage = () => {
     emailValid,
     password,
     passwordValid,
+    isFormValid,
     touchedFields,
-    onInputChange
+    onInputChange,
+    onBlurField,
   } = useForm(registerFormFields, registerFormValidations)
   const { startRegister, backendErrorMessage } = useAuthActions()
 
@@ -70,6 +73,7 @@ const RegisterPage = () => {
             touched={touchedFields.firstName}
             finalStateIcon={CardIdIcon}
             onChange={onInputChange}
+            onBlur={() => onBlurField("firstName")}
           />
 
           <Input
@@ -86,6 +90,7 @@ const RegisterPage = () => {
             touched={touchedFields.lastName}
             finalStateIcon={CardIdIcon}
             onChange={onInputChange}
+            onBlur={() => onBlurField("lastName")}
           />
         </div>
 
@@ -104,6 +109,7 @@ const RegisterPage = () => {
           touched={touchedFields.email}
           finalStateIcon={EmailIcon}
           onChange={onInputChange}
+          onBlur={() => onBlurField("email")}
         />
 
         <Input
@@ -118,13 +124,18 @@ const RegisterPage = () => {
           error={passwordValid}
           fieldValid={!!passwordValid}
           touched={touchedFields.password}
-          toggleShowInputButton
           initialStateIcon={EyeIcon}
           finalStateIcon={EyeOffIcon}
           onChange={onInputChange}
+          onBlur={() => onBlurField("password")}
         />
-
-        <button className="btn btn--filled register__button">Create account</button>
+        <Button
+          type="submit"
+          className="btn btn--filled register__button"
+          disabled={!isFormValid}
+        >
+          Create account
+        </Button>
       </form>
 
       <p className="login__switch">

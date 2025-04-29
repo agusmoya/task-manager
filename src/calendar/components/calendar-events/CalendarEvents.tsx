@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 
 import { DeleteIcon, EditIcon } from '../../../components/icons/Icons.tsx'
+import { Button } from '../../../components/button/button.tsx'
 
 import { type CalendarEvent } from '../../../types/calendar-event.d'
 
 import { MONTHS } from '../../constants/constants.ts'
-
 import { useCalendarActions } from '../../../store/hooks/useCalendarActions.ts'
 import { useEventModalActions } from '../../../store/hooks/useEventModalActions.ts'
 import { isSameDay } from '../../utils/validateManagmentDate.ts'
@@ -22,7 +22,7 @@ export const CalendarEvents = () => {
     year,
     activeCalendarDay,
     events,
-    startDeletingEvent,
+    deleteEventState,
     setActiveEvent
   } = useCalendarActions()
 
@@ -38,7 +38,7 @@ export const CalendarEvents = () => {
   const eventDate = `${day} ${MONTHS[month]} ${year}`
 
   const handleClickDeleteEvent = (event: CalendarEvent) => {
-    startDeletingEvent(event)
+    deleteEventState(event)
   }
 
   const handleClickEditEvent = (event: CalendarEvent) => {
@@ -77,12 +77,13 @@ export const CalendarEvents = () => {
                     const { id, title } = event
                     return (
                       <article className="calendar-events__item" key={id}>
-                        <button
-                          className="calendar-events__item-edit-btn"
+                        <Button
+                          type="button"
+                          className="btn btn--text calendar-events__item-edit-btn"
                           onClick={() => handleClickEditEvent(event)}
                         >
                           <EditIcon size={22} />
-                        </button>
+                        </Button>
                         <div className="calendar-events__item-info">
                           <h3 className="calendar-events__item-title">
                             {title}
@@ -91,12 +92,13 @@ export const CalendarEvents = () => {
                             {formatEventTime(event)}
                           </span>
                         </div>
-                        <button
-                          className="calendar-events__item-delete-btn"
+                        <Button
+                          type="button"
+                          className="btn btn--text calendar-events__item-delete-btn"
                           onClick={() => handleClickDeleteEvent(event)}
                         >
                           <DeleteIcon size={22} />
-                        </button>
+                        </Button>
                       </article>
                     )
                   })

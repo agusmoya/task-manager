@@ -1,17 +1,18 @@
 import { useEffect, useRef } from "react"
 
 import { CloseIcon } from '../icons/Icons.tsx'
+import { Button } from "../button/button.tsx"
 
 import { useEventModalActions } from "../../store/hooks/useEventModalActions.ts"
 
 import './Modal.css'
 
-type CalendarModalProps = {
+type ModalProps = {
   title: string
   children: React.ReactNode
 }
 
-export const CalendarModal = ({ title, children }: CalendarModalProps) => {
+export const Modal = ({ title, children }: ModalProps) => {
   const modalRef = useRef<HTMLDialogElement>(null)
   const { isModalOpen, closeModal } = useEventModalActions()
 
@@ -38,16 +39,14 @@ export const CalendarModal = ({ title, children }: CalendarModalProps) => {
       <div className="modal__content">
         <h1 className="modal__title">{title}</h1>
         {children}
-        <button
+        <Button
+          type="button"
           aria-label="Close"
           className="btn btn--icon modal__button-close"
           onClick={closeModal}
         >
-          <span className="btn__state-layer"></span>
-          <span className="btn__content">
-            <CloseIcon aria-hidden="true" focusable="false" />
-          </span>
-        </button>
+          <CloseIcon aria-hidden="true" focusable="false" />
+        </Button>
       </div>
     </dialog>
   )

@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react'
+import { Suspense } from 'react'
 import { Navigate } from 'react-router-dom'
 
 import { Loader } from '../components/loader-page/Loader.tsx'
@@ -11,15 +11,7 @@ interface PrivateRouteProps {
 }
 
 export const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  const { status, checkAuthToken } = useAuthActions()
-
-  useEffect(() => {
-    // console.log(status)
-    if (status === AUTH_STATUS.CHECKING) {
-      checkAuthToken()
-    }
-  }, [status, checkAuthToken])
-
+  const { status } = useAuthActions()
 
   if (status === AUTH_STATUS.CHECKING) {
     return <Loader />

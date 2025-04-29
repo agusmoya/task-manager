@@ -1,4 +1,4 @@
-import { FormValidations } from "../../auth/hooks/useForm.ts"
+import { FormValidations } from "../../hooks/useForm.ts"
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 

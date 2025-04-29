@@ -5,11 +5,13 @@ import { calendarDaysSlice } from "./slices/calendar/calendarDaysSlice.ts"
 import { calendarEventsSlice } from "./slices/events/calendarEventsSlice.ts"
 import { eventModalSlice } from "./slices/ui/uiEventModalSlice.ts"
 import { taskCategorySlice } from "./slices/category/taskCategorySlice.ts"
+import { userSlice } from "./slices/users/userSlice.ts"
 
 
 export const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
+    users: userSlice.reducer,
     calendarDays: calendarDaysSlice.reducer,
     calendarEvents: calendarEventsSlice.reducer,
     taskCategory: taskCategorySlice.reducer,

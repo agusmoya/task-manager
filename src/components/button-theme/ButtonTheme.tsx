@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
-import { MoonIcon, SunIcon } from "../../../components/icons/Icons.tsx"
+import { MoonIcon, SunIcon } from "../icons/Icons.tsx"
+import { Button } from "../button/button.tsx"
 
 import "./ButtonTheme.css"
 
@@ -24,18 +25,17 @@ export const ButtonTheme = () => {
   }
 
   return (
-    <button
-      className="btn btn--icon button-theme"
+    <Button
       id="theme-button"
+      className="btn btn--icon button-theme"
       onClick={toggleTheme}
     >
-      <span className="btn__state-layer"></span>
       <span className={
         `btn__content button-theme__icon
-       ${theme === lightTheme ? "light" : "dark"}`
+        ${theme === lightTheme ? "light" : "dark"}`
       }>
         {theme === lightTheme ? <MoonIcon /> : <SunIcon />}
       </span>
-    </button>
+    </Button>
   )
 }

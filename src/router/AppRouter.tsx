@@ -1,3 +1,5 @@
+import { useEffect } from "react"
+
 import { Navigate, Route, Routes } from "react-router-dom"
 
 import { AuthLayout } from "../auth/layout/AuthLayout.tsx"
@@ -8,8 +10,26 @@ import { PublicRoute } from "./PublicRoute.tsx"
 import { PrivateRoute } from "./PrivateRoute.tsx"
 import { NotFoundPage } from "./404Page/NotFoundPage.tsx"
 
+import { AUTH_STATUS } from "../auth/constants/status.ts"
+import { useAuthActions } from "../store/hooks/useAuthActions.ts"
+import { Loader } from "../components/loader-page/Loader.tsx"
+
 
 export const AppRouter = () => {
+  const { status, checkAuthToken } = useAuthActions()
+
+  useEffect(() => {
+    if (status === AUTH_STATUS.CHECKING) {
+      checkAuthToken()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status])
+
+  if (status === AUTH_STATUS.CHECKING) {
+    return <Loader />
+  }
+
+
   return (
     // ROUTES -> con <Routes />
     <Routes>
@@ -42,13 +62,3 @@ export const AppRouter = () => {
     </Routes>
   )
 }
-
-// TODO: Find out how to manipulate the location to make animated transitions between pages.
-// ROUTES -> con <Outlet />
-// For Animation pages managment
-// <Route path="/auth" element={<PublicRoute><AuthLayout /></PublicRoute>}>
-//   <Route index element={<Navigate to="/auth/login" replace />} />
-//   <Route path="login" element={<LoginPage />} />
-//   <Route path="register" element={<RegisterPage />} />
-//   <Route path="*" element={<Navigate to="/auth/login" replace />} />
-// </Route>

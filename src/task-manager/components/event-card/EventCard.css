@@ -1,0 +1,100 @@
+.event-card {
+  background-color: var(--color-primary-container);
+  border-radius: var(--spacing-3);
+  padding: var(--spacing-4);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-outline-variant);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+
+  animation: fadeInUp 0.3s ease forwards;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.event-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.event-card__title {
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-on-surface);
+}
+
+.event-card__time {
+  font-size: var(--text-sm);
+  color: var(--color-on-surface);
+}
+
+.event-card__notes {
+  font-size: var(--text-sm);
+  color: var(--color-on-surface);
+  line-height: 1.5;
+}
+
+.event-card:hover {
+  box-shadow: var(--elevation-3);
+  transform: translateY(-2px);
+}
+
+.event-card__actions {
+  position: absolute;
+  top: var(--spacing-3);
+  right: var(--spacing-3);
+  display: flex;
+  gap: var(--spacing-2);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: var(--z-tooltip);
+}
+
+.event-card__btn {
+  padding: var(--spacing-2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--elevation-1);
+}
+
+.event-card__btn--edit {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.event-card__btn--delete {
+  background-color: var(--color-secondary);
+  color: var(--color-on-secondary);
+}
+
+.event-card__content {
+  transition: filter 0.2s ease;
+}
+
+.event-card:hover .event-card__actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.event-card:hover .event-card__header,
+.event-card:hover .event-card__content {
+  filter: blur(1px) brightness(0.8);
+}

@@ -4,7 +4,7 @@ export interface Category {
 }
 
 export interface CountingCategories {
-  id: string
+  id?: string
   name: string
   quantity: number
 }

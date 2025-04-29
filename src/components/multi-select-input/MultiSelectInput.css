@@ -1,0 +1,94 @@
+.multi-select {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  font-family: var(--body-font);
+  font-size: var(--text-md);
+  color: var(--color-on-surface);
+}
+
+.multi-select-label {
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-medium);
+}
+
+.multi-select-search {
+  padding: var(--spacing-2);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.5rem;
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  font-size: var(--text-md);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.multi-select-search:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-active);
+}
+
+.multi-select-selected {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+}
+
+.multi-select-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-1) var(--spacing-2);
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+  border-radius: 1rem;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
+.multi-select-chip:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.multi-select-chip--none {
+  color: var(--color-outline);
+  font-size: var(--text-sm);
+}
+
+.multi-select-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  max-height: 200px;
+  overflow-y: auto;
+  padding: var(--spacing-2);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.5rem;
+  box-shadow: var(--elevation-1);
+}
+
+.multi-select-option {
+  padding: var(--spacing-2);
+  border-radius: 0.375rem;
+  font-size: var(--text-md);
+  color: var(--color-on-surface);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.multi-select-option:hover,
+.multi-select-option:focus {
+  background-color: var(--color-secondary);
+  outline: none;
+}
+
+.multi-select-input__feedback {
+  min-height: 1rem;
+}
+
+.multi-select-input__error-message {
+  color: var(--color-error);
+  font-size: var(--text-sm);
+}

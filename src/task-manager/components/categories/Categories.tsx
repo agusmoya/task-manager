@@ -11,7 +11,7 @@ import { useSearch } from "../../hooks/useSearch.ts"
 import "./Categories.css"
 
 interface Props {
-  categories: Category[];
+  categories: Category[]
 }
 
 export function Categories({ categories = [] }: Props) {

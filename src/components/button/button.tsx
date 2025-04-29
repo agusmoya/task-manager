@@ -26,7 +26,10 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <button className={classNames} disabled={disabled} {...props}>
-      {children}
+      <span className="btn__state-layer"></span>
+      <span className="btn__content">
+        {children}
+      </span>
     </button>
   )
 }

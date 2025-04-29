@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
-import { type CalendarDay } from '../../../types/calendar-day.d'
+import { CALENDAR_DAY_TYPE, type CalendarDay } from '../../../types/calendar-day.d'
 import { type CalendarEvent } from '../../../types/calendar-event.d'
 
 import { WEEKDAYS, TODAY } from '../../../calendar/constants/constants.ts'
@@ -8,13 +8,21 @@ import { getPreviousDaysMonth } from '../../../calendar/utils/getPrevDaysMonth.t
 import { getNextDaysMonth } from '../../../calendar/utils/getNextDaysMonth.ts'
 import { getCurrentDaysMonth } from '../../../calendar/utils/getCurrentDaysMonth.ts'
 
+const calendarDay: CalendarDay = {
+  day: TODAY.getDate(),
+  month: TODAY.getMonth(),
+  year: TODAY.getFullYear(),
+  type: CALENDAR_DAY_TYPE.CURRENT,
+  dayName: 'Monday'
+}
+
 export interface CalendarDaysState {
   today: Date
   weekDays: string[]
   month: number
   year: number
   calendarDays: CalendarDay[]
-  activeCalendarDay: CalendarDay | undefined
+  activeCalendarDay: CalendarDay
   activeCalendarEvent: CalendarEvent | undefined
 }
 
@@ -24,7 +32,7 @@ const initialState: CalendarDaysState = {
   month: TODAY.getMonth(),
   year: TODAY.getFullYear(),
   calendarDays: [],
-  activeCalendarDay: undefined,
+  activeCalendarDay: calendarDay,
   activeCalendarEvent: undefined,
 }
 
@@ -70,7 +78,7 @@ export const calendarDaysSlice = createSlice({
         state.month -= 1
       }
     },
-    onSetActiveCalendarDay: (state, { payload }: PayloadAction<CalendarDay | undefined>) => {
+    onSetActiveCalendarDay: (state, { payload }: PayloadAction<CalendarDay>) => {
       state.activeCalendarDay = payload
     },
   },

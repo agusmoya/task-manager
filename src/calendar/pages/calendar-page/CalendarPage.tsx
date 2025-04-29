@@ -1,6 +1,6 @@
 import { CalendarEvents } from "../../components/calendar-events/CalendarEvents.tsx"
 import { CalendarGridDays } from "../../components/calendar-grid-days/CalendarGridDays.tsx"
-import { CalendarModal } from "../../../components/modal/Modal.tsx"
+import { Modal } from "../../../components/modal/Modal.tsx"
 import { CalendarEventForm } from "../../../components/event-form/CalendarEventForm.tsx";
 import { FabAddEvent } from "../../components/add-event-btn/FabAddEvent.tsx"
 
@@ -13,9 +13,9 @@ const CalendarPage = () => {
     <>
       <CalendarGridDays />
       <FabAddEvent />
-      <CalendarModal title="New Event">
+      <Modal title="New Event">
         <CalendarEventForm />
-      </CalendarModal>
+      </Modal>
       <CalendarEvents />
     </>
   )

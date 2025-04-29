@@ -15,4 +15,5 @@ export interface TextareaProps {
   rows?: number
   cols?: number
   onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void
+  onBlur: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 }

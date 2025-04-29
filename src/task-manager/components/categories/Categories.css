@@ -15,8 +15,7 @@
   display: flex;
   gap: var(--spacing-2);
   min-height: 200px;
-  overflow-x: auto;
-  padding-bottom: var(--spacing-2);
+  overflow-x: hidden;
 }
 
 .categories__list--no-result {
@@ -60,6 +59,6 @@
   border-radius: 50%;
 }
 
-.categories__list--no-result .category__item--new-category {
+.categories__list--no-result .categories__item--new-category {
   display: none;
 }

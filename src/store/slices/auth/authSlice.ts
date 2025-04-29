@@ -1,22 +1,26 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
-import { AUTH_STATUS } from '../../../auth/constants/status.ts';
+import { AUTH_STATUS } from '../../../auth/constants/status.ts'
 
 
 export interface LoginUserResponse {
-  firstName: string
   uid: string
+  firstName: string
+  lastName: string
+  email: string
 }
 
 export interface AuthState {
   status: string
   user: LoginUserResponse | undefined
+  accessToken: string | undefined
   backendErrorMessage: string | undefined
 }
 
 const initialState: AuthState = {
   status: AUTH_STATUS.CHECKING,
   user: undefined,
+  accessToken: undefined,
   backendErrorMessage: undefined,
 }
 
@@ -25,24 +29,30 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     onChecking: (state) => {
-      state.status = AUTH_STATUS.CHECKING
       state.user = undefined
       state.backendErrorMessage = undefined
+      state.status = AUTH_STATUS.CHECKING
     },
-    onLogin: (state, { payload }: PayloadAction<LoginUserResponse>) => {
-      state.status = AUTH_STATUS.AUTHENTICATED
-      state.user = payload
+    onLogin: (state, { payload }: PayloadAction<LoginUserResponse & { accessToken: string }>) => {
+      state.user = {
+        uid: payload.uid,
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        email: payload.email,
+      }
+      state.accessToken = payload.accessToken
       state.backendErrorMessage = undefined
+      state.status = AUTH_STATUS.AUTHENTICATED
     },
     onLogout: (state, { payload }: PayloadAction<string | undefined>) => {
-      state.status = AUTH_STATUS.NOT_AUTHENTICATED
       state.user = undefined
+      state.accessToken = undefined
       state.backendErrorMessage = payload
-      localStorage.removeItem('breadcrumb')
+      state.status = AUTH_STATUS.NOT_AUTHENTICATED
     },
-    clearErrorMessage: (state) => {
+    onClearErrorMessage: (state) => {
       state.backendErrorMessage = undefined
-    }
+    },
   },
 })
 
@@ -51,6 +61,6 @@ export const {
   onChecking,
   onLogin,
   onLogout,
-  clearErrorMessage,
+  onClearErrorMessage,
 
 } = authSlice.actions

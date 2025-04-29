@@ -1,3 +1,6 @@
+import { type CalendarEvent } from "../../types/calendar-event.d"
+import { type CalendarDay } from "../../types/calendar-day.d"
+
 import { useAppDispatch, useAppSelector } from "./reduxStore.ts"
 import {
   onGenerateCalendar,
@@ -14,8 +17,6 @@ import {
   onSetActiveEvent,
 } from "../slices/events/calendarEventsSlice.ts"
 
-import { type CalendarEvent } from "../../types/calendar-event"
-import { type CalendarDay } from "../../types/calendar-day"
 
 export const useCalendarActions = () => {
   const dispatch = useAppDispatch()
@@ -57,11 +58,11 @@ export const useCalendarActions = () => {
     dispatch(onSetActiveEvent(event))
   }
 
-  const setActiveCalendarDay = (activeCalendarDay: CalendarDay | undefined) => {
+  const setActiveCalendarDay = (activeCalendarDay: CalendarDay) => {
     dispatch(onSetActiveCalendarDay(activeCalendarDay))
   }
 
-  const startSavingEvent = async (calendarEvent: CalendarEvent) => {
+  const saveEventState = async (calendarEvent: CalendarEvent) => {
     if (calendarEvent.id) {
       dispatch(onUpdateEvent({ ...calendarEvent }))
     } else {
@@ -69,7 +70,7 @@ export const useCalendarActions = () => {
     }
   }
 
-  const startDeletingEvent = async (calendarEvent: CalendarEvent) => {
+  const deleteEventState = async (calendarEvent: CalendarEvent) => {
     dispatch(onDeleteEvent(calendarEvent))
   }
 
@@ -93,7 +94,7 @@ export const useCalendarActions = () => {
     getPreviousMonth,
     setActiveCalendarDay,
     setActiveEvent,
-    startSavingEvent,
-    startDeletingEvent
+    saveEventState,
+    deleteEventState
   }
 }

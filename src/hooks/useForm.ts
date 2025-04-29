@@ -2,11 +2,9 @@ import { useEffect, useMemo, useState } from 'react'
 
 // Tipado de la función de validación y las validaciones en general
 type ValidationFunction<T, K extends keyof T> = (value: T[K], formState: T) => boolean
-// type ValidationFunction<T> = (value: T[keyof T]) => boolean
 
 export type FormValidations<T> = {
   [K in keyof T]?: Array<[ValidationFunction<T, K>, string]>
-  // [K in keyof T]?: Array<[ValidationFunction<T>, string]>
 }
 
 // Estado de validaciones: Cada campo se transforma en campoValid que puede ser string o null
@@ -15,24 +13,28 @@ type ValidationState<T> = {
 }
 
 export const useForm = <T extends object>(
-  // export const useForm = <T extends Record<string, unknown>>(
   initialForm: T,
   formValidations: FormValidations<T> = {}
 ) => {
-  const [formState, setFormState] = useState<T>(initialForm)
+  // const [formState, setFormState] = useState<T>(initialForm)
+  // const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({})
+  const initialStateForm = {
+    values: initialForm,
+    touched: {},
+  }
   const [formValidation, setFormValidation] = useState<ValidationState<T>>({} as ValidationState<T>)
-  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({})
+  //? ✅ Unificamos formState y touchedFields
+  const [formState, setFormState] = useState<{ values: T, touched: Record<string, boolean> }>(initialStateForm)
 
-  //? Cada vez que cambia el formState, volvemos a crear las validaciones
+  //? Recalculamos validaciones cuando cambia el formState
   useEffect(() => {
     createValidators()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formState])
+  }, [formState.values])
 
   //? Si cambian los valores iniciales, reseteamos el formState
   useEffect(() => {
     onResetForm()
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialForm])
 
@@ -44,22 +46,44 @@ export const useForm = <T extends object>(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = event.target
-    setFormState(
-      (prevState) => ({
-        ...prevState,
-        [name]: value
-      }))
 
-    setTouchedFields((prevState) => ({
-      ...prevState,
-      [name]: true,
+    setFormState((prev) => ({
+      values: {
+        ...prev.values,
+        [name]: value,
+      },
+      touched: {
+        ...prev.touched,
+        [name]: false, // TODO always false
+      },
     }))
   }
 
-  const onResetForm = () => {
-    setFormState(initialForm)
-    setTouchedFields({})
+  const onCustomChange = <K extends keyof T>(name: K, value: T[K]) => {
+    setFormState((prev) => ({
+      values: {
+        ...prev.values,
+        [name]: value,
+      },
+      touched: {
+        ...prev.touched,
+        [name]: false, // TODO always false
+      },
+    }))
   }
+
+  // TODO::: Touched input only came true when user click out of it. (onBlur)
+  const onBlurField = (name: string) => {
+    setFormState((prev) => ({
+      ...prev,
+      touched: {
+        ...prev.touched,
+        [name]: true,
+      },
+    }))
+  }
+
+  const onResetForm = () => setFormState(initialStateForm)
 
   // Crea los mensajes de validación según el estado actual del formulario
   const createValidators = () => {
@@ -67,15 +91,14 @@ export const useForm = <T extends object>(
     const formCheckedValues: Record<string, string | null> = {}
 
     for (const formField of Object.keys(formValidations) as Array<keyof T>) {
-      const validations = formValidations[formField]!
-      const fieldValue = formState[formField]
+      const validations = formValidations[formField]
+      if (!validations) continue
+
+      const fieldValue = formState.values[formField]
       // ✅ Esto fuerza el nombre del campo a la key del ValidationState<T>
       const validationKey = `${String(formField)}Valid` as keyof ValidationState<T>
       // ✅ Ahora asignamos null o string (según lo que diga ValidationState<T>)
-
-      const firstError = validations.find(([fn]) => fn(fieldValue, formState))
-      // const firstError = validations.find(([fn]) => fn(fieldValue))
-
+      const firstError = validations.find(([fn]) => fn(fieldValue, formState.values))
       formCheckedValues[validationKey] = firstError ? firstError[1] : null
     }
 
@@ -83,13 +106,15 @@ export const useForm = <T extends object>(
   }
 
   return {
-    ...formState,
+    ...formState.values,
     ...formValidation,
-    formState,
-    touchedFields,
+    formState: formState.values,
+    touchedFields: formState.touched,
     isFormValid,
-    setFormState,
+    setFormState: (newState: T) => setFormState((prev) => ({ ...prev, values: newState })),
     onInputChange,
+    onCustomChange,
+    onBlurField,
     onResetForm,
   }
 }

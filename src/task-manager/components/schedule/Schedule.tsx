@@ -3,6 +3,7 @@ import { Dayjs } from 'dayjs';
 import { PhoneIcon } from '../../../components/icons/Icons.tsx';
 
 import './Schedule.css';
+import { Button } from '../../../components/button/button.tsx';
 
 const userImages = [
   "/images/members/user-2.webp",
@@ -43,9 +44,12 @@ export const Schedule = ({ today }: Props) => {
               ))}
               <span className="calendar__members__avatars--more">+1</span>
             </div>
-            <button className='calendar__icon-btn'>
+            <Button
+              type="submit"
+              className="btn btn--filled calendar__icon-btn"
+            >
               <PhoneIcon className='calendar__icon' />
-            </button>
+            </Button>
           </div>
           <h3>Title task</h3>
         </article>

@@ -10,7 +10,6 @@ import './RootLayout.css'
 
 
 export const RootLayout = () => {
-
   const {
     displayLocation,
     transitionPage,

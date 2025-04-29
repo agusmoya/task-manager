@@ -1,8 +1,9 @@
 import { useEffect } from "react"
 
 import { FabMonth } from "../fab-month/FabMonth.tsx"
+import { Button } from "../../../components/button/button.tsx"
 
-import { type CalendarDay } from "../../../types/calendar-day"
+import { type CalendarDay } from "../../../types/calendar-day.d"
 import { type CalendarEvent } from "../../../types/calendar-event.d"
 
 import { MONTHS } from "../../constants/constants.ts"
@@ -60,9 +61,13 @@ export const CalendarGridDays = () => {
     <div className="calendar-wrapper">
 
       <div className="calendar-wrapper__today">
-        <button type="button" className="calendar-wrapper__today-button" onClick={handleClickGoToday}>
+        <Button
+          type="button"
+          className="btn btn--text calendar-wrapper__today-button"
+          onClick={handleClickGoToday}
+        >
           {currentDate()}
-        </button>
+        </Button>
       </div>
 
       <div className="calendar-wrapper__month">

@@ -7,7 +7,7 @@ export interface CalendarEvent {
   endDate: Date
   notes: string
   taskId?: string
-  user?: User
+  createdBy?: User
 }
 
 export type EventId = Pick<CalendarEvent, "id">

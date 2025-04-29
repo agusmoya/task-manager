@@ -4,14 +4,14 @@ import dayjs from "dayjs"
 import { type CalendarEvent } from "../../types/calendar-event.d"
 
 import { TODAY } from "../../calendar/constants/constants.ts"
-import { FormValidations } from "../../auth/hooks/useForm.ts"
+import { FormValidations } from "../../hooks/useForm.ts"
 
 
 export const eventFormFields: CalendarEvent = {
   title: "",
   startDate: TODAY,
-  endDate: addHours(TODAY, 1),
-  notes: "",
+  endDate: addHours(TODAY, 3),
+  notes: ""
 }
 export const eventFormValidations: FormValidations<typeof eventFormFields> = {
   title: [

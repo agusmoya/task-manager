@@ -15,13 +15,29 @@ html {
 textarea,
 input {
   border: none;
-  outline: 2px solid var(--color-surface);
+  outline: none;
   background: none;
   padding: 0;
   margin: 0;
-  font: inherit; /* hereda fuente del body */
-  color: inherit;
-  box-sizing: border-box;
+}
+
+/* hidden default background-color provided for browser */
+/* Chrome, Safari, Edge */
+input:-webkit-autofill {
+  border: none !important;
+  outline: none !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--color-surface-variant) inset !important;
+  box-shadow: 0 0 0 1000px var(--color-surface-variant) inset !important;
+  -webkit-text-fill-color: var(--color-on-surface) !important;
+  transition: background-color 9999s ease-in-out, color 9999s ease-in-out !important;
+  transition: background-color 6000s, color 6000s, box-shadow 6000s;
+}
+
+/* Firefox */
+input:-moz-autofill {
+  box-shadow: none;
+  -moz-text-fill-color: var(--color-on-surface);
+  background-color: transparent;
 }
 
 body,
@@ -35,6 +51,7 @@ textarea {
 body {
   background-color: var(--color-surface);
   color: var(--color-on-surface);
+  overflow: hidden;
 }
 
 image {
