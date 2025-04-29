@@ -55,7 +55,7 @@ todoApi.interceptors.response.use(
     const originalRequest = error.config
 
     // Verifica si hay un error de red o CORS
-    if (!error.response || !originalRequest._retry) {
+    if (!error.response || originalRequest._retry) {
       console.error('Network/CORS error:', error)
       return Promise.reject(error)
     }
