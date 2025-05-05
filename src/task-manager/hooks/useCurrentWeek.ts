@@ -1,7 +1,9 @@
-import dayjs, { Dayjs } from 'dayjs';
+import { useEffect, useMemo, useState } from 'react'
 
-import { WeekDay } from '../../types/task';
-import { useEffect, useMemo, useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs'
+
+import { type WeekDay } from '../../types/week-day.d'
+
 
 interface Props {
   currentWeek: WeekDay[]
@@ -14,7 +16,7 @@ export const useCurrentWeek = (): Props => {
   // ⏰ Update 'today' to change the day (+ 1000 ms)
   useEffect(() => {
     const now = dayjs();
-    const msUntilNextDay = now.endOf("day").diff(now) + 1000;
+    const msUntilNextDay = now.endOf("day").diff(now) + 1000
 
     const timeout = setTimeout(() => {
       setToday(dayjs()); // Se actualiza justo al cambiar de día

@@ -5,6 +5,7 @@ import { AppRouter } from "./router/AppRouter.tsx"
 import { NavigationProvider } from './context/navigation/navigationProvider.tsx'
 
 import { store } from "./store/store.ts"
+import { ToastContainer } from "./components/toast/Toast.tsx"
 
 
 const v7DocDisabledWarnings = {
@@ -15,6 +16,7 @@ const v7DocDisabledWarnings = {
 function TodoApp() {
   return (
     <Provider store={store}>
+      <ToastContainer />
       <NavigationProvider>
         <BrowserRouter future={v7DocDisabledWarnings}>
           <AppRouter />

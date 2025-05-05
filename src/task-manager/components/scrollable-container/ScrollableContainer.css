@@ -24,11 +24,15 @@
 
 .scrollable-container__list {
   display: flex;
-  /* min-height: 200px; */
   gap: var(--spacing-2);
-  overflow-x: auto;
+  padding-inline: var(--spacing-1);
+  scroll-padding-inline: var(--spacing-1); /* Snap inicia después del padding */
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
+}
+
+.scrollable-container__list > * {
+  scroll-snap-align: start;
 }
 
 .scrollable-container__list::-webkit-scrollbar {

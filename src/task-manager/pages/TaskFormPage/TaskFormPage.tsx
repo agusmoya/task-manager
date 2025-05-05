@@ -11,26 +11,27 @@ import { EventCardList } from '../../components/event-card-list/EventCardList.ts
 import { type User } from "../../../types/user.d"
 
 import { useForm } from "../../../hooks/useForm.ts"
-import { taskFormFields, taskFormValidations } from "../../../helpers/form-validations/getTaskFromValidations.ts"
+import { mapTaskFormToPayload, taskFormFields, taskFormValidations } from "../../../helpers/form-validations/getTaskFromValidations.ts"
 import { useTaskCategoryActions } from "../../../store/hooks/useTaskCategoryActions.ts"
 import { useUserActions } from "../../../store/hooks/useUserActions.ts"
 import { useCalendarActions } from "../../../store/hooks/useCalendarActions.ts"
+import { useTaskActions } from "../../../store/hooks/useTaskActions.ts"
 
 
 import './TaskFormPage.css'
 
 
 const TaskFormPage = () => {
+  const { events, resetEventState } = useCalendarActions()
+  const { users, getUsers } = useUserActions()
+  const { loading: loadingTaskAction, backendErrorMessage: backendTaskError, saveTask } = useTaskActions()
   const {
     categories,
-    loading,
-    backendErrorMessage,
-    getCategories,
-    createCategory,
+    loading: lodaingCategoryAction,
+    backendErrorMessage: backendCategoryError,
+    fetchCategories,
+    saveCategory,
   } = useTaskCategoryActions()
-  const { events } = useCalendarActions()
-  const { users, getUsers } = useUserActions()
-
   const {
     title,
     titleValid,
@@ -55,7 +56,7 @@ const TaskFormPage = () => {
   }
 
   useEffect(() => {
-    getCategories()
+    fetchCategories()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -69,30 +70,42 @@ const TaskFormPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [events])
 
-  const handleCreateNewCategory = (newCategoryName: string) => {
-    createCategory({ name: newCategoryName })
+  const handleCreateNewCategory = async (newCategoryName: string) => {
+    const { wasSuccessful } = await saveCategory({ name: newCategoryName })
+    if (!wasSuccessful) onCustomChange('category', '')
   }
 
   const handleAddEventsToEventsForm = () => {
-    console.log(events)
-
     onCustomChange('events', [...events])
   }
 
   const handleTaskSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!isFormValid) {
-      console.error('Form with errors')
-      return
-    }
-    handleAddEventsToEventsForm()
-    console.log(formState)
+    if (!isFormValid) return
 
+    handleAddEventsToEventsForm()
+    const payload = mapTaskFormToPayload(formState, categories)
+
+    const { wasSuccessful } = await saveTask(payload)
+    if (wasSuccessful) {
+      onResetForm()
+      resetEventState()
+    }
+  }
+
+  const handleResetForm = () => {
+    onResetForm()
+    resetEventState()
   }
 
   return (
     <section className="task-form-wrapper section container">
       <h1 className="task__form-title">Create Task</h1>
+      {
+        <p className="form__error">
+          {backendTaskError}
+        </p>
+      }
       <form
         className="task__form"
         onSubmit={handleTaskSubmit}
@@ -124,10 +137,11 @@ const TaskFormPage = () => {
           touched={touchedFields.category}
           allowCreateIfNotExists
           suggestionData={categories.map((cat) => cat.name)}
-          onChange={onInputChange}
           onCreateNew={handleCreateNewCategory}
-          backendError={backendErrorMessage}
-          loading={loading}
+          backendError={backendCategoryError}
+          loading={lodaingCategoryAction}
+          onChange={onInputChange}
+          onBlur={() => onBlurField('category')}
         />
 
         <MultiSelectInput<User>
@@ -147,13 +161,14 @@ const TaskFormPage = () => {
           <Button
             type="submit"
             className="btn btn--filled task__form-button"
+            disabled={!isFormValid || loadingTaskAction}
           >
             Create
           </Button>
           <Button
             type="reset"
             className="btn btn--outlined task__form-button"
-            onClick={onResetForm}
+            onClick={handleResetForm}
           >
             Reset
           </Button>

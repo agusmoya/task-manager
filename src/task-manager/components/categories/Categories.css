@@ -20,7 +20,7 @@
 
 .categories__list--no-result {
   color: var(--color-surface-variant);
-  background-color: var(--color-on-surface-variant);
+  /* background-color: var(--color-on-surface-variant); */
   border-radius: 1rem;
   justify-content: center;
   align-items: center;

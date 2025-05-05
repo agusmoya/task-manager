@@ -1,15 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export interface EventModalState {
+export interface ModalState {
   isModalOpen: boolean;
 }
 
-const initialState: EventModalState = {
+const initialState: ModalState = {
   isModalOpen: false,
 }
 
-export const eventModalSlice = createSlice({
-  name: 'EventModal',
+export const modalSlice = createSlice({
+  name: 'CustomModal',
   initialState,
   reducers: {
     onOpenModal: (state) => {
@@ -22,4 +22,4 @@ export const eventModalSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { onOpenModal, onClouseModal } = eventModalSlice.actions
+export const { onOpenModal, onClouseModal } = modalSlice.actions

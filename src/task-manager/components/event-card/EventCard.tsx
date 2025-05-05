@@ -5,7 +5,7 @@ import { DeleteIcon, EditIcon, SeparatorIcon } from '../../../components/icons/I
 import { type CalendarEvent } from '../../../types/calendar-event.d'
 
 import { useCalendarActions } from '../../../store/hooks/useCalendarActions.ts'
-import { useEventModalActions } from '../../../store/hooks/useEventModalActions.ts'
+import { useModalActions } from '../../../store/hooks/useModalActions.ts'
 
 
 import './EventCard.css'
@@ -20,7 +20,7 @@ export const EventCard = ({ event }: Props) => {
     deleteEventState,
     setActiveEvent
   } = useCalendarActions()
-  const { openModal } = useEventModalActions()
+  const { openModal } = useModalActions()
   const { title, startDate, endDate, notes } = event
 
   const formattedStart = new Date(startDate).toLocaleString()

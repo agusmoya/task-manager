@@ -1,10 +1,8 @@
-import { addHours } from "date-fns"
-
 import { PlusIcon } from "../../../components/icons/Icons.tsx"
 import { Button } from "../../../components/button/button.tsx"
 
 import { useCalendarActions } from "../../../store/hooks/useCalendarActions.ts"
-import { useEventModalActions } from "../../../store/hooks/useEventModalActions.ts"
+import { useModalActions } from "../../../store/hooks/useModalActions.ts"
 
 
 import './FabAddEvent.css'
@@ -16,7 +14,7 @@ interface Props {
 
 export const FabAddEvent = ({ className }: Props) => {
   const { activeCalendarDay } = useCalendarActions()
-  const { openModal } = useEventModalActions()
+  const { openModal } = useModalActions()
 
   const handleClickNewEvent = () => {
     openModal()

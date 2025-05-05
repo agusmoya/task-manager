@@ -5,24 +5,28 @@ import { PlusIcon } from "../../../components/icons/Icons.tsx"
 import { ScrollableContainer } from "../scrollable-container/ScrollableContainer.tsx"
 import { CircularProgress } from "../circular-progress/CircularProgress.tsx"
 
-import { type Tasks } from "../../../types/task.d"
-
 import { useSearch } from "../../hooks/useSearch.ts"
+import { useTaskActions } from "../../../store/hooks/useTaskActions.ts"
 
 
 import "./OngoingTasks.css"
+import { useEffect } from "react"
 
-interface Props {
-  tasks: Tasks
-}
-
-export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
+export const OngoingTasks = () => {
   const { search } = useSearch()
+  const { tasks, fetchTasksByUserId } = useTaskActions()
+
+  useEffect(() => {
+    fetchTasksByUserId()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const filteredTasks = tasks.filter(
     ({ title }) => title.toLowerCase().includes(search.toLowerCase())
   )
 
-  const areOngoingTasks = filteredTasks.length;
+  const areOngoingTasks = filteredTasks.length
+
   return (
     <section className="ongoing section" id="ongoing-tasks">
       <div className="ongoing__container container">
@@ -65,28 +69,31 @@ export const OngoingTasks: React.FC<Props> = ({ tasks }) => {
           {
             areOngoingTasks
               ?
-              filteredTasks.map(task => (
-                <li className="ongoing__item" key={task.id}>
+              filteredTasks.map(({ id, title, duration, beginningDate, completionDate, progress }) => (
+                <li className="ongoing__item" key={id}>
                   <section className="ongoing__card">
-                    <Link to={`task/${task.id}`}>
+                    <Link to={`task/${id}`}>
                       <h3 className="ongoing__item-title">
-                        {task.title}&nbsp;<ExternalLinkIcon size={18} />
+                        {title}&nbsp;<ExternalLinkIcon size={18} />
                       </h3>
                     </Link>
                     <small className="ongoing__duration">
-                      {task.duration}&nbsp;d
+                      {duration}&nbsp;d
                     </small>
                   </section>
                   <section className="ongoing__card">
                     <small className="ongoing__schedule">
-                      14:30 hs a 17:00 hs
+                      Start: {beginningDate.split('T')[0]}&nbsp;
                     </small>
-                    <CircularProgress progress={task.progress} />
+                    <small className="ongoing__schedule">
+                      End: {completionDate.split('T')[0]}
+                    </small>
+                    <CircularProgress progress={progress} />
                   </section>
                 </li>
               ))
               :
-              <li>No tasks found...</li>
+              <li>No tasks found. Create a new one or clear de search input...</li>
           }
         </ScrollableContainer>
       </div>

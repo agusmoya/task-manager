@@ -17,13 +17,17 @@ export const EventCardList = ({ events }: Props) => {
     <section className="event-card-list" aria-label="Eventos asociados a esta tarea">
       <p className="event-card-list__title">Related events:</p>
       <FabAddEvent className='event-card-list__btn' />
-
       {
         events.length === 0
           ? <p className="event-card-list__empty">There are no events added yet.</p>
-          : events.map(event => (
-            <EventCard key={event.startDate.getTime()} event={event} />
-          ))
+          : events.map((event, idx) => {
+            return (
+              <EventCard
+                key={idx}
+                event={event}
+              />
+            )
+          })
       }
     </section>
   )

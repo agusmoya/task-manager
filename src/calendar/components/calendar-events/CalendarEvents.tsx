@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { DeleteIcon, EditIcon } from '../../../components/icons/Icons.tsx'
 import { Button } from '../../../components/button/button.tsx'
@@ -7,7 +7,7 @@ import { type CalendarEvent } from '../../../types/calendar-event.d'
 
 import { MONTHS } from '../../constants/constants.ts'
 import { useCalendarActions } from '../../../store/hooks/useCalendarActions.ts'
-import { useEventModalActions } from '../../../store/hooks/useEventModalActions.ts'
+import { useModalActions } from '../../../store/hooks/useModalActions.ts'
 import { isSameDay } from '../../utils/validateManagmentDate.ts'
 import { fromDateToDatetimeLocal } from '../../../helpers/form-validations/getEventFormValidations.ts'
 
@@ -16,15 +16,21 @@ import './CalendarEvents.css'
 
 
 export const CalendarEvents = () => {
-  const { openModal } = useEventModalActions()
+  const { openModal } = useModalActions()
   const {
     month,
     year,
     activeCalendarDay,
     events,
     deleteEventState,
-    setActiveEvent
+    setActiveEvent,
+    fetchEventsByUserId
   } = useCalendarActions()
+
+  useEffect(() => {
+    fetchEventsByUserId()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const eventsForActiveDay = useMemo(
     () => {

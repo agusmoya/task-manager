@@ -51,7 +51,7 @@ textarea {
 body {
   background-color: var(--color-surface);
   color: var(--color-on-surface);
-  overflow: hidden;
+  overflow: auto;
 }
 
 image {
@@ -161,17 +161,17 @@ ol {
 
 /* md devices */
 @media screen and (min-width: 576px) {
-  .ongoing__header-content .ongoing__card-new-button {
+  /* .ongoing__header-content .ongoing__card-new-button {
     display: none;
-  }
+  } */
 
   li.ongoing__item--new-task {
     display: flex;
   }
 
-  .categories__header-content .categories__card-new-button {
+  /* .categories__header-content .categories__card-new-button {
     display: none;
-  }
+  } */
 
   li.categories__item--new-category {
     display: flex;

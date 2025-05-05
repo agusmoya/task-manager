@@ -1,21 +1,26 @@
 import { configureStore } from "@reduxjs/toolkit"
 
 import { authSlice } from "./slices/auth/authSlice.ts"
-import { calendarDaysSlice } from "./slices/calendar/calendarDaysSlice.ts"
-import { calendarEventsSlice } from "./slices/events/calendarEventsSlice.ts"
-import { eventModalSlice } from "./slices/ui/uiEventModalSlice.ts"
+import { calendarDaySlice } from "./slices/calendar/calendarDaySlice.ts"
+import { calendarEventSlice } from "./slices/event/calendarEventSlice.ts"
+import { modalSlice } from "./slices/ui/modalSlice.ts"
 import { taskCategorySlice } from "./slices/category/taskCategorySlice.ts"
-import { userSlice } from "./slices/users/userSlice.ts"
+import { taskSlice } from "./slices/task/taskSlice.ts"
+import { userSlice } from "./slices/user/userSlice.ts"
+import { toastSlice } from "./slices/ui/toastSlice.ts"
 
 
 export const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
-    users: userSlice.reducer,
-    calendarDays: calendarDaysSlice.reducer,
-    calendarEvents: calendarEventsSlice.reducer,
+    user: userSlice.reducer,
+    calendarDay: calendarDaySlice.reducer,
+    calendarEvent: calendarEventSlice.reducer,
     taskCategory: taskCategorySlice.reducer,
-    ui: eventModalSlice.reducer,
+    task: taskSlice.reducer,
+    // UI
+    modal: modalSlice.reducer,
+    toast: toastSlice.reducer,
 
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({

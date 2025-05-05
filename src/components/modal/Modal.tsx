@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react"
 import { CloseIcon } from '../icons/Icons.tsx'
 import { Button } from "../button/button.tsx"
 
-import { useEventModalActions } from "../../store/hooks/useEventModalActions.ts"
+import { useModalActions } from "../../store/hooks/useModalActions.ts"
 
 import './Modal.css'
 
@@ -14,7 +14,7 @@ type ModalProps = {
 
 export const Modal = ({ title, children }: ModalProps) => {
   const modalRef = useRef<HTMLDialogElement>(null)
-  const { isModalOpen, closeModal } = useEventModalActions()
+  const { isModalOpen, closeModal } = useModalActions()
 
   useEffect(() => {
     const modal = modalRef.current

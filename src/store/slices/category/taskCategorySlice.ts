@@ -1,10 +1,12 @@
-import { AxiosError } from "axios"
-
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
+
+import { AxiosError } from "axios"
 
 import { type Category } from "../../../types/category.d"
 
 import todoApi from "../../../api/taskManagerApi.ts"
+import { extractBackendErrorMessage } from "../../../helpers/manageBackendError.ts"
+
 
 interface CategoriesState {
   categories: Category[]
@@ -17,6 +19,33 @@ const initialState: CategoriesState = {
   loading: false,
   backendErrorMessage: undefined,
 }
+
+export const onFetchCategories = createAsyncThunk<Category[], void, { rejectValue: AxiosError }>(
+  'categories/fetchAll',
+  async (_, thunkAPI) => {
+    try {
+      const res = await todoApi.get('/category/all')
+      return res.data as Category[]
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error as AxiosError)
+    }
+  }
+)
+
+// Category, -> tipo que devuelve
+// string,   -> argumento que recibe
+// { rejectValue: string } -> tipo del error
+export const onCreateCategory = createAsyncThunk<Category, Partial<Category>, { rejectValue: AxiosError }>(
+  'categories/create',
+  async (category, thunkAPI) => {
+    try {
+      const res = await todoApi.post('/category/new', category)
+      return res.data as Category
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error as AxiosError)
+    }
+  }
+)
 
 export const taskCategorySlice = createSlice({
   name: 'category',
@@ -35,7 +64,7 @@ export const taskCategorySlice = createSlice({
         cat.id !== payload.id
       )
     },
-    onClearErrorMessage: (state) => {
+    onClearBackendErrorMessage: (state) => {
       state.backendErrorMessage = undefined
     }
   },
@@ -52,7 +81,7 @@ export const taskCategorySlice = createSlice({
       })
       .addCase(onFetchCategories.rejected, (state, { payload }) => {
         state.loading = false
-        state.backendErrorMessage = payload as string
+        state.backendErrorMessage = extractBackendErrorMessage(payload) || 'Error fetching category.'
       })
       // CREATE
       .addCase(onCreateCategory.pending, (state) => {
@@ -65,44 +94,15 @@ export const taskCategorySlice = createSlice({
       })
       .addCase(onCreateCategory.rejected, (state, { payload }) => {
         state.loading = false
-        state.backendErrorMessage = payload ?? 'Unknown error creating category'
+        state.backendErrorMessage = extractBackendErrorMessage(payload) || 'Error creating category.'
       })
   },
 })
-
-export const onFetchCategories = createAsyncThunk(
-  'categories/fetchCategories',
-  async (_, thunkAPI) => {
-    try {
-      const res = await todoApi.get('/category/all')
-      return res.data as Category[]
-    } catch (error) {
-      const err = error as AxiosError<{ message: string }>
-      return thunkAPI.rejectWithValue(err.response?.data?.message || 'Error al cargar categorías')
-    }
-  }
-)
-
-// Category, -> tipo que devuelve
-// string,   -> argumento que recibe
-// { rejectValue: string } -> tipo del error
-export const onCreateCategory = createAsyncThunk<Category, Category, { rejectValue: string }>(
-  'categories/createCategory',
-  async (category, thunkAPI) => {
-    try {
-      const res = await todoApi.post('/category/new', category)
-      return res.data as Category
-    } catch (error) {
-      const err = error as AxiosError<{ message: string }>
-      return thunkAPI.rejectWithValue(err.response?.data?.message || 'Error creating category.')
-    }
-  }
-)
 
 export const {
   onAddNewCategory,
   onUpdateCategory,
   onDeleteCategory,
-  onClearErrorMessage,
+  onClearBackendErrorMessage,
 
 } = taskCategorySlice.actions

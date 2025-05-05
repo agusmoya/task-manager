@@ -36,8 +36,8 @@ const initialState: CalendarDaysState = {
   activeCalendarEvent: undefined,
 }
 
-export const calendarDaysSlice = createSlice({
-  name: 'calendar',
+export const calendarDaySlice = createSlice({
+  name: 'calendarDay',
   initialState,
   reducers: {
     onGenerateCalendar: (state) => {
@@ -92,4 +92,4 @@ export const {
   onSetActiveCalendarDay,
   onSetMonth,
   onSetYear,
-} = calendarDaysSlice.actions
+} = calendarDaySlice.actions

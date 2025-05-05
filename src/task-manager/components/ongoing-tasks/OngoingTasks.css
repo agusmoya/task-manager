@@ -28,7 +28,7 @@
 
 .ongoing__list--no-result {
   color: var(--color-on-surface-variant);
-  background-color: var(--color-surface-variant);
+  /* background-color: var(--color-surface-variant); */
   font-style: italic;
   border-radius: 1rem;
   justify-content: center;

@@ -1,21 +1,25 @@
-import { Link } from "react-router-dom"
+// import { Link } from "react-router-dom"
 
-import { PlusIcon } from "../../../components/icons/Icons.tsx"
+// import { PlusIcon } from "../../../components/icons/Icons.tsx"
 import { ScrollableContainer } from "../scrollable-container/ScrollableContainer.tsx"
 
-import { type Category, type CountingCategories } from "../../../types/category.d"
+import { type CountingCategories } from "../../../types/category.d"
 
 import { useSearch } from "../../hooks/useSearch.ts"
+import { useTaskCategoryActions } from '../../../store/hooks/useTaskCategoryActions.ts';
 
 
 import "./Categories.css"
+import { useEffect } from "react"
 
-interface Props {
-  categories: Category[]
-}
-
-export function Categories({ categories = [] }: Props) {
+export function Categories() {
   const { search } = useSearch()
+  const { categories, fetchCategories } = useTaskCategoryActions()
+
+  useEffect(() => {
+    fetchCategories()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const organizedCategories: { [key: string]: CountingCategories } = {}
 
@@ -44,12 +48,12 @@ export function Categories({ categories = [] }: Props) {
         <header className="categories__header">
           <div className="categories__header-content">
             <h2 className="categories__title">Categories</h2>
-            <Link to='new-category' className="btn btn--outlined categories__card-new-button">
+            {/* <Link to='new-category' className="btn btn--outlined categories__card-new-button">
               <span className="btn__state-layer"></span>
               <span className="btn__content">
                 <PlusIcon />
               </span>
-            </Link>
+            </Link> */}
           </div>
           <a>See all</a>
         </header>
@@ -60,7 +64,7 @@ export function Categories({ categories = [] }: Props) {
             !areCategoriesPresent && 'categories__list--no-result'
           ].filter(Boolean).join(' ')}
         >
-          <li
+          {/* <li
             key="newCategory"
             className="categories__item categories__item--new-category"
           >
@@ -73,7 +77,7 @@ export function Categories({ categories = [] }: Props) {
                 </span>
               </Link>
             </div>
-          </li>
+          </li> */}
           {
             (filteredCategories.length > 0)
               ? filteredCategories.map(
@@ -87,7 +91,6 @@ export function Categories({ categories = [] }: Props) {
                 ))
               : <span>No categories found...</span>
           }
-
         </ScrollableContainer>
       </div>
     </section>

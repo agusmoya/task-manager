@@ -11,7 +11,8 @@ export const eventFormFields: CalendarEvent = {
   title: "",
   startDate: TODAY,
   endDate: addHours(TODAY, 3),
-  notes: ""
+  notes: "",
+  createdBy: undefined
 }
 export const eventFormValidations: FormValidations<typeof eventFormFields> = {
   title: [

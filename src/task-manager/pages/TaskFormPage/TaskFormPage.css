@@ -8,7 +8,7 @@
 
 .task__form-title {
   text-align: center;
-  margin-block: 0 var(--spacing-6);
+  margin-block: 0 var(--spacing-2);
 }
 
 .task__form-footer {
@@ -22,4 +22,12 @@
   margin-block: var(--spacing-3);
   padding: var(--spacing-2) var(--spacing-4);
   border-radius: 0.5rem;
+}
+
+.form__error {
+  min-height: 1rem;
+  color: var(--color-error);
+  margin-block: 0 var(--spacing-1);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
 }

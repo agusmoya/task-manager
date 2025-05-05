@@ -13,12 +13,14 @@ export interface Task {
   id: string
   title: string
   status: (typeof TASK_STATUS)[keyof typeof TASK_STATUS]
-  creationDate: Date
+  creationDate: string
+  beginningDate: string
+  completionDate: string
   progress: number
   duration: number
-  category: Category
   ownerUserId: string
   participants: User[]
+  category: Category
   events: CalendarEvent[]
 }
 
@@ -29,23 +31,14 @@ export interface TaskForm {
   participants: User[]
 }
 
-export interface TasksResponse {
-  Tasks: Task[]
+export interface TaskPayload {
+  title: string
+  categoryId: string
+  events: CalendarEvent[]
+  participantsIds: string[]
 }
 
 export type TaskId = Pick<Task, "id">
 export type TaskTitle = Pick<Task, "title">
 export type TaskStatus = Pick<Task, "status">
 export type Tasks = Task[]
-
-export interface FetchState {
-  data: undefined | null
-  error: ErrorFetch | null
-  isLoading: boolean
-  hasError: boolean
-}
-
-export interface ErrorFetch {
-  status: number
-  statusText: string
-}

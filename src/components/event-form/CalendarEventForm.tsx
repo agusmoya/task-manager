@@ -6,7 +6,7 @@ import { Button } from "../button/button.tsx"
 
 import { useForm } from "../../hooks/useForm.ts"
 import { useCalendarActions } from "../../store/hooks/useCalendarActions.ts"
-import { useEventModalActions } from "../../store/hooks/useEventModalActions.ts"
+import { useModalActions } from "../../store/hooks/useModalActions.ts"
 import {
   eventFormFields,
   eventFormValidations,
@@ -37,7 +37,7 @@ export const CalendarEventForm = () => {
     onResetForm
   } = useForm(eventFormFields, eventFormValidations)
   const { activeCalendarEvent, saveEventState } = useCalendarActions()
-  const { closeModal } = useEventModalActions()
+  const { closeModal } = useModalActions()
 
   useEffect(() => {
     if (activeCalendarEvent) {

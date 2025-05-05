@@ -66,7 +66,7 @@ export function MultiSelectInput<T>({
               </li>
             ))
             :
-            <li className="multi-select-chip--none">No {label} selected</li>
+            <li className="multi-select-chip--none">No {label?.toLocaleLowerCase()} selected</li>
         }
       </ul>
 

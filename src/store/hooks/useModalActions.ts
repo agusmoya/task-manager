@@ -1,9 +1,9 @@
 import { useAppDispatch, useAppSelector } from "./reduxStore.ts"
-import { onClouseModal, onOpenModal } from "../slices/ui/uiEventModalSlice.ts"
+import { onClouseModal, onOpenModal } from "../slices/ui/modalSlice.ts"
 
-export const useEventModalActions = () => {
+export const useModalActions = () => {
   const dispatch = useAppDispatch()
-  const { isModalOpen } = useAppSelector((state) => state.ui)
+  const { isModalOpen } = useAppSelector((state) => state.modal)
 
   const openModal = () => {
     dispatch(onOpenModal())
@@ -13,13 +13,13 @@ export const useEventModalActions = () => {
     dispatch(onClouseModal())
   }
 
-  const toggleDateModal = () => isModalOpen ? openModal() : closeModal()
+  const toggleModal = () => isModalOpen ? openModal() : closeModal()
 
   return {
     //* Properties
     isModalOpen,
     //* Methods
-    toggleDateModal,
+    toggleModal,
     openModal,
     closeModal,
   }

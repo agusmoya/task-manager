@@ -1,7 +1,6 @@
 import { useContext, useEffect } from "react"
 import { useLocation, matchPath, useNavigate } from "react-router-dom"
 
-// import { type BreadcrumbNavigation, type MatchWithCrumb } from "../types/breadbrumb.d"
 import { type BreadcrumbNavigation } from "../types/breadbrumb.d"
 
 import { NavigationContext } from "../context/navigation/navigationContext.ts"
@@ -33,16 +32,6 @@ export function useNavigation(): BreadcrumbNavigation {
       }
     }
     return ''
-    //? const matches = useMatches() with -> createBrowserRouter() 
-    // const currentMatch = matches[matches.length - 1] as MatchWithCrumb | undefined
-    // const currentMatch = [...matches]
-    //   .reverse()
-    //   .find((match: MatchWithCrumb) => typeof match.handle?.crumb !== 'undefined') as MatchWithCrumb | undefined
-    // if (!currentMatch || !currentMatch.handle) return ''
-    // const { crumb } = currentMatch.handle
-    // return typeof crumb === 'function'
-    //   ? crumb(currentMatch)
-    //   : crumb || ''
   }
 
   const handleNavigation = () => {
@@ -53,7 +42,7 @@ export function useNavigation(): BreadcrumbNavigation {
         return prev
       }
 
-      // Si existe antes en la lista, recortamos hasta ahí y lo volvemos a agregar
+      // Si existe antes en la lista, reemplazamos para no repetir
       const existingIndex = prev.findIndex(item => item.path === newPath)
       const newLabel = getCrumbLabel()
       if (existingIndex >= 0) {

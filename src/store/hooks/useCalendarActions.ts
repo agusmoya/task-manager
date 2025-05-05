@@ -9,13 +9,15 @@ import {
   onSetActiveCalendarDay,
   onSetMonth,
   onSetYear,
-} from "../slices/calendar/calendarDaysSlice.ts"
+} from "../slices/calendar/calendarDaySlice.ts"
 import {
   onAddNewEvent,
   onUpdateEvent,
   onDeleteEvent,
   onSetActiveEvent,
-} from "../slices/events/calendarEventsSlice.ts"
+  onResetEvents,
+  onFetchEventsByUserId,
+} from "./../slices/event/calendarEventSlice.ts"
 
 
 export const useCalendarActions = () => {
@@ -27,12 +29,12 @@ export const useCalendarActions = () => {
     year,
     calendarDays,
     activeCalendarDay,
-  } = useAppSelector((state) => state.calendarDays)
+  } = useAppSelector((state) => state.calendarDay)
 
   const {
     events,
     activeCalendarEvent
-  } = useAppSelector(state => state.calendarEvents)
+  } = useAppSelector(state => state.calendarEvent)
 
   const generateCalendar = () => {
     dispatch(onGenerateCalendar())
@@ -62,6 +64,14 @@ export const useCalendarActions = () => {
     dispatch(onSetActiveCalendarDay(activeCalendarDay))
   }
 
+  const fetchEventsByUserId = async () => {
+    try {
+      await dispatch(onFetchEventsByUserId()).unwrap()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   const saveEventState = async (calendarEvent: CalendarEvent) => {
     if (calendarEvent.id) {
       dispatch(onUpdateEvent({ ...calendarEvent }))
@@ -72,6 +82,10 @@ export const useCalendarActions = () => {
 
   const deleteEventState = async (calendarEvent: CalendarEvent) => {
     dispatch(onDeleteEvent(calendarEvent))
+  }
+
+  const resetEventState = () => {
+    dispatch(onResetEvents())
   }
 
   return {
@@ -87,6 +101,7 @@ export const useCalendarActions = () => {
     events,
     activeCalendarEvent,
     //* Methods:
+    //STATE
     generateCalendar,
     setMonth,
     setYear,
@@ -95,6 +110,9 @@ export const useCalendarActions = () => {
     setActiveCalendarDay,
     setActiveEvent,
     saveEventState,
-    deleteEventState
+    deleteEventState,
+    resetEventState,
+    // THUNKS
+    fetchEventsByUserId,
   }
 }

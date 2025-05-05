@@ -10,7 +10,6 @@
   gap: var(--spacing-2);
   min-height: 200px;
   overflow-x: auto;
-  padding-bottom: var(--spacing-2);
 }
 
 .events__list::-webkit-scrollbar {
@@ -26,4 +25,13 @@
   padding: var(--spacing-5);
   height: 210px;
   min-width: 300px;
+}
+
+.events__list--no-result {
+  color: var(--color-on-surface-variant);
+  background-color: var(--color-surface-variant);
+  border-radius: 1rem;
+  justify-content: center;
+  align-items: center;
+  font-style: italic;
 }

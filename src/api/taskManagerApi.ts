@@ -3,7 +3,6 @@ import axios from 'axios'
 import { getEnvVariables } from '../helpers/getEnvVariables.ts'
 import { store } from '../store/store.ts'
 import { onLogin, onLogout } from '../store/slices/auth/authSlice.ts'
-import { jwtDecode } from 'jwt-decode'
 
 const { VITE_API_URL } = getEnvVariables()
 
@@ -12,43 +11,16 @@ const todoApi = axios.create({
   withCredentials: true, // Para enviar cookies (refreshToken HttpOnly)
 })
 
-const isTokenExpired = (token: string) => {
-  if (!token) return true
-  try {
-    const { exp } = jwtDecode<{ exp: number }>(token)
-    const now = Math.floor(Date.now() / 1000)
-    return exp < now
-  } catch (error) {
-    console.log('Error decoding token:', error)
-    // Si hay un error al decodificar el token, consideramos que está expirado
-    return true
+// Agregar accessToken a cada request si existe
+todoApi.interceptors.request.use((config) => {
+  const { accessToken } = store.getState().auth
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`
   }
-}
+  return config
+})
 
-todoApi.interceptors.request.use(
-  async (config) => {
-    const { accessToken } = store.getState().auth
-
-    if (accessToken && isTokenExpired(accessToken)) {
-      console.warn('Access token expired. Trying to refresh...')
-      try {
-        const { data } = await todoApi.post('/auth/refresh')
-        const { uid, firstName, lastName, email, accessToken: newAccessToken } = data
-        store.dispatch(onLogin({ uid, firstName, lastName, email, accessToken: newAccessToken }))
-        config.headers.Authorization = `Bearer ${newAccessToken}`
-      } catch (refreshError) {
-        console.error('Error refreshing token:', refreshError)
-        store.dispatch(onLogout())
-        throw refreshError
-      }
-    } else if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`
-    }
-
-    return config
-  })
-
-// Interceptor para manejar errores de token expirado
+// Manejo automático de token expirado
 todoApi.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -75,6 +47,7 @@ todoApi.interceptors.response.use(
         const { data } = await todoApi.post('/auth/refresh')
         // Paso 2: Actualizar solo el accessToken
         const { uid, firstName, lastName, email, accessToken } = data
+        // Actualizar token en Redux
         store.dispatch(onLogin({ uid, firstName, lastName, email, accessToken }))
         // Paso 3: Reintentar la request original con el nuevo token        
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`

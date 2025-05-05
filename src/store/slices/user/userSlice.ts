@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
-import { AxiosError } from "axios"
-
 import { type User } from '../../../types/user.d'
 
 import todoApi from "../../../api/taskManagerApi.ts"
+import { extractBackendErrorMessage } from "../../../helpers/manageBackendError.ts"
 
 
 interface UserState {
@@ -40,7 +39,7 @@ export const userSlice = createSlice({
       })
       .addCase(onFetchUsers.rejected, (state, { payload }) => {
         state.loading = false
-        state.backendErrorMessage = payload as string
+        state.backendErrorMessage = extractBackendErrorMessage(payload) || 'Error fetching users.'
       })
   }
 })
@@ -53,8 +52,7 @@ export const onFetchUsers = createAsyncThunk(
       const res = await todoApi.get('/user')
       return res.data.users as User[]
     } catch (error) {
-      const err = error as AxiosError<{ message: string }>
-      return thunkAPI.rejectWithValue(err.response?.data?.message || 'Error fetching users')
+      return thunkAPI.rejectWithValue(error)
     }
   }
 )

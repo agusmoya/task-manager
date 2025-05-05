@@ -21,10 +21,11 @@ export const InputWithSuggestions = ({
   allowCreateIfNotExists,
   autoComplete = 'off',
   suggestionData,
-  onChange,
-  onCreateNew,
   loading = false,
   backendError = null,
+  onChange,
+  onBlur,
+  onCreateNew,
 
 }: InputWithSuggestionsProps) => {
   const [showSuggestions, setShowSuggestions] = useState(false)
@@ -42,8 +43,7 @@ export const InputWithSuggestions = ({
     setFilteredSuggestions(filtered)
   }, [value, suggestionData])
 
-  // Close suggestions when clicking outside the input
-  // or selecting a suggestion
+  // Close suggestions when clicking outside the input or selecting one
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -83,6 +83,7 @@ export const InputWithSuggestions = ({
           name={name}
           type="text"
           value={value}
+          onBlur={onBlur}
           onChange={(e) => {
             onChange(e)
             setShowSuggestions(true)
@@ -139,7 +140,7 @@ export const InputWithSuggestions = ({
         {
           backendError
           && <span id={`${name}-error`} className="input__error-message">
-            {backendError}&nbsp;
+            {backendError}
           </span>
         }
         {
@@ -150,7 +151,6 @@ export const InputWithSuggestions = ({
             </span>
           )
         }
-
         {
           !showSuggestions && hint
           && (

@@ -10,14 +10,9 @@
 }
 
 .arrow-button--left {
-  left: calc(var(--spacing-4) * -1);
+  left: calc(var(--spacing-2) * -1);
 }
 
 .arrow-button--right {
-  right: calc(var(--spacing-4) * -1);
+  right: calc(var(--spacing-2) * -1);
 }
-
-/* .arrow-button:not(:disabled):active {
-  box-shadow: inset 0 0 0 100vmax var(--color-secondary-active);
-  scale: 0.98;
-} */

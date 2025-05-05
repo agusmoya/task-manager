@@ -5,26 +5,28 @@ import { type Dayjs } from "dayjs"
 import { Clock } from "../clock/Clock.tsx"
 import { CalendarIcon } from "../../../components/icons/Icons.tsx"
 
+import { type Task } from "../../../types/task.d"
+
+
 import './DateInfo.css'
 
+
 interface Props {
-  taskId: string
+  task: Task,
   today: Dayjs
 }
 
-export const DateInfo = ({ taskId, today }: Props) => {
-  // const currentDate = today.format('dddd, DD/MM/YYYY')
+export const DateInfo = ({ task, today }: Props) => {
 
   return (
     <section className="date-info section container">
       <div className="date-info__time">
-        {/* <time className="curren-date">{currentDate}</time> */}
         <Clock today={today} />
         <h2 className="date-info__title">
-          <p>Task ID: {taskId}</p>
+          <p>Task ID: {task.id}</p>
         </h2>
         <small className="date-info__today-tasks">
-          10 tasks today
+          5 task(s) today
         </small>
       </div>
       <div>

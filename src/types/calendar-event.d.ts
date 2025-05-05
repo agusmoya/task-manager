@@ -1,13 +1,21 @@
 import { User } from "./user"
 
+export const EVENT_STATUS = {
+  ACTIVE: "active",
+  PENDING: "pending",
+  PROGRESS: "in-progress",
+  COMPLETED: "done",
+} as const
+
 export interface CalendarEvent {
-  id?: string
+  id: string
   title: string
   startDate: Date
   endDate: Date
   notes: string
-  taskId?: string
-  createdBy?: User
+  status: (typeof EVENT_STATUS)[keyof typeof EVENT_STATUS]
+  taskId: string | Task
+  createdBy: User
 }
 
 export type EventId = Pick<CalendarEvent, "id">
