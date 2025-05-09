@@ -1,14 +1,14 @@
 import { useAppDispatch, useAppSelector } from "./reduxStore.ts"
 
-import { onFetchUsers } from "../slices/user/userSlice.ts"
+import { onFetchContacts } from "../slices/user/userSlice.ts"
 
 export const useUserActions = () => {
   const dispatch = useAppDispatch()
   const { users, backendErrorMessage, loading } = useAppSelector((state) => state.user)
 
-  const getUsers = async () => {
+  const fetchContacts = async () => {
     try {
-      await dispatch(onFetchUsers()).unwrap()
+      await dispatch(onFetchContacts()).unwrap()
     } catch (error) {
       console.error(error)
     }
@@ -20,6 +20,6 @@ export const useUserActions = () => {
     backendErrorMessage,
     loading,
     //* Methods
-    getUsers,
+    fetchContacts,
   }
 }

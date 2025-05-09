@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import { useParams } from "react-router-dom"
 
 import { Button } from "../../../components/button/button.tsx"
 import { Input } from "../../../components/input/Input.tsx"
@@ -7,6 +8,7 @@ import { InputWithSuggestions } from "../../../components/input-with-suggestions
 import { MultiSelectInput } from "../../../components/multi-select-input/MultiSelectInput.tsx"
 import { CalendarEventForm } from "../../../components/event-form/CalendarEventForm.tsx"
 import { EventCardList } from '../../components/event-card-list/EventCardList.tsx'
+import { Loader } from "../../../components/loader-page/Loader.tsx"
 
 import { type User } from "../../../types/user.d"
 
@@ -22,9 +24,10 @@ import './TaskFormPage.css'
 
 
 const TaskFormPage = () => {
-  const { events, resetEventState } = useCalendarActions()
-  const { users, getUsers } = useUserActions()
-  const { loading: loadingTaskAction, backendErrorMessage: backendTaskError, saveTask } = useTaskActions()
+  const { id } = useParams<{ id: string }>()
+
+  const { users, fetchContacts } = useUserActions()
+  const { eventsByTask, setEventsByTaskState, resetEventByTaskState } = useCalendarActions()
   const {
     categories,
     loading: lodaingCategoryAction,
@@ -32,6 +35,17 @@ const TaskFormPage = () => {
     fetchCategories,
     saveCategory,
   } = useTaskCategoryActions()
+
+  const {
+    loading: loadingTaskAction,
+    backendErrorMessage: backendTaskError,
+    activeTask,
+    saveTask,
+    updateTask,
+    fetchTaskById,
+    resetActiveTask,
+  } = useTaskActions()
+
   const {
     title,
     titleValid,
@@ -47,6 +61,40 @@ const TaskFormPage = () => {
     onResetForm,
   } = useForm(taskFormFields, taskFormValidations)
 
+  //* Load initial data and clean form inputs when component unmount
+  useEffect(() => {
+    if (id) fetchTaskById({ id })
+    fetchCategories()
+    fetchContacts()
+
+    return () => {
+      resetActiveTask()
+      onResetForm()
+      resetEventByTaskState()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  //* Inicializa el form si se está editando y ya cargó activeTask
+  useEffect(() => {
+    if (!id || !activeTask) return
+    console.log(activeTask)
+    const { title, category, participants, events } = activeTask
+    onCustomChange('title', title)
+    onCustomChange('category', category.name)
+    onCustomChange('participants', participants)
+    setEventsByTaskState(events)
+    onCustomChange('events', events || [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTask])
+
+  //* Sincroniza eventos desde Redux con el form
+  useEffect(() => {
+    onCustomChange('events', [...eventsByTask])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventsByTask])
+
+  //* Handlers
   const handleAddParticipant = (user: User) => {
     onCustomChange('participants', [...participants, user])
   }
@@ -55,57 +103,48 @@ const TaskFormPage = () => {
     onCustomChange('participants', participants.filter(p => p.id !== user.id))
   }
 
-  useEffect(() => {
-    fetchCategories()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    getUsers()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    onCustomChange('events', [...events])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [events])
-
   const handleCreateNewCategory = async (newCategoryName: string) => {
     const { wasSuccessful } = await saveCategory({ name: newCategoryName })
     if (!wasSuccessful) onCustomChange('category', '')
-  }
-
-  const handleAddEventsToEventsForm = () => {
-    onCustomChange('events', [...events])
   }
 
   const handleTaskSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!isFormValid) return
 
-    handleAddEventsToEventsForm()
     const payload = mapTaskFormToPayload(formState, categories)
+    console.log(payload);
 
-    const { wasSuccessful } = await saveTask(payload)
-    if (wasSuccessful) {
-      onResetForm()
-      resetEventState()
+    if (id) {
+      const { wasSuccessful } = await saveTask(payload)
+      if (wasSuccessful) handleResetFormAndEvents()
+    } else {
+      const { wasSuccessful } = await updateTask(payload)
+      if (wasSuccessful) handleResetFormAndEvents()
     }
   }
 
-  const handleResetForm = () => {
+  const handleResetFormAndEvents = () => {
     onResetForm()
-    resetEventState()
+    resetEventByTaskState()
   }
+
+  //*  Render condicional si estás editando y todavía no cargó la tarea
+  if (id && !activeTask) return <Loader />
 
   return (
     <section className="task-form-wrapper section container">
-      <h1 className="task__form-title">Create Task</h1>
+
+      <h1 className="task__form-title">
+        {id ? 'Edit ' : 'Create '} task
+      </h1>
+
       {
         <p className="form__error">
           {backendTaskError}
         </p>
       }
+
       <form
         className="task__form"
         onSubmit={handleTaskSubmit}
@@ -152,32 +191,37 @@ const TaskFormPage = () => {
           onRemoveItem={handleRemoveParticipant}
           getOptionLabel={(user: User) => user.email}
           getOptionKey={(user: User) => user.id}
-          touched={touchedFields.completionDate}
+          touched={touchedFields.participants}
         />
 
-        <EventCardList events={events} />
+        <EventCardList events={eventsByTask} />
 
         <footer className="task__form-footer">
+
           <Button
             type="submit"
             className="btn btn--filled task__form-button"
-            disabled={!isFormValid || loadingTaskAction}
+            disabled={!isFormValid || loadingTaskAction || lodaingCategoryAction}
           >
-            Create
+            {id ? 'Edit ' : 'Create'}
           </Button>
+
           <Button
             type="reset"
             className="btn btn--outlined task__form-button"
-            onClick={handleResetForm}
+            onClick={handleResetFormAndEvents}
           >
             Reset
           </Button>
+
         </footer>
+
       </form>
 
       <Modal title="New Event">
         <CalendarEventForm />
       </Modal>
+
     </section>
   )
 }

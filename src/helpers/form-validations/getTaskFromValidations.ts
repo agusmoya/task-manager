@@ -24,7 +24,7 @@ export const mapTaskFormToPayload = (form: TaskForm, categories: Category[]): Ta
   const { title, category, events, participants } = form
   return {
     title: title.trim(),
-    categoryId: categories.find(cat => cat.name === category)!.id!,
+    categoryId: categories.find(cat => cat.name === category)!.id,
     participantsIds: participants.map(user => user.id),
     events: events,
   }

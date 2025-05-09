@@ -1,0 +1,29 @@
+.task-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-info__time {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.25rem;
+}
+
+.task-info__actions {
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2);
+}
+
+.see-calendar,
+.delete__task-btn,
+.edit__task-btn {
+  /* flex: <flex-grow> <flex-shrink> <flex-basis> */
+  flex: 1 1 auto;
+  padding-block: var(--spacing-2);
+  padding-inline: var(--spacing-4);
+  border-radius: 1rem;
+}

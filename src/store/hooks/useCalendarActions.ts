@@ -11,12 +11,13 @@ import {
   onSetYear,
 } from "../slices/calendar/calendarDaySlice.ts"
 import {
-  onAddNewEvent,
-  onUpdateEvent,
-  onDeleteEvent,
-  onSetActiveEvent,
-  onResetEvents,
+  onAddNewEventByTaskState,
+  onUpdateEventByTaskState,
+  onDeleteEventByTaskState,
+  onSetActiveEventState,
+  onResetEventsByTaskState,
   onFetchEventsByUserId,
+  onSetEventsByTaskState,
 } from "./../slices/event/calendarEventSlice.ts"
 
 
@@ -33,7 +34,8 @@ export const useCalendarActions = () => {
 
   const {
     events,
-    activeCalendarEvent
+    eventsByTask,
+    activeCalendarEvent,
   } = useAppSelector(state => state.calendarEvent)
 
   const generateCalendar = () => {
@@ -57,11 +59,15 @@ export const useCalendarActions = () => {
   }
 
   const setActiveEvent = (event: CalendarEvent) => {
-    dispatch(onSetActiveEvent(event))
+    dispatch(onSetActiveEventState(event))
   }
 
   const setActiveCalendarDay = (activeCalendarDay: CalendarDay) => {
     dispatch(onSetActiveCalendarDay(activeCalendarDay))
+  }
+
+  const setEventsByTaskState = (events: CalendarEvent[]) => {
+    dispatch(onSetEventsByTaskState(events))
   }
 
   const fetchEventsByUserId = async () => {
@@ -72,20 +78,22 @@ export const useCalendarActions = () => {
     }
   }
 
-  const saveEventState = async (calendarEvent: CalendarEvent) => {
+  const saveEventByTaskState = async (calendarEvent: CalendarEvent) => {
     if (calendarEvent.id) {
-      dispatch(onUpdateEvent({ ...calendarEvent }))
+      dispatch(onUpdateEventByTaskState({ ...calendarEvent }))
     } else {
-      dispatch(onAddNewEvent({ ...calendarEvent, id: new Date().getTime().toString() }))
+      const randomId = crypto.randomUUID()
+      dispatch(onAddNewEventByTaskState({ ...calendarEvent, id: randomId }))
+      // dispatch(onAddNewEventState({ ...calendarEvent, id: new Date().getTime().toString() }))
     }
   }
 
-  const deleteEventState = async (calendarEvent: CalendarEvent) => {
-    dispatch(onDeleteEvent(calendarEvent))
+  const deleteEventByTaskState = async (calendarEvent: CalendarEvent) => {
+    dispatch(onDeleteEventByTaskState(calendarEvent))
   }
 
-  const resetEventState = () => {
-    dispatch(onResetEvents())
+  const resetEventByTaskState = () => {
+    dispatch(onResetEventsByTaskState())
   }
 
   return {
@@ -99,6 +107,7 @@ export const useCalendarActions = () => {
     activeCalendarDay,
     // events
     events,
+    eventsByTask,
     activeCalendarEvent,
     //* Methods:
     //STATE
@@ -109,9 +118,10 @@ export const useCalendarActions = () => {
     getPreviousMonth,
     setActiveCalendarDay,
     setActiveEvent,
-    saveEventState,
-    deleteEventState,
-    resetEventState,
+    setEventsByTaskState,
+    saveEventByTaskState,
+    deleteEventByTaskState,
+    resetEventByTaskState,
     // THUNKS
     fetchEventsByUserId,
   }

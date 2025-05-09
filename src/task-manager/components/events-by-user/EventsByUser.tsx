@@ -11,9 +11,6 @@ import './EventsByUser.css'
 export const EventsByUser = () => {
   const { events, fetchEventsByUserId } = useCalendarActions()
 
-  console.log(events)
-
-
   useEffect(() => {
     fetchEventsByUserId()
     // eslint-disable-next-line react-hooks/exhaustive-deps

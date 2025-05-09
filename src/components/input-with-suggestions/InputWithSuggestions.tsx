@@ -131,7 +131,6 @@ export const InputWithSuggestions = ({
               >
                 Create <strong>"{value}"</strong>
               </li>
-
             }
           </ul>
         }

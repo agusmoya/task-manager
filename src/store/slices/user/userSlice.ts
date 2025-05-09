@@ -29,27 +29,27 @@ export const userSlice = createSlice({
   extraReducers(builder) {
     // FETCH
     builder.
-      addCase(onFetchUsers.pending, (state) => {
+      addCase(onFetchContacts.pending, (state) => {
         state.loading = true
         state.backendErrorMessage = undefined
       })
-      .addCase(onFetchUsers.fulfilled, (state, { payload }) => {
+      .addCase(onFetchContacts.fulfilled, (state, { payload }) => {
         state.users = payload
         state.loading = false
       })
-      .addCase(onFetchUsers.rejected, (state, { payload }) => {
+      .addCase(onFetchContacts.rejected, (state, { payload }) => {
         state.loading = false
-        state.backendErrorMessage = extractBackendErrorMessage(payload) || 'Error fetching users.'
+        state.backendErrorMessage = extractBackendErrorMessage(payload) || 'Error fetching contacts.'
       })
   }
 })
 
 
-export const onFetchUsers = createAsyncThunk(
-  'users/fetchUsers',
+export const onFetchContacts = createAsyncThunk(
+  'users/fetchContacts',
   async (_, thunkAPI) => {
     try {
-      const res = await todoApi.get('/user')
+      const res = await todoApi.get('/user/contacts')
       return res.data.users as User[]
     } catch (error) {
       return thunkAPI.rejectWithValue(error)

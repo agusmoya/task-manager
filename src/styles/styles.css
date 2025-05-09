@@ -180,6 +180,10 @@ ol {
   .calendar-wrapper__days .calendar-wrapper__day {
     font-size: var(--text-lg);
   }
+
+  .event-card-list__scrollable {
+    max-height: 280px; /* 2 cards max en mobile */
+  }
 }
 
 /* lg devices */

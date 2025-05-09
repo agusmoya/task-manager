@@ -2,31 +2,29 @@ import { useEffect } from "react"
 
 import { useParams } from "react-router-dom"
 
-import { DateInfo } from "../components/date-info/DateInfo.tsx"
+import { TaskInfo } from "../components/date-info/TaskInfo.tsx"
 import { DatePills } from "../components/date-pills-list/DatePills.tsx"
 import { Schedule } from "../components/schedule/Schedule.tsx"
+import { Loader } from "../../components/loader-page/Loader.tsx"
 
 import { useCurrentWeek } from "../hooks/useCurrentWeek.ts"
 import { useTaskActions } from "../../store/hooks/useTaskActions.ts"
-import { Loader } from "../../components/loader-page/Loader.tsx"
 
 const TaskPage = () => {
   const { id } = useParams<{ id: string }>()
   const { currentWeek, today } = useCurrentWeek()
-  const { tasks, fetchTaskById } = useTaskActions()
-
-  const task = tasks.find((t) => t.id === id)
+  const { activeTask, fetchTaskById } = useTaskActions()
 
   useEffect(() => {
-    if (id && !task) fetchTaskById({ id })
+    if (id) fetchTaskById({ id })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  }, [id, task, fetchTaskById])
-
-  if (!task) return <Loader />
+  if (!activeTask) return <Loader />
 
   return (
     <>
-      <DateInfo task={task} today={today} />
+      <TaskInfo task={activeTask} />
       <DatePills weekDays={currentWeek} />
       <Schedule today={today} />
     </>

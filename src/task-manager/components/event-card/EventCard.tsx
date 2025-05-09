@@ -16,18 +16,16 @@ interface Props {
 }
 
 export const EventCard = ({ event }: Props) => {
-  const {
-    deleteEventState,
-    setActiveEvent
-  } = useCalendarActions()
-  const { openModal } = useModalActions()
   const { title, startDate, endDate, notes } = event
+
+  const { deleteEventByTaskState, setActiveEvent } = useCalendarActions()
+  const { openModal } = useModalActions()
 
   const formattedStart = new Date(startDate).toLocaleString()
   const formattedEnd = new Date(endDate).toLocaleString()
 
   const handleClickDeleteEvent = (event: CalendarEvent) => {
-    deleteEventState(event)
+    deleteEventByTaskState(event)
   }
 
   const handleClickEditEvent = (event: CalendarEvent) => {
@@ -63,6 +61,10 @@ export const EventCard = ({ event }: Props) => {
           {formattedStart} <SeparatorIcon size={20} /> {formattedEnd}
         </time>
         {notes && <p className="event-card__notes">{notes}</p>}
+        <div className="collaborators">
+          Collaborators:
+
+        </div>
       </div>
     </article>
   )

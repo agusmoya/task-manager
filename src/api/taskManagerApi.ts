@@ -12,7 +12,7 @@ const todoApi = axios.create({
 })
 
 // Agregar accessToken a cada request si existe
-todoApi.interceptors.request.use((config) => {
+todoApi.interceptors.request.use(config => {
   const { accessToken } = store.getState().auth
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`
@@ -22,8 +22,11 @@ todoApi.interceptors.request.use((config) => {
 
 // Manejo automático de token expirado
 todoApi.interceptors.response.use(
-  (response) => response,
-  async (error) => {
+  response => response,
+  async error => {
+    console.log('INTERCEPTOR: ', error)
+    console.log('INTERCEPTOR CONFIG: ', error.config)
+
     const originalRequest = error.config
 
     // Verifica si hay un error de red o CORS
@@ -35,10 +38,10 @@ todoApi.interceptors.response.use(
     // Si el error es 401 (no autorizado) y no es una request de renovación
     // Evitar bucles con URLs específicas
     if (
-      error.response?.status === 401
-      && !originalRequest._retry
-      && !originalRequest.url.includes('/auth/refresh')
-      && !originalRequest.url.includes('/auth/logout')
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes('/auth/refresh') &&
+      !originalRequest.url.includes('/auth/logout')
     ) {
       originalRequest._retry = true // Marcar para no reintentar en bucle
 
@@ -49,7 +52,7 @@ todoApi.interceptors.response.use(
         const { uid, firstName, lastName, email, accessToken } = data
         // Actualizar token en Redux
         store.dispatch(onLogin({ uid, firstName, lastName, email, accessToken }))
-        // Paso 3: Reintentar la request original con el nuevo token        
+        // Paso 3: Reintentar la request original con el nuevo token
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`
         return todoApi(originalRequest)
       } catch (refreshError) {

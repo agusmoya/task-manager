@@ -13,13 +13,10 @@ export const useModalActions = () => {
     dispatch(onClouseModal())
   }
 
-  const toggleModal = () => isModalOpen ? openModal() : closeModal()
-
   return {
     //* Properties
     isModalOpen,
     //* Methods
-    toggleModal,
     openModal,
     closeModal,
   }

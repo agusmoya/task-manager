@@ -22,7 +22,7 @@ export const CalendarEvents = () => {
     year,
     activeCalendarDay,
     events,
-    deleteEventState,
+    deleteEventByTaskState,
     setActiveEvent,
     fetchEventsByUserId
   } = useCalendarActions()
@@ -44,7 +44,7 @@ export const CalendarEvents = () => {
   const eventDate = `${day} ${MONTHS[month]} ${year}`
 
   const handleClickDeleteEvent = (event: CalendarEvent) => {
-    deleteEventState(event)
+    deleteEventByTaskState(event)
   }
 
   const handleClickEditEvent = (event: CalendarEvent) => {
@@ -88,7 +88,7 @@ export const CalendarEvents = () => {
                           className="btn btn--text calendar-events__item-edit-btn"
                           onClick={() => handleClickEditEvent(event)}
                         >
-                          <EditIcon size={22} />
+                          <EditIcon />
                         </Button>
                         <div className="calendar-events__item-info">
                           <h3 className="calendar-events__item-title">
@@ -103,7 +103,7 @@ export const CalendarEvents = () => {
                           className="btn btn--text calendar-events__item-delete-btn"
                           onClick={() => handleClickDeleteEvent(event)}
                         >
-                          <DeleteIcon size={22} />
+                          <DeleteIcon />
                         </Button>
                       </article>
                     )

@@ -20,6 +20,7 @@ export const Input = (
     hint = '',
     error,
     disabled = false,
+    step = '',
     fieldValid = false,
     autoComplete,
     touched = false,
@@ -48,6 +49,7 @@ export const Input = (
           value={value}
           min={type === 'datetime-local' ? min : ''}
           max={type === 'datetime-local' ? max : ''}
+          step={type === 'datetime-local' ? step : ''}
           disabled={disabled}
           className={[
             'input__field',

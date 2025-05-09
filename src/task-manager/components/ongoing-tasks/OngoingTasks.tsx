@@ -33,7 +33,7 @@ export const OngoingTasks = () => {
         <header className="ongoing__header">
           <div className="ongoing__header-content">
             <h2 className="ongoing__title">Ongoing Tasks</h2>
-            <Link to='new-task' className="btn btn--outlined ongoing__card-new-button">
+            <Link to='task-form' className="btn btn--outlined ongoing__card-new-button">
               <span className="btn__state-layer"></span>
               <span className="btn__content">
                 <PlusIcon />
@@ -57,7 +57,7 @@ export const OngoingTasks = () => {
             >
               <h3 className="ongoing__item-title">New Task</h3>
               <div className="ongoing__card ongoing__card--new">
-                <Link to='new-task' className="btn btn--outlined ongoing__card-new-button">
+                <Link to='task-form' className="btn btn--outlined ongoing__card-new-button">
                   <span className="btn__state-layer"></span>
                   <span className="btn__content">
                     <PlusIcon />

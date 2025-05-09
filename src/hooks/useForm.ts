@@ -54,20 +54,21 @@ export const useForm = <T extends object>(
       },
       touched: {
         ...prev.touched,
-        [name]: false, // TODO always false
+        [name]: false,
       },
     }))
   }
 
   const onCustomChange = <K extends keyof T>(name: K, value: T[K]) => {
     setFormState((prev) => ({
+      ...prev,
       values: {
         ...prev.values,
         [name]: value,
       },
       touched: {
         ...prev.touched,
-        [name]: false, // TODO always false
+        [name]: false,
       },
     }))
   }

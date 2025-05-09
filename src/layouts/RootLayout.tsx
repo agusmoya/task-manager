@@ -25,11 +25,11 @@ export const RootLayout = () => {
           className={`root-layout ${transitionPage}`}
           onAnimationEnd={handleTransitionEnd}
         >
-          {/* <Outlet /> */}
           <Routes location={displayLocation}>
             <Route index element={<HomePage />} />
             <Route path="task/:id" element={<TaskPage />} />
-            <Route path="new-task" element={<TaskFormPage />} />
+            <Route path="task-form" element={<TaskFormPage />} />
+            <Route path="task-form/:id" element={<TaskFormPage />} />
             <Route path="*" element={<Navigate to="/home" replace />} />
           </Routes>
         </section>

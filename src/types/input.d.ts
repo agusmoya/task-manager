@@ -14,6 +14,7 @@ export type InputProps = {
   disabled?: boolean
   fieldValid: boolean
   autoComplete: string
+  step?: string
   initialStateIcon?: React.ElementType | null
   finalStateIcon?: React.ElementType | null
   onChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void

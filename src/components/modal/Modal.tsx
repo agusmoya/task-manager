@@ -43,7 +43,7 @@ export const Modal = ({ title, children }: ModalProps) => {
           type="button"
           aria-label="Close"
           className="btn btn--icon modal__button-close"
-          onClick={closeModal}
+          onClick={() => closeModal()}
         >
           <CloseIcon aria-hidden="true" focusable="false" />
         </Button>
