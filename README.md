@@ -12,9 +12,7 @@ Este es el frontend de una aplicación de gestión de tareas (Todo App), desarro
 - **ESLint** (configuración moderna)
 - **Prettier** para formateo automático
 
----
-
-- 🛠 Instalación
+## 🛠 Instalación
 
 ```bash
 pnpm install
@@ -24,7 +22,7 @@ pnpm preview    # Sirve el build localmente
 pnpm lint       # Ejecuta ESLint sobre el proyecto
 ```
 
-- 📁 Estructura del Proyecto
+## 📁 Estructura del Proyecto
 ├── src/
 │   ├── assets/             # Recursos estáticos (imágenes, íconos, etc.)
 │   ├── components/         # Componentes reutilizables
@@ -44,11 +42,11 @@ pnpm lint       # Ejecuta ESLint sobre el proyecto
 ├── tsconfig.json          # Configuración de TypeScript
 └── README.md
 
-- 🔐 Variables de Entorno:
+## 🔐 Variables de Entorno:
 
 VITE_API_URL=http://localhost:3000/api
 
-- ✨ Estilo de Código
+## ✨ Estilo de Código
 
 * Comillas simples (')
 
@@ -60,8 +58,8 @@ VITE_API_URL=http://localhost:3000/api
 
 * Soporte para hooks y exportación optimizada con react-refresh
 
-📦 Usa extensiones como ESLint y Prettier en VSCode para formato y errores automáticos al guardar.
+- Usa extensiones como ESLint y Prettier en VSCode para formato y errores automáticos al guardar.
 
-- 🧪 Tests:
+## 🧪 Tests:
 
 Actualmente no hay pruebas automatizadas, pero se implementaran con Vitest o React Testing Library en una fase futura.
