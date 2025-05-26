@@ -1,20 +1,19 @@
 // import { Link } from "react-router-dom"
 
 // import { PlusIcon } from "../../../components/icons/Icons.tsx"
-import { ScrollableContainer } from "../scrollable-container/ScrollableContainer.tsx"
+import { ScrollableContainer } from '../scrollable-container/ScrollableContainer.tsx'
 
-import { type CountingCategories } from "../../../types/category.d"
+import { type CountingCategories } from '../../../types/category.d'
 
-import { useSearch } from "../../hooks/useSearch.ts"
-import { useTaskCategoryActions } from '../../../store/hooks/useTaskCategoryActions.ts';
+import { useSearch } from '../../hooks/useSearch.ts'
+import { useCategoryActions } from '../../../store/hooks/useCategoryActions.ts'
 
-
-import "./Categories.css"
-import { useEffect } from "react"
+import './Categories.css'
+import { useEffect } from 'react'
 
 export function Categories() {
   const { search } = useSearch()
-  const { categories, fetchCategories } = useTaskCategoryActions()
+  const { categories, fetchCategories } = useCategoryActions()
 
   useEffect(() => {
     fetchCategories()
@@ -23,7 +22,7 @@ export function Categories() {
 
   const organizedCategories: { [key: string]: CountingCategories } = {}
 
-  categories.forEach((cat) => {
+  categories?.forEach(cat => {
     const { name } = cat
     if (!organizedCategories[name]) {
       organizedCategories[name] = {
@@ -35,10 +34,9 @@ export function Categories() {
     }
   })
 
-  const filteredCategories = Object.values(organizedCategories)
-    .filter(({ name }) =>
-      name.toLowerCase().includes(search.toLowerCase())
-    )
+  const filteredCategories = Object.values(organizedCategories).filter(({ name }) =>
+    name.toLowerCase().includes(search.toLowerCase())
+  )
 
   const areCategoriesPresent = filteredCategories.length
 
@@ -59,10 +57,9 @@ export function Categories() {
         </header>
         <ScrollableContainer
           itemClass="categories__item"
-          className={[
-            'categories__list',
-            !areCategoriesPresent && 'categories__list--no-result'
-          ].filter(Boolean).join(' ')}
+          className={['categories__list', !areCategoriesPresent && 'categories__list--no-result']
+            .filter(Boolean)
+            .join(' ')}
         >
           {/* <li
             key="newCategory"
@@ -78,19 +75,18 @@ export function Categories() {
               </Link>
             </div>
           </li> */}
-          {
-            (filteredCategories.length > 0)
-              ? filteredCategories.map(
-                ({ id, name, quantity }) => (
-                  <li className="categories__item" key={id}>
-                    <div className="categories__card">
-                      <h3 className="section__subtitle">{name}</h3>
-                      <small>{quantity} task(s)</small>
-                    </div>
-                  </li>
-                ))
-              : <span>No categories found...</span>
-          }
+          {filteredCategories.length > 0 ? (
+            filteredCategories.map(({ id, name, quantity }) => (
+              <li className="categories__item" key={id}>
+                <div className="categories__card">
+                  <h3 className="section__subtitle">{name}</h3>
+                  <small>{quantity} task(s)</small>
+                </div>
+              </li>
+            ))
+          ) : (
+            <span>No categories found...</span>
+          )}
         </ScrollableContainer>
       </div>
     </section>

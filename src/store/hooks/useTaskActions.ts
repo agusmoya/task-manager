@@ -1,105 +1,57 @@
-import { type Task, type TaskId } from "../../types/task.d";
+import { useCallback } from 'react'
 
-import { useAppDispatch, useAppSelector } from "./reduxStore.ts";
+import { TaskId, type Task } from '../../types/task.d'
+
+import { useAppDispatch, useAppSelector } from './reduxStore.ts'
+import { onResetActiveTask, onClearBackendErrorMessage } from './../slices/task/taskSlice.ts'
 import {
-  onAddNewTaskState,
-  onClearBackendErrorMessage,
-  onCreateTask,
-  onDeleteTaskState,
-  onFetchTasks,
-  onUpdateTask,
-  onFetchTasksByUserId,
-  onFetchTaskById,
-  onResetActiveTask,
-} from "./../slices/task/taskSlice.ts";
-import { handleAsyncActionWithToast } from "../../helpers/handleAsyncActionWithToast.ts";
+  fetchTasksThunk,
+  fetchTaskByIdThunk,
+  createTaskThunk,
+  updateTaskThunk,
+  deleteTaskThunk,
+} from '../slices/task/taskThunks.ts'
 
 export const useTaskActions = () => {
-  const dispatch = useAppDispatch();
-  const { activeTask, tasks, backendErrorMessage, loading } = useAppSelector(
-    (state) => state.task
-  );
+  const dispatch = useAppDispatch()
+  const { activeTask, tasks, backendErrorMessage, loading } = useAppSelector(state => state.task)
 
-  const fetchTasks = async () => {
-    try {
-      await dispatch(onFetchTasks()).unwrap();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const fetchTasks = useCallback(async () => {
+    return await dispatch(fetchTasksThunk()).unwrap()
+  }, [dispatch])
 
-  const fetchTaskById = async ({ id }: TaskId) => {
-    try {
-      await dispatch(onFetchTaskById({ id })).unwrap();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const fetchTaskById = useCallback(
+    async (id: TaskId) => {
+      return await dispatch(fetchTaskByIdThunk(id)).unwrap()
+    },
+    [dispatch]
+  )
 
-  const resetActiveTask = () => {
-    dispatch(onResetActiveTask());
-  };
-
-  const fetchTasksByUserId = async () => {
-    try {
-      await dispatch(onFetchTasksByUserId()).unwrap();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const saveTask = async (
-    task: Partial<Task>
-  ): Promise<{ wasSuccessful: boolean; resultData: Task | undefined }> => {
-    const isUpdating = !!task.id;
-    return await handleAsyncActionWithToast<Task>(
-      dispatch,
-      async () => {
-        if (isUpdating) {
-          return await dispatch(onUpdateTask(task)).unwrap();
-        } else {
-          return await dispatch(onCreateTask(task)).unwrap();
-        }
-      },
-      {
-        loading: isUpdating ? "Updating task..." : "Saving task...",
-        success: isUpdating ? "Task updated." : "Task created.",
-        error: "Error saving task.",
-      },
-      onClearBackendErrorMessage
-    );
-  };
-
-  const deleteTask = async (task: Task) => {
-    try {
-      console.log(task);
-      // TODO::: delete task
-      // await dispatch(onDeleteTask(task)).unwrap()
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const saveTaskState = (task: Task) => {
-    try {
+  const saveTask = useCallback(
+    async (task: Partial<Task>) => {
       if (task.id) {
-        // TODO::: update task
-        // dispatch(onUpdateTask(category))
+        return await dispatch(updateTaskThunk(task)).unwrap()
       } else {
-        dispatch(onAddNewTaskState(task));
+        return await dispatch(createTaskThunk(task)).unwrap()
       }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    },
+    [dispatch]
+  )
 
-  const deleteTaskState = (task: Task) => {
-    try {
-      dispatch(onDeleteTaskState(task));
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const deleteTask = useCallback(
+    async (id: TaskId) => {
+      return await dispatch(deleteTaskThunk(id)).unwrap()
+    },
+    [dispatch]
+  )
+
+  const resetActiveTask = useCallback(() => {
+    dispatch(onResetActiveTask())
+  }, [dispatch])
+
+  const clearBackendErrorMessage = useCallback(() => {
+    dispatch(onClearBackendErrorMessage())
+  }, [dispatch])
 
   return {
     //* Properties
@@ -111,13 +63,10 @@ export const useTaskActions = () => {
     // THUNKS
     fetchTasks,
     fetchTaskById,
-    fetchTasksByUserId,
     saveTask,
     deleteTask,
     // STATE
-    saveTaskState,
-    deleteTaskState,
     resetActiveTask,
-    onClearBackendErrorMessage,
-  };
-};
+    clearBackendErrorMessage,
+  }
+}

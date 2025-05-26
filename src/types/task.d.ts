@@ -1,12 +1,12 @@
-import { type CalendarEvent } from "./calendar-event.d"
-import { type Category } from "./category.d"
-import { type User } from "./user.d"
+import { type CalendarEvent } from './calendar-event.d'
+import { type Category } from './category.d'
+import { type User } from './user.d'
 
 export const TASK_STATUS = {
-  PENDING: "pending",
-  ACTIVE: "active",
-  PROGRESS: "in-progress",
-  COMPLETED: "completed",
+  PENDING: 'pending',
+  ACTIVE: 'active',
+  PROGRESS: 'in-progress',
+  COMPLETED: 'completed',
 } as const
 
 export interface Task {
@@ -38,7 +38,8 @@ export interface TaskPayload {
   participantsIds: string[]
 }
 
-export type TaskId = Pick<Task, "id">
-export type TaskTitle = Pick<Task, "title">
-export type TaskStatus = Pick<Task, "status">
+// export type TaskId = Pick<Task, "id">
+export type TaskId = Task['id']
+export type TaskTitle = Pick<Task, 'title'>
+export type TaskStatus = Pick<Task, 'status'>
 export type Tasks = Task[]

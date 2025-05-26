@@ -1,18 +1,20 @@
-import { useAppDispatch, useAppSelector } from "./reduxStore.ts"
+import { useCallback } from 'react'
 
-import { onFetchContacts } from "../slices/user/userSlice.ts"
+import { useAppDispatch, useAppSelector } from './reduxStore.ts'
+
+import { fetchContactsThunk } from '../slices/user/userThunks.ts'
 
 export const useUserActions = () => {
   const dispatch = useAppDispatch()
-  const { users, backendErrorMessage, loading } = useAppSelector((state) => state.user)
+  const { users, backendErrorMessage, loading } = useAppSelector(state => state.user)
 
-  const fetchContacts = async () => {
+  const fetchContacts = useCallback(async () => {
     try {
-      await dispatch(onFetchContacts()).unwrap()
+      await dispatch(fetchContactsThunk()).unwrap()
     } catch (error) {
       console.error(error)
     }
-  }
+  }, [dispatch])
 
   return {
     //* Properties

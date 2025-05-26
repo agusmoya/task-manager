@@ -1,22 +1,22 @@
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom'
 
-import dayjs from "dayjs"
+import dayjs from 'dayjs'
 
-import { Clock } from "../clock/Clock.tsx"
-import { CalendarIcon } from "../../../components/icons/Icons.tsx"
+import { Clock } from '../clock/Clock.tsx'
+import { CalendarIcon } from '../../../components/icons/Icons.tsx'
 
-import { type Task } from "../../../types/task"
+import { type Task } from '../../../types/task'
 
+import { getToday } from '../../../calendar/utils/dateUtils.ts'
 
 import './TaskInfo.css'
 
-
 interface Props {
-  task: Task,
+  task: Task
 }
 
 export const TaskInfo = ({ task }: Props) => {
-  const today = dayjs(new Date())
+  const today = dayjs(getToday())
   const { id, title } = task
 
   return (
@@ -28,18 +28,18 @@ export const TaskInfo = ({ task }: Props) => {
         </h2>
       </div>
       <div className="task-info__actions">
-        <Link className="btn btn--tonal see-calendar" to='/calendar'>
-          <CalendarIcon />&nbsp;Calendar
+        <Link className="btn btn--tonal see-calendar" to="/calendar">
+          <CalendarIcon />
+          &nbsp;Calendar
         </Link>
 
         <Link className="btn btn--filled edit__task-btn" to={`/home/task-form/${id}`}>
           Edit
         </Link>
 
-        <Link className="btn btn--outlined delete__task-btn" to='/calendar'>
+        <Link className="btn btn--outlined delete__task-btn" to="/calendar">
           Delete
         </Link>
-
       </div>
     </section>
   )

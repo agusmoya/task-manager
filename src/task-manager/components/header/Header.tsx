@@ -3,19 +3,13 @@ import { Link } from 'react-router-dom'
 import { Dropdown } from '../../../components/dropdown/Dropdown.tsx'
 import { ButtonTheme } from '../../../components/button-theme/ButtonTheme.tsx'
 
-import { type Tasks } from "../../../types/task.d"
+import { useAuthActions } from '../../../store/hooks/useAuthActions.ts'
 
-import { useAuthActions } from "../../../store/hooks/useAuthActions.ts"
+import './Header.css'
 
-import "./Header.css"
-
-interface Props {
-  pendingTasks?: Tasks
-}
-
-export const Header: React.FC<Props> = () => {
-  const imgLogo = "/images/icon-todo.webp"
-  const { user, startLogout } = useAuthActions()
+export const Header = () => {
+  const imgLogo = '/images/icon-todo.webp'
+  const { user, logout } = useAuthActions()
 
   return (
     <header className="header-app" id="header-app">
@@ -26,35 +20,25 @@ export const Header: React.FC<Props> = () => {
             <img className="nav__logo-img" src={imgLogo} alt="logo-app" />
           </Link>
         </div>
-        {
-          (user)
-            ?
-            <Dropdown>
-              <header role="menuitem" className="dropdown__menu-item--header">
-                <h3>{user?.firstName}</h3>
-              </header>
-              <div role="menuitem" className="dropdown__menu-item">
-                Select theme:&nbsp;<ButtonTheme />
-              </div>
-              <button
-                role="menuitem"
-                type="button"
-                className="dropdown__menu-item"
-              >
-                Profile
-              </button>
-              <button
-                role="menuitem"
-                type="button"
-                className="dropdown__menu-item"
-                onClick={startLogout}
-              >
-                Logout
-              </button>
-            </Dropdown>
-            :
-            <ButtonTheme />
-        }
+        {user ? (
+          <Dropdown>
+            <header role="menuitem" className="dropdown__menu-item--header">
+              <h3>{user?.firstName}</h3>
+            </header>
+            <div role="menuitem" className="dropdown__menu-item">
+              Select theme:&nbsp;
+              <ButtonTheme />
+            </div>
+            <button role="menuitem" type="button" className="dropdown__menu-item">
+              Profile
+            </button>
+            <button role="menuitem" type="button" className="dropdown__menu-item" onClick={logout}>
+              Logout
+            </button>
+          </Dropdown>
+        ) : (
+          <ButtonTheme />
+        )}
       </div>
     </header>
   )

@@ -1,20 +1,24 @@
-import { useEffect } from "react"
+import { useEffect } from 'react'
 
-import { addHours } from "date-fns"
+import { addHours } from 'date-fns'
 
-import { Input } from "../input/Input.tsx"
-import { Textarea } from "../text-area/Textarea.tsx"
-import { Button } from "../button/button.tsx"
+import { Input } from '../input/Input.tsx'
+import { Textarea } from '../text-area/Textarea.tsx'
+import { Button } from '../button/button.tsx'
 
-import { useForm } from "../../hooks/useForm.ts"
-import { useCalendarActions } from "../../store/hooks/useCalendarActions.ts"
-import { useModalActions } from "../../store/hooks/useModalActions.ts"
-import { eventFormFields, eventFormValidations, fromDateToDatetimeLocal, validateStartDateNextEvent, } from "../../helpers/form-validations/getEventFormValidations.ts"
-import { mapEventFormToPayload } from "../../helpers/mapEventFormToPayload.ts"
+import { useForm } from '../../hooks/useForm.ts'
+import { useEventActions } from '../../store/hooks/useEventActions.ts'
+import { useModalActions } from '../../store/hooks/useModalActions.ts'
 
+import {
+  eventFormFields,
+  eventFormValidations,
+  fromDateToDatetimeLocal,
+  validateStartDateNextEvent,
+} from '../../helpers/form-validations/getEventFormValidations.ts'
+import { mapEventFormToPayload } from '../../helpers/mapEventFormToPayload.ts'
 
-import "./CalendarEventForm.css"
-
+import './CalendarEventForm.css'
 
 export const CalendarEventForm = () => {
   const {
@@ -32,9 +36,9 @@ export const CalendarEventForm = () => {
     setFormState,
     onInputChange,
     onBlurField,
-    onResetForm
+    onResetForm,
   } = useForm(eventFormFields, eventFormValidations)
-  const { activeCalendarEvent, eventsByTask, saveEventByTaskState } = useCalendarActions()
+  const { activeCalendarEvent, eventsByTask, addEventByTaskState } = useEventActions()
   const { isModalOpen, closeModal } = useModalActions()
 
   const formattedStartDate = fromDateToDatetimeLocal(startDate)
@@ -65,17 +69,14 @@ export const CalendarEventForm = () => {
 
     const payload = mapEventFormToPayload(formState)
 
-    await saveEventByTaskState(payload)
+    addEventByTaskState(payload)
     onResetForm()
     closeModal()
   }
 
   return (
     <>
-      <form
-        className="event__form"
-        onSubmit={handleEventSubmit}
-      >
+      <form className="event__form" onSubmit={handleEventSubmit}>
         <Input
           id="title"
           type="text"
@@ -147,11 +148,7 @@ export const CalendarEventForm = () => {
           >
             Create
           </Button>
-          <Button
-            type="reset"
-            className="btn btn--text event__form-button"
-            onClick={onResetForm}
-          >
+          <Button type="reset" className="btn btn--text event__form-button" onClick={onResetForm}>
             Reset
           </Button>
         </footer>

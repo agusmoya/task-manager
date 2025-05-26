@@ -1,16 +1,17 @@
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom'
 
-import { EmailIcon, EyeIcon, EyeOffIcon, GoogleIcon } from "../../../components/icons/Icons.tsx"
+import { EmailIcon, EyeIcon, EyeOffIcon, GoogleIcon } from '../../../components/icons/Icons.tsx'
 import { Input } from '../../../components/input/Input.tsx'
-import { Button } from "../../../components/button/button.tsx"
+import { Button } from '../../../components/button/button.tsx'
 
-import { loginFormFields, loginFormValidations } from "../../../helpers/form-validations/getLoginFormValidations.ts"
-import { useForm } from "../../../hooks/useForm.ts"
-import { useAuthActions } from "../../../store/hooks/useAuthActions.ts"
+import {
+  loginFormFields,
+  loginFormValidations,
+} from '../../../helpers/form-validations/getLoginFormValidations.ts'
+import { useForm } from '../../../hooks/useForm.ts'
+import { useAuthActions } from '../../../store/hooks/useAuthActions.ts'
 
-
-import "./LoginPage.css"
-
+import './LoginPage.css'
 
 const LoginPage = () => {
   const {
@@ -23,7 +24,7 @@ const LoginPage = () => {
     onInputChange,
     onBlurField,
   } = useForm(loginFormFields, loginFormValidations)
-  const { startLogin, backendErrorMessage } = useAuthActions()
+  const { login, backendErrorMessage } = useAuthActions()
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -31,25 +32,14 @@ const LoginPage = () => {
       console.error('Form with errors')
       return
     }
-    await startLogin({ email, password })
+    await login({ email, password })
   }
 
   return (
     <>
-      <h1 className="login__title">
-        Log in to your account.
-      </h1>
-      {
-        backendErrorMessage
-        &&
-        <p className="login__error">
-          {backendErrorMessage}
-        </p>
-      }
-      <form
-        className="login__form"
-        onSubmit={handleLoginSubmit}
-      >
+      <h1 className="login__title">Log in to your account.</h1>
+      {backendErrorMessage && <p className="login__error">{backendErrorMessage}</p>}
+      <form className="login__form" onSubmit={handleLoginSubmit}>
         <div className="login__content">
           <Input
             id="email"
@@ -91,11 +81,7 @@ const LoginPage = () => {
         <a href="#" className="login__forgot">
           Forgot your password?
         </a>
-        <Button
-          type="submit"
-          className="btn login__button"
-          disabled={!isFormValid}
-        >
+        <Button type="submit" className="btn login__button" disabled={!isFormValid}>
           Login
         </Button>
       </form>
@@ -111,9 +97,7 @@ const LoginPage = () => {
 
       <p className="login__switch">
         Don't have an account?&nbsp;
-        <Link to="/auth/register" >
-          Create account.
-        </Link>
+        <Link to="/auth/register">Create account.</Link>
       </p>
     </>
   )

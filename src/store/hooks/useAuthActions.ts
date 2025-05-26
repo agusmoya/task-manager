@@ -1,108 +1,63 @@
-import axios from "axios"
+import { useCallback } from 'react'
 
-import { useAppDispatch, useAppSelector } from "./reduxStore.ts"
-import { onClearErrorMessage, onChecking, onLogin, onLogout } from "../slices/auth/authSlice.ts"
-import todoApi from "../../api/taskManagerApi.ts"
+import { type LoginUserRequest } from '../../types/login-request.d'
+import { type RegisterUserRequest } from '../../types/register-request.d'
 
-interface RegisterProps {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-}
-
-interface LoginProps {
-  email: string
-  password: string
-}
+import { useAppDispatch, useAppSelector } from './reduxStore.ts'
+import {
+  checkAuthTokenThunk,
+  loginThunk,
+  logoutThunk,
+  registerThunk,
+} from '../slices/auth/authThunks.ts'
 
 export const useAuthActions = () => {
   const dispatch = useAppDispatch()
   const { status, user, backendErrorMessage } = useAppSelector(state => state.auth)
 
-  const startLogin = async ({ email, password }: LoginProps) => {
-    dispatch(onChecking())
-    try {
-      const { data } = await todoApi.post("/auth/login", { email, password })
-      dispatch(onLogin({
-        uid: data.uid,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        accessToken: data.accessToken,
-      }))
-    } catch (error) {
-      manageError(error)
-    }
-  }
+  const login = useCallback(
+    async (credentials: LoginUserRequest) => {
+      try {
+        await dispatch(loginThunk(credentials)).unwrap()
+        // localStorage.setItem('token-init-time', Date.now().toString())
+      } catch (error) {
+        console.error('Login failed:', error)
+      }
+    },
+    [dispatch]
+  )
 
-  const startLogout = async () => {
+  const register = useCallback(
+    async (formData: RegisterUserRequest) => {
+      try {
+        await dispatch(registerThunk(formData)).unwrap()
+        // localStorage.setItem('token-init-time', Date.now().toString())
+      } catch (error) {
+        console.error('Register failed:', error)
+      }
+    },
+    [dispatch]
+  )
+
+  const logout = useCallback(async () => {
     try {
-      await todoApi.post('/auth/logout')
+      await dispatch(logoutThunk()).unwrap()
+    } catch (error) {
+      console.error('Logout failed:', error)
     } finally {
       localStorage.removeItem('breadcrumb')
-      localStorage.removeItem("token-init-time")
-      dispatch(onLogout('Session closed.'))
-      handleClearErrorMessage()
+      localStorage.removeItem('token-init-time')
     }
-  }
+  }, [dispatch])
 
-  const startRegister = async ({ firstName, lastName, email, password }: RegisterProps) => {
-    dispatch(onChecking())
+  const checkAuthToken = useCallback(async () => {
     try {
-      const { data } = await todoApi.post("/auth/register", { firstName, lastName, email, password })
-      dispatch(onLogin({
-        uid: data.uid,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        accessToken: data.token,
-      }))
+      await dispatch(checkAuthTokenThunk())
+      // localStorage.setItem('token-init-time', Date.now().toString())
     } catch (error) {
-      manageError(error)
+      console.error('Token refresh failed:', error)
     }
-  }
-
-  const checkAuthToken = async () => {
-    try {
-      const { data } = await todoApi.post("/auth/refresh")
-      const { uid, firstName, lastName, email, accessToken } = data
-      dispatch(onLogin({ uid, firstName, lastName, email, accessToken }))
-    } catch (error) {
-      console.error("Error renewing token:", error)
-      dispatch(onLogout("Token expired or invalid. Please, log in again."))
-    }
-  }
-
-  const manageError = (responseError: unknown) => {
-    if (
-      axios.isAxiosError(responseError)
-      && responseError.response
-      && responseError.response.data
-    ) {
-      const { errors, msg } = responseError.response.data
-      let errorMessage = ''
-      if (errors) {
-        errorMessage = errors[0].msg
-      } else if (msg) {
-        errorMessage = msg
-      } else {
-        console.error(responseError)
-        errorMessage = 'An unexpected axios error occurred.'
-      }
-      dispatch(onLogout(errorMessage))
-    } else {
-      console.error(responseError)
-      dispatch(onLogout('An unexpected error occurred.'))
-    }
-    handleClearErrorMessage()
-  }
-
-  const handleClearErrorMessage = () => {
-    setTimeout(() => {
-      dispatch(onClearErrorMessage())
-    }, 10000)
-  }
+  }, [dispatch])
 
   return {
     //* Properties:
@@ -110,9 +65,9 @@ export const useAuthActions = () => {
     user,
     backendErrorMessage,
     //* Methods:
-    startLogin,
-    startRegister,
+    login,
+    logout,
+    register,
     checkAuthToken,
-    startLogout,
   }
 }

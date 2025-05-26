@@ -1,15 +1,12 @@
-
 import { Button } from '../../../components/button/button.tsx'
 import { DeleteIcon, EditIcon, SeparatorIcon } from '../../../components/icons/Icons.tsx'
 
 import { type CalendarEvent } from '../../../types/calendar-event.d'
 
-import { useCalendarActions } from '../../../store/hooks/useCalendarActions.ts'
+import { useEventActions } from '../../../store/hooks/useEventActions.ts'
 import { useModalActions } from '../../../store/hooks/useModalActions.ts'
 
-
 import './EventCard.css'
-
 
 interface Props {
   event: CalendarEvent
@@ -18,8 +15,8 @@ interface Props {
 export const EventCard = ({ event }: Props) => {
   const { title, startDate, endDate, notes } = event
 
-  const { deleteEventByTaskState, setActiveEvent } = useCalendarActions()
   const { openModal } = useModalActions()
+  const { deleteEventByTaskState, setActiveEvent } = useEventActions()
 
   const formattedStart = new Date(startDate).toLocaleString()
   const formattedEnd = new Date(endDate).toLocaleString()
@@ -61,10 +58,7 @@ export const EventCard = ({ event }: Props) => {
           {formattedStart} <SeparatorIcon size={20} /> {formattedEnd}
         </time>
         {notes && <p className="event-card__notes">{notes}</p>}
-        <div className="collaborators">
-          Collaborators:
-
-        </div>
+        <div className="collaborators">Collaborators:</div>
       </div>
     </article>
   )

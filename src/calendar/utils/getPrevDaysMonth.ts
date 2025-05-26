@@ -1,5 +1,4 @@
-import { WEEKDAYS } from "../constants/constants"
-import { type CalendarDay } from "../../types/calendar-day"
+import { WEEKDAYS, type CalendarDay } from '../../types/calendar-day.d'
 
 export const getPreviousDaysMonth = (
   startDay: number,
@@ -17,10 +16,9 @@ export const getPreviousDaysMonth = (
     prevDays.push({
       day,
       dayName,
-      type: "prev",
-      events: [],
+      type: 'prev',
       month: month === 0 ? 11 : month - 1,
-      year: month === 0 ? year - 1 : year
+      year: month === 0 ? year - 1 : year,
     })
   }
   return prevDays

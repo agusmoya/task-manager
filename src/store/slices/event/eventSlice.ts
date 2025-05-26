@@ -1,16 +1,15 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { type CalendarEvent } from "../../../types/calendar-event.d"
+import { type CalendarEvent } from '../../../types/calendar-event.d'
 
-import todoApi from "../../../api/taskManagerApi.ts"
-import { extractBackendErrorMessage } from "../../../helpers/manageBackendError.ts"
+import { fetchEventsByUserIdThunk } from './eventThunks.ts'
 
 export interface CalendarEventsState {
   activeCalendarEvent: CalendarEvent | null
   events: CalendarEvent[]
   eventsByTask: CalendarEvent[] // in task form
   loading: boolean
-  backendErrorMessage: string | null
+  backendErrorMessage: string | undefined
 }
 
 const initialState: CalendarEventsState = {
@@ -18,11 +17,11 @@ const initialState: CalendarEventsState = {
   events: [],
   eventsByTask: [],
   loading: false,
-  backendErrorMessage: null,
+  backendErrorMessage: undefined,
 }
 
 export const calendarEventSlice = createSlice({
-  name: "calendarEvent",
+  name: 'calendarEvent',
   initialState,
   reducers: {
     onSetActiveEventState: (state, { payload }: PayloadAction<CalendarEvent>) => {
@@ -40,43 +39,31 @@ export const calendarEventSlice = createSlice({
       )
     },
     onDeleteEventByTaskState: (state, { payload }: PayloadAction<CalendarEvent>) => {
-      state.eventsByTask = state.eventsByTask.filter(event =>
-        event.id !== payload.id
-      )
+      state.eventsByTask = state.eventsByTask.filter(event => event.id !== payload.id)
     },
-    onResetEventsByTaskState: (state) => {
+    onResetEventsByTaskState: state => {
       state.eventsByTask = []
+    },
+    onClearBackendErrorMessage: state => {
+      state.backendErrorMessage = undefined
     },
   },
   extraReducers(builder) {
     builder
-      // FETCH events by user id
-      .addCase(onFetchEventsByUserId.pending, (state) => {
+      .addCase(fetchEventsByUserIdThunk.pending, state => {
         state.loading = true
-        state.backendErrorMessage = null
+        state.backendErrorMessage = undefined
       })
-      .addCase(onFetchEventsByUserId.fulfilled, (state, { payload }) => {
+      .addCase(fetchEventsByUserIdThunk.fulfilled, (state, { payload }) => {
         state.events = payload
         state.loading = false
       })
-      .addCase(onFetchEventsByUserId.rejected, (state, { payload }) => {
+      .addCase(fetchEventsByUserIdThunk.rejected, (state, { payload }) => {
         state.loading = false
-        state.backendErrorMessage = extractBackendErrorMessage(payload) || 'Error fetching events.'
+        state.backendErrorMessage = payload
       })
-  }
+  },
 })
-
-export const onFetchEventsByUserId = createAsyncThunk<CalendarEvent[], void>(
-  'events/by-user',
-  async (_, thunkAPI) => {
-    try {
-      const { data } = await todoApi.get('/events/by-user')
-      return data.events as CalendarEvent[]
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error)
-    }
-  }
-)
 
 export const {
   onSetActiveEventState,
@@ -85,5 +72,5 @@ export const {
   onUpdateEventByTaskState,
   onDeleteEventByTaskState,
   onResetEventsByTaskState,
-
+  onClearBackendErrorMessage,
 } = calendarEventSlice.actions

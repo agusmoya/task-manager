@@ -1,6 +1,4 @@
-import { WEEKDAYS } from "../constants/constants.ts"
-
-import { type CalendarDay } from "../../types/calendar-day"
+import { WEEKDAYS, type CalendarDay } from '../../types/calendar-day.d'
 
 export const getNextDaysMonth = (
   startDay: number,
@@ -19,10 +17,9 @@ export const getNextDaysMonth = (
     nextDays.push({
       day: i,
       dayName,
-      type: "next",
-      events: [], // no events for next days
+      type: 'next',
       month: month === 11 ? 0 : month + 1,
-      year: month === 11 ? year + 1 : year
+      year: month === 11 ? year + 1 : year,
     })
   }
   return nextDays

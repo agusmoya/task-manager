@@ -1,65 +1,76 @@
-# 🎯 Todo App Frontend (React + Vite + TypeScript)
+# 🧠 Todo App Frontend (React + Vite + TypeScript)
 
-Este es el frontend de una aplicación de gestión de tareas (Todo App), desarrollado con **React 18**, **TypeScript**, **Vite** y **Redux Toolkit**. Está estructurado de forma moderna, con enfoque profesional, control de calidad de código y soporte para temas, rutas protegidas y manejo avanzado de autenticación con tokens.
+Este es el frontend de una aplicación de gestión de tareas (Todo App), desarrollado con **React 18**, **TypeScript**, **Vite** y **Redux Toolkit**. La arquitectura está pensada para ser escalable, mantenible y moderna, con especial enfoque en seguridad, experiencia de usuario (UX) y accesibilidad.
 
 ## 📦 Stack
 
-- **React 18** con **TypeScript**
-- **Vite 6** como bundler
-- **Redux Toolkit** para manejo de estado global
-- **React Router DOM** para rutas
-- **Axios** con interceptores para autenticación automática
-- **ESLint** (configuración moderna)
-- **Prettier** para formateo automático
+- React 18 + TypeScript
+- Vite
+- Redux Toolkit
+- React Router DOM
+- Axios con interceptores para manejo de autenticación
+- ESLint + Prettier integrados
 
 ## 🛠 Instalación
 
 ```bash
 pnpm install
-pnpm dev        # Inicia la app en modo desarrollo
-pnpm build      # Compila la app para producción
-pnpm preview    # Sirve el build localmente
-pnpm lint       # Ejecuta ESLint sobre el proyecto
+```
+
+## 🚀 Scripts
+
+```bash
+pnpm dev        # Inicia el servidor de desarrollo
+pnpm build      # Compila el proyecto para producción
+pnpm preview    # Sirve el build para vista previa
+pnpm lint       # Ejecuta ESLint
+pnpm lint:fix   # Corrige errores de lint automáticamente
+pnpm format     # Formatea con Prettier
 ```
 
 ## 📁 Estructura del Proyecto
-├── src/
-│   ├── assets/             # Recursos estáticos (imágenes, íconos, etc.)
-│   ├── components/         # Componentes reutilizables
-│   ├── context/            # Proveedores de contexto (navegación, temas, etc.)
-│   ├── helpers/            # Funciones auxiliares
-│   ├── hooks/              # Custom hooks
-│   ├── pages/              # Vistas principales de la app
-│   ├── router/             # Definición de rutas y navegación
-│   ├── store/              # Redux Toolkit slices y configuración
-│   ├── styles/             # Estilos globales y temas
-│   ├── api/                # Configuración de axios (`taskManagerApi.ts`)
-│   ├── TodoApp.tsx         # Componente raíz
-│   └── main.tsx            # Punto de entrada
-├── public/                 # Archivos estáticos públicos
-├── .eslintrc.js            # Configuración de ESLint moderna (Flat config)
-├── vite.config.ts          # Configuración de Vite
-├── tsconfig.json          # Configuración de TypeScript
-└── README.md
 
-## 🔐 Variables de Entorno:
+```
+src/
+├── api/                    # Configuración de Axios, interceptores, helpers de error
+├── auth/                   # Pantallas y layouts de login/registro
+├── calendar/               # Módulos de calendario
+├── components/             # Componentes reutilizables
+├── context/                # Contextos globales
+├── hooks/                  # Custom hooks
+├── layouts/                # Layouts generales (ej. RootLayout)
+├── pages/                  # Páginas principales
+├── router/                 # Rutas y guards
+├── store/                  # Redux Toolkit (slices, thunks, store)
+├── styles/                 # Estilos globales y temas
+├── types/                  # Tipado compartido
+└── main.tsx / TodoApp.tsx  # Entrypoints
+```
 
-VITE_API_URL=http://localhost:3000/api
+## 🔐 Seguridad y control de rutas
 
-## ✨ Estilo de Código
+El sistema de rutas está reforzado para evitar accesos indebidos:
 
-* Comillas simples (')
+### ✅ Rutas protegidas (`PrivateRoute`)
+- Verifican tanto el estado de autenticación (`AUTH_STATUS`) como la presencia real de un `accessToken`.
+- Si el usuario no está autenticado o no tiene token, es redirigido a `/auth/login`.
 
-* Sin punto y coma (;)
+### 🚫 Rutas públicas (`PublicRoute`)
+- Evitan que un usuario autenticado acceda a `/auth/*`.
+- Si hay token válido, redirige automáticamente a `/home`.
 
-* Ancho máximo de línea: 100
+### 🧠 Importancia
+Este enfoque evita errores críticos como:
+- Acceso a rutas privadas sin token válido.
+- Usuarios logueados entrando al login.
 
-* ESLint + Prettier integrados
+Todo esto se implementa con `useAppSelector` directamente desde el `authSlice`, lo que asegura consistencia con Redux y persistencia del estado.
 
-* Soporte para hooks y exportación optimizada con react-refresh
+## 🧪 Testing
 
-- Usa extensiones como ESLint y Prettier en VSCode para formato y errores automáticos al guardar.
+Actualmente no hay pruebas automatizadas, pero se recomienda integrar **Vitest** y **React Testing Library**.
 
-## 🧪 Tests:
+## 🧠 Notas
 
-Actualmente no hay pruebas automatizadas, pero se implementaran con Vitest o React Testing Library en una fase futura.
+- El frontend está preparado para usar temas (claro/oscuro), toasts personalizados y navegación protegida.
+- El diseño sigue principios de Material Design 3 y considera accesibilidad desde el inicio.

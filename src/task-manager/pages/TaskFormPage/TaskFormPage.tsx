@@ -1,47 +1,49 @@
-import { useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 
-import { Button } from "../../../components/button/button.tsx"
-import { Input } from "../../../components/input/Input.tsx"
-import { Modal } from "../../../components/modal/Modal.tsx"
-import { InputWithSuggestions } from "../../../components/input-with-suggestions/InputWithSuggestions.tsx"
-import { MultiSelectInput } from "../../../components/multi-select-input/MultiSelectInput.tsx"
-import { CalendarEventForm } from "../../../components/event-form/CalendarEventForm.tsx"
+import { Button } from '../../../components/button/button.tsx'
+import { Input } from '../../../components/input/Input.tsx'
+import { Modal } from '../../../components/modal/Modal.tsx'
+import { InputWithSuggestions } from '../../../components/input-with-suggestions/InputWithSuggestions.tsx'
+import { MultiSelectInput } from '../../../components/multi-select-input/MultiSelectInput.tsx'
+import { CalendarEventForm } from '../../../components/event-form/CalendarEventForm.tsx'
 import { EventCardList } from '../../components/event-card-list/EventCardList.tsx'
-import { Loader } from "../../../components/loader-page/Loader.tsx"
+import { Loader } from '../../../components/loader-page/Loader.tsx'
 
-import { type User } from "../../../types/user.d"
+import { type User } from '../../../types/user.d'
 
-import { useForm } from "../../../hooks/useForm.ts"
-import { mapTaskFormToPayload, taskFormFields, taskFormValidations } from "../../../helpers/form-validations/getTaskFromValidations.ts"
-import { useTaskCategoryActions } from "../../../store/hooks/useTaskCategoryActions.ts"
-import { useUserActions } from "../../../store/hooks/useUserActions.ts"
-import { useCalendarActions } from "../../../store/hooks/useCalendarActions.ts"
-import { useTaskActions } from "../../../store/hooks/useTaskActions.ts"
+import { useForm } from '../../../hooks/useForm.ts'
+import {
+  mapTaskFormToPayload,
+  taskFormFields,
+  taskFormValidations,
+} from '../../../helpers/form-validations/getTaskFromValidations.ts'
 
+import { useCategoryActions } from '../../../store/hooks/useCategoryActions.ts'
+import { useUserActions } from '../../../store/hooks/useUserActions.ts'
+import { useTaskActions } from '../../../store/hooks/useTaskActions.ts'
 
 import './TaskFormPage.css'
-
+import { useEventActions } from '../../../store/hooks/useEventActions.ts'
 
 const TaskFormPage = () => {
   const { id } = useParams<{ id: string }>()
 
-  const { users, fetchContacts } = useUserActions()
-  const { eventsByTask, setEventsByTaskState, resetEventByTaskState } = useCalendarActions()
+  const { users } = useUserActions()
+  const { eventsByTask, setEventsByTaskState, resetEventByTaskState } = useEventActions()
   const {
     categories,
     loading: lodaingCategoryAction,
     backendErrorMessage: backendCategoryError,
     fetchCategories,
     saveCategory,
-  } = useTaskCategoryActions()
+  } = useCategoryActions()
 
   const {
     loading: loadingTaskAction,
     backendErrorMessage: backendTaskError,
     activeTask,
     saveTask,
-    updateTask,
     fetchTaskById,
     resetActiveTask,
   } = useTaskActions()
@@ -63,9 +65,9 @@ const TaskFormPage = () => {
 
   //* Load initial data and clean form inputs when component unmount
   useEffect(() => {
-    if (id) fetchTaskById({ id })
+    if (id) fetchTaskById(id)
     fetchCategories()
-    fetchContacts()
+    // fetchContacts()
 
     return () => {
       resetActiveTask()
@@ -84,7 +86,7 @@ const TaskFormPage = () => {
     onCustomChange('category', category.name)
     onCustomChange('participants', participants)
     setEventsByTaskState(events)
-    onCustomChange('events', events || [])
+    onCustomChange('events', events)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTask])
 
@@ -100,12 +102,15 @@ const TaskFormPage = () => {
   }
 
   const handleRemoveParticipant = (user: User) => {
-    onCustomChange('participants', participants.filter(p => p.id !== user.id))
+    onCustomChange(
+      'participants',
+      participants.filter(p => p.id !== user.id)
+    )
   }
 
   const handleCreateNewCategory = async (newCategoryName: string) => {
-    const { wasSuccessful } = await saveCategory({ name: newCategoryName })
-    if (!wasSuccessful) onCustomChange('category', '')
+    const newCategory = await saveCategory({ name: newCategoryName })
+    onCustomChange('category', newCategory ? newCategory.name : '')
   }
 
   const handleTaskSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -113,15 +118,10 @@ const TaskFormPage = () => {
     if (!isFormValid) return
 
     const payload = mapTaskFormToPayload(formState, categories)
-    console.log(payload);
+    console.log(payload)
 
-    if (id) {
-      const { wasSuccessful } = await saveTask(payload)
-      if (wasSuccessful) handleResetFormAndEvents()
-    } else {
-      const { wasSuccessful } = await updateTask(payload)
-      if (wasSuccessful) handleResetFormAndEvents()
-    }
+    const newTask = await saveTask(payload)
+    if (newTask) handleResetFormAndEvents()
   }
 
   const handleResetFormAndEvents = () => {
@@ -134,21 +134,11 @@ const TaskFormPage = () => {
 
   return (
     <section className="task-form-wrapper section container">
+      <h1 className="task__form-title">{id ? 'Edit ' : 'Create '} task</h1>
 
-      <h1 className="task__form-title">
-        {id ? 'Edit ' : 'Create '} task
-      </h1>
+      {<p className="form__error">{backendTaskError}</p>}
 
-      {
-        <p className="form__error">
-          {backendTaskError}
-        </p>
-      }
-
-      <form
-        className="task__form"
-        onSubmit={handleTaskSubmit}
-      >
+      <form className="task__form" onSubmit={handleTaskSubmit}>
         <Input
           id="title"
           type="text"
@@ -175,7 +165,7 @@ const TaskFormPage = () => {
           fieldValid={!!categoryValid}
           touched={touchedFields.category}
           allowCreateIfNotExists
-          suggestionData={categories.map((cat) => cat.name)}
+          suggestionData={categories.map(cat => cat.name)}
           onCreateNew={handleCreateNewCategory}
           backendError={backendCategoryError}
           loading={lodaingCategoryAction}
@@ -197,7 +187,6 @@ const TaskFormPage = () => {
         <EventCardList events={eventsByTask} />
 
         <footer className="task__form-footer">
-
           <Button
             type="submit"
             className="btn btn--filled task__form-button"
@@ -213,15 +202,12 @@ const TaskFormPage = () => {
           >
             Reset
           </Button>
-
         </footer>
-
       </form>
 
       <Modal title="New Event">
         <CalendarEventForm />
       </Modal>
-
     </section>
   )
 }

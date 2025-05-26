@@ -1,47 +1,44 @@
-import { addHours } from "date-fns"
-import dayjs from "dayjs"
+import { addHours } from 'date-fns'
+import dayjs from 'dayjs'
 
-import { CalendarEventForm } from "../../types/calendar-event.d"
+import { CalendarEventForm } from '../../types/calendar-event.d'
 
-import { TODAY } from "../../calendar/constants/constants.ts"
-import { FormValidations } from "../../hooks/useForm.ts"
+import { FormValidations } from '../../hooks/useForm.ts'
+import { getToday } from '../../calendar/utils/dateUtils.ts'
 
+const now = getToday()
 
 export const eventFormFields: CalendarEventForm = {
-  title: "",
-  startDate: addHours(TODAY, 1),
-  endDate: addHours(TODAY, 3),
-  notes: "",
+  title: '',
+  startDate: addHours(now, 1),
+  endDate: addHours(now, 3),
+  notes: '',
 }
 export const eventFormValidations: FormValidations<typeof eventFormFields> = {
-  title: [
-    [(value) => value.trim().length === 0, "Title is required."],
-  ],
+  title: [[value => value.trim().length === 0, 'Title is required.']],
   startDate: [
-    [(value) => !(value), "Start date is required."],
+    [value => !value, 'Start date is required.'],
     [
       (value, formState) => {
         const start = new Date(value)
         const end = new Date(formState.endDate)
         return start >= end
       },
-      "The start date cannot be later than the end date."
+      'The start date cannot be later than the end date.',
     ],
   ],
   endDate: [
-    [(value) => !(value), "End date is required."],
+    [value => !value, 'End date is required.'],
     [
       (value, formState) => {
         const start = new Date(formState.startDate)
         const end = new Date(value)
         return end < start
       },
-      "The end date cannot be earlier than the start date."
+      'The end date cannot be earlier than the start date.',
     ],
   ],
-  notes: [
-    [(value) => !(value), "Notes are required."],
-  ],
+  notes: [[value => !value, 'Notes are required.']],
 }
 
 /**
@@ -87,7 +84,7 @@ export const validateStartDateNextEvent = (events: CalendarEventForm[] = []): Da
 
   const lastEndDate = events.reduce((latest, event) => {
     const eventEnd = new Date(event.endDate)
-    return (eventEnd > latest) ? eventEnd : latest
+    return eventEnd > latest ? eventEnd : latest
   }, new Date(events[0].endDate))
 
   return lastEndDate

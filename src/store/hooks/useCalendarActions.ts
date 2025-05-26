@@ -1,7 +1,6 @@
-import { type CalendarEvent } from "../../types/calendar-event.d"
-import { type CalendarDay } from "../../types/calendar-day.d"
+import { type CalendarDay } from '../../types/calendar-day.d'
 
-import { useAppDispatch, useAppSelector } from "./reduxStore.ts"
+import { useAppDispatch, useAppSelector } from './reduxStore.ts'
 import {
   onGenerateCalendar,
   onGetNextMonth,
@@ -9,106 +8,56 @@ import {
   onSetActiveCalendarDay,
   onSetMonth,
   onSetYear,
-} from "../slices/calendar/calendarDaySlice.ts"
-import {
-  onAddNewEventByTaskState,
-  onUpdateEventByTaskState,
-  onDeleteEventByTaskState,
-  onSetActiveEventState,
-  onResetEventsByTaskState,
-  onFetchEventsByUserId,
-  onSetEventsByTaskState,
-} from "./../slices/event/calendarEventSlice.ts"
-
+} from '../slices/calendar/calendarDaySlice.ts'
+import { useCallback } from 'react'
 
 export const useCalendarActions = () => {
   const dispatch = useAppDispatch()
-  const {
-    today,
-    weekDays,
-    month,
-    year,
-    calendarDays,
-    activeCalendarDay,
-  } = useAppSelector((state) => state.calendarDay)
+  const { today, weekDays, month, year, calendarDays, activeCalendarDay } = useAppSelector(
+    state => state.calendarDay
+  )
 
-  const {
-    events,
-    eventsByTask,
-    activeCalendarEvent,
-  } = useAppSelector(state => state.calendarEvent)
-
-  const generateCalendar = () => {
+  const generateCalendar = useCallback(() => {
     dispatch(onGenerateCalendar())
-  }
+  }, [dispatch])
 
-  const setMonth = (month: number) => {
-    dispatch(onSetMonth(month))
-  }
+  const setMonth = useCallback(
+    (m: number) => {
+      dispatch(onSetMonth(m))
+    },
+    [dispatch]
+  )
 
-  const setYear = (year: number) => {
-    dispatch(onSetYear(year))
-  }
+  const setYear = useCallback(
+    (y: number) => {
+      dispatch(onSetYear(y))
+    },
+    [dispatch]
+  )
 
-  const getNextMonth = () => {
+  const getNextMonth = useCallback(() => {
     dispatch(onGetNextMonth())
-  }
+  }, [dispatch])
 
-  const getPreviousMonth = () => {
+  const getPreviousMonth = useCallback(() => {
     dispatch(onGetPreviousMonth())
-  }
+  }, [dispatch])
 
-  const setActiveEvent = (event: CalendarEvent) => {
-    dispatch(onSetActiveEventState(event))
-  }
-
-  const setActiveCalendarDay = (activeCalendarDay: CalendarDay) => {
-    dispatch(onSetActiveCalendarDay(activeCalendarDay))
-  }
-
-  const setEventsByTaskState = (events: CalendarEvent[]) => {
-    dispatch(onSetEventsByTaskState(events))
-  }
-
-  const fetchEventsByUserId = async () => {
-    try {
-      await dispatch(onFetchEventsByUserId()).unwrap()
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  const saveEventByTaskState = async (calendarEvent: CalendarEvent) => {
-    if (calendarEvent.id) {
-      dispatch(onUpdateEventByTaskState({ ...calendarEvent }))
-    } else {
-      const randomId = crypto.randomUUID()
-      dispatch(onAddNewEventByTaskState({ ...calendarEvent, id: randomId }))
-      // dispatch(onAddNewEventState({ ...calendarEvent, id: new Date().getTime().toString() }))
-    }
-  }
-
-  const deleteEventByTaskState = async (calendarEvent: CalendarEvent) => {
-    dispatch(onDeleteEventByTaskState(calendarEvent))
-  }
-
-  const resetEventByTaskState = () => {
-    dispatch(onResetEventsByTaskState())
-  }
+  const setActiveCalendarDay = useCallback(
+    (day: CalendarDay) => {
+      dispatch(onSetActiveCalendarDay(day))
+    },
+    [dispatch]
+  )
 
   return {
     //* Properties:
-    // days
     today,
     weekDays,
     month,
     year,
     calendarDays,
     activeCalendarDay,
-    // events
-    events,
-    eventsByTask,
-    activeCalendarEvent,
     //* Methods:
     //STATE
     generateCalendar,
@@ -117,12 +66,5 @@ export const useCalendarActions = () => {
     getNextMonth,
     getPreviousMonth,
     setActiveCalendarDay,
-    setActiveEvent,
-    setEventsByTaskState,
-    saveEventByTaskState,
-    deleteEventByTaskState,
-    resetEventByTaskState,
-    // THUNKS
-    fetchEventsByUserId,
   }
 }

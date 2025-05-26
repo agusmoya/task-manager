@@ -1,41 +1,37 @@
-import { useEffect } from "react"
+import { useEffect } from 'react'
 
-import { Navigate, Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from 'react-router-dom'
 
-import { AuthLayout } from "../auth/layout/AuthLayout.tsx"
-import { CalendarLayout } from "../calendar/layouts/CalendarLayout.tsx"
-import { RootLayout } from "../layouts/RootLayout.tsx"
+import { AuthLayout } from '../auth/layout/AuthLayout.tsx'
+import { CalendarLayout } from '../calendar/layouts/CalendarLayout.tsx'
+import { RootLayout } from '../layouts/RootLayout.tsx'
 
-import { PublicRoute } from "./PublicRoute.tsx"
-import { PrivateRoute } from "./PrivateRoute.tsx"
-import { NotFoundPage } from "./404Page/NotFoundPage.tsx"
+import { PublicRoute } from './PublicRoute.tsx'
+import { PrivateRoute } from './PrivateRoute.tsx'
+import { Loader } from '../components/loader-page/Loader.tsx'
+import { NotFoundPage } from './404Page/NotFoundPage.tsx'
 
-import { AUTH_STATUS } from "../auth/constants/status.ts"
-import { useAuthActions } from "../store/hooks/useAuthActions.ts"
-import { Loader } from "../components/loader-page/Loader.tsx"
-
+import { useAuthActions } from '../store/hooks/useAuthActions.ts'
+import { AUTH_STATUS } from '../auth/constants/status.ts'
 
 export const AppRouter = () => {
   const { status, checkAuthToken } = useAuthActions()
 
   useEffect(() => {
-    if (status === AUTH_STATUS.CHECKING) {
-      checkAuthToken()
-    }
+    checkAuthToken()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status])
+  }, [])
 
   if (status === AUTH_STATUS.CHECKING) {
     return <Loader />
   }
 
-
   return (
-    // ROUTES -> con <Routes />
     <Routes>
       {/* PUBLIC ROUTES */}
       <Route path="/" element={<Navigate to="/home" replace />} />
-      <Route path="/auth/*"
+      <Route
+        path="/auth/*"
         element={
           <PublicRoute>
             <AuthLayout />
@@ -43,14 +39,16 @@ export const AppRouter = () => {
         }
       />
       {/* PRIVATE ROUTES */}
-      <Route path="/calendar/*"
+      <Route
+        path="/calendar/*"
         element={
           <PrivateRoute>
             <CalendarLayout />
           </PrivateRoute>
         }
       />
-      <Route path="/home/*"
+      <Route
+        path="/home/*"
         element={
           <PrivateRoute>
             <RootLayout />

@@ -4,5 +4,4 @@ import TodoApp from './TodoApp.tsx'
 
 import './styles/styles.css'
 
-createRoot(document.getElementById('root')!)
-    .render(<TodoApp />)
+createRoot(document.getElementById('root')!).render(<TodoApp />)

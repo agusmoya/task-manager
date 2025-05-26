@@ -1,26 +1,27 @@
-import { useAppDispatch, useAppSelector } from "./reduxStore.ts"
+import { useCallback } from 'react'
 
-import { type ToastStatus } from "../../types/toast.d"
+import { useAppDispatch, useAppSelector } from './reduxStore.ts'
 
-import { onShowToast, onUpdateToastStatus, onRemoveToast } from "../slices/ui/toastSlice.ts"
+import { type ToastStatus } from '../../types/toast.d'
 
+import { onShowToast, onUpdateToastStatus, onRemoveToast } from '../slices/ui/toastSlice.ts'
 
 export const useToastActions = () => {
   const dispatch = useAppDispatch()
-  const { toasts } = useAppSelector((state) => state.toast)
+  const { toasts } = useAppSelector(state => state.toast)
 
-  const showToast = (message: string, status: ToastStatus) => {
-    dispatch(onShowToast(message, status))
-  }
+  const showToast = useCallback(
+    (message: string, status: ToastStatus) => dispatch(onShowToast(message, status)),
+    [dispatch]
+  )
 
-  const updateToastStatus = (toastId: string, status: ToastStatus) => {
-    dispatch(onUpdateToastStatus({ id: toastId, status }))
-  }
+  const updateToastStatus = useCallback(
+    (toastId: string, status: ToastStatus) =>
+      dispatch(onUpdateToastStatus({ id: toastId, message: 'Default message', status })),
+    [dispatch]
+  )
 
-  const removeToast = (toastId: string) => {
-    dispatch(onRemoveToast(toastId))
-  }
-
+  const removeToast = useCallback((toastId: string) => dispatch(onRemoveToast(toastId)), [dispatch])
 
   return {
     //* Properties

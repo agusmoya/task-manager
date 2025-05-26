@@ -1,19 +1,17 @@
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom'
 
-import { CardIdIcon, EmailIcon, EyeIcon, EyeOffIcon } from "../../../components/icons/Icons.tsx"
-import { Input } from "../../../components/input/Input.tsx"
-import { Button } from "../../../components/button/button.tsx"
+import { CardIdIcon, EmailIcon, EyeIcon, EyeOffIcon } from '../../../components/icons/Icons.tsx'
+import { Input } from '../../../components/input/Input.tsx'
+import { Button } from '../../../components/button/button.tsx'
 
-import { useForm } from "../../../hooks/useForm.ts"
-import { useAuthActions } from "../../../store/hooks/useAuthActions.ts"
+import { useForm } from '../../../hooks/useForm.ts'
+import { useAuthActions } from '../../../store/hooks/useAuthActions.ts'
 import {
   registerFormFields,
-  registerFormValidations
-} from "../../../helpers/form-validations/getRegisterFormValidations.ts"
+  registerFormValidations,
+} from '../../../helpers/form-validations/getRegisterFormValidations.ts'
 
-
-import "./RegisterPage.css"
-
+import './RegisterPage.css'
 
 const RegisterPage = () => {
   const {
@@ -30,34 +28,23 @@ const RegisterPage = () => {
     onInputChange,
     onBlurField,
   } = useForm(registerFormFields, registerFormValidations)
-  const { startRegister, backendErrorMessage } = useAuthActions()
+  const { register, backendErrorMessage } = useAuthActions()
 
   const handleRegisterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    startRegister({
+    register({
       firstName,
       lastName,
       email,
-      password
+      password,
     })
   }
 
   return (
     <>
-      <h1 className="register__title">
-        Create new account.
-      </h1>
-      {
-        backendErrorMessage
-        &&
-        <p className="register__error">
-          {backendErrorMessage}
-        </p>
-      }
-      <form
-        className="register__form"
-        onSubmit={handleRegisterSubmit}
-      >
+      <h1 className="register__title">Create new account.</h1>
+      {backendErrorMessage && <p className="register__error">{backendErrorMessage}</p>}
+      <form className="register__form" onSubmit={handleRegisterSubmit}>
         <div className="register__group">
           <Input
             id="firstName"
@@ -73,7 +60,7 @@ const RegisterPage = () => {
             touched={touchedFields.firstName}
             finalStateIcon={CardIdIcon}
             onChange={onInputChange}
-            onBlur={() => onBlurField("firstName")}
+            onBlur={() => onBlurField('firstName')}
           />
 
           <Input
@@ -90,7 +77,7 @@ const RegisterPage = () => {
             touched={touchedFields.lastName}
             finalStateIcon={CardIdIcon}
             onChange={onInputChange}
-            onBlur={() => onBlurField("lastName")}
+            onBlur={() => onBlurField('lastName')}
           />
         </div>
 
@@ -109,7 +96,7 @@ const RegisterPage = () => {
           touched={touchedFields.email}
           finalStateIcon={EmailIcon}
           onChange={onInputChange}
-          onBlur={() => onBlurField("email")}
+          onBlur={() => onBlurField('email')}
         />
 
         <Input
@@ -127,22 +114,16 @@ const RegisterPage = () => {
           initialStateIcon={EyeIcon}
           finalStateIcon={EyeOffIcon}
           onChange={onInputChange}
-          onBlur={() => onBlurField("password")}
+          onBlur={() => onBlurField('password')}
         />
-        <Button
-          type="submit"
-          className="btn btn--filled register__button"
-          disabled={!isFormValid}
-        >
+        <Button type="submit" className="btn btn--filled register__button" disabled={!isFormValid}>
           Create account
         </Button>
       </form>
 
       <p className="login__switch">
         Already have an account?&nbsp;
-        <Link to="/auth/login">
-          Log in.
-        </Link>
+        <Link to="/auth/login">Log in.</Link>
       </p>
     </>
   )

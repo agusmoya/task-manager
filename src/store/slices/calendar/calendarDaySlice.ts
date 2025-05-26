@@ -1,22 +1,24 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
-import { CALENDAR_DAY_TYPE, type CalendarDay } from '../../../types/calendar-day.d'
+import { CALENDAR_DAY_TYPE, WEEKDAYS, type CalendarDay } from '../../../types/calendar-day.d'
 import { type CalendarEvent } from '../../../types/calendar-event.d'
 
-import { WEEKDAYS, TODAY } from '../../../calendar/constants/constants.ts'
 import { getPreviousDaysMonth } from '../../../calendar/utils/getPrevDaysMonth.ts'
 import { getNextDaysMonth } from '../../../calendar/utils/getNextDaysMonth.ts'
 import { getCurrentDaysMonth } from '../../../calendar/utils/getCurrentDaysMonth.ts'
+import { getToday } from '../../../calendar/utils/dateUtils.ts'
+
+const now = getToday()
 
 const calendarDay: CalendarDay = {
-  day: TODAY.getDate(),
-  month: TODAY.getMonth(),
-  year: TODAY.getFullYear(),
+  day: now.getDate(),
+  month: now.getMonth(),
+  year: now.getFullYear(),
   type: CALENDAR_DAY_TYPE.CURRENT,
-  dayName: 'Monday'
+  dayName: 'Monday',
 }
 
-export interface CalendarDaysState {
+export interface CalendarDayState {
   today: Date
   weekDays: string[]
   month: number
@@ -26,11 +28,11 @@ export interface CalendarDaysState {
   activeCalendarEvent: CalendarEvent | undefined
 }
 
-const initialState: CalendarDaysState = {
-  today: TODAY,
+const initialState: CalendarDayState = {
+  today: now,
   weekDays: WEEKDAYS,
-  month: TODAY.getMonth(),
-  year: TODAY.getFullYear(),
+  month: now.getMonth(),
+  year: now.getFullYear(),
   calendarDays: [],
   activeCalendarDay: calendarDay,
   activeCalendarEvent: undefined,
@@ -40,7 +42,7 @@ export const calendarDaySlice = createSlice({
   name: 'calendarDay',
   initialState,
   reducers: {
-    onGenerateCalendar: (state) => {
+    onGenerateCalendar: state => {
       const firstMonthDate = new Date(state.year, state.month, 1)
       const lastMonthDate = new Date(state.year, state.month + 1, 0)
       const startDay = firstMonthDate.getDay()
@@ -50,11 +52,7 @@ export const calendarDaySlice = createSlice({
       const nextMonthDays = getNextDaysMonth(startDay, lastMonthDay, state.month, state.year)
       const currentMonthDays = getCurrentDaysMonth(lastMonthDay, state.month, state.year)
 
-      state.calendarDays = [
-        ...prevMonthDays,
-        ...currentMonthDays,
-        ...nextMonthDays
-      ]
+      state.calendarDays = [...prevMonthDays, ...currentMonthDays, ...nextMonthDays]
     },
     onSetMonth: (state, { payload }: PayloadAction<number>) => {
       state.month = payload
@@ -62,7 +60,7 @@ export const calendarDaySlice = createSlice({
     onSetYear: (state, { payload }: PayloadAction<number>) => {
       state.year = payload
     },
-    onGetNextMonth: (state) => {
+    onGetNextMonth: state => {
       if (state.month === 11) {
         state.month = 0
         state.year += 1
@@ -70,7 +68,7 @@ export const calendarDaySlice = createSlice({
         state.month += 1
       }
     },
-    onGetPreviousMonth: (state) => {
+    onGetPreviousMonth: state => {
       if (state.month === 0) {
         state.month = 11
         state.year -= 1

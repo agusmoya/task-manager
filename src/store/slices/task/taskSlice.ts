@@ -1,221 +1,98 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit'
 
-import { type TaskId, type Task } from "../../../types/task.d";
+import { type Task } from '../../../types/task.d'
 
-import todoApi from "../../../api/taskManagerApi.ts";
-import { extractBackendErrorMessage } from "../../../helpers/manageBackendError.ts";
+import {
+  fetchTasksThunk,
+  fetchTaskByIdThunk,
+  createTaskThunk,
+  updateTaskThunk,
+  deleteTaskThunk,
+} from './taskThunks.ts'
 
 export interface TaskState {
-  activeTask: Task | null;
-  tasks: Task[];
-  loading: boolean;
-  backendErrorMessage: string | null;
+  activeTask: Task | undefined
+  tasks: Task[]
+  loading: boolean
+  backendErrorMessage?: string
 }
 
 const initialState: TaskState = {
-  activeTask: null,
+  activeTask: undefined,
   tasks: [],
   loading: false,
-  backendErrorMessage: null,
-};
-
-export const onFetchTasks = createAsyncThunk<Task[], void>(
-  "tasks/fetchAll",
-  async (_, thunkAPI) => {
-    try {
-      const { data } = await todoApi.get("/tasks/all");
-      console.log(data);
-
-      return data.tasks as Task[];
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
-export const onFetchTaskById = createAsyncThunk<Task, TaskId>(
-  "tasks/fetchTaskById",
-  async (taskId, thunkAPI) => {
-    try {
-      const { data } = await todoApi.get(`/tasks/byId/${taskId.id}`);
-      return data as Task;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
-export const onFetchTasksByUserId = createAsyncThunk<Task[]>(
-  "tasks/fetchTasksByUserId",
-  async (_, thunkAPI) => {
-    try {
-      const res = await todoApi.get("/tasks/byUserId");
-      return res.data as Task[];
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
-export const onCreateTask = createAsyncThunk<Task, Partial<Task>>(
-  "tasks/create",
-  async (newTask, thunkAPI) => {
-    try {
-      const res = await todoApi.post("/tasks/create", newTask);
-      return res.data as Task;
-    } catch (error) {
-      console.log(error);
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
-export const onUpdateTask = createAsyncThunk<Task, Partial<Task>>(
-  "tasks/update",
-  async (updatedTask, thunkAPI) => {
-    try {
-      const res = await todoApi.put(
-        `/tasks/update/${updatedTask.id}`,
-        updatedTask
-      );
-      return res.data as Task;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
-export const onDeleteTask = createAsyncThunk<string, string>(
-  "tasks/delete",
-  async (taskId, thunkAPI) => {
-    try {
-      await todoApi.delete(`/tasks/delete/${taskId}`);
-      return taskId;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
+  backendErrorMessage: undefined,
+}
 
 export const taskSlice = createSlice({
-  name: "task",
+  name: 'task',
   initialState,
   reducers: {
     onAddNewTaskState: (state, { payload }: PayloadAction<Task>) => {
-      state.tasks.push(payload);
+      state.tasks.push(payload)
     },
     onUpdateTaskState: (state, { payload }: PayloadAction<Task>) => {
-      state.tasks = state.tasks.map((task) =>
-        task.id === payload.id ? payload : task
-      );
+      state.tasks = state.tasks.map(task => (task.id === payload.id ? payload : task))
     },
     onDeleteTaskState: (state, { payload }: PayloadAction<Task>) => {
-      state.tasks = state.tasks.filter((task) => task.id !== payload.id);
+      state.tasks = state.tasks.filter(task => task.id !== payload.id)
     },
-    onClearBackendErrorMessage: (state) => {
-      state.backendErrorMessage = null;
+    onResetActiveTask: state => {
+      state.activeTask = undefined
     },
-    onResetActiveTask: (state) => {
-      state.activeTask = null;
+    onClearBackendErrorMessage: state => {
+      state.backendErrorMessage = undefined
     },
   },
   extraReducers(builder) {
     builder
-      // FETCH tasks
-      .addCase(onFetchTasks.pending, (state) => {
-        state.loading = true;
-        state.backendErrorMessage = null;
+      .addCase(fetchTasksThunk.fulfilled, (state, { payload }: PayloadAction<Task[]>) => {
+        state.tasks = payload
+        state.loading = false
       })
-      .addCase(onFetchTasks.fulfilled, (state, { payload }) => {
-        state.tasks = payload;
-        state.loading = false;
+      .addCase(fetchTaskByIdThunk.fulfilled, (state, { payload }: PayloadAction<Task>) => {
+        state.activeTask = payload
+        state.loading = false
       })
-      .addCase(onFetchTasks.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.backendErrorMessage =
-          extractBackendErrorMessage(payload) || "Error fetching tasks.";
+      .addCase(createTaskThunk.fulfilled, (state, { payload }: PayloadAction<Task>) => {
+        state.tasks.push(payload)
+        state.loading = false
       })
-      // FETCH task by id
-      .addCase(onFetchTaskById.pending, (state) => {
-        state.loading = true;
-        state.backendErrorMessage = null;
+      .addCase(updateTaskThunk.fulfilled, (state, { payload }: PayloadAction<Task>) => {
+        state.tasks = state.tasks.map(t => (t.id === payload.id ? payload : t))
+        state.loading = false
       })
-      .addCase(onFetchTaskById.fulfilled, (state, { payload }) => {
-        // const exists = state.tasks.find(t => t.id === payload.id)
-        // if (!exists) state.tasks.push(payload)
-        state.activeTask = payload;
-        state.loading = false;
+      .addCase(deleteTaskThunk.fulfilled, (state, { payload }: PayloadAction<string>) => {
+        state.tasks = state.tasks.filter(t => t.id !== payload)
+        state.loading = false
       })
-      .addCase(onFetchTaskById.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.backendErrorMessage =
-          extractBackendErrorMessage(payload) || "Error fetching tasks.";
-      })
-      // FETCH tasks by user id
-      .addCase(onFetchTasksByUserId.pending, (state) => {
-        state.loading = true;
-        state.backendErrorMessage = null;
-      })
-      .addCase(onFetchTasksByUserId.fulfilled, (state, { payload }) => {
-        state.tasks = payload;
-        state.loading = false;
-      })
-      .addCase(onFetchTasksByUserId.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.backendErrorMessage =
-          extractBackendErrorMessage(payload) || "Error fetching user tasks.";
-      })
-      // CREATE
-      .addCase(onCreateTask.pending, (state) => {
-        state.loading = true;
-        state.backendErrorMessage = null;
-      })
-      .addCase(onCreateTask.fulfilled, (state, { payload }) => {
-        state.tasks.push(payload);
-        state.loading = false;
-      })
-      .addCase(onCreateTask.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.backendErrorMessage =
-          extractBackendErrorMessage(payload) || "Error creating task.";
-      })
-      // UPDATE
-      .addCase(onUpdateTask.pending, (state) => {
-        state.loading = true;
-        state.backendErrorMessage = null;
-      })
-      .addCase(onUpdateTask.fulfilled, (state, { payload }) => {
-        state.tasks = state.tasks.map((t) =>
-          t.id === payload.id ? payload : t
-        );
-        state.loading = false;
-      })
-      .addCase(onUpdateTask.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.backendErrorMessage =
-          extractBackendErrorMessage(payload) || "Error updating task.";
-      })
-      // DELETE
-      .addCase(onDeleteTask.pending, (state) => {
-        state.loading = true;
-        state.backendErrorMessage = null;
-      })
-      .addCase(onDeleteTask.fulfilled, (state, { payload }) => {
-        state.tasks = state.tasks.filter((t) => t.id !== payload);
-        state.loading = false;
-      })
-      .addCase(onDeleteTask.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.backendErrorMessage =
-          extractBackendErrorMessage(payload) || "Error deleting task.";
-      });
+      .addMatcher(
+        isAnyOf(
+          fetchTasksThunk.pending,
+          fetchTaskByIdThunk.pending,
+          createTaskThunk.pending,
+          updateTaskThunk.pending,
+          deleteTaskThunk.pending
+        ),
+        state => {
+          state.loading = true
+          state.backendErrorMessage = undefined
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          fetchTasksThunk.rejected,
+          fetchTaskByIdThunk.rejected,
+          createTaskThunk.rejected,
+          updateTaskThunk.rejected,
+          deleteTaskThunk.rejected
+        ),
+        state => {
+          state.loading = true
+          state.backendErrorMessage = undefined
+        }
+      )
   },
-});
+})
 
-export const {
-  onAddNewTaskState,
-  onUpdateTaskState,
-  onDeleteTaskState,
-  onClearBackendErrorMessage,
-  onResetActiveTask,
-} = taskSlice.actions;
+export const { onResetActiveTask, onClearBackendErrorMessage } = taskSlice.actions
