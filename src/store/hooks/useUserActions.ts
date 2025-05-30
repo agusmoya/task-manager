@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
 
-import { useAppDispatch, useAppSelector } from './reduxStore.ts'
+import { useAppDispatch, useAppSelector } from '../reduxStore'
 
-import { fetchContactsThunk } from '../slices/user/userThunks.ts'
+import { fetchContactsThunk } from '../slices/user/userThunks'
 
 export const useUserActions = () => {
   const dispatch = useAppDispatch()

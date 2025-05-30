@@ -1,5 +1,5 @@
-import { Button } from '../../../components/button/button.tsx'
-import { NextIcon, PreviousIcon } from '../../../components/icons/Icons.tsx'
+import { Button } from '../../../components/button/button'
+import { NextIcon, PreviousIcon } from '../../../components/icons/Icons'
 
 import './FabMonth.css'
 
@@ -14,10 +14,7 @@ export const FabMonth = ({ direction, onHandleClick }: FabMonthProps) => {
   }
 
   return (
-    <Button
-      className="btn btn--fab fab-month"
-      onClick={handleClickNext}
-    >
+    <Button className="btn btn--fab fab-month" onClick={handleClickNext}>
       {direction === 'left' ? <PreviousIcon /> : <NextIcon />}
     </Button>
   )

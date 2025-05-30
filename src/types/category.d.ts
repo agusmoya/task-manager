@@ -1,8 +1,8 @@
-export interface Category {
+export interface ICategory {
   id: string
   name: string
 }
 
-export interface CountingCategories extends Category {
+export interface ICountingCategories extends ICategory {
   quantity: number
 }

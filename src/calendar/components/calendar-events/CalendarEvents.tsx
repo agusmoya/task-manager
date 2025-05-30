@@ -1,17 +1,17 @@
 import { useEffect, useMemo } from 'react'
 
-import { DeleteIcon, EditIcon } from '../../../components/icons/Icons.tsx'
-import { Button } from '../../../components/button/button.tsx'
+import { DeleteIcon, EditIcon } from '../../../components/icons/Icons'
+import { Button } from '../../../components/button/button'
 
 import { type CalendarEvent } from '../../../types/calendar-event.d'
 import { MONTHS } from '../../../types/calendar-day.d'
 
-import { useCalendarActions } from '../../../store/hooks/useCalendarActions.ts'
-import { useEventActions } from '../../../store/hooks/useEventActions.ts'
-import { useModalActions } from '../../../store/hooks/useModalActions.ts'
+import { useCalendarActions } from '../../../store/hooks/useCalendarActions'
+import { useEventActions } from '../../../store/hooks/useEventActions'
+import { useModalActions } from '../../../store/hooks/useModalActions'
 
-import { isSameDay } from '../../utils/validateManagmentDate.ts'
-import { fromDateToDatetimeLocal } from '../../../helpers/form-validations/getEventFormValidations.ts'
+import { isSameDay } from '../../utils/validateManagmentDate'
+import { fromDateToDatetimeLocal } from '../../../helpers/form-validations/getEventFormValidations'
 
 import './CalendarEvents.css'
 

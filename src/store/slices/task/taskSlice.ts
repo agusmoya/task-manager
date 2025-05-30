@@ -8,7 +8,7 @@ import {
   createTaskThunk,
   updateTaskThunk,
   deleteTaskThunk,
-} from './taskThunks.ts'
+} from './taskThunks'
 
 export interface TaskState {
   activeTask: Task | undefined

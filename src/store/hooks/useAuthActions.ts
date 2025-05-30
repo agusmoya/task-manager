@@ -1,22 +1,22 @@
 import { useCallback } from 'react'
 
-import { type LoginUserRequest } from '../../types/login-request.d'
-import { type RegisterUserRequest } from '../../types/register-request.d'
+import { type LoginRequest } from '../../types/login-request'
+import { type RegisterRequest } from '../../types/register-request'
 
-import { useAppDispatch, useAppSelector } from './reduxStore.ts'
+import { useAppDispatch, useAppSelector } from '../reduxStore'
 import {
   checkAuthTokenThunk,
   loginThunk,
   logoutThunk,
   registerThunk,
-} from '../slices/auth/authThunks.ts'
+} from '../slices/auth/authThunks'
 
 export const useAuthActions = () => {
   const dispatch = useAppDispatch()
   const { status, user, backendErrorMessage } = useAppSelector(state => state.auth)
 
   const login = useCallback(
-    async (credentials: LoginUserRequest) => {
+    async (credentials: LoginRequest) => {
       try {
         await dispatch(loginThunk(credentials)).unwrap()
         // localStorage.setItem('token-init-time', Date.now().toString())
@@ -28,7 +28,7 @@ export const useAuthActions = () => {
   )
 
   const register = useCallback(
-    async (formData: RegisterUserRequest) => {
+    async (formData: RegisterRequest) => {
       try {
         await dispatch(registerThunk(formData)).unwrap()
         // localStorage.setItem('token-init-time', Date.now().toString())

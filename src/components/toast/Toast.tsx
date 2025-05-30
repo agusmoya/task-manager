@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
-import { CheckIcon, ErrorIcon } from '../icons/Icons.tsx'
+import { CheckIcon, ErrorIcon } from '../icons/Icons'
 
-import { useToastActions } from '../../store/hooks/useToastActions.ts'
+import { useToastActions } from '../../store/hooks/useToastActions'
 
 import './Toast.css'
 

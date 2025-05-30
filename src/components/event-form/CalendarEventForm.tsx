@@ -2,21 +2,21 @@ import { useEffect } from 'react'
 
 import { addHours } from 'date-fns'
 
-import { Input } from '../input/Input.tsx'
-import { Textarea } from '../text-area/Textarea.tsx'
-import { Button } from '../button/button.tsx'
+import { Input } from '../input/Input'
+import { Textarea } from '../text-area/Textarea'
+import { Button } from '../button/button'
 
-import { useForm } from '../../hooks/useForm.ts'
-import { useEventActions } from '../../store/hooks/useEventActions.ts'
-import { useModalActions } from '../../store/hooks/useModalActions.ts'
+import { useForm } from '../../hooks/useForm'
+import { useEventActions } from '../../store/hooks/useEventActions'
+import { useModalActions } from '../../store/hooks/useModalActions'
 
 import {
   eventFormFields,
   eventFormValidations,
   fromDateToDatetimeLocal,
   validateStartDateNextEvent,
-} from '../../helpers/form-validations/getEventFormValidations.ts'
-import { mapEventFormToPayload } from '../../helpers/mapEventFormToPayload.ts'
+} from '../../helpers/form-validations/getEventFormValidations'
+import { mapEventFormToPayload } from '../../helpers/mapEventFormToPayload'
 
 import './CalendarEventForm.css'
 

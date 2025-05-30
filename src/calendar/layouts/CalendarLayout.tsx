@@ -1,20 +1,15 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-import { Breadcrumb } from '../../components/breadcrumb/Breadcrumb.tsx'
-import { Header } from '../../task-manager/components/header/Header.tsx'
+import { Breadcrumb } from '../../components/breadcrumb/Breadcrumb'
+import { Header } from '../../task/components/header/Header'
 
-import { CalendarPage } from '../../router/lazy-pages.ts'
-import { useTransitionPage } from '../../hooks/useTransitionPage.ts'
+import { CalendarPage } from '../../router/lazy-pages'
+import { useTransitionPage } from '../../hooks/useTransitionPage'
 
 import './CalendarLayout.css'
 
-
 export const CalendarLayout = () => {
-  const {
-    displayLocation,
-    transitionPage,
-    handleTransitionEnd
-  } = useTransitionPage()
+  const { displayLocation, transitionPage, handleTransitionEnd } = useTransitionPage()
 
   return (
     <>

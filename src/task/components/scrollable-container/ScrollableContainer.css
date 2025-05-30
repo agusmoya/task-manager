@@ -1,0 +1,20 @@
+.scrollable-container {
+  position: relative;
+}
+
+.scrollable-container__list {
+  display: flex;
+  gap: var(--spacing-2);
+  padding-inline: var(--spacing-1);
+  scroll-padding-inline: var(--spacing-1); /* Snap inicia después del padding */
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.scrollable-container__list > * {
+  scroll-snap-align: start;
+}
+
+.scrollable-container__list::-webkit-scrollbar {
+  display: none;
+}

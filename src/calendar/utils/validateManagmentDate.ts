@@ -3,8 +3,8 @@ import dayjs from 'dayjs'
 import { type CalendarDay } from '../../types/calendar-day.d'
 import { type CalendarEvent } from '../../types/calendar-event.d'
 
-import { fromDateToDatetimeLocal } from '../../helpers/form-validations/getEventFormValidations.ts'
-import { getToday } from './dateUtils.ts'
+import { fromDateToDatetimeLocal } from '../../helpers/form-validations/getEventFormValidations'
+import { getToday } from './dateUtils'
 
 export const isSameDay = (event: CalendarEvent, calendarDay: CalendarDay): boolean => {
   const { startDate } = event

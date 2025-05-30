@@ -1,30 +1,22 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-import { Breadcrumb } from '../components/breadcrumb/Breadcrumb.tsx'
-import { Header } from '../task-manager/components/header/Header.tsx'
+import { Breadcrumb } from '../components/breadcrumb/Breadcrumb'
+import { Header } from '../task/components/header/Header'
 
-import { HomePage, TaskFormPage, TaskPage } from '../router/lazy-pages.ts'
-import { useTransitionPage } from '../hooks/useTransitionPage.ts'
+import { HomePage, TaskFormPage, TaskPage } from '../router/lazy-pages'
+import { useTransitionPage } from '../hooks/useTransitionPage'
 
 import './RootLayout.css'
 
-
 export const RootLayout = () => {
-  const {
-    displayLocation,
-    transitionPage,
-    handleTransitionEnd
-  } = useTransitionPage()
+  const { displayLocation, transitionPage, handleTransitionEnd } = useTransitionPage()
 
   return (
     <>
       <Header />
       <main className="main">
         <Breadcrumb />
-        <section
-          className={`root-layout ${transitionPage}`}
-          onAnimationEnd={handleTransitionEnd}
-        >
+        <section className={`root-layout ${transitionPage}`} onAnimationEnd={handleTransitionEnd}>
           <Routes location={displayLocation}>
             <Route index element={<HomePage />} />
             <Route path="task/:id" element={<TaskPage />} />

@@ -1,14 +1,13 @@
 import { type CalendarDay } from '../../types/calendar-day.d'
 
-import { useAppDispatch, useAppSelector } from './reduxStore.ts'
+import { useAppDispatch, useAppSelector } from '../reduxStore'
 import {
-  onGenerateCalendar,
   onGetNextMonth,
   onGetPreviousMonth,
   onSetActiveCalendarDay,
   onSetMonth,
   onSetYear,
-} from '../slices/calendar/calendarDaySlice.ts'
+} from '../slices/calendar/calendarDaySlice'
 import { useCallback } from 'react'
 
 export const useCalendarActions = () => {
@@ -16,10 +15,6 @@ export const useCalendarActions = () => {
   const { today, weekDays, month, year, calendarDays, activeCalendarDay } = useAppSelector(
     state => state.calendarDay
   )
-
-  const generateCalendar = useCallback(() => {
-    dispatch(onGenerateCalendar())
-  }, [dispatch])
 
   const setMonth = useCallback(
     (m: number) => {
@@ -60,7 +55,6 @@ export const useCalendarActions = () => {
     activeCalendarDay,
     //* Methods:
     //STATE
-    generateCalendar,
     setMonth,
     setYear,
     getNextMonth,

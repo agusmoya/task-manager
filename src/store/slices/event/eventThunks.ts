@@ -2,8 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { type CalendarEvent } from '../../../types/calendar-event.d'
 
-import todoApi from '../../../api/taskManagerApi.ts'
-import { handlerApiError } from '../../../api/helpers/handlerApiError.ts'
+import todoApi from '../../../api/taskManagerApi'
+import { handlerApiError } from '../../../api/helpers/handlerApiError'
 
 export const fetchEventsByUserIdThunk = createAsyncThunk<
   CalendarEvent[],

@@ -1,23 +1,18 @@
-import { type TaskPayload, type TaskForm } from "../../types/task.d"
+import { type TaskPayload, type TaskForm } from '../../types/task.d'
 
-import { FormValidations } from "../../hooks/useForm.ts"
-import { Category } from "../../types/category"
-
+import { FormValidations } from '../../hooks/useForm'
+import { Category } from '../../types/category'
 
 export const taskFormFields: TaskForm = {
-  title: "",
-  category: "",
+  title: '',
+  category: '',
   participants: [],
-  events: []
+  events: [],
 }
 
 export const taskFormValidations: FormValidations<typeof taskFormFields> = {
-  title: [
-    [(value) => value.trim().length === 0, "Title is required."],
-  ],
-  category: [
-    [(value) => (!value), "You must select a category."],
-  ],
+  title: [[value => value.trim().length === 0, 'Title is required.']],
+  category: [[value => !value, 'You must select a category.']],
 }
 
 export const mapTaskFormToPayload = (form: TaskForm, categories: Category[]): TaskPayload => {

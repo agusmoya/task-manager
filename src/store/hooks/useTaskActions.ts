@@ -2,15 +2,15 @@ import { useCallback } from 'react'
 
 import { TaskId, type Task } from '../../types/task.d'
 
-import { useAppDispatch, useAppSelector } from './reduxStore.ts'
-import { onResetActiveTask, onClearBackendErrorMessage } from './../slices/task/taskSlice.ts'
+import { useAppDispatch, useAppSelector } from '../reduxStore'
+import { onResetActiveTask, onClearBackendErrorMessage } from './../slices/task/taskSlice'
 import {
   fetchTasksThunk,
   fetchTaskByIdThunk,
   createTaskThunk,
   updateTaskThunk,
   deleteTaskThunk,
-} from '../slices/task/taskThunks.ts'
+} from '../slices/task/taskThunks'
 
 export const useTaskActions = () => {
   const dispatch = useAppDispatch()

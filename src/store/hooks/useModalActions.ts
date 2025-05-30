@@ -1,5 +1,5 @@
-import { useAppDispatch, useAppSelector } from './reduxStore.ts'
-import { onClouseModal, onOpenModal } from '../slices/ui/modalSlice.ts'
+import { useAppDispatch, useAppSelector } from '../reduxStore'
+import { onClouseModal, onOpenModal } from '../slices/ui/modalSlice'
 import { useCallback } from 'react'
 
 export const useModalActions = () => {

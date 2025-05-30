@@ -1,17 +1,15 @@
-import { useContext, useEffect } from "react"
-import { useLocation, matchPath, useNavigate } from "react-router-dom"
+import { useContext, useEffect } from 'react'
+import { useLocation, matchPath, useNavigate } from 'react-router-dom'
 
-import { type BreadcrumbNavigation } from "../types/breadbrumb.d"
+import { type BreadcrumbNavigation } from '../types/breadbrumb.d'
 
-import { NavigationContext } from "../context/navigation/navigationContext.ts"
-import { breadcrumbMap } from "../helpers/getBreadcrumbsLabels.ts"
-
+import { NavigationContext } from '../context/navigation/navigationContext'
+import { breadcrumbMap } from '../helpers/getBreadcrumbsLabels'
 
 export function useNavigation(): BreadcrumbNavigation {
-
   const navigationContext = useContext(NavigationContext)
   if (!navigationContext) {
-    throw new Error("NavigationContext must be used within a NavigationProvider")
+    throw new Error('NavigationContext must be used within a NavigationProvider')
   }
 
   const location = useLocation()

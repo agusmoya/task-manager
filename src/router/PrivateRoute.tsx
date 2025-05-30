@@ -1,10 +1,10 @@
 import { Suspense } from 'react'
 import { Navigate } from 'react-router-dom'
 
-import { Loader } from '../components/loader-page/Loader.tsx'
+import { Loader } from '../components/loader-page/Loader'
 
-import { AUTH_STATUS } from '../auth/constants/status.ts'
-import { useAppSelector } from '../store/hooks/reduxStore.ts'
+import { AUTH_STATUS } from '../auth/constants/status'
+import { useAppSelector } from '../store/reduxStore'
 
 interface PrivateRouteProps {
   children: React.ReactNode

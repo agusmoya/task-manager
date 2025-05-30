@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { type CalendarEvent } from '../../../types/calendar-event.d'
 
-import { fetchEventsByUserIdThunk } from './eventThunks.ts'
+import { fetchEventsByUserIdThunk } from './eventThunks'
 
 export interface CalendarEventsState {
   activeCalendarEvent: CalendarEvent | null

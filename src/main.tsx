@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
 
-import TodoApp from './TodoApp.tsx'
+import TodoApp from './TodoApp'
 
 import './styles/styles.css'
 

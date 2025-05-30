@@ -1,51 +1,98 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 
-import { type Category } from '../../types/category.d'
+import { type ICategory } from '../../types/category'
 
-import { useAppDispatch, useAppSelector } from './reduxStore.ts'
-import { onClearBackendErrorMessage } from '../slices/category/categorySlice.ts'
-import { createCategoryThunk, fetchCategoriesThunk } from '../slices/category/categoryThunks.ts'
+import {
+  useCreateCategoryMutation,
+  useDeleteCategoryMutation,
+  useFetchCategoriesQuery,
+  useUpdateCategoryMutation,
+} from '../../api/RTKQuery/categoryApi'
+
+import { getErrorMessage } from '../../api/helpers/getErrorMessage'
 
 export const useCategoryActions = () => {
-  const dispatch = useAppDispatch()
-  const { categories, loading, backendErrorMessage } = useAppSelector(state => state.taskCategory)
+  // 1️⃣ Hook de consulta
+  const {
+    data: categories = [],
+    isLoading: isFetchingList,
+    error: fetchError,
+    refetch,
+  } = useFetchCategoriesQuery()
 
-  const fetchCategories = useCallback(async (): Promise<void> => {
-    try {
-      await dispatch(fetchCategoriesThunk()).unwrap()
-    } catch (error) {
-      console.error('Error fetching categories:', error)
-    }
-  }, [dispatch])
+  // 2️⃣ Hooks de mutación
+  const [createCategoryTrigger, { isLoading: isCreating, error: createError }] =
+    useCreateCategoryMutation()
+  const [updateCategoryTrigger, { isLoading: isUpdating, error: updateError }] =
+    useUpdateCategoryMutation()
+  const [deleteCategoryTrigger, { isLoading: isDeleting, error: deleteError }] =
+    useDeleteCategoryMutation()
 
-  const saveCategory = useCallback(
-    async (category: Partial<Category>): Promise<Category | undefined> => {
-      const isUpdating = !!category.id
-      try {
-        if (isUpdating) {
-          // return await dispatch(updateCategoryThunk(category)).unwrap()
-        } else {
-          return await dispatch(createCategoryThunk(category)).unwrap()
-        }
-      } catch (error) {
-        console.error('Error creating categories:', error)
-      }
-    },
-    [dispatch]
+  const isLoading = useMemo(
+    () => ({
+      list: isFetchingList,
+      create: isCreating,
+      update: isUpdating,
+      delete: isDeleting,
+    }),
+    [isFetchingList, isCreating, isUpdating, isDeleting]
   )
 
-  const clearBackendErrorMessage = useCallback(() => {
-    dispatch(onClearBackendErrorMessage())
-  }, [dispatch])
+  // 3️⃣ Centralizamos un solo mensaje de error
+  const errorMessage = useMemo(() => {
+    return getErrorMessage(createError ?? updateError ?? deleteError ?? fetchError)
+  }, [createError, updateError, deleteError, fetchError])
+
+  // 4️⃣ Métodos para el componente
+  const createCategory = useCallback(
+    async (newCategoryName: string): Promise<ICategory | null> => {
+      try {
+        const payload = await createCategoryTrigger(newCategoryName.trim()).unwrap()
+        return payload
+      } catch (err) {
+        // logging, analytics, toasts globales…
+        console.error('Error creating category:', err)
+        return null
+      }
+    },
+    [createCategoryTrigger]
+  )
+
+  const updateCategory = useCallback(
+    async (cat: ICategory) => {
+      try {
+        const payload = await updateCategoryTrigger(cat).unwrap()
+        return payload
+      } catch (err) {
+        // logging, analytics, toasts globales…
+        console.error('Error updating category:', err)
+        return null
+      }
+    },
+    [updateCategoryTrigger]
+  )
+
+  const deleteCategory = useCallback(
+    async (id: string) => {
+      try {
+        await deleteCategoryTrigger(id).unwrap()
+        return id
+      } catch (err) {
+        // logging, analytics, toasts globales…
+        console.error('Error deleting category:', err)
+        return null
+      }
+    },
+    [deleteCategoryTrigger]
+  )
 
   return {
-    //* Properties
     categories,
-    backendErrorMessage,
-    loading,
-    //* Methods
-    fetchCategories,
-    saveCategory,
-    clearBackendErrorMessage,
+    isLoading,
+    errorMessage,
+    refetch,
+    createCategory,
+    updateCategory,
+    deleteCategory,
   }
 }

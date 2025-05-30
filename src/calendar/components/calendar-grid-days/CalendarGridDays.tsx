@@ -1,13 +1,11 @@
-import { useEffect } from 'react'
-
-import { FabMonth } from '../fab-month/FabMonth.tsx'
-import { Button } from '../../../components/button/button.tsx'
+import { FabMonth } from '../fab-month/FabMonth'
+import { Button } from '../../../components/button/button'
 
 import { MONTHS, type CalendarDay } from '../../../types/calendar-day.d'
 import { type CalendarEvent } from '../../../types/calendar-event.d'
 
-import { useCalendarActions } from '../../../store/hooks/useCalendarActions.ts'
-import { useEventActions } from '../../../store/hooks/useEventActions.ts'
+import { useCalendarActions } from '../../../store/hooks/useCalendarActions'
+import { useEventActions } from '../../../store/hooks/useEventActions'
 
 import {
   isSameDay,
@@ -16,10 +14,10 @@ import {
   isPrevDay,
   isToday,
   currentDate,
-} from '../../utils/validateManagmentDate.ts'
+} from '../../utils/validateManagmentDate'
+import { getToday } from '../../utils/dateUtils'
 
 import './CalendarGridDays.css'
-import { getToday } from '../../utils/dateUtils.ts'
 
 export const CalendarGridDays = () => {
   const {
@@ -28,7 +26,6 @@ export const CalendarGridDays = () => {
     year,
     calendarDays,
     activeCalendarDay,
-    generateCalendar,
     setActiveCalendarDay,
     getPreviousMonth,
     getNextMonth,
@@ -37,10 +34,6 @@ export const CalendarGridDays = () => {
   } = useCalendarActions()
 
   const { events } = useEventActions()
-
-  useEffect(() => {
-    generateCalendar()
-  }, [events, generateCalendar])
 
   const handleDayClick = (day: CalendarDay) => {
     if (day.type !== 'current') return

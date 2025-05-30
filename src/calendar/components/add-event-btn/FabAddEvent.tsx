@@ -1,12 +1,10 @@
-import { PlusIcon } from "../../../components/icons/Icons.tsx"
-import { Button } from "../../../components/button/button.tsx"
+import { PlusIcon } from '../../../components/icons/Icons'
+import { Button } from '../../../components/button/button'
 
-import { useCalendarActions } from "../../../store/hooks/useCalendarActions.ts"
-import { useModalActions } from "../../../store/hooks/useModalActions.ts"
-
+import { useCalendarActions } from '../../../store/hooks/useCalendarActions'
+import { useModalActions } from '../../../store/hooks/useModalActions'
 
 import './FabAddEvent.css'
-
 
 interface Props {
   className?: string
@@ -22,8 +20,7 @@ export const FabAddEvent = ({ className }: Props) => {
 
   return (
     <>
-      {
-        activeCalendarDay &&
+      {activeCalendarDay && (
         <Button
           type="button"
           className={`btn btn--outlined add-event-btn ${className}`}
@@ -31,7 +28,7 @@ export const FabAddEvent = ({ className }: Props) => {
         >
           <PlusIcon className="add-event-icon" />
         </Button>
-      }
+      )}
     </>
   )
 }

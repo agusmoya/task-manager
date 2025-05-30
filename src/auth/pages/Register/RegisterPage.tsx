@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom'
 
-import { CardIdIcon, EmailIcon, EyeIcon, EyeOffIcon } from '../../../components/icons/Icons.tsx'
-import { Input } from '../../../components/input/Input.tsx'
-import { Button } from '../../../components/button/button.tsx'
+import { CardIdIcon, EmailIcon, EyeIcon, EyeOffIcon } from '../../../components/icons/Icons'
+import { Input } from '../../../components/input/Input'
+import { Button } from '../../../components/button/button'
 
-import { useForm } from '../../../hooks/useForm.ts'
-import { useAuthActions } from '../../../store/hooks/useAuthActions.ts'
+import { useForm } from '../../../hooks/useForm'
 import {
   registerFormFields,
   registerFormValidations,
-} from '../../../helpers/form-validations/getRegisterFormValidations.ts'
+} from '../../../helpers/form-validations/getRegisterFormValidations'
+import { useAuthActions } from '../../../store/hooks/useAuthActionsRTK'
 
 import './RegisterPage.css'
 
@@ -28,7 +28,7 @@ const RegisterPage = () => {
     onInputChange,
     onBlurField,
   } = useForm(registerFormFields, registerFormValidations)
-  const { register, backendErrorMessage } = useAuthActions()
+  const { register, errorMessage } = useAuthActions()
 
   const handleRegisterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -43,7 +43,7 @@ const RegisterPage = () => {
   return (
     <>
       <h1 className="register__title">Create new account.</h1>
-      {backendErrorMessage && <p className="register__error">{backendErrorMessage}</p>}
+      {errorMessage && <p className="register__error">{errorMessage}</p>}
       <form className="register__form" onSubmit={handleRegisterSubmit}>
         <div className="register__group">
           <Input

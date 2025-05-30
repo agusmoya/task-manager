@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import { type User } from '../../../types/user.d'
 
-import { fetchContactsThunk } from './userThunks.ts'
+import { fetchContactsThunk } from './userThunks'
 
 interface UserState {
   users: User[]

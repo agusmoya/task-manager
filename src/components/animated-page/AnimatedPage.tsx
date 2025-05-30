@@ -2,11 +2,9 @@
 
 // import { Loader } from "../loader-page/Loader.tsx"
 
-// import { useTransitionPage } from "../../hooks/useTransitionPage.ts"
-
+// import { useTransitionPage } from "../../hooks/useTransitionPage"
 
 // import "./AnimatedPage.css"
-
 
 // interface AnimatedPageProps {
 //   children: React.ReactNode

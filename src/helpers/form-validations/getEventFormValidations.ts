@@ -3,8 +3,8 @@ import dayjs from 'dayjs'
 
 import { CalendarEventForm } from '../../types/calendar-event.d'
 
-import { FormValidations } from '../../hooks/useForm.ts'
-import { getToday } from '../../calendar/utils/dateUtils.ts'
+import { FormValidations } from '../../hooks/useForm'
+import { getToday } from '../../calendar/utils/dateUtils'
 
 const now = getToday()
 

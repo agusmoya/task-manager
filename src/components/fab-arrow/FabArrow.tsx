@@ -1,8 +1,7 @@
 import { type RefObject, useState, useEffect } from 'react'
 
-import { NextIcon, PreviousIcon } from '../icons/Icons.tsx'
-import { Button } from '../button/button.tsx'
-
+import { NextIcon, PreviousIcon } from '../icons/Icons'
+import { Button } from '../button/button'
 
 import './FabArrow.css'
 
@@ -48,13 +47,13 @@ export const FabArrow = ({ direction, scrollContainerRef, widthItemClass }: Arro
       resizeObserver.disconnect()
       mutationObserver.disconnect()
     }
-
   }, [direction, scrollContainerRef, widthItemClass])
-
 
   const handleScroll = () => {
     if (scrollContainerRef.current && !scrollDisabled) {
-      const firstItem = scrollContainerRef.current.querySelector(`.${widthItemClass}`) as HTMLElement
+      const firstItem = scrollContainerRef.current.querySelector(
+        `.${widthItemClass}`
+      ) as HTMLElement
       if (firstItem) {
         const itemWidth = firstItem.offsetWidth + 8 // plus gap between items
         scrollContainerRef.current.scrollBy({
@@ -66,14 +65,15 @@ export const FabArrow = ({ direction, scrollContainerRef, widthItemClass }: Arro
   }
 
   return (
-    !scrollDisabled &&
-    <Button
-      className={`btn btn--fab arrow-button arrow-button--${direction}`}
-      onClick={handleScroll}
-      disabled={scrollDisabled}
-      aria-label={direction === 'left' ? 'Scroll left' : 'Scroll right'}
-    >
-      {direction === 'left' ? <PreviousIcon /> : <NextIcon />}
-    </Button>
+    !scrollDisabled && (
+      <Button
+        className={`btn btn--fab arrow-button arrow-button--${direction}`}
+        onClick={handleScroll}
+        disabled={scrollDisabled}
+        aria-label={direction === 'left' ? 'Scroll left' : 'Scroll right'}
+      >
+        {direction === 'left' ? <PreviousIcon /> : <NextIcon />}
+      </Button>
+    )
   )
 }

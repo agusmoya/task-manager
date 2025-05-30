@@ -2,8 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { type User } from '../../../types/user.d'
 
-import todoApi from '../../../api/taskManagerApi.ts'
-import { handlerApiError } from '../../../api/helpers/handlerApiError.ts'
+import todoApi from '../../../api/taskManagerApi'
+import { handlerApiError } from '../../../api/helpers/handlerApiError'
 
 export const fetchContactsThunk = createAsyncThunk<User[], void, { rejectValue: string }>(
   'users/fetchContacts',

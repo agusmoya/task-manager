@@ -1,10 +1,10 @@
 import { useCallback } from 'react'
 
-import { useAppDispatch, useAppSelector } from './reduxStore.ts'
+import { useAppDispatch, useAppSelector } from '../reduxStore'
 
 import { type ToastStatus } from '../../types/toast.d'
 
-import { onShowToast, onUpdateToastStatus, onRemoveToast } from '../slices/ui/toastSlice.ts'
+import { onShowToast, onUpdateToastStatus, onRemoveToast } from '../slices/ui/toastSlice'
 
 export const useToastActions = () => {
   const dispatch = useAppDispatch()

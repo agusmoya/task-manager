@@ -2,8 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { type TaskId, type Task } from '../../../types/task.d'
 
-import todoApi from '../../../api/taskManagerApi.ts'
-import { handlerApiError } from '../../../api/helpers/handlerApiError.ts'
+import todoApi from '../../../api/taskManagerApi'
+import { handlerApiError } from '../../../api/helpers/handlerApiError'
 
 export const fetchTasksThunk = createAsyncThunk<Task[], void, { rejectValue: string }>(
   'tasks/fetchAll',

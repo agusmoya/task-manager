@@ -1,8 +1,7 @@
-import { createSlice, isAnyOf } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { loginThunk, checkAuthTokenThunk, logoutThunk, registerThunk } from './authThunks.ts'
-import { AUTH_STATUS } from '../../../auth/constants/status.ts'
-import { IBasicUserDto } from '../../../types/dtos/auth-response'
+import { AUTH_STATUS } from '../../../auth/constants/status'
+import { IAuthResponse, IBasicUserDto } from '../../../types/dtos/auth-response'
 
 export interface AuthState {
   status: string
@@ -22,46 +21,21 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    setCredentials: (state, { payload }: PayloadAction<IAuthResponse>) => {
+      state.user = payload.user
+      state.accessToken = payload.accessToken
+      state.status = AUTH_STATUS.AUTHENTICATED
+      state.backendErrorMessage = undefined
+    },
+    logout: state => {
+      state.user = undefined
+      state.accessToken = undefined
+      state.status = AUTH_STATUS.NOT_AUTHENTICATED
+      state.backendErrorMessage = undefined
+    },
     onClearErrorMessage: state => {
       state.backendErrorMessage = undefined
     },
-  },
-  extraReducers: builder => {
-    builder
-      .addMatcher(
-        isAnyOf(loginThunk.fulfilled, registerThunk.fulfilled, checkAuthTokenThunk.fulfilled),
-        (state, { payload }) => {
-          const {
-            user: { id, firstName, lastName, email },
-            accessToken,
-          } = payload
-          state.user = { id, firstName, lastName, email }
-          state.accessToken = accessToken
-          state.status = AUTH_STATUS.AUTHENTICATED
-          state.backendErrorMessage = undefined
-        }
-      )
-      .addMatcher(
-        isAnyOf(loginThunk.pending, registerThunk.pending, checkAuthTokenThunk.pending),
-        state => {
-          state.status = AUTH_STATUS.CHECKING
-          state.backendErrorMessage = undefined
-        }
-      )
-      .addMatcher(
-        isAnyOf(
-          logoutThunk.fulfilled,
-          loginThunk.rejected,
-          registerThunk.rejected,
-          checkAuthTokenThunk.rejected
-        ),
-        (state, { payload }) => {
-          state.user = undefined
-          state.accessToken = undefined
-          state.status = AUTH_STATUS.NOT_AUTHENTICATED
-          state.backendErrorMessage = payload || undefined
-        }
-      )
   },
 })
 

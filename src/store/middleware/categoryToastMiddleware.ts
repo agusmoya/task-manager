@@ -1,29 +1,30 @@
-import { createListenerMiddleware } from '@reduxjs/toolkit'
-import { fetchCategoriesThunk, createCategoryThunk } from '../slices/category/categoryThunks'
 import { onShowToast, onUpdateToastStatus } from '../slices/ui/toastSlice'
+import { startAppListening } from '../listenerMiddleware'
+import { categoryApi } from '../../api/RTKQuery/categoryApi'
 
 // Mapa para relacionar cada requestId con su toastId
 const toastMap = new Map<string, string>()
 
-export const categoryToastMiddleware = createListenerMiddleware()
+// , updateCategory, deleteCategory
+const { fetchCategories, createCategory } = categoryApi.endpoints
 
-categoryToastMiddleware.startListening({
-  actionCreator: fetchCategoriesThunk.pending,
+startAppListening({
+  matcher: fetchCategories.matchPending,
   effect: ({ meta }, listenerApi) => {
-    const toastId = listenerApi.dispatch(onShowToast('Cargando categorías…', 'loading')).payload.id
+    const toastId = listenerApi.dispatch(onShowToast('Loading categories...', 'loading')).payload.id
     toastMap.set(meta.requestId, toastId)
   },
 })
 
-categoryToastMiddleware.startListening({
-  actionCreator: fetchCategoriesThunk.fulfilled,
+startAppListening({
+  matcher: fetchCategories.matchFulfilled,
   effect: ({ meta }, listenerApi) => {
     const toastId = toastMap.get(meta.requestId)
     if (toastId) {
       listenerApi.dispatch(
         onUpdateToastStatus({
           id: toastId,
-          message: 'Categorías cargadas ✔️',
+          message: 'Categories loaded ✔️',
           status: 'success',
         })
       )
@@ -32,15 +33,15 @@ categoryToastMiddleware.startListening({
   },
 })
 
-categoryToastMiddleware.startListening({
-  actionCreator: fetchCategoriesThunk.rejected,
+startAppListening({
+  matcher: fetchCategories.matchRejected,
   effect: ({ meta }, listenerApi) => {
     const toastId = toastMap.get(meta.requestId)
     if (toastId) {
       listenerApi.dispatch(
         onUpdateToastStatus({
           id: toastId,
-          message: 'Error al cargar categorías ❌',
+          message: 'Error loading categories ❌',
           status: 'error',
         })
       )
@@ -49,23 +50,23 @@ categoryToastMiddleware.startListening({
   },
 })
 
-categoryToastMiddleware.startListening({
-  actionCreator: createCategoryThunk.pending,
+startAppListening({
+  matcher: createCategory.matchPending,
   effect: ({ meta }, listenerApi) => {
-    const toastId = listenerApi.dispatch(onShowToast('Guardando categoría…', 'loading')).payload.id
+    const toastId = listenerApi.dispatch(onShowToast('Saving category…', 'loading')).payload.id
     toastMap.set(meta.requestId, toastId)
   },
 })
 
-categoryToastMiddleware.startListening({
-  actionCreator: createCategoryThunk.fulfilled,
+startAppListening({
+  matcher: createCategory.matchFulfilled,
   effect: ({ meta }, listenerApi) => {
     const toastId = toastMap.get(meta.requestId)
     if (toastId) {
       listenerApi.dispatch(
         onUpdateToastStatus({
           id: toastId,
-          message: 'Categoría guardada ✔️',
+          message: 'Category saved ✔️',
           status: 'success',
         })
       )
@@ -74,15 +75,15 @@ categoryToastMiddleware.startListening({
   },
 })
 
-categoryToastMiddleware.startListening({
-  actionCreator: createCategoryThunk.rejected,
+startAppListening({
+  matcher: createCategory.matchRejected,
   effect: ({ meta }, listenerApi) => {
     const toastId = toastMap.get(meta.requestId)
     if (toastId) {
       listenerApi.dispatch(
         onUpdateToastStatus({
           id: toastId,
-          message: 'Error al guardar categoría ❌',
+          message: 'Error saving category ❌',
           status: 'error',
         })
       )

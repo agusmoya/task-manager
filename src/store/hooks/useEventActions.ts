@@ -1,6 +1,6 @@
 import { type CalendarEvent } from '../../types/calendar-event.d'
 
-import { useAppDispatch, useAppSelector } from './reduxStore.ts'
+import { useAppDispatch, useAppSelector } from '../reduxStore'
 
 import {
   onAddNewEventByTaskState,
@@ -10,8 +10,8 @@ import {
   onResetEventsByTaskState,
   onSetEventsByTaskState,
   onClearBackendErrorMessage,
-} from '../slices/event/eventSlice.ts'
-import { fetchEventsByUserIdThunk } from '../slices/event/eventThunks.ts'
+} from '../slices/event/eventSlice'
+import { fetchEventsByUserIdThunk } from '../slices/event/eventThunks'
 import { useCallback } from 'react'
 
 export const useEventActions = () => {

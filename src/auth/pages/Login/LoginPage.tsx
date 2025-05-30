@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom'
 
-import { EmailIcon, EyeIcon, EyeOffIcon, GoogleIcon } from '../../../components/icons/Icons.tsx'
-import { Input } from '../../../components/input/Input.tsx'
-import { Button } from '../../../components/button/button.tsx'
+import { EmailIcon, EyeIcon, EyeOffIcon, GoogleIcon } from '../../../components/icons/Icons'
+import { Input } from '../../../components/input/Input'
+import { Button } from '../../../components/button/button'
 
 import {
   loginFormFields,
   loginFormValidations,
-} from '../../../helpers/form-validations/getLoginFormValidations.ts'
-import { useForm } from '../../../hooks/useForm.ts'
-import { useAuthActions } from '../../../store/hooks/useAuthActions.ts'
+} from '../../../helpers/form-validations/getLoginFormValidations'
+import { useForm } from '../../../hooks/useForm'
+import { useAuthActions } from '../../../store/hooks/useAuthActionsRTK'
 
 import './LoginPage.css'
 
@@ -24,7 +24,7 @@ const LoginPage = () => {
     onInputChange,
     onBlurField,
   } = useForm(loginFormFields, loginFormValidations)
-  const { login, backendErrorMessage } = useAuthActions()
+  const { login, loginLoading, errorMessage } = useAuthActions()
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -38,7 +38,7 @@ const LoginPage = () => {
   return (
     <>
       <h1 className="login__title">Log in to your account.</h1>
-      {backendErrorMessage && <p className="login__error">{backendErrorMessage}</p>}
+      {errorMessage && <p className="login__error">{errorMessage}</p>}
       <form className="login__form" onSubmit={handleLoginSubmit}>
         <div className="login__content">
           <Input
@@ -81,7 +81,7 @@ const LoginPage = () => {
         <a href="#" className="login__forgot">
           Forgot your password?
         </a>
-        <Button type="submit" className="btn login__button" disabled={!isFormValid}>
+        <Button type="submit" className="btn login__button" disabled={!isFormValid || loginLoading}>
           Login
         </Button>
       </form>

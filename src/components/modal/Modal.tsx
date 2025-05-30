@@ -1,9 +1,9 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef } from 'react'
 
-import { CloseIcon } from '../icons/Icons.tsx'
-import { Button } from "../button/button.tsx"
+import { CloseIcon } from '../icons/Icons'
+import { Button } from '../button/button'
 
-import { useModalActions } from "../../store/hooks/useModalActions.ts"
+import { useModalActions } from '../../store/hooks/useModalActions'
 
 import './Modal.css'
 
@@ -26,16 +26,11 @@ export const Modal = ({ title, children }: ModalProps) => {
   }, [isModalOpen])
 
   const handleKeydownCloseModal = (event: React.KeyboardEvent<HTMLDialogElement>) => {
-    if (event.key === "Escape") closeModal()
+    if (event.key === 'Escape') closeModal()
   }
 
   return (
-    <dialog
-      id="modal"
-      className="modal"
-      ref={modalRef}
-      onKeyDown={handleKeydownCloseModal}
-    >
+    <dialog id="modal" className="modal" ref={modalRef} onKeyDown={handleKeydownCloseModal}>
       <div className="modal__content">
         <h1 className="modal__title">{title}</h1>
         {children}
