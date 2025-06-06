@@ -7,7 +7,7 @@ import { DatePills } from '../components/date-pills-list/DatePills'
 import { Schedule } from '../components/schedule/Schedule'
 import { Loader } from '../../components/loader-page/Loader'
 
-import { type TaskId } from '../../types/task.d'
+import { type TaskId } from '../../types/task'
 
 import { useCurrentWeek } from '../hooks/useCurrentWeek'
 import { useTaskActions } from '../../store/hooks/useTaskActions'
@@ -18,8 +18,7 @@ const TaskPage = () => {
   const { activeTask, fetchTaskById } = useTaskActions()
 
   useEffect(() => {
-    if (!id) return
-    fetchTaskById(id)
+    if (id) fetchTaskById(id)
   }, [id, fetchTaskById])
 
   if (!activeTask) return <Loader />

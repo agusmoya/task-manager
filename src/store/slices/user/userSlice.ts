@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { type User } from '../../../types/user.d'
+import { type IUser } from '../../../types/user.d'
 
 import { fetchContactsThunk } from './userThunks'
 
 interface UserState {
-  users: User[]
+  users: IUser[]
   loading: boolean
   backendErrorMessage: string | undefined
 }

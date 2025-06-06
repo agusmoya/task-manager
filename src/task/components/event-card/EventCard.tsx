@@ -1,34 +1,20 @@
 import { Button } from '../../../components/button/button'
 import { DeleteIcon, EditIcon, SeparatorIcon } from '../../../components/icons/Icons'
 
-import { type CalendarEvent } from '../../../types/calendar-event.d'
-
-import { useEventActions } from '../../../store/hooks/useEventActions'
-import { useModalActions } from '../../../store/hooks/useModalActions'
+import { IEventLocal } from '../../../types/event'
 
 import './EventCard.css'
 
 interface Props {
-  event: CalendarEvent
+  event: IEventLocal
+  onEdit: (evt: IEventLocal) => void
+  onDelete: (evtId: string) => void
 }
 
-export const EventCard = ({ event }: Props) => {
-  const { title, startDate, endDate, notes } = event
-
-  const { openModal } = useModalActions()
-  const { deleteEventByTaskState, setActiveEvent } = useEventActions()
-
-  const formattedStart = new Date(startDate).toLocaleString()
-  const formattedEnd = new Date(endDate).toLocaleString()
-
-  const handleClickDeleteEvent = (event: CalendarEvent) => {
-    deleteEventByTaskState(event)
-  }
-
-  const handleClickEditEvent = (event: CalendarEvent) => {
-    setActiveEvent({ ...event })
-    openModal()
-  }
+export const EventCard = ({ event, onEdit, onDelete }: Props) => {
+  const { title, start, end, notes } = event
+  const formattedStart = new Date(start).toLocaleString()
+  const formattedEnd = new Date(end).toLocaleString()
 
   return (
     <article className="event-card" aria-label={`Event: ${title || 'no title'}`}>
@@ -37,7 +23,7 @@ export const EventCard = ({ event }: Props) => {
           aria-label="Edit event"
           type="button"
           className="btn btn--filled event-card__btn event-card__btn--edit"
-          onClick={() => handleClickEditEvent(event)}
+          onClick={() => onEdit({ ...event })}
         >
           <EditIcon />
         </Button>
@@ -45,7 +31,7 @@ export const EventCard = ({ event }: Props) => {
           aria-label="Delete event"
           type="button"
           className="btn btn--filled event-card__btn event-card__btn--delete"
-          onClick={() => handleClickDeleteEvent(event)}
+          onClick={() => onDelete(event.id!)}
         >
           <DeleteIcon />
         </Button>
@@ -58,7 +44,6 @@ export const EventCard = ({ event }: Props) => {
           {formattedStart} <SeparatorIcon size={20} /> {formattedEnd}
         </time>
         {notes && <p className="event-card__notes">{notes}</p>}
-        <div className="collaborators">Collaborators:</div>
       </div>
     </article>
   )

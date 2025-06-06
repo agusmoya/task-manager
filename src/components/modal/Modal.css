@@ -6,17 +6,17 @@
   margin: auto;
   border: none;
   border-radius: 0.5rem;
-  padding-block: 3rem 2rem;
-  padding-inline: 2rem;
   pointer-events: auto;
   box-shadow: var(--elevation-3);
   /* animation */
   opacity: 0;
-  transition: display 0.3s allow-discrete, overlay 0.3s allow-discrete,
-    translate 0.3s, opacity 0.3s;
+  transition:
+    display 0.3s allow-discrete,
+    overlay 0.3s allow-discrete,
+    translate 0.3s,
+    opacity 0.3s;
   translate: 0 50%;
   will-change: translate, opacity;
-  z-index: var(--z-modal);
 }
 
 .modal[open] {
@@ -32,7 +32,9 @@
 .modal::backdrop {
   background: var(--color-scrim);
   opacity: 1;
-  transition: display 0.3s allow-discrete, opacity 0.3s;
+  transition:
+    display 0.3s allow-discrete,
+    opacity 0.3s;
 
   @starting-style {
     opacity: 0;
@@ -49,10 +51,16 @@
   margin-bottom: var(--spacing-8);
 }
 
+.modal__body {
+  width: 100%;
+}
+
 .modal__content {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-block: 3rem 2rem;
+  padding-inline: 2rem;
 }
 
 .modal__button-close {

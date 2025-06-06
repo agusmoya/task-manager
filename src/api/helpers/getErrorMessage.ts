@@ -7,10 +7,7 @@ import type { ApiResponse } from '../types/response.d'
 type RTKError = FetchBaseQueryError | SerializedError
 
 export function getErrorMessage(error: unknown): string {
-  // 0️⃣ Si viene undefined o null
-  if (error == null) {
-    return '' // o 'Unexpected error' si prefieres un mensaje por defecto
-  }
+  if (!error) return ''
 
   // 1️⃣ AxiosError
   if (axios.isAxiosError(error)) {
@@ -30,7 +27,7 @@ export function getErrorMessage(error: unknown): string {
   if ('status' in rtkErr) {
     const data = (rtkErr as FetchBaseQueryError).data
     // a) backend envía { message }
-    if (typeof data === 'object' && data !== null && 'message' in data) {
+    if (data && typeof data === 'object' && 'message' in data) {
       return (data as { message: string }).message
     }
     // b) backend envía string

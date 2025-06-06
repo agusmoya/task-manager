@@ -16,15 +16,15 @@ export const useForm = <T extends object>(
   initialForm: T,
   formValidations: FormValidations<T> = {}
 ) => {
-  // const [formState, setFormState] = useState<T>(initialForm)
-  // const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({})
   const initialStateForm = {
     values: initialForm,
     touched: {},
   }
   const [formValidation, setFormValidation] = useState<ValidationState<T>>({} as ValidationState<T>)
-  //? ✅ Unificamos formState y touchedFields
-  const [formState, setFormState] = useState<{ values: T, touched: Record<string, boolean> }>(initialStateForm)
+
+  const [formState, setFormState] = useState<{ values: T; touched: Record<string, boolean> }>(
+    initialStateForm
+  )
 
   //? Recalculamos validaciones cuando cambia el formState
   useEffect(() => {
@@ -39,7 +39,7 @@ export const useForm = <T extends object>(
   }, [initialForm])
 
   const isFormValid = useMemo(() => {
-    return Object.values(formValidation).every((value) => value === null)
+    return Object.values(formValidation).every(value => value === null)
   }, [formValidation])
 
   const onInputChange = (
@@ -47,7 +47,7 @@ export const useForm = <T extends object>(
   ) => {
     const { name, value } = event.target
 
-    setFormState((prev) => ({
+    setFormState(prev => ({
       values: {
         ...prev.values,
         [name]: value,
@@ -60,7 +60,7 @@ export const useForm = <T extends object>(
   }
 
   const onCustomChange = <K extends keyof T>(name: K, value: T[K]) => {
-    setFormState((prev) => ({
+    setFormState(prev => ({
       ...prev,
       values: {
         ...prev.values,
@@ -75,7 +75,7 @@ export const useForm = <T extends object>(
 
   // TODO::: Touched input only came true when user click out of it. (onBlur)
   const onBlurField = (name: string) => {
-    setFormState((prev) => ({
+    setFormState(prev => ({
       ...prev,
       touched: {
         ...prev.touched,
@@ -112,7 +112,7 @@ export const useForm = <T extends object>(
     formState: formState.values,
     touchedFields: formState.touched,
     isFormValid,
-    setFormState: (newState: T) => setFormState((prev) => ({ ...prev, values: newState })),
+    setFormState: (newState: T) => setFormState(prev => ({ ...prev, values: newState })),
     onInputChange,
     onCustomChange,
     onBlurField,

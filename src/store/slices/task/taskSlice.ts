@@ -1,6 +1,6 @@
 import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit'
 
-import { type Task } from '../../../types/task.d'
+import { type ITask } from '../../../types/task.d'
 
 import {
   fetchTasksThunk,
@@ -11,8 +11,8 @@ import {
 } from './taskThunks'
 
 export interface TaskState {
-  activeTask: Task | undefined
-  tasks: Task[]
+  activeTask?: ITask
+  tasks: ITask[]
   loading: boolean
   backendErrorMessage?: string
 }
@@ -28,13 +28,13 @@ export const taskSlice = createSlice({
   name: 'task',
   initialState,
   reducers: {
-    onAddNewTaskState: (state, { payload }: PayloadAction<Task>) => {
+    onAddNewTaskState: (state, { payload }: PayloadAction<ITask>) => {
       state.tasks.push(payload)
     },
-    onUpdateTaskState: (state, { payload }: PayloadAction<Task>) => {
+    onUpdateTaskState: (state, { payload }: PayloadAction<ITask>) => {
       state.tasks = state.tasks.map(task => (task.id === payload.id ? payload : task))
     },
-    onDeleteTaskState: (state, { payload }: PayloadAction<Task>) => {
+    onDeleteTaskState: (state, { payload }: PayloadAction<ITask>) => {
       state.tasks = state.tasks.filter(task => task.id !== payload.id)
     },
     onResetActiveTask: state => {
@@ -46,19 +46,19 @@ export const taskSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchTasksThunk.fulfilled, (state, { payload }: PayloadAction<Task[]>) => {
+      .addCase(fetchTasksThunk.fulfilled, (state, { payload }: PayloadAction<ITask[]>) => {
         state.tasks = payload
         state.loading = false
       })
-      .addCase(fetchTaskByIdThunk.fulfilled, (state, { payload }: PayloadAction<Task>) => {
+      .addCase(fetchTaskByIdThunk.fulfilled, (state, { payload }: PayloadAction<ITask>) => {
         state.activeTask = payload
         state.loading = false
       })
-      .addCase(createTaskThunk.fulfilled, (state, { payload }: PayloadAction<Task>) => {
+      .addCase(createTaskThunk.fulfilled, (state, { payload }: PayloadAction<ITask>) => {
         state.tasks.push(payload)
         state.loading = false
       })
-      .addCase(updateTaskThunk.fulfilled, (state, { payload }: PayloadAction<Task>) => {
+      .addCase(updateTaskThunk.fulfilled, (state, { payload }: PayloadAction<ITask>) => {
         state.tasks = state.tasks.map(t => (t.id === payload.id ? payload : t))
         state.loading = false
       })

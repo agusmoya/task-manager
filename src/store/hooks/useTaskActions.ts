@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { TaskId, type Task } from '../../types/task.d'
+import type { ITaskCreatePayload, ITaskUpdatePayload, TaskId } from '../../types/task.d'
 
 import { useAppDispatch, useAppSelector } from '../reduxStore'
 import { onResetActiveTask, onClearBackendErrorMessage } from './../slices/task/taskSlice'
@@ -28,12 +28,15 @@ export const useTaskActions = () => {
   )
 
   const saveTask = useCallback(
-    async (task: Partial<Task>) => {
-      if (task.id) {
-        return await dispatch(updateTaskThunk(task)).unwrap()
-      } else {
-        return await dispatch(createTaskThunk(task)).unwrap()
-      }
+    async (task: ITaskCreatePayload) => {
+      return await dispatch(createTaskThunk(task)).unwrap()
+    },
+    [dispatch]
+  )
+
+  const updateTask = useCallback(
+    async (task: ITaskUpdatePayload) => {
+      return await dispatch(updateTaskThunk(task)).unwrap()
     },
     [dispatch]
   )
@@ -64,6 +67,7 @@ export const useTaskActions = () => {
     fetchTasks,
     fetchTaskById,
     saveTask,
+    updateTask,
     deleteTask,
     // STATE
     resetActiveTask,

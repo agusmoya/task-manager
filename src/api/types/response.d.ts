@@ -6,12 +6,11 @@ export interface ApiResponse<T> {
   status: number // código HTTP
   data?: T // payload en caso de éxito
   message?: string // opcional, p.ej. en errores
-  error?: string // opcional, detalles de error
-  errorCode?: string // opcional, código de negocio
+  //error?: string // opcional, detalles de error
 }
 
 export interface HandledApiError {
-  errorMessage: string
-  statusCode?: number
-  backendError?: string
+  status: number
+  message: string
+  validationErrors?: ValidationErrorPayload[]
 }

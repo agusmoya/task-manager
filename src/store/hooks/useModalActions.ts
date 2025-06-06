@@ -1,24 +1,24 @@
 import { useAppDispatch, useAppSelector } from '../reduxStore'
-import { onClouseModal, onOpenModal } from '../slices/ui/modalSlice'
+import { onClose, onOpen } from '../slices/ui/modalSlice'
 import { useCallback } from 'react'
 
-export const useModalActions = () => {
+export const useModalActions = (modalId: string) => {
   const dispatch = useAppDispatch()
-  const { isModalOpen } = useAppSelector(state => state.modal)
+  const isOpen = useAppSelector(state => state.modal.openModals[modalId] ?? false)
 
-  const openModal = useCallback(() => {
-    dispatch(onOpenModal())
-  }, [dispatch])
+  const open = useCallback(() => {
+    dispatch(onOpen(modalId))
+  }, [dispatch, modalId])
 
-  const closeModal = useCallback(() => {
-    dispatch(onClouseModal())
-  }, [dispatch])
+  const close = useCallback(() => {
+    dispatch(onClose(modalId))
+  }, [dispatch, modalId])
 
   return {
     //* Properties
-    isModalOpen,
+    isOpen,
     //* Methods
-    openModal,
-    closeModal,
+    open,
+    close,
   }
 }

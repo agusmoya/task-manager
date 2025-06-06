@@ -7,11 +7,11 @@ import { useEventActions } from '../../../store/hooks/useEventActions'
 import './EventsByUser.css'
 
 export const EventsByUser = () => {
-  const { events, fetchEventsByUser } = useEventActions()
+  const { events, fetchEvents } = useEventActions()
 
   useEffect(() => {
-    fetchEventsByUser()
-  }, [fetchEventsByUser])
+    fetchEvents()
+  }, [fetchEvents])
 
   const areEventsPresent = events?.length
 
@@ -29,11 +29,13 @@ export const EventsByUser = () => {
             .join(' ')}
         >
           {events?.length > 0 ? (
-            events.map(({ id, title, taskId: task }) => {
+            events.map(({ id, title, task, start, end }) => {
               return (
                 <li key={id} className="events__item">
                   <h3>{title}</h3>
-                  <h4>Task:{task?.title}</h4>
+                  <h4>
+                    {start.split('T')[0]} to {end.split('T')[0]}
+                  </h4>
                   <h5>Task Id: {task?.id}</h5>
                 </li>
               )

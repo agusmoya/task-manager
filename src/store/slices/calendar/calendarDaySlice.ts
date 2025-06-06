@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 import { CALENDAR_DAY_TYPE, WEEKDAYS, type CalendarDay } from '../../../types/calendar-day.d'
-import { type CalendarEvent } from '../../../types/calendar-event.d'
+import { type IEvent } from '../../../types/event'
 
 import { getToday } from '../../../calendar/utils/dateUtils'
 import { computeCalendar } from '../../../calendar/utils/computeCalendar'
@@ -23,7 +23,7 @@ export interface CalendarDayState {
   year: number
   calendarDays: CalendarDay[]
   activeCalendarDay: CalendarDay
-  activeCalendarEvent: CalendarEvent | undefined
+  activeCalendarEvent: IEvent | undefined
 }
 
 const initialState: CalendarDayState = {

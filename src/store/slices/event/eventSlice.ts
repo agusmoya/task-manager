@@ -1,48 +1,38 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { type CalendarEvent } from '../../../types/calendar-event.d'
+import { type IEvent } from '../../../types/event'
 
 import { fetchEventsByUserIdThunk } from './eventThunks'
 
-export interface CalendarEventsState {
-  activeCalendarEvent: CalendarEvent | null
-  events: CalendarEvent[]
-  eventsByTask: CalendarEvent[] // in task form
+export interface EventState {
+  activeEvent: IEvent | null
+  events: IEvent[]
   loading: boolean
   backendErrorMessage: string | undefined
 }
 
-const initialState: CalendarEventsState = {
-  activeCalendarEvent: null,
+const initialState: EventState = {
+  activeEvent: null,
   events: [],
-  eventsByTask: [],
   loading: false,
   backendErrorMessage: undefined,
 }
 
-export const calendarEventSlice = createSlice({
-  name: 'calendarEvent',
+export const eventSlice = createSlice({
+  name: 'event',
   initialState,
   reducers: {
-    onSetActiveEventState: (state, { payload }: PayloadAction<CalendarEvent>) => {
-      state.activeCalendarEvent = payload
+    onSetActiveEventState: (state, { payload }: PayloadAction<IEvent>) => {
+      state.activeEvent = payload
     },
-    onSetEventsByTaskState: (state, { payload }: PayloadAction<CalendarEvent[]>) => {
-      state.eventsByTask = payload
+    onAddEvent: (state, { payload }: PayloadAction<IEvent>) => {
+      state.events.push(payload)
     },
-    onAddNewEventByTaskState: (state, { payload }: PayloadAction<CalendarEvent>) => {
-      state.eventsByTask.push(payload)
+    onUpdateEvent: (state, { payload }: PayloadAction<IEvent>) => {
+      state.events = state.events.map(evt => (evt.id === payload.id ? payload : evt))
     },
-    onUpdateEventByTaskState: (state, { payload }: PayloadAction<CalendarEvent>) => {
-      state.eventsByTask = state.eventsByTask.map(event =>
-        event.id === payload.id ? payload : event
-      )
-    },
-    onDeleteEventByTaskState: (state, { payload }: PayloadAction<CalendarEvent>) => {
-      state.eventsByTask = state.eventsByTask.filter(event => event.id !== payload.id)
-    },
-    onResetEventsByTaskState: state => {
-      state.eventsByTask = []
+    onDeleteEvent: (state, { payload }: PayloadAction<string>) => {
+      state.events = state.events.filter(event => event.id !== payload)
     },
     onClearBackendErrorMessage: state => {
       state.backendErrorMessage = undefined
@@ -67,10 +57,8 @@ export const calendarEventSlice = createSlice({
 
 export const {
   onSetActiveEventState,
-  onSetEventsByTaskState,
-  onAddNewEventByTaskState,
-  onUpdateEventByTaskState,
-  onDeleteEventByTaskState,
-  onResetEventsByTaskState,
+  onAddEvent,
+  onUpdateEvent,
+  onDeleteEvent,
   onClearBackendErrorMessage,
-} = calendarEventSlice.actions
+} = eventSlice.actions

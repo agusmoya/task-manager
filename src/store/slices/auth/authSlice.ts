@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { AUTH_STATUS } from '../../../auth/constants/status'
 import { IAuthResponse, IBasicUserDto } from '../../../types/dtos/auth-response'
+import { checkAuthTokenThunk } from './authThunks'
 
 export interface AuthState {
   status: string
@@ -36,6 +37,17 @@ export const authSlice = createSlice({
     onClearErrorMessage: state => {
       state.backendErrorMessage = undefined
     },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(checkAuthTokenThunk.fulfilled, (state, { payload }) => {
+        state.accessToken = payload.accessToken
+        state.status = AUTH_STATUS.AUTHENTICATED
+        state.backendErrorMessage = undefined
+      })
+      .addCase(checkAuthTokenThunk.rejected, state => {
+        state.status = AUTH_STATUS.NOT_AUTHENTICATED
+      })
   },
 })
 

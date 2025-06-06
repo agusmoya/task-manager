@@ -1,48 +1,73 @@
 import { useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 
 import { CloseIcon } from '../icons/Icons'
 import { Button } from '../button/button'
-
-import { useModalActions } from '../../store/hooks/useModalActions'
 
 import './Modal.css'
 
 type ModalProps = {
   title: string
+  isOpen: boolean
+  onClose: () => void
   children: React.ReactNode
 }
 
-export const Modal = ({ title, children }: ModalProps) => {
-  const modalRef = useRef<HTMLDialogElement>(null)
-  const { isModalOpen, closeModal } = useModalActions()
+export const Modal = ({ title, isOpen, onClose, children }: ModalProps) => {
+  const dialogRef = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
-    const modal = modalRef.current
-    if (isModalOpen) {
-      modal?.showModal()
+    const dialog = dialogRef.current
+    if (!dialog) return
+
+    if (isOpen) {
+      // Abrir el <dialog> sólo si no estaba ya abierto
+      if (!dialog.open) dialog.showModal()
+      // Opcional: enfocar el primer elemento del modal
+      const firstFocusable = dialog.querySelector<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+      firstFocusable?.focus()
     } else {
-      modal?.close()
+      // Cerrar si estaba abierto
+      if (dialog.open) dialog.close()
     }
-  }, [isModalOpen])
+  }, [isOpen])
 
   const handleKeydownCloseModal = (event: React.KeyboardEvent<HTMLDialogElement>) => {
-    if (event.key === 'Escape') closeModal()
+    if (event.key === 'Escape') onClose()
   }
 
-  return (
-    <dialog id="modal" className="modal" ref={modalRef} onKeyDown={handleKeydownCloseModal}>
+  // Evitar que clic en el contenido no cierre; clic fuera sí
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
+    // Si el clic se produce sobre <dialog> (no dentro de .modal__content), cerramos
+    if (e.target === dialogRef.current) {
+      onClose()
+    }
+  }
+
+  return createPortal(
+    <dialog
+      ref={dialogRef}
+      className="modal"
+      aria-modal="true"
+      role="dialog"
+      onKeyDown={handleKeydownCloseModal}
+      onClick={handleBackdropClick}
+    >
       <div className="modal__content">
         <h1 className="modal__title">{title}</h1>
-        {children}
+        <div className="modal__body">{children}</div>
         <Button
           type="button"
-          aria-label="Close"
           className="btn btn--icon modal__button-close"
-          onClick={() => closeModal()}
+          aria-label="Close dialog"
+          onClick={onClose}
         >
           <CloseIcon aria-hidden="true" focusable="false" />
         </Button>
       </div>
-    </dialog>
+    </dialog>,
+    document.body
   )
 }

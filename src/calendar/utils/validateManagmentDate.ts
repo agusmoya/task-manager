@@ -1,16 +1,16 @@
 import dayjs from 'dayjs'
 
 import { type CalendarDay } from '../../types/calendar-day.d'
-import { type CalendarEvent } from '../../types/calendar-event.d'
+import { type IEvent } from '../../types/event'
 
-import { fromDateToDatetimeLocal } from '../../helpers/form-validations/getEventFormValidations'
+import { formatToDatetimeLocal } from '../../helpers/form-validations/getEventFormValidations'
 import { getToday } from './dateUtils'
 
-export const isSameDay = (event: CalendarEvent, calendarDay: CalendarDay): boolean => {
-  const { startDate } = event
+export const isSameDay = (event: IEvent, calendarDay: CalendarDay): boolean => {
+  const { start } = event
   const { day, month, year } = calendarDay
 
-  const safeStartDate = fromDateToDatetimeLocal(startDate)
+  const safeStartDate = formatToDatetimeLocal(start)
   const newStartDate = new Date(safeStartDate)
 
   return (

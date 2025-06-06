@@ -6,7 +6,7 @@ import { authSlice } from './slices/auth/authSlice'
 import { userSlice } from './slices/user/userSlice'
 import { taskSlice } from './slices/task/taskSlice'
 import { calendarDaySlice } from './slices/calendar/calendarDaySlice'
-import { calendarEventSlice } from './slices/event/eventSlice'
+import { eventSlice } from './slices/event/eventSlice'
 import { modalSlice } from './slices/ui/modalSlice'
 import { toastSlice } from './slices/ui/toastSlice'
 
@@ -19,7 +19,7 @@ export const rootReducer = combineReducers({
   task: taskSlice.reducer,
   // category: categorySlice.reducer,
   calendarDay: calendarDaySlice.reducer,
-  calendarEvent: calendarEventSlice.reducer,
+  event: eventSlice.reducer,
   // UI
   modal: modalSlice.reducer,
   toast: toastSlice.reducer,

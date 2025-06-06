@@ -1,26 +1,23 @@
-import { type CalendarEvent } from '../../types/calendar-event.d'
+import { useCallback } from 'react'
+
+import { type IEvent } from '../../types/event'
 
 import { useAppDispatch, useAppSelector } from '../reduxStore'
 
 import {
-  onAddNewEventByTaskState,
-  onUpdateEventByTaskState,
-  onDeleteEventByTaskState,
   onSetActiveEventState,
-  onResetEventsByTaskState,
-  onSetEventsByTaskState,
+  onAddEvent,
+  onUpdateEvent,
+  onDeleteEvent,
   onClearBackendErrorMessage,
 } from '../slices/event/eventSlice'
 import { fetchEventsByUserIdThunk } from '../slices/event/eventThunks'
-import { useCallback } from 'react'
 
 export const useEventActions = () => {
   const dispatch = useAppDispatch()
+  const { events, activeEvent, loading, backendErrorMessage } = useAppSelector(state => state.event)
 
-  const { events, eventsByTask, activeCalendarEvent, loading, backendErrorMessage } =
-    useAppSelector(state => state.calendarEvent)
-
-  const fetchEventsByUser = useCallback(async () => {
+  const fetchEvents = useCallback(async () => {
     try {
       await dispatch(fetchEventsByUserIdThunk()).unwrap()
     } catch (error) {
@@ -29,31 +26,12 @@ export const useEventActions = () => {
   }, [dispatch])
 
   const setActiveEvent = useCallback(
-    (ev: CalendarEvent) => dispatch(onSetActiveEventState(ev)),
+    (ev: IEvent) => dispatch(onSetActiveEventState(ev)),
     [dispatch]
   )
-
-  const setEventsByTaskState = useCallback(
-    (ev: CalendarEvent[]) => dispatch(onSetEventsByTaskState(ev)),
-    [dispatch]
-  )
-
-  const addEventByTaskState = useCallback(
-    (ev: CalendarEvent) => dispatch(onAddNewEventByTaskState(ev)),
-    [dispatch]
-  )
-
-  const updateEventByTaskState = useCallback(
-    (ev: CalendarEvent) => dispatch(onUpdateEventByTaskState(ev)),
-    [dispatch]
-  )
-
-  const deleteEventByTaskState = useCallback(
-    (ev: CalendarEvent) => dispatch(onDeleteEventByTaskState(ev)),
-    [dispatch]
-  )
-
-  const resetEventByTaskState = useCallback(() => dispatch(onResetEventsByTaskState()), [dispatch])
+  const addEvent = useCallback((evt: IEvent) => dispatch(onAddEvent(evt)), [dispatch])
+  const updateEvent = useCallback((evt: IEvent) => dispatch(onUpdateEvent(evt)), [dispatch])
+  const deleteEvent = useCallback((id: string) => dispatch(onDeleteEvent(id)), [dispatch])
 
   const clearBackendErrorMessage = useCallback(() => {
     dispatch(onClearBackendErrorMessage())
@@ -62,21 +40,17 @@ export const useEventActions = () => {
   return {
     //* Properties:
     events,
-    eventsByTask,
-    activeCalendarEvent,
+    activeEvent,
     loading,
     backendErrorMessage,
     //* Methods:
-    //STATE
+    // STATE
     setActiveEvent,
-    setEventsByTaskState,
-    addEventByTaskState,
-    updateEventByTaskState,
-    deleteEventByTaskState,
-    resetEventByTaskState,
+    addEvent,
+    updateEvent,
+    deleteEvent,
     clearBackendErrorMessage,
     // THUNKS
-    // saveEventByTaskStateThunk,
-    fetchEventsByUser,
+    fetchEvents,
   }
 }

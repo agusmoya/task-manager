@@ -1,25 +1,24 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface ModalState {
-  isModalOpen: boolean;
+  openModals: Record<string, boolean>
 }
 
 const initialState: ModalState = {
-  isModalOpen: false,
+  openModals: {},
 }
 
 export const modalSlice = createSlice({
-  name: 'CustomModal',
+  name: 'modal',
   initialState,
   reducers: {
-    onOpenModal: (state) => {
-      state.isModalOpen = true
+    onOpen: (state, { payload }: PayloadAction<string>) => {
+      state.openModals[payload] = true
     },
-    onClouseModal: (state) => {
-      state.isModalOpen = false
-    }
+    onClose: (state, { payload }: PayloadAction<string>) => {
+      state.openModals[payload] = false
+    },
   },
 })
 
-// Action creators are generated for each case reducer function
-export const { onOpenModal, onClouseModal } = modalSlice.actions
+export const { onOpen, onClose } = modalSlice.actions

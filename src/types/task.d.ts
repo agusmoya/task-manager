@@ -1,6 +1,6 @@
-import { type CalendarEvent } from './calendar-event.d'
-import { type Category } from './category.d'
-import { type User } from './user.d'
+import type { IEvent, IEventForm, IEventLocal } from './event'
+import type { ICategory } from './category'
+import type { IUser } from './user'
 
 export const TASK_STATUS = {
   PENDING: 'pending',
@@ -9,37 +9,41 @@ export const TASK_STATUS = {
   COMPLETED: 'completed',
 } as const
 
-export interface Task {
+export type TaskStatus = (typeof TASK_STATUS)[keyof typeof TASK_STATUS]
+export interface ITask {
   id: string
   title: string
-  status: (typeof TASK_STATUS)[keyof typeof TASK_STATUS]
   creationDate: string
   beginningDate: string
   completionDate: string
+  ownerUserId: string
+  status: TaskStatus
   progress: number
   duration: number
-  ownerUserId: string
-  participants: User[]
-  category: Category
-  events: CalendarEvent[]
+  participants: IUser[]
+  category: ICategory
+  events: IEvent[]
 }
 
-export interface TaskForm {
+export interface ITaskForm {
   title: string
   category: string
-  events: CalendarEvent[]
-  participants: User[]
+  events: IEventLocal[]
+  participants: IUser[]
 }
 
-export interface TaskPayload {
+export interface ITaskCreatePayload {
   title: string
   categoryId: string
-  events: CalendarEvent[]
+  events: IEventForm[]
   participantsIds: string[]
 }
 
-// export type TaskId = Pick<Task, "id">
-export type TaskId = Task['id']
-export type TaskTitle = Pick<Task, 'title'>
-export type TaskStatus = Pick<Task, 'status'>
-export type Tasks = Task[]
+export interface ITaskUpdatePayload extends ITaskCreatePayload {
+  id: string
+}
+
+export type TaskId = ITask['id']
+export type TaskTitle = Pick<ITask, 'title'>
+export type TaskStatus = Pick<ITask, 'status'>
+export type Tasks = ITask[]

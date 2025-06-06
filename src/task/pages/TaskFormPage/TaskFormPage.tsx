@@ -1,41 +1,46 @@
-import { useEffect, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { Button } from '../../../components/button/button'
 import { Input } from '../../../components/input/Input'
 import { Modal } from '../../../components/modal/Modal'
 import { InputWithSuggestions } from '../../../components/input-with-suggestions/InputWithSuggestions'
 import { MultiSelectInput } from '../../../components/multi-select-input/MultiSelectInput'
-import { CalendarEventForm } from '../../../components/event-form/CalendarEventForm'
+import { EventForm } from '../../../components/event-form/EventForm'
 import { EventCardList } from '../../components/event-card-list/EventCardList'
 import { Loader } from '../../../components/loader-page/Loader'
 
-import { type User } from '../../../types/user'
+import { ModalIds } from '../../../constants/modalIds'
+import type { IUser } from '../../../types/user'
+import type { IEventLocal } from '../../../types/event'
+import type { ITaskForm } from '../../../types/task'
 
 import { useForm } from '../../../hooks/useForm'
 import {
-  mapTaskFormToPayload,
+  mapTaskFormToCreatePayload,
+  mapTaskFormToUpdatePayload,
   taskFormFields,
   taskFormValidations,
-} from '../../../helpers/form-validations/getTaskFromValidations'
+} from '../../../helpers/form-validations/getTaskFormValidations'
 
 import { useCategoryActions } from '../../../store/hooks/useCategoryActions'
 import { useUserActions } from '../../../store/hooks/useUserActions'
 import { useTaskActions } from '../../../store/hooks/useTaskActions'
-import { useEventActions } from '../../../store/hooks/useEventActions'
+import { useModalActions } from '../../../store/hooks/useModalActions'
 
 import './TaskFormPage.css'
+import { formatToDatetimeLocal } from '../../../helpers/form-validations/getEventFormValidations'
 
 const TaskFormPage = () => {
   const { id } = useParams<{ id: string }>()
-
-  const { users } = useUserActions()
-  const { eventsByTask, setEventsByTaskState, resetEventByTaskState } = useEventActions()
+  const navigate = useNavigate()
+  const [editingEvent, setEditingEvent] = useState<IEventLocal | null>(null)
+  const { isOpen, open, close } = useModalActions(ModalIds.EventForm)
+  const { users, fetchContacts } = useUserActions()
   const {
     categories,
-    isLoading: { list, create: creatingCat, update: updatingCat },
+    isLoading: { list, create: creatingCat },
     errorMessage,
-    refetch,
     createCategory,
   } = useCategoryActions()
 
@@ -44,6 +49,7 @@ const TaskFormPage = () => {
     backendErrorMessage: backendTaskError,
     activeTask,
     saveTask,
+    updateTask,
     fetchTaskById,
     resetActiveTask,
   } = useTaskActions()
@@ -61,49 +67,81 @@ const TaskFormPage = () => {
     onCustomChange,
     onBlurField,
     onResetForm,
-  } = useForm(taskFormFields, taskFormValidations)
+  } = useForm<ITaskForm>(taskFormFields, taskFormValidations)
 
   const categorySuggestions = useMemo(() => categories.map(cat => cat.name), [categories])
 
   //* Load initial data and clean form inputs when component unmount
   useEffect(() => {
     if (id) fetchTaskById(id)
-    refetch()
-    // fetchContacts()
+    fetchContacts()
 
     return () => {
       resetActiveTask()
       onResetForm()
-      resetEventByTaskState()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  //* Inicializa el form si se está editando y ya cargó activeTask
+  // Si estamos editando, transformo cada IEvent (de backend) en IEventLocal
   useEffect(() => {
-    if (!id || !activeTask) return
-    console.log(activeTask)
-    const { title, category, participants, events } = activeTask
-    onCustomChange('title', title)
-    onCustomChange('category', category.name)
-    onCustomChange('participants', participants)
-    setEventsByTaskState(events)
-    onCustomChange('events', events)
+    if (id && activeTask) {
+      const { title, category, participants, events } = activeTask
+      onCustomChange('title', title)
+      onCustomChange('category', category.name)
+      onCustomChange('participants', participants)
+      const localEvents: IEventLocal[] = events.map(evt => ({
+        id: evt.id,
+        title: evt.title,
+        start: formatToDatetimeLocal(evt.start),
+        end: formatToDatetimeLocal(evt.end),
+        notes: evt.notes || '',
+      }))
+      onCustomChange('events', localEvents)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTask])
 
-  //* Sincroniza eventos desde Redux con el form
-  useEffect(() => {
-    onCustomChange('events', [...eventsByTask])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventsByTask])
+  // Abrir modal para “Evento Nuevo”
+  const handleOpenNewEvent = () => {
+    setEditingEvent(null)
+    open()
+  }
 
-  //* Handlers
-  const handleAddParticipant = (user: User) => {
+  // Abrir modal para editar evento existente
+  const handleOpenEditEvent = (evt: IEventLocal) => {
+    setEditingEvent(evt)
+    open()
+  }
+
+  // Callback cuando EventForm envía un evento nuevo
+  const handleAddNewEvent = (evt: IEventLocal) => {
+    // Asigna un ID único si no viene generado
+    const newEvt: IEventLocal = { ...evt, id: evt.id || crypto.randomUUID() }
+    onCustomChange('events', [...formState.events, newEvt])
+    close()
+    setEditingEvent(null)
+  }
+
+  // Callback cuando EventForm envía un evento editado
+  const handleSaveEditedEvent = (evt: IEventLocal) => {
+    const newArr = formState.events.map(e => (e.id === evt.id ? evt : e))
+    onCustomChange('events', newArr)
+    close()
+    setEditingEvent(null)
+  }
+
+  // Eliminar evento del arreglo local
+  const handleDeleteEvent = (evtId: string) => {
+    const newArr = formState.events.filter(evt => evt.id !== evtId)
+    onCustomChange('events', newArr)
+  }
+
+  const handleAddParticipant = (user: IUser) => {
     onCustomChange('participants', [...participants, user])
   }
 
-  const handleRemoveParticipant = (user: User) => {
+  const handleRemoveParticipant = (user: IUser) => {
     onCustomChange(
       'participants',
       participants.filter(p => p.id !== user.id)
@@ -121,26 +159,29 @@ const TaskFormPage = () => {
     e.preventDefault()
     if (!isFormValid) return
 
-    const payload = mapTaskFormToPayload(formState, categories)
-    console.log(payload)
+    let result = null
+    if (id) {
+      const payload = mapTaskFormToUpdatePayload(id, formState, categories)
+      result = await updateTask(payload)
+    } else {
+      const payload = mapTaskFormToCreatePayload(formState, categories)
+      result = await saveTask(payload)
+    }
 
-    const newTask = await saveTask(payload)
-    if (newTask) handleResetFormAndEvents()
+    if (result) {
+      onResetForm()
+      navigate('/')
+    }
   }
 
-  const handleResetFormAndEvents = () => {
-    onResetForm()
-    resetEventByTaskState()
-  }
-
-  //*  Render condicional si estás editando y todavía no cargó la tarea
+  // Si estamos editando y aún no llegó activeTask, mostramos loader
   if (id && !activeTask) return <Loader />
 
   return (
     <section className="task-form-wrapper section container">
       <h1 className="task__form-title">{id ? 'Edit ' : 'Create '} task</h1>
 
-      {<p className="form__error">{backendTaskError}</p>}
+      <p className="form__error">{backendTaskError}</p>
 
       <form className="task__form" onSubmit={handleTaskSubmit}>
         <Input
@@ -177,24 +218,29 @@ const TaskFormPage = () => {
           onBlur={() => onBlurField('category')}
         />
 
-        <MultiSelectInput<User>
+        <MultiSelectInput<IUser>
           label="Participants"
           options={users}
           selectedOptions={participants}
           onAddItem={handleAddParticipant}
           onRemoveItem={handleRemoveParticipant}
-          getOptionLabel={(user: User) => user.email}
-          getOptionKey={(user: User) => user.id}
+          getOptionLabel={(user: IUser) => user.email}
+          getOptionKey={(user: IUser) => user.id}
           touched={touchedFields.participants}
         />
 
-        <EventCardList events={eventsByTask} />
+        <EventCardList
+          events={formState.events}
+          onOpenModal={handleOpenNewEvent}
+          onEdit={handleOpenEditEvent}
+          onDelete={handleDeleteEvent}
+        />
 
         <footer className="task__form-footer">
           <Button
             type="submit"
             className="btn btn--filled task__form-button"
-            disabled={!isFormValid || loadingTaskAction || creatingCat || updatingCat}
+            disabled={!isFormValid || loadingTaskAction || creatingCat}
           >
             {id ? 'Edit ' : 'Create'}
           </Button>
@@ -202,15 +248,20 @@ const TaskFormPage = () => {
           <Button
             type="reset"
             className="btn btn--outlined task__form-button"
-            onClick={handleResetFormAndEvents}
+            onClick={onResetForm}
           >
             Reset
           </Button>
         </footer>
       </form>
 
-      <Modal title="New Event">
-        <CalendarEventForm />
+      <Modal title={editingEvent ? 'Edit Event' : 'New Event'} isOpen={isOpen} onClose={close}>
+        <EventForm
+          initialEvent={editingEvent ?? undefined}
+          existingEvents={formState.events}
+          onAddEvent={handleAddNewEvent}
+          onUpdateEvent={handleSaveEditedEvent}
+        />
       </Modal>
     </section>
   )

@@ -29,7 +29,6 @@ export const baseQueryWithReauth: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   // 1️⃣ Llamada normal
   let result = await baseQuery(args, api, extraOptions)
-  console.log('Base query result:', result)
 
   // 2️⃣ Si recibimos 401, intentamos refresh
   if (result.error?.status === 401) {

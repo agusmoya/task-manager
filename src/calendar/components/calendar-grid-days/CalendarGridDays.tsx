@@ -2,7 +2,7 @@ import { FabMonth } from '../fab-month/FabMonth'
 import { Button } from '../../../components/button/button'
 
 import { MONTHS, type CalendarDay } from '../../../types/calendar-day.d'
-import { type CalendarEvent } from '../../../types/calendar-event.d'
+import { type CalendarEvent } from '../../../types/event'
 
 import { useCalendarActions } from '../../../store/hooks/useCalendarActions'
 import { useEventActions } from '../../../store/hooks/useEventActions'

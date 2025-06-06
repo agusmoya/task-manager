@@ -3,26 +3,27 @@ import { useEffect, useMemo } from 'react'
 import { DeleteIcon, EditIcon } from '../../../components/icons/Icons'
 import { Button } from '../../../components/button/button'
 
-import { type CalendarEvent } from '../../../types/calendar-event.d'
+import type { IEvent } from '../../../types/event'
 import { MONTHS } from '../../../types/calendar-day.d'
 
 import { useCalendarActions } from '../../../store/hooks/useCalendarActions'
 import { useEventActions } from '../../../store/hooks/useEventActions'
 import { useModalActions } from '../../../store/hooks/useModalActions'
 
+import { ModalIds } from '../../../constants/modalIds'
 import { isSameDay } from '../../utils/validateManagmentDate'
-import { fromDateToDatetimeLocal } from '../../../helpers/form-validations/getEventFormValidations'
+import { formatToDatetimeLocal } from '../../../helpers/form-validations/getEventFormValidations'
 
 import './CalendarEvents.css'
 
 export const CalendarEvents = () => {
-  const { openModal } = useModalActions()
+  const { open } = useModalActions(ModalIds.EventForm)
   const { month, year, activeCalendarDay } = useCalendarActions()
-  const { events, deleteEventByTaskState, setActiveEvent, fetchEventsByUser } = useEventActions()
+  const { events, deleteEvent, setActiveEvent, fetchEvents } = useEventActions()
 
   useEffect(() => {
-    fetchEventsByUser()
-  }, [fetchEventsByUser])
+    fetchEvents()
+  }, [fetchEvents])
 
   const eventsForActiveDay = useMemo(() => {
     if (!events || !activeCalendarDay) return []
@@ -32,19 +33,19 @@ export const CalendarEvents = () => {
   const { day, dayName } = activeCalendarDay || {}
   const eventDate = `${day} ${MONTHS[month]} ${year}`
 
-  const handleClickDeleteEvent = (event: CalendarEvent) => {
-    deleteEventByTaskState(event)
+  const handleClickDeleteEvent = (event: IEvent) => {
+    deleteEvent(event.id as string)
   }
 
-  const handleClickEditEvent = (event: CalendarEvent) => {
+  const handleClickEditEvent = (event: IEvent) => {
     setActiveEvent({ ...event })
-    openModal()
+    open()
   }
 
-  const formatEventTime = (event: CalendarEvent): string => {
-    const { startDate, endDate } = event
-    const safeStartDate = fromDateToDatetimeLocal(startDate)
-    const safeEndDate = fromDateToDatetimeLocal(endDate)
+  const formatEventTime = (event: IEvent): string => {
+    const { start, end } = event
+    const safeStartDate = formatToDatetimeLocal(start)
+    const safeEndDate = formatToDatetimeLocal(end)
     const newStartDate = new Date(safeStartDate)
     const newEndDate = new Date(safeEndDate)
 

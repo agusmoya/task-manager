@@ -5,14 +5,14 @@ import dayjs from 'dayjs'
 import { Clock } from '../clock/Clock'
 import { CalendarIcon } from '../../../components/icons/Icons'
 
-import { type Task } from '../../../types/task'
+import { type ITask } from '../../../types/task'
 
 import { getToday } from '../../../calendar/utils/dateUtils'
 
 import './TaskInfo.css'
 
 interface Props {
-  task: Task
+  task: ITask
 }
 
 export const TaskInfo = ({ task }: Props) => {

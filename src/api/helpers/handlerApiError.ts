@@ -6,15 +6,15 @@ export const handlerApiError = (error: unknown): HandledApiError => {
   console.error('HANDLER-API-ERROR: ', error)
 
   if (axios.isAxiosError<ApiResponse<unknown>>(error) && error.response) {
-    const { message, error: backendError } = error.response.data
+    const { message } = error.response.data
     return {
-      errorMessage: message ?? 'Unexpected error from backend.',
-      statusCode: error.response.status,
-      backendError,
+      status: error.response.status,
+      message: message ?? 'Unexpected error from backend.',
     }
   }
 
   return {
-    errorMessage: 'An unexpected error occurred.',
+    status: 500,
+    message: 'An unexpected error occurred.',
   }
 }

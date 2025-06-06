@@ -1,9 +1,9 @@
-export interface User {
+export interface IUser {
   id: string
   firstName: string
   lastName: string
   email: string
-  // contacts: User[]
+  contacts: User[]
 }
 
-export type UserId = Pick<User, "id">
+export type UserId = Pick<IUser, 'id'>
