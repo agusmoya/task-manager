@@ -28,7 +28,7 @@ export const TaskInfo = ({ task }: Props) => {
         </h2>
       </div>
       <div className="task-info__actions">
-        <Link className="btn btn--tonal see-calendar" to="/calendar">
+        <Link className="btn btn--tonal see-calendar" to="/home/calendar">
           <CalendarIcon />
           &nbsp;Calendar
         </Link>
@@ -37,7 +37,7 @@ export const TaskInfo = ({ task }: Props) => {
           Edit
         </Link>
 
-        <Link className="btn btn--outlined delete__task-btn" to="/calendar">
+        <Link className="btn btn--outlined delete__task-btn" to="/home/calendar">
           Delete
         </Link>
       </div>

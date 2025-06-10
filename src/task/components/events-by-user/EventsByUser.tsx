@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import { ScrollableContainer } from '../scrollable-container/ScrollableContainer'
 
 import { useEventActions } from '../../../store/hooks/useEventActions'
@@ -7,11 +5,7 @@ import { useEventActions } from '../../../store/hooks/useEventActions'
 import './EventsByUser.css'
 
 export const EventsByUser = () => {
-  const { events, fetchEvents } = useEventActions()
-
-  useEffect(() => {
-    fetchEvents()
-  }, [fetchEvents])
+  const { events } = useEventActions()
 
   const areEventsPresent = events?.length
 

@@ -1,10 +1,10 @@
+import { addHours } from 'date-fns'
 import dayjs from 'dayjs'
 
 import { IEventForm } from '../../types/event'
 
 import { FormValidations } from '../../hooks/useForm'
 import { getToday } from '../../calendar/utils/dateUtils'
-import { addHours } from 'date-fns'
 
 /**
  * Implementation with: dayjs.

@@ -1,27 +1,17 @@
-import { useCallback } from 'react'
-
-import { useAppDispatch, useAppSelector } from '../reduxStore'
-
-import { fetchContactsThunk } from '../slices/user/userThunks'
+import { useFetchContactsQuery } from '../../services/userApi'
 
 export const useUserActions = () => {
-  const dispatch = useAppDispatch()
-  const { users, backendErrorMessage, loading } = useAppSelector(state => state.user)
-
-  const fetchContacts = useCallback(async () => {
-    try {
-      await dispatch(fetchContactsThunk()).unwrap()
-    } catch (error) {
-      console.error(error)
-    }
-  }, [dispatch])
+  const {
+    data: contacts,
+    isLoading: fetchingContacts,
+    error: errorContacts,
+    refetch: refetchContacts,
+  } = useFetchContactsQuery()
 
   return {
-    //* Properties
-    users,
-    backendErrorMessage,
-    loading,
-    //* Methods
-    fetchContacts,
+    contacts,
+    refetchContacts,
+    fetchingContacts,
+    errorContacts,
   }
 }

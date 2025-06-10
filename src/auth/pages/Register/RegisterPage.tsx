@@ -9,7 +9,7 @@ import {
   registerFormFields,
   registerFormValidations,
 } from '../../../helpers/form-validations/getRegisterFormValidations'
-import { useAuthActions } from '../../../store/hooks/useAuthActionsRTK'
+import { useAuthActions } from '../../../store/hooks/useAuthActions'
 
 import './RegisterPage.css'
 
@@ -43,7 +43,7 @@ const RegisterPage = () => {
   return (
     <>
       <h1 className="register__title">Create new account.</h1>
-      {errorMessage && <p className="register__error">{errorMessage}</p>}
+      <p className="register__error">{errorMessage}</p>
       <form className="register__form" onSubmit={handleRegisterSubmit}>
         <div className="register__group">
           <Input

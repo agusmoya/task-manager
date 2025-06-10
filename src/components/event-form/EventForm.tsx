@@ -85,7 +85,7 @@ export const EventForm = ({ initialEvent, existingEvents, onAddEvent, onUpdateEv
       onUpdateEvent(updated)
     } else {
       const created: IEventLocal = {
-        id: crypto.randomUUID(), // temporal id for UI
+        id: crypto.randomUUID(),
         title: formState.title,
         start: formState.start,
         end: formState.end,

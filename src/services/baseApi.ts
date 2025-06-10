@@ -7,12 +7,12 @@ import {
   type FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react'
 
-import type { RootState } from '../../store/store'
-import { authSlice } from '../../store/slices/auth/authSlice'
-import { IAuthResponse } from '../../types/dtos/auth-response'
+import type { RootState } from '../store/store'
+import { IAuthResponse } from '../types/dtos/auth-response'
+import { authApi } from './authApi'
 
 const baseQuery = fetchBaseQuery({
-  credentials: 'include', // para cookies HttpOnly de refresh
+  credentials: 'include', // for HttpOnly cookies (refresh service)
   baseUrl: 'http://localhost:4000/api',
   prepareHeaders: (headers, { getState }) => {
     const accessToken = (getState() as RootState).auth.accessToken
@@ -29,7 +29,6 @@ export const baseQueryWithReauth: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   // 1️⃣ Llamada normal
   let result = await baseQuery(args, api, extraOptions)
-
   // 2️⃣ Si recibimos 401, intentamos refresh
   if (result.error?.status === 401) {
     const rawRefreshResult = await baseQuery(
@@ -40,20 +39,19 @@ export const baseQueryWithReauth: BaseQueryFn<
     const refreshResult = rawRefreshResult as QueryReturnValue<IAuthResponse, FetchBaseQueryError>
     if (refreshResult.data) {
       // 3️⃣ Guardamos credenciales y reintentamos original
-      api.dispatch(authSlice.actions.setCredentials(refreshResult.data))
+      await api.dispatch(authApi.endpoints.refresh.initiate()).unwrap()
       result = await baseQuery(args, api, extraOptions)
     } else {
       // 4️⃣ Si refresh falla, forzamos logout
-      api.dispatch(authSlice.actions.logout())
+      await api.dispatch(authApi.endpoints.logout.initiate()).unwrap()
     }
   }
   return result
 }
 
-// Slice vacío para inyectar endpoints más tarde
 export const baseApi = createApi({
   reducerPath: 'baseApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Category', 'Task', 'Auth'], // Puedes añadir más tipos de tags según tus necesidades
+  tagTypes: ['Auth', 'Task', 'Event', 'Category', 'User'] as const,
   endpoints: () => ({}),
 })

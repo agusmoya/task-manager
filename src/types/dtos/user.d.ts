@@ -3,9 +3,9 @@ export interface IBasicUserDto {
   firstName: string
   lastName: string
   email: string
+  profileImage: string
 }
 
-export interface IAuthResponse {
-  user: IBasicUserDto
-  accessToken: string
+export interface IUserDto extends IBasicUserDto {
+  contacts: IUser[]
 }

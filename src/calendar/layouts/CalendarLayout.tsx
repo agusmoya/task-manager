@@ -17,10 +17,9 @@ export const CalendarLayout = () => {
       <main className="main">
         <Breadcrumb />
         <section
-          className={`calendar section ${transitionPage}`}
+          className={`calendar-layout section ${transitionPage}`}
           onAnimationEnd={handleTransitionEnd}
         >
-          {/* <Outlet /> */}
           <Routes location={displayLocation}>
             <Route index element={<CalendarPage />} />
             <Route path="*" element={<Navigate to="" replace />} />

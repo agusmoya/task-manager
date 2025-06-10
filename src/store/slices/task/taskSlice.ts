@@ -1,98 +1,51 @@
-import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit'
+import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { type ITask } from '../../../types/task.d'
+import { tasksApi } from '../../../services/tasksApi'
 
-import {
-  fetchTasksThunk,
-  fetchTaskByIdThunk,
-  createTaskThunk,
-  updateTaskThunk,
-  deleteTaskThunk,
-} from './taskThunks'
+import { RootState } from '../../store'
 
-export interface TaskState {
-  activeTask?: ITask
-  tasks: ITask[]
-  loading: boolean
-  backendErrorMessage?: string
+import { type ITask } from '../../../types/task'
+
+const tasksAdapter = createEntityAdapter<ITask>()
+
+export interface ITaskState {
+  activeTaskId?: string
 }
 
-const initialState: TaskState = {
-  activeTask: undefined,
-  tasks: [],
-  loading: false,
-  backendErrorMessage: undefined,
-}
+const initialState = tasksAdapter.getInitialState<ITaskState>({
+  activeTaskId: undefined,
+})
 
 export const taskSlice = createSlice({
   name: 'task',
   initialState,
   reducers: {
-    onAddNewTaskState: (state, { payload }: PayloadAction<ITask>) => {
-      state.tasks.push(payload)
-    },
-    onUpdateTaskState: (state, { payload }: PayloadAction<ITask>) => {
-      state.tasks = state.tasks.map(task => (task.id === payload.id ? payload : task))
-    },
-    onDeleteTaskState: (state, { payload }: PayloadAction<ITask>) => {
-      state.tasks = state.tasks.filter(task => task.id !== payload.id)
-    },
-    onResetActiveTask: state => {
-      state.activeTask = undefined
-    },
-    onClearBackendErrorMessage: state => {
-      state.backendErrorMessage = undefined
+    setActiveTaskId: (state, { payload }: PayloadAction<string | undefined>) => {
+      state.activeTaskId = payload
     },
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchTasksThunk.fulfilled, (state, { payload }: PayloadAction<ITask[]>) => {
-        state.tasks = payload
-        state.loading = false
+      .addMatcher(tasksApi.endpoints.fetchTasks.matchFulfilled, (state, { payload }) => {
+        tasksAdapter.setAll(state, payload)
       })
-      .addCase(fetchTaskByIdThunk.fulfilled, (state, { payload }: PayloadAction<ITask>) => {
-        state.activeTask = payload
-        state.loading = false
+      .addMatcher(tasksApi.endpoints.createTask.matchFulfilled, (state, { payload }) => {
+        tasksAdapter.upsertOne(state, payload)
       })
-      .addCase(createTaskThunk.fulfilled, (state, { payload }: PayloadAction<ITask>) => {
-        state.tasks.push(payload)
-        state.loading = false
+      .addMatcher(tasksApi.endpoints.updateTask.matchFulfilled, (state, { payload }) => {
+        tasksAdapter.upsertOne(state, payload)
       })
-      .addCase(updateTaskThunk.fulfilled, (state, { payload }: PayloadAction<ITask>) => {
-        state.tasks = state.tasks.map(t => (t.id === payload.id ? payload : t))
-        state.loading = false
+      .addMatcher(tasksApi.endpoints.deleteTask.matchFulfilled, (state, { payload: { id } }) => {
+        tasksAdapter.removeOne(state, id)
+        if (state.activeTaskId === id) state.activeTaskId = undefined
       })
-      .addCase(deleteTaskThunk.fulfilled, (state, { payload }: PayloadAction<string>) => {
-        state.tasks = state.tasks.filter(t => t.id !== payload)
-        state.loading = false
-      })
-      .addMatcher(
-        isAnyOf(
-          fetchTasksThunk.pending,
-          fetchTaskByIdThunk.pending,
-          createTaskThunk.pending,
-          updateTaskThunk.pending,
-          deleteTaskThunk.pending
-        ),
-        state => {
-          state.loading = true
-          state.backendErrorMessage = undefined
-        }
-      )
-      .addMatcher(
-        isAnyOf(
-          fetchTasksThunk.rejected,
-          fetchTaskByIdThunk.rejected,
-          createTaskThunk.rejected,
-          updateTaskThunk.rejected,
-          deleteTaskThunk.rejected
-        ),
-        state => {
-          state.loading = true
-          state.backendErrorMessage = undefined
-        }
-      )
   },
 })
 
-export const { onResetActiveTask, onClearBackendErrorMessage } = taskSlice.actions
+export const { setActiveTaskId } = taskSlice.actions
+
+export const {
+  selectAll: selectAllTasks,
+  selectById: selectTaskById,
+  selectIds: selectTaskIds,
+} = tasksAdapter.getSelectors<RootState>(state => state.task)

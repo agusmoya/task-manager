@@ -13,15 +13,14 @@ import { PrivateRoute } from './PrivateRoute'
 import { Loader } from '../components/loader-page/Loader'
 import { NotFoundPage } from './404Page/NotFoundPage'
 
-import { useAuthActions } from '../store/hooks/useAuthActionsRTK'
+import { useAuthActions } from '../store/hooks/useAuthActions'
 
 export const AppRouter = () => {
   const { status, refresh } = useAuthActions()
 
   useEffect(() => {
     refresh()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [refresh])
 
   if (status === AUTH_STATUS.CHECKING) {
     return <Loader />
@@ -41,13 +40,14 @@ export const AppRouter = () => {
       />
       {/* PRIVATE ROUTES */}
       <Route
-        path="/calendar/*"
+        path="/home/calendar/*"
         element={
           <PrivateRoute>
             <CalendarLayout />
           </PrivateRoute>
         }
       />
+
       <Route
         path="/home/*"
         element={

@@ -9,16 +9,10 @@ import { useSearch } from '../../hooks/useSearch'
 import { useTaskActions } from '../../../store/hooks/useTaskActions'
 
 import './OngoingTasks.css'
-import { useEffect } from 'react'
 
 export const OngoingTasks = () => {
   const { search } = useSearch()
-  const { tasks, fetchTasks } = useTaskActions()
-
-  useEffect(() => {
-    fetchTasks()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const { tasks } = useTaskActions()
 
   const filteredTasks = tasks?.filter(({ title }) =>
     title.toLowerCase().includes(search.toLowerCase())

@@ -2,7 +2,7 @@ import { FabMonth } from '../fab-month/FabMonth'
 import { Button } from '../../../components/button/button'
 
 import { MONTHS, type CalendarDay } from '../../../types/calendar-day.d'
-import { type CalendarEvent } from '../../../types/event'
+import { type IEvent } from '../../../types/event'
 
 import { useCalendarActions } from '../../../store/hooks/useCalendarActions'
 import { useEventActions } from '../../../store/hooks/useEventActions'
@@ -40,7 +40,7 @@ export const CalendarGridDays = () => {
     setActiveCalendarDay(day)
   }
 
-  const filterEventsByDays = (events: CalendarEvent[], calendarDay: CalendarDay) => {
+  const filterEventsByDays = (events: IEvent[], calendarDay: CalendarDay) => {
     return events.filter(event => isSameDay(event, calendarDay))
   }
 

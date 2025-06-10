@@ -1,54 +1,47 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, isAnyOf } from '@reduxjs/toolkit'
 
 import { AUTH_STATUS } from '../../../auth/constants/status'
-import { IAuthResponse, IBasicUserDto } from '../../../types/dtos/auth-response'
-import { checkAuthTokenThunk } from './authThunks'
+import { IBasicUserDto } from '../../../types/dtos/auth-response'
+
+import { authApi } from '../../../services/authApi'
 
 export interface AuthState {
   status: string
-  user: IBasicUserDto | undefined
-  accessToken: string | undefined
-  backendErrorMessage: string | undefined
+  user?: IBasicUserDto
+  accessToken?: string
 }
 
 const initialState: AuthState = {
   status: AUTH_STATUS.NOT_AUTHENTICATED,
   user: undefined,
   accessToken: undefined,
-  backendErrorMessage: undefined,
 }
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    setCredentials: (state, { payload }: PayloadAction<IAuthResponse>) => {
-      state.user = payload.user
-      state.accessToken = payload.accessToken
-      state.status = AUTH_STATUS.AUTHENTICATED
-      state.backendErrorMessage = undefined
-    },
-    logout: state => {
-      state.user = undefined
-      state.accessToken = undefined
-      state.status = AUTH_STATUS.NOT_AUTHENTICATED
-      state.backendErrorMessage = undefined
-    },
-    onClearErrorMessage: state => {
-      state.backendErrorMessage = undefined
-    },
-  },
-  extraReducers(builder) {
+  reducers: {},
+  extraReducers: builder => {
     builder
-      .addCase(checkAuthTokenThunk.fulfilled, (state, { payload }) => {
-        state.accessToken = payload.accessToken
-        state.status = AUTH_STATUS.AUTHENTICATED
-        state.backendErrorMessage = undefined
-      })
-      .addCase(checkAuthTokenThunk.rejected, state => {
-        state.status = AUTH_STATUS.NOT_AUTHENTICATED
-      })
+      .addMatcher(
+        isAnyOf(
+          authApi.endpoints.login.matchFulfilled,
+          authApi.endpoints.register.matchFulfilled,
+          authApi.endpoints.refresh.matchFulfilled
+        ),
+        (state, { payload }) => {
+          state.user = payload.user
+          state.accessToken = payload.accessToken
+          state.status = AUTH_STATUS.AUTHENTICATED
+        }
+      )
+      .addMatcher(
+        isAnyOf(authApi.endpoints.refresh.matchRejected, authApi.endpoints.logout.matchFulfilled),
+        state => {
+          state.status = AUTH_STATUS.NOT_AUTHENTICATED
+          state.user = undefined
+          state.accessToken = undefined
+        }
+      )
   },
 })
-
-export const { onClearErrorMessage } = authSlice.actions

@@ -9,7 +9,7 @@ import {
   loginFormValidations,
 } from '../../../helpers/form-validations/getLoginFormValidations'
 import { useForm } from '../../../hooks/useForm'
-import { useAuthActions } from '../../../store/hooks/useAuthActionsRTK'
+import { useAuthActions } from '../../../store/hooks/useAuthActions'
 
 import './LoginPage.css'
 
@@ -38,7 +38,7 @@ const LoginPage = () => {
   return (
     <>
       <h1 className="login__title">Log in to your account.</h1>
-      {errorMessage && <p className="login__error">{errorMessage}</p>}
+      <p className="login__error">{errorMessage}</p>
       <form className="login__form" onSubmit={handleLoginSubmit}>
         <div className="login__content">
           <Input

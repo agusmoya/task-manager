@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 import { Dropdown } from '../../../components/dropdown/Dropdown'
 import { ButtonTheme } from '../../../components/button-theme/ButtonTheme'
-import { useAuthActions } from '../../../store/hooks/useAuthActionsRTK'
+import { useAuthActions } from '../../../store/hooks/useAuthActions'
 
 import './Header.css'
 

@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit'
 
-import { baseApi } from '../api/RTKQuery/baseApi'
+import { baseApi } from '../services/baseApi'
 
 import { authSlice } from './slices/auth/authSlice'
 import { userSlice } from './slices/user/userSlice'

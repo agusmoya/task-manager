@@ -1,8 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import { setupInterceptors } from '../api/setupInterceptors'
-
-import { baseApi } from '../api/RTKQuery/baseApi'
+import { baseApi } from '../services/baseApi'
 import { rootReducer } from './rootReducer'
 
 import { listenerMiddleware } from './listenerMiddleware'
@@ -21,8 +19,6 @@ export const store = configureStore({
       // El middleware de RTK Query para cache y refetch automático
       .concat(baseApi.middleware),
 })
-
-setupInterceptors(store.dispatch, store.getState)
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

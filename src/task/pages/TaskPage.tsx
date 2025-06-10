@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import { useParams } from 'react-router-dom'
 
 import { TaskInfo } from '../components/task-info/TaskInfo'
@@ -10,23 +8,27 @@ import { Loader } from '../../components/loader-page/Loader'
 import { type TaskId } from '../../types/task'
 
 import { useCurrentWeek } from '../hooks/useCurrentWeek'
-import { useTaskActions } from '../../store/hooks/useTaskActions'
+import { useFetchTaskByIdQuery } from '../../services/tasksApi'
 
 const TaskPage = () => {
   const { id } = useParams<{ id: TaskId }>()
   const { currentWeek, today } = useCurrentWeek()
-  const { activeTask, fetchTaskById } = useTaskActions()
+  const { data: task, isLoading, isError, refetch } = useFetchTaskByIdQuery(id!, { skip: !id })
 
-  useEffect(() => {
-    if (id) fetchTaskById(id)
-  }, [id, fetchTaskById])
+  if (isLoading) return <Loader />
 
-  if (!activeTask) return <Loader />
+  if (isError || !task) {
+    return (
+      <div>
+        <p>Error al cargar la tarea.</p>
+        <button onClick={() => refetch()}>Reintentar</button>
+      </div>
+    )
+  }
 
   return (
     <>
-      <TaskInfo task={activeTask} />
-      {/* <TaskInfo task={activeTask} /> */}
+      <TaskInfo task={task} />
       <DatePills weekDays={currentWeek} />
       <Schedule today={today} />
     </>

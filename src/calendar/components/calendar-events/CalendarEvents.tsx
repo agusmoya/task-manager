@@ -1,33 +1,32 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { DeleteIcon, EditIcon } from '../../../components/icons/Icons'
 import { Button } from '../../../components/button/button'
 
-import type { IEvent } from '../../../types/event'
 import { MONTHS } from '../../../types/calendar-day.d'
+import type { IEvent } from '../../../types/event'
 
 import { useCalendarActions } from '../../../store/hooks/useCalendarActions'
 import { useEventActions } from '../../../store/hooks/useEventActions'
-import { useModalActions } from '../../../store/hooks/useModalActions'
 
-import { ModalIds } from '../../../constants/modalIds'
 import { isSameDay } from '../../utils/validateManagmentDate'
-import { formatToDatetimeLocal } from '../../../helpers/form-validations/getEventFormValidations'
 
 import './CalendarEvents.css'
+import { Loader } from '../../../components/loader-page/Loader'
 
 export const CalendarEvents = () => {
-  const { open } = useModalActions(ModalIds.EventForm)
+  const navigate = useNavigate()
   const { month, year, activeCalendarDay } = useCalendarActions()
-  const { events, deleteEvent, setActiveEvent, fetchEvents } = useEventActions()
+  const { events, fetching, fetchError, refetch, updating, deleting, deleteEvent } =
+    useEventActions()
 
-  useEffect(() => {
-    fetchEvents()
-  }, [fetchEvents])
-
-  const eventsForActiveDay = useMemo(() => {
+  // Filter and sort events for the selected day
+  const eventsForSelectedDay = useMemo(() => {
     if (!events || !activeCalendarDay) return []
-    return events.filter(e => isSameDay(e, activeCalendarDay))
+    return events
+      .filter(e => isSameDay(e, activeCalendarDay))
+      .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
   }, [events, activeCalendarDay])
 
   const { day, dayName } = activeCalendarDay || {}
@@ -38,21 +37,38 @@ export const CalendarEvents = () => {
   }
 
   const handleClickEditEvent = (event: IEvent) => {
-    setActiveEvent({ ...event })
-    open()
+    const taskId = event.taskId
+    if (!taskId) return
+    navigate(`/home/task-form/${taskId}`, {
+      state: { openEventId: event.id },
+    })
   }
 
-  const formatEventTime = (event: IEvent): string => {
+  // Format event time range as "HH:mm hs - HH:mm hs"
+  const getEventTimeRange = (event: IEvent): string => {
     const { start, end } = event
-    const safeStartDate = formatToDatetimeLocal(start)
-    const safeEndDate = formatToDatetimeLocal(end)
-    const newStartDate = new Date(safeStartDate)
-    const newEndDate = new Date(safeEndDate)
+    const startDate = new Date(start)
+    const endDate = new Date(end)
 
-    const startMinutes = newStartDate.getMinutes().toString().padStart(2, '0')
-    const endMinutes = newEndDate.getMinutes().toString().padStart(2, '0')
+    const pad = (num: number) => num.toString().padStart(2, '0')
+    const startH = pad(startDate.getHours())
+    const startM = pad(startDate.getMinutes())
+    const endH = pad(endDate.getHours())
+    const endM = pad(endDate.getMinutes())
 
-    return `${newStartDate.getHours()}:${startMinutes} hs - ${newEndDate.getHours()}:${endMinutes} hs`
+    return `${startH}:${startM} hs - ${endH}:${endM} hs`
+  }
+
+  if (fetching) {
+    return <Loader />
+  }
+  if (fetchError) {
+    return (
+      <div className="calendar-events__error">
+        <p>Error al cargar eventos.</p>
+        <Button onClick={() => refetch()}>Reintentar</Button>
+      </div>
+    )
   }
 
   return (
@@ -64,8 +80,8 @@ export const CalendarEvents = () => {
             <span className="calendar-events__date">{eventDate}</span>
           </header>
           <section className="calendar-events__list">
-            {eventsForActiveDay && eventsForActiveDay.length > 0 ? (
-              eventsForActiveDay.map(event => {
+            {eventsForSelectedDay.length > 0 ? (
+              eventsForSelectedDay.map(event => {
                 const { id, title } = event
                 return (
                   <article className="calendar-events__item" key={id}>
@@ -73,17 +89,19 @@ export const CalendarEvents = () => {
                       type="button"
                       className="btn btn--text calendar-events__item-edit-btn"
                       onClick={() => handleClickEditEvent(event)}
+                      disabled={updating}
                     >
                       <EditIcon />
                     </Button>
                     <div className="calendar-events__item-info">
                       <h3 className="calendar-events__item-title">{title}</h3>
-                      <span className="calendar-events__item-time">{formatEventTime(event)}</span>
+                      <span className="calendar-events__item-time">{getEventTimeRange(event)}</span>
                     </div>
                     <Button
                       type="button"
                       className="btn btn--text calendar-events__item-delete-btn"
                       onClick={() => handleClickDeleteEvent(event)}
+                      disabled={deleting}
                     >
                       <DeleteIcon />
                     </Button>

@@ -1,4 +1,4 @@
-import type { IEvent, IEventForm, IEventLocal } from './event'
+import type { IEvent, IEventLocal } from './event'
 import type { ICategory } from './category'
 import type { IUser } from './user'
 
@@ -30,17 +30,6 @@ export interface ITaskForm {
   category: string
   events: IEventLocal[]
   participants: IUser[]
-}
-
-export interface ITaskCreatePayload {
-  title: string
-  categoryId: string
-  events: IEventForm[]
-  participantsIds: string[]
-}
-
-export interface ITaskUpdatePayload extends ITaskCreatePayload {
-  id: string
 }
 
 export type TaskId = ITask['id']

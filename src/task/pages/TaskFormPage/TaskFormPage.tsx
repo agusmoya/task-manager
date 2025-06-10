@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { Button } from '../../../components/button/button'
 import { Input } from '../../../components/input/Input'
@@ -15,44 +15,54 @@ import type { IUser } from '../../../types/user'
 import type { IEventLocal } from '../../../types/event'
 import type { ITaskForm } from '../../../types/task'
 
-import { useForm } from '../../../hooks/useForm'
 import {
   mapTaskFormToCreatePayload,
   mapTaskFormToUpdatePayload,
   taskFormFields,
   taskFormValidations,
 } from '../../../helpers/form-validations/getTaskFormValidations'
+import { formatToDatetimeLocal } from '../../../helpers/form-validations/getEventFormValidations'
 
+import { useFetchTaskByIdQuery } from '../../../services/tasksApi'
+
+import { useForm } from '../../../hooks/useForm'
 import { useCategoryActions } from '../../../store/hooks/useCategoryActions'
 import { useUserActions } from '../../../store/hooks/useUserActions'
 import { useTaskActions } from '../../../store/hooks/useTaskActions'
 import { useModalActions } from '../../../store/hooks/useModalActions'
 
 import './TaskFormPage.css'
-import { formatToDatetimeLocal } from '../../../helpers/form-validations/getEventFormValidations'
 
 const TaskFormPage = () => {
-  const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const [editingEvent, setEditingEvent] = useState<IEventLocal | null>(null)
-  const { isOpen, open, close } = useModalActions(ModalIds.EventForm)
-  const { users, fetchContacts } = useUserActions()
-  const {
-    categories,
-    isLoading: { list, create: creatingCat },
-    errorMessage,
-    createCategory,
-  } = useCategoryActions()
+  const location = useLocation()
+  const openEventIdFromState = (location.state as { openEventId?: string })?.openEventId
+  const { id } = useParams<{ id: string }>()
 
   const {
-    loading: loadingTaskAction,
-    backendErrorMessage: backendTaskError,
-    activeTask,
-    saveTask,
+    data: task,
+    isLoading: loadingTask,
+    isError: fetchTaskError,
+  } = useFetchTaskByIdQuery(id!, { skip: !id })
+
+  const {
+    createTask,
     updateTask,
-    fetchTaskById,
-    resetActiveTask,
+    creating: creatingTask,
+    updating: updatingTask,
+    errorMessage: taskError,
   } = useTaskActions()
+
+  const [editingEvent, setEditingEvent] = useState<IEventLocal | null>(null)
+  const { isOpen, open, close } = useModalActions(ModalIds.EventForm)
+  const { contacts = [] } = useUserActions()
+  const {
+    categories,
+    fetching: fetchingCat,
+    creating: creatingCat,
+    errorMessage: categoryError,
+    createCategory,
+  } = useCategoryActions()
 
   const {
     title,
@@ -71,22 +81,18 @@ const TaskFormPage = () => {
 
   const categorySuggestions = useMemo(() => categories.map(cat => cat.name), [categories])
 
-  //* Load initial data and clean form inputs when component unmount
-  useEffect(() => {
-    if (id) fetchTaskById(id)
-    fetchContacts()
+  // Load initial data and clear form inputs when component unmount
+  // useEffect(() => {
+  //   return () => {
+  //     onResetForm()
+  //   }
 
-    return () => {
-      resetActiveTask()
-      onResetForm()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // }, [])
 
-  // Si estamos editando, transformo cada IEvent (de backend) en IEventLocal
+  // If we are editing, transform each IEvent (from backend) to IEventLocal
   useEffect(() => {
-    if (id && activeTask) {
-      const { title, category, participants, events } = activeTask
+    if (id && task) {
+      const { title, category, participants, events } = task
       onCustomChange('title', title)
       onCustomChange('category', category.name)
       onCustomChange('participants', participants)
@@ -100,30 +106,35 @@ const TaskFormPage = () => {
       onCustomChange('events', localEvents)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTask])
+  }, [task])
 
-  // Abrir modal para “Evento Nuevo”
+  useEffect(() => {
+    if (openEventIdFromState && formState.events.length) {
+      const eventToEdit = formState.events.find(evt => evt.id === openEventIdFromState)
+      if (eventToEdit) {
+        handleOpenEditEvent(eventToEdit)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openEventIdFromState, formState.events])
+
   const handleOpenNewEvent = () => {
     setEditingEvent(null)
     open()
   }
 
-  // Abrir modal para editar evento existente
   const handleOpenEditEvent = (evt: IEventLocal) => {
     setEditingEvent(evt)
     open()
   }
 
-  // Callback cuando EventForm envía un evento nuevo
   const handleAddNewEvent = (evt: IEventLocal) => {
-    // Asigna un ID único si no viene generado
     const newEvt: IEventLocal = { ...evt, id: evt.id || crypto.randomUUID() }
     onCustomChange('events', [...formState.events, newEvt])
     close()
     setEditingEvent(null)
   }
 
-  // Callback cuando EventForm envía un evento editado
   const handleSaveEditedEvent = (evt: IEventLocal) => {
     const newArr = formState.events.map(e => (e.id === evt.id ? evt : e))
     onCustomChange('events', newArr)
@@ -131,7 +142,6 @@ const TaskFormPage = () => {
     setEditingEvent(null)
   }
 
-  // Eliminar evento del arreglo local
   const handleDeleteEvent = (evtId: string) => {
     const newArr = formState.events.filter(evt => evt.id !== evtId)
     onCustomChange('events', newArr)
@@ -165,7 +175,7 @@ const TaskFormPage = () => {
       result = await updateTask(payload)
     } else {
       const payload = mapTaskFormToCreatePayload(formState, categories)
-      result = await saveTask(payload)
+      result = await createTask(payload)
     }
 
     if (result) {
@@ -174,14 +184,14 @@ const TaskFormPage = () => {
     }
   }
 
-  // Si estamos editando y aún no llegó activeTask, mostramos loader
-  if (id && !activeTask) return <Loader />
+  // If we are editing and the active task is not yet ready, show the loader
+  if (id && loadingTask) return <Loader />
 
   return (
     <section className="task-form-wrapper section container">
       <h1 className="task__form-title">{id ? 'Edit ' : 'Create '} task</h1>
 
-      <p className="form__error">{backendTaskError}</p>
+      <p className="form__error">{taskError || fetchTaskError}</p>
 
       <form className="task__form" onSubmit={handleTaskSubmit}>
         <Input
@@ -212,15 +222,15 @@ const TaskFormPage = () => {
           allowCreateIfNotExists
           suggestionData={categorySuggestions}
           onCreateNew={handleCreateNewCategory}
-          backendError={errorMessage}
-          loading={list}
+          backendError={categoryError}
+          loading={fetchingCat}
           onChange={onInputChange}
           onBlur={() => onBlurField('category')}
         />
 
         <MultiSelectInput<IUser>
           label="Participants"
-          options={users}
+          options={contacts}
           selectedOptions={participants}
           onAddItem={handleAddParticipant}
           onRemoveItem={handleRemoveParticipant}
@@ -240,7 +250,7 @@ const TaskFormPage = () => {
           <Button
             type="submit"
             className="btn btn--filled task__form-button"
-            disabled={!isFormValid || loadingTaskAction || creatingCat}
+            disabled={!isFormValid || creatingCat || creatingTask || updatingTask}
           >
             {id ? 'Edit ' : 'Create'}
           </Button>
@@ -249,6 +259,7 @@ const TaskFormPage = () => {
             type="reset"
             className="btn btn--outlined task__form-button"
             onClick={onResetForm}
+            disabled={isFormValid || creatingCat || creatingTask || updatingTask}
           >
             Reset
           </Button>

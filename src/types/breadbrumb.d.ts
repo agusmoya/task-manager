@@ -1,3 +1,5 @@
+import { RouteMatch } from 'react-router-dom'
+
 export type BreadcrumbItem = {
   path: string
   label: string

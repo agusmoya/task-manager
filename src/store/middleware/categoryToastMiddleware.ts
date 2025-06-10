@@ -1,12 +1,12 @@
 import { onShowToast, onUpdateToastStatus } from '../slices/ui/toastSlice'
 import { startAppListening } from '../listenerMiddleware'
-import { categoryApi } from '../../api/RTKQuery/categoryApi'
+import { categoriesApi } from '../../services/categoriesApi'
 
 // Mapa para relacionar cada requestId con su toastId
 const toastMap = new Map<string, string>()
 
 // , updateCategory, deleteCategory
-const { fetchCategories, createCategory } = categoryApi.endpoints
+const { fetchCategories, createCategory } = categoriesApi.endpoints
 
 startAppListening({
   matcher: fetchCategories.matchPending,

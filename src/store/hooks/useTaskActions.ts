@@ -1,76 +1,62 @@
-import { useCallback } from 'react'
-
-import type { ITaskCreatePayload, ITaskUpdatePayload, TaskId } from '../../types/task.d'
-
+import { useCallback, useMemo } from 'react'
 import { useAppDispatch, useAppSelector } from '../reduxStore'
-import { onResetActiveTask, onClearBackendErrorMessage } from './../slices/task/taskSlice'
+
+import type { ITask } from '../../types/task'
+
 import {
-  fetchTasksThunk,
-  fetchTaskByIdThunk,
-  createTaskThunk,
-  updateTaskThunk,
-  deleteTaskThunk,
-} from '../slices/task/taskThunks'
+  useFetchTasksQuery,
+  useCreateTaskMutation,
+  useUpdateTaskMutation,
+  useDeleteTaskMutation,
+} from '../../services/tasksApi'
+
+import { setActiveTaskId, selectTaskById } from './../slices/task/taskSlice'
+
+import { getErrorMessage } from '../../api/helpers/getErrorMessage'
 
 export const useTaskActions = () => {
   const dispatch = useAppDispatch()
-  const { activeTask, tasks, backendErrorMessage, loading } = useAppSelector(state => state.task)
-
-  const fetchTasks = useCallback(async () => {
-    return await dispatch(fetchTasksThunk()).unwrap()
-  }, [dispatch])
-
-  const fetchTaskById = useCallback(
-    async (id: TaskId) => {
-      return await dispatch(fetchTaskByIdThunk(id)).unwrap()
-    },
-    [dispatch]
+  const { activeTaskId } = useAppSelector(state => state.task)
+  const activeTask: ITask | undefined = useAppSelector(state =>
+    activeTaskId ? selectTaskById(state, activeTaskId) : undefined
   )
 
-  const saveTask = useCallback(
-    async (task: ITaskCreatePayload) => {
-      return await dispatch(createTaskThunk(task)).unwrap()
-    },
-    [dispatch]
-  )
+  const {
+    data: tasks = [],
+    isLoading: fetching,
+    isError: fetchError,
+    refetch,
+  } = useFetchTasksQuery()
 
-  const updateTask = useCallback(
-    async (task: ITaskUpdatePayload) => {
-      return await dispatch(updateTaskThunk(task)).unwrap()
-    },
-    [dispatch]
-  )
+  const [createTask, { isLoading: creating, error: createError }] = useCreateTaskMutation()
+  const [updateTask, { isLoading: updating, error: updateError }] = useUpdateTaskMutation()
+  const [deleteTask, { isLoading: deleting, error: deleteError }] = useDeleteTaskMutation()
 
-  const deleteTask = useCallback(
-    async (id: TaskId) => {
-      return await dispatch(deleteTaskThunk(id)).unwrap()
-    },
-    [dispatch]
-  )
+  const errorMessage = useMemo(() => {
+    return getErrorMessage(fetchError ?? createError ?? updateError ?? deleteError)
+  }, [fetchError, createError, updateError, deleteError])
 
-  const resetActiveTask = useCallback(() => {
-    dispatch(onResetActiveTask())
-  }, [dispatch])
-
-  const clearBackendErrorMessage = useCallback(() => {
-    dispatch(onClearBackendErrorMessage())
+  const setActiveTask = useCallback((task: ITask) => dispatch(setActiveTaskId(task.id)), [dispatch])
+  const clearActiveTask = useCallback(() => {
+    dispatch(setActiveTaskId(undefined))
   }, [dispatch])
 
   return {
-    //* Properties
+    // STATE
     activeTask,
+    setActiveTask,
+    clearActiveTask,
+    // Datos y flags RTKQ
     tasks,
-    loading,
-    backendErrorMessage,
-    //* Methods
-    // THUNKS
-    fetchTasks,
-    fetchTaskById,
-    saveTask,
+    fetching,
+    creating,
+    updating,
+    deleting,
+    errorMessage,
+    refetch,
+    // Mutations RTKQ
+    createTask,
     updateTask,
     deleteTask,
-    // STATE
-    resetActiveTask,
-    clearBackendErrorMessage,
   }
 }

@@ -3,7 +3,8 @@ export interface IUser {
   firstName: string
   lastName: string
   email: string
-  contacts: User[]
+  profileImage: string
+  contacts: IUser[]
 }
 
 export type UserId = Pick<IUser, 'id'>

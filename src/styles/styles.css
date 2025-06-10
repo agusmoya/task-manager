@@ -1,5 +1,5 @@
-@import "./variables.css";
-@import "./buttons.css";
+@import './variables.css';
+@import './buttons.css';
 
 /*========== BASE (reset) ==========*/
 html {
@@ -29,8 +29,13 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px var(--color-surface-variant) inset !important;
   box-shadow: 0 0 0 1000px var(--color-surface-variant) inset !important;
   -webkit-text-fill-color: var(--color-on-surface) !important;
-  transition: background-color 9999s ease-in-out, color 9999s ease-in-out !important;
-  transition: background-color 6000s, color 6000s, box-shadow 6000s;
+  transition:
+    background-color 9999s ease-in-out,
+    color 9999s ease-in-out !important;
+  transition:
+    background-color 6000s,
+    color 6000s,
+    box-shadow 6000s;
 }
 
 /* Firefox */
@@ -247,7 +252,7 @@ ol {
     gap: var(--spacing-4);
   }
 
-  .calendar {
+  .calendar-layout {
     display: flex;
     flex-direction: row;
   }

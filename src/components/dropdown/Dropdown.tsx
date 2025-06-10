@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { useAuthActions } from '../../store/hooks/useAuthActionsRTK'
+import { useAuthActions } from '../../store/hooks/useAuthActions'
 
 import './Dropdown.css'
 

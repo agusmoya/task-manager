@@ -1,12 +1,12 @@
 import { baseApi } from './baseApi'
 
-import { ICategory } from '../../types/category'
+import { ICategory } from '../types/category'
 
-export const categoryApi = baseApi.injectEndpoints({
+export const categoriesApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     fetchCategories: builder.query<ICategory[], void>({
       query: () => ({ url: '/categories', method: 'GET' }),
-      providesTags: ['Category'],
+      providesTags: [{ type: 'Category', id: 'LIST' }],
     }),
     createCategory: builder.mutation({
       query: newCategory => ({
@@ -40,4 +40,4 @@ export const {
   useCreateCategoryMutation,
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
-} = categoryApi
+} = categoriesApi

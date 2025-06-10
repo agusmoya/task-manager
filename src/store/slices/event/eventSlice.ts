@@ -1,64 +1,71 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createEntityAdapter, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+import { eventsApi } from '../../../services/eventsApi'
+
+import { RootState } from '../../store'
 
 import { type IEvent } from '../../../types/event'
 
-import { fetchEventsByUserIdThunk } from './eventThunks'
+const eventsAdapter = createEntityAdapter<IEvent>({
+  sortComparer: (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime(),
+})
 
-export interface EventState {
-  activeEvent: IEvent | null
-  events: IEvent[]
-  loading: boolean
-  backendErrorMessage: string | undefined
+export interface IEventState {
+  activeEventId?: string
 }
 
-const initialState: EventState = {
-  activeEvent: null,
-  events: [],
-  loading: false,
-  backendErrorMessage: undefined,
-}
+const initialState = eventsAdapter.getInitialState<IEventState>({
+  activeEventId: undefined,
+})
 
 export const eventSlice = createSlice({
   name: 'event',
   initialState,
   reducers: {
-    onSetActiveEventState: (state, { payload }: PayloadAction<IEvent>) => {
-      state.activeEvent = payload
+    setActiveEventId: (state, { payload }: PayloadAction<string>) => {
+      state.activeEventId = payload
     },
-    onAddEvent: (state, { payload }: PayloadAction<IEvent>) => {
-      state.events.push(payload)
-    },
-    onUpdateEvent: (state, { payload }: PayloadAction<IEvent>) => {
-      state.events = state.events.map(evt => (evt.id === payload.id ? payload : evt))
-    },
-    onDeleteEvent: (state, { payload }: PayloadAction<string>) => {
-      state.events = state.events.filter(event => event.id !== payload)
-    },
-    onClearBackendErrorMessage: state => {
-      state.backendErrorMessage = undefined
+    resetActiveEventId: state => {
+      state.activeEventId = undefined
     },
   },
-  extraReducers(builder) {
+  extraReducers: builder => {
     builder
-      .addCase(fetchEventsByUserIdThunk.pending, state => {
-        state.loading = true
-        state.backendErrorMessage = undefined
+      .addMatcher(eventsApi.endpoints.fetchEventsByUser.matchFulfilled, (state, { payload }) => {
+        eventsAdapter.setAll(state, payload)
       })
-      .addCase(fetchEventsByUserIdThunk.fulfilled, (state, { payload }) => {
-        state.events = payload
-        state.loading = false
+      .addMatcher(eventsApi.endpoints.createEvent.matchFulfilled, (state, { payload }) => {
+        eventsAdapter.upsertOne(state, payload)
       })
-      .addCase(fetchEventsByUserIdThunk.rejected, (state, { payload }) => {
-        state.loading = false
-        state.backendErrorMessage = payload
+      .addMatcher(eventsApi.endpoints.updateEvent.matchFulfilled, (state, { payload }) => {
+        eventsAdapter.upsertOne(state, payload)
+      })
+      .addMatcher(eventsApi.endpoints.deleteEvent.matchFulfilled, (state, { payload: { id } }) => {
+        eventsAdapter.removeOne(state, id)
+        if (state.activeEventId === id) state.activeEventId = undefined
       })
   },
 })
 
+export const { setActiveEventId, resetActiveEventId } = eventSlice.actions
+
 export const {
-  onSetActiveEventState,
-  onAddEvent,
-  onUpdateEvent,
-  onDeleteEvent,
-  onClearBackendErrorMessage,
-} = eventSlice.actions
+  selectAll: selectAllEvents,
+  selectById: selectEventById,
+  selectIds: selectEventIds,
+} = eventsAdapter.getSelectors<RootState>(state => state.event)
+
+export const selectEventsByDate = (date: Date) =>
+  createSelector(selectAllEvents, events =>
+    events.filter(evt => {
+      const startDate = new Date(evt.start)
+      return (
+        startDate.getFullYear() === date.getFullYear() &&
+        startDate.getMonth() === date.getMonth() &&
+        startDate.getDate() === date.getDate()
+      )
+    })
+  )
+
+export const selectEventsByTaskId = (taskId: string) =>
+  createSelector(selectAllEvents, events => events.filter(evt => evt.taskId === taskId))
