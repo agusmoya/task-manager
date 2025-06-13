@@ -1,7 +1,8 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit'
 
 import { AUTH_STATUS } from '../../../auth/constants/status'
-import { IBasicUserDto } from '../../../types/dtos/auth-response'
+
+import { IBasicUserDto } from '../../../types/dtos/user'
 
 import { authApi } from '../../../services/authApi'
 
@@ -17,6 +18,8 @@ const initialState: AuthState = {
   accessToken: undefined,
 }
 
+const { login, register, refresh } = authApi.endpoints
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -24,11 +27,7 @@ export const authSlice = createSlice({
   extraReducers: builder => {
     builder
       .addMatcher(
-        isAnyOf(
-          authApi.endpoints.login.matchFulfilled,
-          authApi.endpoints.register.matchFulfilled,
-          authApi.endpoints.refresh.matchFulfilled
-        ),
+        isAnyOf(login.matchFulfilled, register.matchFulfilled, refresh.matchFulfilled),
         (state, { payload }) => {
           state.user = payload.user
           state.accessToken = payload.accessToken

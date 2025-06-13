@@ -16,6 +16,8 @@ const initialState = tasksAdapter.getInitialState<ITaskState>({
   activeTaskId: undefined,
 })
 
+const { fetchTasks, createTask, updateTask, deleteTask } = tasksApi.endpoints
+
 export const taskSlice = createSlice({
   name: 'task',
   initialState,
@@ -26,18 +28,19 @@ export const taskSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addMatcher(tasksApi.endpoints.fetchTasks.matchFulfilled, (state, { payload }) => {
+      .addMatcher(fetchTasks.matchFulfilled, (state, { payload }) => {
         tasksAdapter.setAll(state, payload)
       })
-      .addMatcher(tasksApi.endpoints.createTask.matchFulfilled, (state, { payload }) => {
+      .addMatcher(createTask.matchFulfilled, (state, { payload }) => {
         tasksAdapter.upsertOne(state, payload)
       })
-      .addMatcher(tasksApi.endpoints.updateTask.matchFulfilled, (state, { payload }) => {
+      .addMatcher(updateTask.matchFulfilled, (state, { payload }) => {
         tasksAdapter.upsertOne(state, payload)
       })
-      .addMatcher(tasksApi.endpoints.deleteTask.matchFulfilled, (state, { payload: { id } }) => {
-        tasksAdapter.removeOne(state, id)
-        if (state.activeTaskId === id) state.activeTaskId = undefined
+      .addMatcher(deleteTask.matchFulfilled, (state, action) => {
+        const deletedId = action.meta.arg.originalArgs
+        tasksAdapter.removeOne(state, deletedId)
+        if (state.activeTaskId === deletedId) state.activeTaskId = undefined
       })
   },
 })

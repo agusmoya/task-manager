@@ -35,22 +35,19 @@ import './TaskFormPage.css'
 
 const TaskFormPage = () => {
   const navigate = useNavigate()
+  const { id } = useParams<{ id: string }>()
   const location = useLocation()
   const openEventIdFromState = (location.state as { openEventId?: string })?.openEventId
-  const { id } = useParams<{ id: string }>()
 
-  const {
-    data: task,
-    isLoading: loadingTask,
-    isError: fetchTaskError,
-  } = useFetchTaskByIdQuery(id!, { skip: !id })
+  const { data: task, isLoading: loadingTask } = useFetchTaskByIdQuery(id!, { skip: !id })
 
   const {
     createTask,
-    updateTask,
     creating: creatingTask,
+    updateTask,
     updating: updatingTask,
-    errorMessage: taskError,
+    createTaskError,
+    updateTaskError,
   } = useTaskActions()
 
   const [editingEvent, setEditingEvent] = useState<IEventLocal | null>(null)
@@ -60,7 +57,8 @@ const TaskFormPage = () => {
     categories,
     fetching: fetchingCat,
     creating: creatingCat,
-    errorMessage: categoryError,
+    createCategoryError,
+    updateCategoryError,
     createCategory,
   } = useCategoryActions()
 
@@ -80,14 +78,6 @@ const TaskFormPage = () => {
   } = useForm<ITaskForm>(taskFormFields, taskFormValidations)
 
   const categorySuggestions = useMemo(() => categories.map(cat => cat.name), [categories])
-
-  // Load initial data and clear form inputs when component unmount
-  // useEffect(() => {
-  //   return () => {
-  //     onResetForm()
-  //   }
-
-  // }, [])
 
   // If we are editing, transform each IEvent (from backend) to IEventLocal
   useEffect(() => {
@@ -159,7 +149,7 @@ const TaskFormPage = () => {
   }
 
   const handleCreateNewCategory = async (name: string) => {
-    const newCat = await createCategory(name)
+    const newCat = await createCategory({ name }).unwrap()
     if (newCat) {
       onCustomChange('category', newCat.name)
     }
@@ -171,31 +161,34 @@ const TaskFormPage = () => {
 
     let result = null
     if (id) {
-      const payload = mapTaskFormToUpdatePayload(id, formState, categories)
-      result = await updateTask(payload)
+      const payloadEdit = mapTaskFormToUpdatePayload(id, formState, categories)
+      result = await updateTask(payloadEdit)
+      console.log(result)
     } else {
-      const payload = mapTaskFormToCreatePayload(formState, categories)
-      result = await createTask(payload)
+      const payloadSave = mapTaskFormToCreatePayload(formState, categories)
+      result = await createTask(payloadSave)
     }
 
-    if (result) {
-      onResetForm()
-      navigate('/')
+    if (result && !result.error) {
+      return navigate('/home', { replace: true })
     }
   }
 
-  // If we are editing and the active task is not yet ready, show the loader
   if (id && loadingTask) return <Loader />
 
   return (
     <section className="task-form-wrapper section container">
       <h1 className="task__form-title">{id ? 'Edit ' : 'Create '} task</h1>
 
-      <p className="form__error">{taskError || fetchTaskError}</p>
+      <p className="form__error">
+        {createCategoryError?.message ||
+          updateCategoryError?.message ||
+          createTaskError?.message ||
+          updateTaskError?.message}
+      </p>
 
       <form className="task__form" onSubmit={handleTaskSubmit}>
         <Input
-          id="title"
           type="text"
           name="title"
           label="Title"
@@ -203,26 +196,30 @@ const TaskFormPage = () => {
           placeholder=""
           value={title}
           autoComplete="off"
-          error={titleValid}
-          fieldValid={!!titleValid}
+          error={
+            titleValid ??
+            createTaskError?.fieldsValidations?.title ??
+            updateTaskError?.fieldsValidations?.title
+          }
           touched={touchedFields.title}
           onChange={onInputChange}
           onBlur={() => onBlurField('title')}
         />
 
         <InputWithSuggestions
-          id="category"
           name="category"
           label="Category"
           value={category}
           hint="Develop, UX, UI."
-          error={categoryValid}
-          fieldValid={!!categoryValid}
+          error={
+            categoryValid ??
+            createCategoryError?.fieldsValidations?.name ??
+            updateTaskError?.fieldsValidations?.name
+          }
           touched={touchedFields.category}
           allowCreateIfNotExists
           suggestionData={categorySuggestions}
           onCreateNew={handleCreateNewCategory}
-          backendError={categoryError}
           loading={fetchingCat}
           onChange={onInputChange}
           onBlur={() => onBlurField('category')}

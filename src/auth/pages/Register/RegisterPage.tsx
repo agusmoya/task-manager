@@ -47,7 +47,6 @@ const RegisterPage = () => {
       <form className="register__form" onSubmit={handleRegisterSubmit}>
         <div className="register__group">
           <Input
-            id="firstName"
             required
             type="text"
             name="firstName"
@@ -56,7 +55,6 @@ const RegisterPage = () => {
             value={firstName}
             autoComplete="given-name"
             error={firstNameValid}
-            fieldValid={!!firstNameValid}
             touched={touchedFields.firstName}
             finalStateIcon={CardIdIcon}
             onChange={onInputChange}
@@ -64,7 +62,6 @@ const RegisterPage = () => {
           />
 
           <Input
-            id="lastName"
             required
             type="text"
             name="lastName"
@@ -73,7 +70,6 @@ const RegisterPage = () => {
             value={lastName}
             autoComplete="family-name"
             error={lastNameValid}
-            fieldValid={!!lastNameValid}
             touched={touchedFields.lastName}
             finalStateIcon={CardIdIcon}
             onChange={onInputChange}
@@ -82,7 +78,6 @@ const RegisterPage = () => {
         </div>
 
         <Input
-          id="email"
           required
           type="email"
           name="email"
@@ -92,7 +87,6 @@ const RegisterPage = () => {
           autoComplete="off"
           hint="user@mail.com"
           error={emailValid}
-          fieldValid={!!emailValid}
           touched={touchedFields.email}
           finalStateIcon={EmailIcon}
           onChange={onInputChange}
@@ -100,7 +94,6 @@ const RegisterPage = () => {
         />
 
         <Input
-          id="password"
           required
           type="password"
           name="password"
@@ -109,7 +102,6 @@ const RegisterPage = () => {
           value={password}
           autoComplete="new-password"
           error={passwordValid}
-          fieldValid={!!passwordValid}
           touched={touchedFields.password}
           initialStateIcon={EyeIcon}
           finalStateIcon={EyeOffIcon}

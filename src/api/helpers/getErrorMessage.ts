@@ -1,48 +1,81 @@
-import type { FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
-import type { SerializedError } from '@reduxjs/toolkit'
-import axios, { AxiosError } from 'axios'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import { SerializedError } from '@reduxjs/toolkit'
+import { ApiResponseBody } from '../types/response'
 
-import type { ApiResponse } from '../types/response.d'
+export enum OperationError {
+  FETCH_BY_ID = 'fetchById',
+  FETCH = 'fetch',
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete',
+}
 
-type RTKError = FetchBaseQueryError | SerializedError
+export type RTKQueryError = FetchBaseQueryError | SerializedError | undefined
 
-export function getErrorMessage(error: unknown): string {
-  if (!error) return ''
+export interface ParsedError {
+  message: string
+  fieldsValidations?: Record<string, string>
+}
 
-  // 1️⃣ AxiosError
-  if (axios.isAxiosError(error)) {
-    const axiosErr = error as AxiosError<ApiResponse<unknown>>
-    return axiosErr.response?.data?.message ?? axiosErr.message
+const isFetchBaseQueryError = (rtkqError: RTKQueryError): FetchBaseQueryError | undefined => {
+  if (typeof rtkqError === 'object' && 'status' in rtkqError) {
+    return rtkqError
   }
+  return
+}
 
-  // 2️⃣ Si no es un objeto, devolvemos string directo
-  if (typeof error !== 'object') {
-    return String(error)
-  }
+/**
+ * Devuelve un ParsedError distinto según la operación:
+ * - FETCH/DELETE: solo message
+ * - CREATE/UPDATE: message + fieldsValidations
+ */
+function parseError(operation: OperationError, error: RTKQueryError): ParsedError {
+  if (!error) return { message: '' }
 
-  // A partir de aquí error es objeto y no null
-  const rtkErr = error as RTKError
+  // console.log({ operation, error })
 
-  // 3️⃣ FetchBaseQueryError (RTK Query)
-  if ('status' in rtkErr) {
-    const data = (rtkErr as FetchBaseQueryError).data
-    // a) backend envía { message }
-    if (data && typeof data === 'object' && 'message' in data) {
-      return (data as { message: string }).message
+  if (isFetchBaseQueryError(error)) {
+    const fbqError = error as FetchBaseQueryError
+    const body = fbqError.data as ApiResponseBody
+
+    const fieldsErrors: Record<string, string> = {}
+    if (body.errors) {
+      for (const [field, detail] of Object.entries(body.errors)) {
+        fieldsErrors[field] = detail.msg
+      }
     }
-    // b) backend envía string
-    if (typeof data === 'string') {
-      return data
+
+    if (operation === OperationError.CREATE || operation === OperationError.UPDATE) {
+      return {
+        message: body.message,
+        fieldsValidations: fieldsErrors,
+      }
     }
-    // c) fallback al código de estado
-    return `Error ${rtkErr.status}`
+    // FETCH_BY_ID, FETCH, DELETE
+    return { message: body.message }
   }
+  // or SerializedError
+  const szdError = error as SerializedError
+  return { message: szdError.message ?? '' }
+}
 
-  // 4️⃣ SerializedError (createAsyncThunk, etc)
-  if ('message' in rtkErr && typeof rtkErr.message === 'string') {
-    return rtkErr.message
-  }
+interface WrapperError {
+  operation: OperationError
+  error: RTKQueryError
+}
 
-  // 5️⃣ Cualquier otro objeto
-  return JSON.stringify(error) || 'Unexpected error'
+export function getErrorMessage(errors: WrapperError[]): Record<OperationError, ParsedError> {
+  const errorsResult = errors?.reduce<Record<OperationError, ParsedError>>(
+    (acc, { operation, error }) => {
+      const { message, fieldsValidations } = parseError(operation, error)
+      const hasFields = fieldsValidations && Object.keys(fieldsValidations).length > 0
+      const hasMsg = message !== ''
+      if (hasMsg || hasFields) {
+        acc[operation] = { message, fieldsValidations }
+      }
+      return acc
+    },
+    {} as Record<OperationError, ParsedError>
+  )
+  return errorsResult
 }

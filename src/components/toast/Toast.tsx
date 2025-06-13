@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 
+import { TOAST_STATUS } from '../../types/toast.d'
+
 import { CheckIcon, ErrorIcon } from '../icons/Icons'
 
 import { useToastActions } from '../../store/hooks/useToastActions'
@@ -10,33 +12,33 @@ export const ToastContainer = () => {
   const { toasts, removeToast } = useToastActions()
 
   useEffect(() => {
-    const timers: ReturnType<typeof setTimeout>[] = []
+    const timers: number[] = []
     toasts.forEach(({ id, status, duration }) => {
-      if (status !== 'loading') {
+      if (status !== TOAST_STATUS.LOADING) {
         const timeout = setTimeout(() => removeToast(id), duration)
         timers.push(timeout)
       }
     })
     return () => timers.forEach(clearTimeout)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [toasts])
+  }, [toasts, removeToast])
 
   return (
     <div className="toast-container">
       {toasts.map(toast => (
         <div key={toast.id} className={`toast ${toast.status}`}>
-          {toast.status === 'loading' && <span className="loader" />}
-          {toast.status === 'success' && (
+          {toast.status === TOAST_STATUS.LOADING && <span className="loader" />}
+          {toast.status === TOAST_STATUS.SUCCESS && (
             <span className="icon success">
-              <CheckIcon />
+              <CheckIcon color="green" />
             </span>
           )}
-          {toast.status === 'error' && (
+          {toast.status === TOAST_STATUS.ERROR && (
             <span className="icon error">
-              <ErrorIcon />
+              <ErrorIcon color="red" />
             </span>
           )}
           <span>{toast.message}</span>
+          <span className="toast-progress" style={{ animationDuration: `${toast.duration}ms` }} />
         </div>
       ))}
     </div>

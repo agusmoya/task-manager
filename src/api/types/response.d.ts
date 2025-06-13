@@ -1,16 +1,20 @@
-/**
- * Tipado de la respuesta unificada que devuelve el backend vía toHandler:
- */
-export interface ApiResponse<T> {
-  ok: boolean // true si 2xx, false si error
-  status: number // código HTTP
-  data?: T // payload en caso de éxito
-  message?: string // opcional, p.ej. en errores
-  //error?: string // opcional, detalles de error
+export interface ApiResponse {
+  status: number
+  data: ApiResponseBody
 }
 
-export interface HandledApiError {
-  status: number
+export interface ApiResponseBody {
+  ok: boolean // true if 2xx, false otherwise
   message: string
-  validationErrors?: ValidationErrorPayload[]
+  errors?: ValidationErrors
 }
+
+interface FieldErrorDetail {
+  location: string
+  msg: string
+  path: string
+  type: string
+  value: string
+}
+
+export type ValidationErrors = Record<string, FieldErrorDetail>

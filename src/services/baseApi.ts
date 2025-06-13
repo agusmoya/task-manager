@@ -8,8 +8,8 @@ import {
 } from '@reduxjs/toolkit/query/react'
 
 import type { RootState } from '../store/store'
-import { IAuthResponse } from '../types/dtos/auth-response'
 import { authApi } from './authApi'
+import { IAuthResponseDto } from '../types/dtos/register'
 
 const baseQuery = fetchBaseQuery({
   credentials: 'include', // for HttpOnly cookies (refresh service)
@@ -36,7 +36,10 @@ export const baseQueryWithReauth: BaseQueryFn<
       api,
       extraOptions
     )
-    const refreshResult = rawRefreshResult as QueryReturnValue<IAuthResponse, FetchBaseQueryError>
+    const refreshResult = rawRefreshResult as QueryReturnValue<
+      IAuthResponseDto,
+      FetchBaseQueryError
+    >
     if (refreshResult.data) {
       // 3️⃣ Guardamos credenciales y reintentamos original
       await api.dispatch(authApi.endpoints.refresh.initiate()).unwrap()

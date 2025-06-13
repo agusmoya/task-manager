@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useId, useState } from 'react'
 
 import './MultiSelectInput.css'
 
@@ -6,8 +6,8 @@ interface MultiSelectProps<T> {
   label: string
   options: T[]
   selectedOptions: T[]
-  fieldValid?: string | null
   touched: boolean
+  error?: string
   getOptionLabel: (item: T) => string
   getOptionKey: (item: T) => string
   onAddItem: (item: T) => void
@@ -18,14 +18,24 @@ export function MultiSelectInput<T>({
   label,
   options,
   selectedOptions,
-  fieldValid,
   touched = false,
+  error = undefined,
   getOptionLabel,
   getOptionKey,
   onAddItem,
   onRemoveItem,
 }: MultiSelectProps<T>) {
   const [searchTerm, setSearchTerm] = useState('')
+  const inputId = useId()
+  const labelId = `${inputId}-label`
+  const errorId = `${inputId}-error`
+  const hasError = touched && !!error
+
+  const addedOptions = selectedOptions ?? []
+
+  const filteredOptions = options
+    .filter(op => !selectedOptions.some(sop => getOptionKey(sop) === getOptionKey(op)))
+    .filter(op => getOptionLabel(op).toLowerCase().includes(searchTerm.toLowerCase()))
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLLIElement>, item: T) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -34,16 +44,10 @@ export function MultiSelectInput<T>({
     }
   }
 
-  const addedOptions = selectedOptions ?? []
-
-  const filteredOptions = options
-    .filter(op => !selectedOptions.some(sop => getOptionKey(sop) === getOptionKey(op)))
-    .filter(op => getOptionLabel(op).toLowerCase().includes(searchTerm.toLowerCase()))
-
   return (
-    <div className="multi-select" role="group" aria-labelledby={`${label}-label`}>
-      <label htmlFor={`${label}-search-label`} className="multi-select-label">
-        Participants:
+    <div className="multi-select" role="group" aria-labelledby={labelId}>
+      <label id={labelId} htmlFor={inputId} className="multi-select-label">
+        {label}:
       </label>
 
       <ul className="multi-select-selected" aria-live="polite">
@@ -62,18 +66,20 @@ export function MultiSelectInput<T>({
             </li>
           ))
         ) : (
-          <li className="multi-select-chip--none">No {label?.toLocaleLowerCase()} selected</li>
+          <li className="multi-select-chip--none">No {label.toLocaleLowerCase()} selected</li>
         )}
       </ul>
 
       <input
-        id={`${label}-search-label`}
+        id={inputId}
         type="text"
         placeholder="Search..."
         value={searchTerm}
         onChange={e => setSearchTerm(e.target.value)}
         className="multi-select-search"
         aria-label={`Search ${label}`}
+        aria-describedby={hasError ? errorId : undefined}
+        aria-invalid={hasError}
       />
 
       <ul className="multi-select-options" role="listbox" aria-label={`Available ${label}`}>
@@ -99,9 +105,9 @@ export function MultiSelectInput<T>({
       </ul>
 
       <div className="multi-select-input__feedback">
-        {fieldValid && touched && (
-          <span id={`${label}-error`} className="multi-select-input__error-message">
-            {fieldValid}
+        {hasError && (
+          <span id={errorId} className="multi-select-input__error-message" role="alert">
+            {error}
           </span>
         )}
       </div>

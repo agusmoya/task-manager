@@ -1,18 +1,16 @@
 import { baseApi } from './baseApi'
 
-import { IEvent, IEventCreatePayload, IEventUpdatePayload } from '../types/event'
+import { IEvent } from '../types/event'
+import { IEventCreatePayload, IEventUpdatePayload } from '../types/dtos/event'
 
 export const eventsApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     fetchEventsByUser: builder.query<IEvent[], void>({
       query: () => '/events/by-user',
-      providesTags: result =>
-        result
-          ? [
-              { type: 'Event', id: 'LIST' },
-              ...result.map(evt => ({ type: 'Event' as const, id: evt.id })),
-            ]
-          : [{ type: 'Event', id: 'LIST' }],
+      providesTags: (result = []) => [
+        { type: 'Event', id: 'LIST' },
+        ...result.map(evt => ({ type: 'Event' as const, id: evt.id })),
+      ],
     }),
     createEvent: builder.mutation<IEvent, IEventCreatePayload>({
       query: newEvent => ({

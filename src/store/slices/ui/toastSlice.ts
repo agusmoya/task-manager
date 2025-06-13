@@ -1,5 +1,6 @@
 import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit'
-import { type ToastStatus } from '../../../types/toast.d'
+
+import { TOAST_STATUS, type ToastStatus } from '../../../types/toast.d'
 
 export interface Toast {
   id: string
@@ -13,7 +14,7 @@ interface ToastState {
 }
 
 const initialState: ToastState = {
-  toasts: []
+  toasts: [],
 }
 
 export const toastSlice = createSlice({
@@ -21,21 +22,23 @@ export const toastSlice = createSlice({
   initialState,
   reducers: {
     onShowToast: {
+      prepare: (
+        message: string,
+        status: ToastStatus = TOAST_STATUS.LOADING,
+        duration: number = 3000
+      ): { payload: Toast } => ({
+        payload: {
+          id: nanoid(),
+          message,
+          status,
+          duration,
+        },
+      }),
       reducer: (state, { payload }: PayloadAction<Toast>) => {
         state.toasts.push(payload)
       },
-      prepare: (message: string, status: ToastStatus = 'loading', duration = 3000) => {
-        return {
-          payload: {
-            id: nanoid(),
-            message,
-            status,
-            duration
-          }
-        }
-      }
     },
-    onUpdateToastStatus: (state, { payload }: PayloadAction<{ id: string, message: string, status: ToastStatus }>) => {
+    onUpdateToastStatus: (state, { payload }: PayloadAction<Toast>) => {
       const toast = state.toasts.find(t => t.id === payload.id)
       if (toast) {
         toast.status = payload.status
@@ -44,8 +47,8 @@ export const toastSlice = createSlice({
     },
     onRemoveToast: (state, { payload }: PayloadAction<string>) => {
       state.toasts = state.toasts.filter(t => t.id !== payload)
-    }
-  }
+    },
+  },
 })
 
 export const { onShowToast, onUpdateToastStatus, onRemoveToast } = toastSlice.actions

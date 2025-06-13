@@ -1,8 +1,9 @@
-import type { ITaskCreatePayload, ITaskForm, ITaskUpdatePayload } from '../../types/task'
-
-import { FormValidations } from '../../hooks/useForm'
+import type { ITaskForm } from '../../types/task'
+import { ITaskCreatePayload, ITaskUpdatePayload } from '../../types/dtos/task'
 import { ICategory } from '../../types/category'
 import { IEventForm, IEventLocal } from '../../types/event'
+
+import { FormValidations } from '../../hooks/useForm'
 
 export const taskFormFields: ITaskForm = {
   title: '',

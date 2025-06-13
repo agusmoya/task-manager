@@ -18,6 +18,8 @@ const initialState = eventsAdapter.getInitialState<IEventState>({
   activeEventId: undefined,
 })
 
+const { fetchEventsByUser, createEvent, updateEvent, deleteEvent } = eventsApi.endpoints
+
 export const eventSlice = createSlice({
   name: 'event',
   initialState,
@@ -31,18 +33,19 @@ export const eventSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addMatcher(eventsApi.endpoints.fetchEventsByUser.matchFulfilled, (state, { payload }) => {
+      .addMatcher(fetchEventsByUser.matchFulfilled, (state, { payload }) => {
         eventsAdapter.setAll(state, payload)
       })
-      .addMatcher(eventsApi.endpoints.createEvent.matchFulfilled, (state, { payload }) => {
+      .addMatcher(createEvent.matchFulfilled, (state, { payload }) => {
         eventsAdapter.upsertOne(state, payload)
       })
-      .addMatcher(eventsApi.endpoints.updateEvent.matchFulfilled, (state, { payload }) => {
+      .addMatcher(updateEvent.matchFulfilled, (state, { payload }) => {
         eventsAdapter.upsertOne(state, payload)
       })
-      .addMatcher(eventsApi.endpoints.deleteEvent.matchFulfilled, (state, { payload: { id } }) => {
-        eventsAdapter.removeOne(state, id)
-        if (state.activeEventId === id) state.activeEventId = undefined
+      .addMatcher(deleteEvent.matchFulfilled, (state, action) => {
+        const deletedId = action.meta.arg.originalArgs
+        eventsAdapter.removeOne(state, deletedId)
+        if (state.activeEventId === deletedId) state.activeEventId = undefined
       })
   },
 })

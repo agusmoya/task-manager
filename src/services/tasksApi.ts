@@ -6,7 +6,7 @@ import { ITask, TaskId } from '../types/task'
 export const tasksApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     fetchTasks: builder.query<ITask[], void>({
-      query: () => '/tasks',
+      query: () => ({ url: '/tasks', method: 'GET' }),
       providesTags: (result = []) => [
         { type: 'Task', id: 'LIST' },
         ...result.map(t => ({ type: 'Task' as const, id: t.id })),
@@ -27,7 +27,7 @@ export const tasksApi = baseApi.injectEndpoints({
     updateTask: builder.mutation<ITask, ITaskUpdatePayload>({
       query: task => ({
         url: `/tasks/${task.id}`,
-        method: 'PATCH',
+        method: 'PUT',
         body: task,
       }),
       invalidatesTags: (_result, _error, arg) => [

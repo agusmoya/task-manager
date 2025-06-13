@@ -27,15 +27,6 @@ interface IEventLocal extends IEventForm {
   id: string
 }
 
-export interface IEventCreatePayload extends IEventForm {
-  taskId: string
-}
-
-export interface IEventUpdatePayload extends IEventForm {
-  id: string
-  status: EventStatus
-}
-
 export interface IEvent {
   id: string
   title: string

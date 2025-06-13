@@ -4,9 +4,9 @@ import { baseApi } from '../services/baseApi'
 import { rootReducer } from './rootReducer'
 
 import { listenerMiddleware } from './listenerMiddleware'
-
 // Custom middlewares imports
-import './middleware/categoryToastMiddleware'
+import './middlewares/categoryToastMiddleware'
+import './middlewares/taskToastMiddleware'
 
 export const store = configureStore({
   reducer: rootReducer,

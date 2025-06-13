@@ -1,14 +1,18 @@
 import { baseApi } from './baseApi'
 
 import { ICategory } from '../types/category'
+import { ICategoryCreatePayload, ICategoryUpdatePayload } from '../types/dtos/category'
 
 export const categoriesApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     fetchCategories: builder.query<ICategory[], void>({
       query: () => ({ url: '/categories', method: 'GET' }),
-      providesTags: [{ type: 'Category', id: 'LIST' }],
+      providesTags: (result = []) => [
+        { type: 'Category', id: 'LIST' },
+        ...result.map(c => ({ type: 'Category' as const, id: c.id })),
+      ],
     }),
-    createCategory: builder.mutation({
+    createCategory: builder.mutation<ICategory, ICategoryCreatePayload>({
       query: newCategory => ({
         url: '/categories',
         method: 'POST',
@@ -16,7 +20,7 @@ export const categoriesApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Category'],
     }),
-    updateCategory: builder.mutation({
+    updateCategory: builder.mutation<ICategory, ICategoryUpdatePayload>({
       query: updatedCategory => ({
         url: `/categories/${updatedCategory.id}`,
         method: 'PUT',
@@ -24,7 +28,7 @@ export const categoriesApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Category'],
     }),
-    deleteCategory: builder.mutation({
+    deleteCategory: builder.mutation<void, string>({
       query: categoryId => ({
         url: `/categories/${categoryId}`,
         method: 'DELETE',

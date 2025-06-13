@@ -1,0 +1,79 @@
+import { tasksApi } from '../../services/tasksApi'
+import { registerToastFor } from './toastHelper'
+
+const { fetchTaskById, fetchTasks, createTask, updateTask, deleteTask } = tasksApi.endpoints
+
+const taskOperations = {
+  endpoints: {
+    matchPending: fetchTaskById.matchPending,
+    matchFulfilled: fetchTaskById.matchFulfilled,
+    matchRejected: fetchTaskById.matchRejected,
+  },
+  messages: {
+    loading: 'Loading task…',
+    success: 'Task loaded',
+    error: 'Error loading task',
+  },
+}
+
+const listTaskOperations = {
+  endpoints: {
+    matchPending: fetchTasks.matchPending,
+    matchFulfilled: fetchTasks.matchFulfilled,
+    matchRejected: fetchTasks.matchRejected,
+  },
+  messages: {
+    loading: 'Loading tasks…',
+    success: 'Tasks loaded',
+    error: 'Error loading tasks',
+  },
+}
+
+const createTaskOperations = {
+  endpoints: {
+    matchPending: createTask.matchPending,
+    matchFulfilled: createTask.matchFulfilled,
+    matchRejected: createTask.matchRejected,
+  },
+  messages: {
+    loading: 'Creating task…',
+    success: 'Task created',
+    error: 'Error creating task',
+  },
+}
+
+const updateTaskOperations = {
+  endpoints: {
+    matchPending: updateTask.matchPending,
+    matchFulfilled: updateTask.matchFulfilled,
+    matchRejected: updateTask.matchRejected,
+  },
+  messages: {
+    loading: 'Updating task…',
+    success: 'Task updated',
+    error: 'Error updating task',
+  },
+}
+
+const deleteTaskOperations = {
+  endpoints: {
+    matchPending: deleteTask.matchPending,
+    matchFulfilled: deleteTask.matchFulfilled,
+    matchRejected: deleteTask.matchRejected,
+  },
+  messages: {
+    loading: 'Deleting task…',
+    success: 'Task deleted',
+    error: 'Error deleting task',
+  },
+}
+
+const toastTaskOperations = [
+  taskOperations,
+  listTaskOperations,
+  createTaskOperations,
+  updateTaskOperations,
+  deleteTaskOperations,
+]
+
+toastTaskOperations.forEach(({ endpoints, messages }) => registerToastFor({ endpoints, messages }))

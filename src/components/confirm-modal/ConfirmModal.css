@@ -1,0 +1,19 @@
+.confirm-modal__message {
+  text-align: center;
+  margin: var(--spacing-3) 0;
+  font-size: var(--text-md);
+  color: var(--color-on-surface);
+}
+
+.confirm-modal__actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-8);
+}
+
+.confirm-modal__actions > .btn {
+  min-width: 5rem;
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: 0.5rem;
+}

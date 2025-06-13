@@ -1,7 +1,6 @@
 // import { Link } from "react-router-dom"
 
 // import { PlusIcon } from "../../../components/icons/Icons.tsx"
-import { useEffect } from 'react'
 
 import { ScrollableContainer } from '../scrollable-container/ScrollableContainer'
 
@@ -14,11 +13,7 @@ import './Categories.css'
 
 export function Categories() {
   const { search } = useSearch()
-  const { categories, refetch } = useCategoryActions()
-
-  useEffect(() => {
-    refetch()
-  }, [refetch])
+  const { categories } = useCategoryActions()
 
   const organizedCategories: { [key: string]: ICountingCategories } = {}
 

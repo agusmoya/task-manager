@@ -100,7 +100,6 @@ export const EventForm = ({ initialEvent, existingEvents, onAddEvent, onUpdateEv
     <>
       <form className="event__form" onSubmit={handleSubmit}>
         <Input
-          id="title"
           type="text"
           name="title"
           label="Title"
@@ -109,14 +108,12 @@ export const EventForm = ({ initialEvent, existingEvents, onAddEvent, onUpdateEv
           value={title}
           autoComplete="off"
           error={titleValid}
-          fieldValid={!!titleValid}
           touched={touchedFields.title}
           onChange={onInputChange}
           onBlur={() => onBlurField('title')}
         />
 
         <Input
-          id="start"
           type="datetime-local"
           name="start"
           label="Start date"
@@ -126,14 +123,12 @@ export const EventForm = ({ initialEvent, existingEvents, onAddEvent, onUpdateEv
           value={start}
           autoComplete="off"
           error={startValid}
-          fieldValid={!!startValid}
           touched={touchedFields.start}
           onChange={onInputChange}
           onBlur={() => onBlurField('start')}
         />
 
         <Input
-          id="end"
           type="datetime-local"
           name="end"
           label="End date"
@@ -143,7 +138,6 @@ export const EventForm = ({ initialEvent, existingEvents, onAddEvent, onUpdateEv
           value={end}
           autoComplete="off"
           error={endValid}
-          fieldValid={!!endValid}
           touched={touchedFields.end}
           onChange={onInputChange}
           onBlur={() => onBlurField('end')}

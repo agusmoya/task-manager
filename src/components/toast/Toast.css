@@ -1,7 +1,7 @@
 .toast-container {
   position: fixed;
-  top: 6rem;
-  right: 1rem;
+  bottom: 6rem;
+  left: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -17,8 +17,19 @@
   padding: 0.75rem 1rem;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  animation: slideIn 0.3s ease;
   min-width: 200px;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .toast.success {
@@ -52,13 +63,23 @@
   }
 }
 
-@keyframes slideIn {
+.toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background-color: currentColor;
+  animation-name: shrink;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  /* duration from insline style */
+}
+
+@keyframes shrink {
   from {
-    transform: translateX(50%);
-    opacity: 0;
+    width: 100%;
   }
   to {
-    transform: translateX(0);
-    opacity: 1;
+    width: 0%;
   }
 }

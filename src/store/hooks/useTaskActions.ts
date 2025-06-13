@@ -1,7 +1,6 @@
-import { useCallback, useMemo } from 'react'
 import { useAppDispatch, useAppSelector } from '../reduxStore'
 
-import type { ITask } from '../../types/task'
+import { ITask } from '../../types/task'
 
 import {
   useFetchTasksQuery,
@@ -12,7 +11,8 @@ import {
 
 import { setActiveTaskId, selectTaskById } from './../slices/task/taskSlice'
 
-import { getErrorMessage } from '../../api/helpers/getErrorMessage'
+import { getErrorMessage, OperationError } from '../../api/helpers/getErrorMessage'
+import { useMemo } from 'react'
 
 export const useTaskActions = () => {
   const dispatch = useAppDispatch()
@@ -21,42 +21,56 @@ export const useTaskActions = () => {
     activeTaskId ? selectTaskById(state, activeTaskId) : undefined
   )
 
+  const setActiveTask = (task: ITask) => dispatch(setActiveTaskId(task.id))
+  const clearActiveTask = () => dispatch(setActiveTaskId(undefined))
+
+  const { data: tasks = [], isLoading: fetching, error: fetchError, refetch } = useFetchTasksQuery()
+  const [createTask, { isSuccess: createSuccess, isLoading: creating, error: createError }] =
+    useCreateTaskMutation()
+  const [updateTask, { isSuccess: updateSuccess, isLoading: updating, error: updateError }] =
+    useUpdateTaskMutation()
+  const [deleteTask, { isSuccess: deleteSuccess, isLoading: deleting, error: deleteError }] =
+    useDeleteTaskMutation()
+
   const {
-    data: tasks = [],
-    isLoading: fetching,
-    isError: fetchError,
-    refetch,
-  } = useFetchTasksQuery()
-
-  const [createTask, { isLoading: creating, error: createError }] = useCreateTaskMutation()
-  const [updateTask, { isLoading: updating, error: updateError }] = useUpdateTaskMutation()
-  const [deleteTask, { isLoading: deleting, error: deleteError }] = useDeleteTaskMutation()
-
-  const errorMessage = useMemo(() => {
-    return getErrorMessage(fetchError ?? createError ?? updateError ?? deleteError)
-  }, [fetchError, createError, updateError, deleteError])
-
-  const setActiveTask = useCallback((task: ITask) => dispatch(setActiveTaskId(task.id)), [dispatch])
-  const clearActiveTask = useCallback(() => {
-    dispatch(setActiveTaskId(undefined))
-  }, [dispatch])
+    fetch: fetchTaskError,
+    create: createTaskError,
+    update: updateTaskError,
+    delete: deleteTaskError,
+  } = useMemo(
+    () =>
+      getErrorMessage([
+        { operation: OperationError.FETCH, error: fetchError },
+        { operation: OperationError.CREATE, error: createError },
+        { operation: OperationError.UPDATE, error: updateError },
+        { operation: OperationError.DELETE, error: deleteError },
+      ]),
+    [fetchError, createError, updateError, deleteError]
+  )
 
   return {
-    // STATE
+    // state
     activeTask,
     setActiveTask,
     clearActiveTask,
-    // Datos y flags RTKQ
+    // RTKQ Data and flags
     tasks,
     fetching,
     creating,
     updating,
     deleting,
-    errorMessage,
     refetch,
-    // Mutations RTKQ
+    // RTKQ mutations
     createTask,
+    createSuccess,
     updateTask,
+    updateSuccess,
     deleteTask,
+    deleteSuccess,
+    // RTKQ parsed errors
+    fetchTaskError,
+    createTaskError,
+    updateTaskError,
+    deleteTaskError,
   }
 }

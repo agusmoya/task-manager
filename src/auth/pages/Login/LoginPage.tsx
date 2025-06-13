@@ -42,7 +42,6 @@ const LoginPage = () => {
       <form className="login__form" onSubmit={handleLoginSubmit}>
         <div className="login__content">
           <Input
-            id="email"
             type="email"
             name="email"
             label="Email"
@@ -52,7 +51,6 @@ const LoginPage = () => {
             autoComplete="email"
             hint="user@mail.com"
             error={emailValid}
-            fieldValid={!!emailValid}
             touched={touchedFields.email}
             finalStateIcon={EmailIcon}
             onChange={onInputChange}
@@ -60,7 +58,6 @@ const LoginPage = () => {
           />
 
           <Input
-            id="password"
             type="password"
             name="password"
             label="Password"
@@ -69,7 +66,6 @@ const LoginPage = () => {
             value={password}
             autoComplete="current-password"
             error={passwordValid}
-            fieldValid={!!passwordValid}
             touched={touchedFields.password}
             initialStateIcon={EyeIcon}
             finalStateIcon={EyeOffIcon}
