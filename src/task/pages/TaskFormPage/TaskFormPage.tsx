@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
-import { Button } from '../../../components/button/button'
+import { Button } from '../../../components/button/Button'
 import { Input } from '../../../components/input/Input'
 import { Modal } from '../../../components/modal/Modal'
 import { InputWithSuggestions } from '../../../components/input-with-suggestions/InputWithSuggestions'
@@ -11,9 +11,9 @@ import { EventCardList } from '../../components/event-card-list/EventCardList'
 import { Loader } from '../../../components/loader-page/Loader'
 
 import { ModalIds } from '../../../constants/modalIds'
-import type { IUser } from '../../../types/user'
-import type { IEventLocal } from '../../../types/event'
-import type { ITaskForm } from '../../../types/task'
+import { IUser } from '../../../types/user'
+import { IEventLocal } from '../../../types/event'
+import { ITaskForm } from '../../../types/task'
 
 import {
   mapTaskFormToCreatePayload,
@@ -163,14 +163,13 @@ const TaskFormPage = () => {
     if (id) {
       const payloadEdit = mapTaskFormToUpdatePayload(id, formState, categories)
       result = await updateTask(payloadEdit)
-      console.log(result)
     } else {
       const payloadSave = mapTaskFormToCreatePayload(formState, categories)
       result = await createTask(payloadSave)
     }
 
-    if (result && !result.error) {
-      return navigate('/home', { replace: true })
+    if (!result?.error) {
+      navigate('/home', { replace: true })
     }
   }
 

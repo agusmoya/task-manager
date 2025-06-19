@@ -3,6 +3,10 @@ import { SerializedError } from '@reduxjs/toolkit'
 import { ApiResponseBody } from '../types/response'
 
 export enum OperationError {
+  LOGIN = 'login',
+  LOGOUT = 'logout',
+  REGISTER = 'register',
+  REFRESH = 'refresh',
   FETCH_BY_ID = 'fetchById',
   FETCH = 'fetch',
   CREATE = 'create',
@@ -25,36 +29,37 @@ const isFetchBaseQueryError = (rtkqError: RTKQueryError): FetchBaseQueryError | 
 }
 
 /**
- * Devuelve un ParsedError distinto según la operación:
+ * Return a different ParsedError depending on the operation:
  * - FETCH/DELETE: solo message
- * - CREATE/UPDATE: message + fieldsValidations
+ * - CREATE/UPDATE/LOGIN/REGISTER, etc: message + fieldsValidations
  */
 function parseError(operation: OperationError, error: RTKQueryError): ParsedError {
   if (!error) return { message: '' }
-
-  // console.log({ operation, error })
 
   if (isFetchBaseQueryError(error)) {
     const fbqError = error as FetchBaseQueryError
     const body = fbqError.data as ApiResponseBody
 
     const fieldsErrors: Record<string, string> = {}
-    if (body.errors) {
+    if (body?.errors) {
       for (const [field, detail] of Object.entries(body.errors)) {
         fieldsErrors[field] = detail.msg
       }
     }
 
-    if (operation === OperationError.CREATE || operation === OperationError.UPDATE) {
+    if (
+      operation === OperationError.CREATE ||
+      operation === OperationError.UPDATE ||
+      operation === OperationError.LOGIN ||
+      operation === OperationError.REGISTER
+    ) {
       return {
-        message: body.message,
+        message: body?.message,
         fieldsValidations: fieldsErrors,
       }
     }
-    // FETCH_BY_ID, FETCH, DELETE
-    return { message: body.message }
+    return { message: body?.message }
   }
-  // or SerializedError
   const szdError = error as SerializedError
   return { message: szdError.message ?? '' }
 }

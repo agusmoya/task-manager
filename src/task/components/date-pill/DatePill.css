@@ -6,23 +6,32 @@
   justify-content: space-evenly;
   height: 5.25rem;
   width: 2.75rem;
-}
-
-.pill:not(.pill--is-today):hover {
-  cursor: pointer;
-  outline: 2px solid var(--color-on-surface-variant);
   border-radius: 1.5rem;
 }
 
-.pill--is-today {
+.pill:hover {
+  outline: 2px dashed var(--color-on-surface);
+}
+
+.pill--today {
   color: var(--color-surface);
   background-color: var(--color-on-surface);
   border-radius: 1.5rem;
 }
 
 .pill__dot {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   background-color: var(--color-surface);
   border-radius: 50%;
+}
+
+.pill--selected {
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+  outline: 2px dashed var(--color-on-surface);
+}
+
+.pill--selected > .pill__dot {
+  background-color: var(--color-on-surface);
 }

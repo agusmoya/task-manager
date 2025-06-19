@@ -3,6 +3,7 @@
   --state-layer-focus-opacity: 0.12;
   --state-layer-pressed-opacity: 0.14;
   --state-layer-dragged-opacity: 0.16;
+  --state-layer-disabled-opacity: 0.38;
 }
 
 .btn {
@@ -18,7 +19,9 @@
   text-decoration: none;
   user-select: none;
   overflow: hidden;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .btn__state-layer {
@@ -30,7 +33,7 @@
   background-color: currentColor;
   opacity: 0;
   pointer-events: none;
-  /* transition: opacity 0.3s ease; */
+  transition: opacity 0.3s ease;
   border-radius: inherit;
 }
 
@@ -52,7 +55,7 @@
 }
 
 .btn:disabled {
-  opacity: 0.38;
+  opacity: var(--state-layer-disabled-opacity);
   cursor: not-allowed;
 }
 
@@ -105,4 +108,11 @@
 .btn--elevated:not(:disabled):active,
 .btn--fab:not(:disabled):active {
   scale: 0.98;
+}
+
+.btn__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-1);
 }

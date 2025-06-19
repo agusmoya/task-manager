@@ -6,7 +6,7 @@
 
   /* ========== FONT AND TYPOGRAPHY ========== */
   /*.5rem = 8px | 1rem = 16px ...*/
-  --body-font: "Roboto", sans-serif;
+  --body-font: 'Roboto', sans-serif;
   --biggest-font-size: 1.75rem;
 
   --h1-font-size: 1.25rem;
@@ -25,7 +25,7 @@
   /* ========== SPACING ========== */
 
   --spacing-20: 19rem;
-  --spacing-13: 5rem;
+  --spacing-13: 4rem;
   --spacing-12: 3rem;
   --spacing-11: 2.75rem;
   --spacing-10: 2.5rem;
@@ -34,7 +34,7 @@
   --spacing-7: 1.75rem;
   --spacing-6: 1.5rem;
   --spacing-5: 1.25rem;
-  --spacing-4: 1rem; /* 16px */
+  --spacing-4: 1rem;
   --spacing-3: 0.75rem;
   --spacing-2: 0.5rem;
   --spacing-1: 0.25rem;
@@ -106,7 +106,7 @@
 }
 
 /* --- DARK THEME --- */
-[data-theme="dark"] {
+[data-theme='dark'] {
   --color-surface-tint: hsl(243, 100%, 88%);
 
   --color-primary: hsl(243, 100%, 88%);

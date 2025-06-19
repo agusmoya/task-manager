@@ -2,7 +2,7 @@ import { EventCard } from '../event-card/EventCard'
 
 import { FabOpenModal } from '../../../components/fab-open-modal/FabOpenModal'
 
-import type { IEventLocal } from '../../../types/event'
+import { IEventLocal } from '../../../types/event'
 
 import './EventCardList.css'
 

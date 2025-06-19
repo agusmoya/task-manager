@@ -1,7 +1,7 @@
-import { type RefObject, useState, useEffect } from 'react'
+import { RefObject, useState, useEffect } from 'react'
 
 import { NextIcon, PreviousIcon } from '../icons/Icons'
-import { Button } from '../button/button'
+import { Button } from '../button/Button'
 
 import './FabArrow.css'
 

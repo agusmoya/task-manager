@@ -1,4 +1,6 @@
+import { Dayjs } from 'dayjs'
+
 export interface WeekDay {
-  date: string
+  date: Dayjs
   isToday: boolean
 }

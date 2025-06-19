@@ -1,4 +1,4 @@
-import { Button } from '../../../components/button/button'
+import { Button } from '../../../components/button/Button'
 import { ControlIcon, SearchIcon } from '../../../components/icons/Icons'
 
 import { useSearch } from '../../hooks/useSearch'

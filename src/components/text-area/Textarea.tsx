@@ -1,27 +1,24 @@
-import { type TextareaProps } from '../../types/text-area.d'
+import { TextareaProps } from '../../types/text-area.d'
 
 import './Textarea.css'
 
-
-export const Textarea = (
-  {
-    id,
-    required = false,
-    name,
-    label,
-    placeholder = '',
-    value,
-    error,
-    touched = false,
-    hint,
-    disabled = false,
-    rows = 4,
-    cols,
-    onChange,
-    onBlur,
-    // autoResize = false,
-  }: TextareaProps
-) => {
+export const Textarea = ({
+  id,
+  required = false,
+  name,
+  label,
+  placeholder = '',
+  value,
+  error,
+  touched = false,
+  hint,
+  disabled = false,
+  rows = 4,
+  cols,
+  onChange,
+  onBlur,
+  // autoResize = false,
+}: TextareaProps) => {
   // const textareaRef = useRef<HTMLTextAreaElement | null>(null)
   // useEffect(() => {
   //   if (autoResize && textareaRef.current) {
@@ -49,7 +46,9 @@ export const Textarea = (
             'textarea__field',
             error && touched ? 'textarea__field--error' : '',
             disabled ? 'textarea__field--disabled' : '',
-          ].filter(Boolean).join(' ')}
+          ]
+            .filter(Boolean)
+            .join(' ')}
           aria-describedby={error && touched ? `${name}-error` : undefined}
         />
         <label htmlFor={name} className="textarea__label">
@@ -62,11 +61,7 @@ export const Textarea = (
             {error}
           </span>
         )}
-        {hint && (
-          <span className="textarea__hint">
-            Eg: {hint}
-          </span>
-        )}
+        {hint && <span className="textarea__hint">Eg: {hint}</span>}
       </div>
     </div>
   )

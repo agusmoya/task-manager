@@ -4,7 +4,7 @@
 
 import { ScrollableContainer } from '../scrollable-container/ScrollableContainer'
 
-import { type ICountingCategories } from '../../../types/category.d'
+import { ICountingCategories } from '../../../types/category.d'
 
 import { useSearch } from '../../hooks/useSearch'
 import { useCategoryActions } from '../../../store/hooks/useCategoryActions'

@@ -3,6 +3,7 @@
   --state-layer-focus-opacity: 0.12;
   --state-layer-pressed-opacity: 0.14;
   --state-layer-dragged-opacity: 0.16;
+  --state-layer-disabled-opacity: 0.38;
 }
 
 .btn {
@@ -18,7 +19,10 @@
   text-decoration: none;
   user-select: none;
   overflow: hidden;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  border-radius: var(--spacing-3);
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .btn__state-layer {
@@ -39,7 +43,7 @@
 }
 
 .btn:focus {
-  outline: 1px solid var(--color-outline);
+  outline: 2px solid var(--color-outline);
   outline-offset: 1px;
 }
 
@@ -52,7 +56,7 @@
 }
 
 .btn:disabled {
-  opacity: 0.38;
+  opacity: var(--state-layer-disabled-opacity);
   cursor: not-allowed;
 }
 

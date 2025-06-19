@@ -1,7 +1,7 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { CALENDAR_DAY_TYPE, WEEKDAYS, type CalendarDay } from '../../../types/calendar-day.d'
-import { type IEvent } from '../../../types/event'
+import { CALENDAR_DAY_TYPE, WEEKDAYS, CalendarDay } from '../../../types/calendar-day.d'
+import { IEvent } from '../../../types/event'
 
 import { getToday } from '../../../calendar/utils/dateUtils'
 import { computeCalendar } from '../../../calendar/utils/computeCalendar'

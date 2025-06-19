@@ -1,6 +1,6 @@
 import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit'
 
-import { TOAST_STATUS, type ToastStatus } from '../../../types/toast.d'
+import { TOAST_STATUS, ToastStatus } from '../../../types/toast.d'
 
 export interface Toast {
   id: string

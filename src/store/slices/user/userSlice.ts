@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { type IUser } from '../../../types/user.d'
+import { IUser } from '../../../types/user.d'
 
 interface UserState {
   users: IUser[]
@@ -15,5 +15,3 @@ export const userSlice = createSlice({
   initialState,
   reducers: {},
 })
-
-// export const {} = userSlice.actions

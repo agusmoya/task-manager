@@ -24,14 +24,12 @@ export const Button: React.FC<ButtonProps> = ({
     disabled ? 'button--disabled' : '',
   ]
     .filter(Boolean)
-    .join(' ');
+    .join(' ')
 
   return (
     <button type={type} className={classNames} disabled={disabled} {...props}>
       <span className="btn__state-layer"></span>
-      <span className="btn__content">
-        {children}
-      </span>
+      <span className="btn__content">{children}</span>
     </button>
   )
 }

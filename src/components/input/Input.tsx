@@ -1,6 +1,6 @@
 import { FC, useId, useState } from 'react'
 
-import { type InputProps } from '../../types/input.d'
+import { InputProps } from '../../types/input.d'
 
 import './Input.css'
 

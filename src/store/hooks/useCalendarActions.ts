@@ -1,4 +1,4 @@
-import { type CalendarDay } from '../../types/calendar-day.d'
+import { CalendarDay } from '../../types/calendar-day.d'
 
 import { useAppDispatch, useAppSelector } from '../reduxStore'
 import {

@@ -1,6 +1,6 @@
 import { FC, useEffect, useId, useRef, useState } from 'react'
 
-import { type InputWithSuggestionsProps } from '../../types/input.d'
+import { InputWithSuggestionsProps } from '../../types/input.d'
 
 import '../input/Input.css'
 import './inputWithSuggestions.css'

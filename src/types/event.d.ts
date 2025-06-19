@@ -15,7 +15,7 @@ export interface IEventForm {
   title: string
   start: string
   end: string
-  notes?: string
+  notes: string
 }
 
 /**

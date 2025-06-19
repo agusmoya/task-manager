@@ -1,4 +1,4 @@
-import { WEEKDAYS, type CalendarDay } from '../../types/calendar-day.d'
+import { WEEKDAYS, CalendarDay } from '../../types/calendar-day.d'
 
 export const getPreviousDaysMonth = (
   startDay: number,

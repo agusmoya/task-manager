@@ -1,59 +1,109 @@
 .schedule {
   display: grid;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 1fr 5fr;
 }
 
-.calendar__schedule,
-.calendar__task-list,
-.calendar__task {
+.schedule__timescale,
+.schedule__event {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-2);
 }
 
-.calendar__schedule {
-  gap: var(--spacing-13); /* 5rem */
+.schedule__timescale {
+  gap: var(--spacing-13);
 }
 
-.calendar__task {
+.schedule__event-list {
+  position: relative;
+}
+
+.schedule__no-events {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.schedule__event {
   color: var(--color-on-secondary);
   background-color: var(--color-secondary);
   border-radius: var(--spacing-4);
-  padding: var(--spacing-4);
-  row-gap: var(--spacing-4);
-  height: min-content;
+  padding: var(--spacing-5);
+  row-gap: var(--spacing-3);
+  position: absolute;
+  left: 0;
+  right: 0;
 }
 
-.calendar__members {
+.schedule__event--start {
+  -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent);
+  mask-image: linear-gradient(to bottom, black 85%, transparent);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
+
+.schedule__event--end {
+  -webkit-mask-image: linear-gradient(to top, black 95%, transparent);
+  mask-image: linear-gradient(to top, black 95%, transparent);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
+
+.schedule__event-collaborators {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.calendar__members__avatars {
+.schedule__avatars {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-left: 10px;
 }
 
-.calendar__members__avatar,
-.calendar__members__avatars--more {
+.schedule__avatar,
+.schedule__avatar--more {
+  justify-content: center;
+  align-items: center;
   margin-left: -10px;
   border-radius: 50%;
 }
 
-.calendar__members__avatar {
-  width: 2.5rem;
+.schedule__avatar {
+  width: 3rem;
+  height: 3rem;
   border: 2px solid var(--color-on-surface);
 }
 
-.calendar__members__avatars--more {
-  padding: 0.5rem;
+.schedule__avatar--more {
+  padding: 0.6rem;
   background-color: var(--color-on-surface);
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
-.calendar__icon-btn {
+.schedule__icon-btn {
   border-radius: 50%;
   padding: 0.3rem;
   background-color: var(--color-on-surface);
+}
+
+.schedule__follow-event-btn {
+  color: var(--color-on-primary);
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  padding: var(--spacing-3) var(--spacing-6);
+  gap: var(--spacing-2);
+}
+
+.schedule__follow-event-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.schedule__follow-event-btn:hover .schedule__follow-event-icon {
+  transform: translateX(10px);
+  transition: transform 0.3s ease-in-out;
 }

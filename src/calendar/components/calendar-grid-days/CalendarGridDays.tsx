@@ -1,5 +1,5 @@
 import { FabMonth } from '../fab-month/FabMonth'
-import { Button } from '../../../components/button/button'
+import { Button } from '../../../components/button/Button'
 
 import { MONTHS, type CalendarDay } from '../../../types/calendar-day.d'
 import { type IEvent } from '../../../types/event'
@@ -76,7 +76,7 @@ export const CalendarGridDays = () => {
       </div>
 
       <div className="calendar-wrapper__days">
-        {calendarDays.map((calendarDay: CalendarDay) => {
+        {calendarDays.map(calendarDay => {
           const { day, month, year, type } = calendarDay
           const dayHasEvents = filterEventsByDays(events, calendarDay).length > 0
 

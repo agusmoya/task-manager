@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 import { EmailIcon, EyeIcon, EyeOffIcon, GoogleIcon } from '../../../components/icons/Icons'
 import { Input } from '../../../components/input/Input'
-import { Button } from '../../../components/button/button'
+import { Button } from '../../../components/button/Button'
 
 import {
   loginFormFields,
@@ -24,7 +24,7 @@ const LoginPage = () => {
     onInputChange,
     onBlurField,
   } = useForm(loginFormFields, loginFormValidations)
-  const { login, loginLoading, errorMessage } = useAuthActions()
+  const { login, loginLoading, loginAuthError } = useAuthActions()
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -38,7 +38,7 @@ const LoginPage = () => {
   return (
     <>
       <h1 className="login__title">Log in to your account.</h1>
-      <p className="login__error">{errorMessage}</p>
+      <p className="login__error">{loginAuthError?.message}</p>
       <form className="login__form" onSubmit={handleLoginSubmit}>
         <div className="login__content">
           <Input
@@ -50,7 +50,7 @@ const LoginPage = () => {
             value={email}
             autoComplete="email"
             hint="user@mail.com"
-            error={emailValid}
+            error={emailValid ?? loginAuthError?.fieldsValidations?.email}
             touched={touchedFields.email}
             finalStateIcon={EmailIcon}
             onChange={onInputChange}
@@ -65,7 +65,7 @@ const LoginPage = () => {
             required
             value={password}
             autoComplete="current-password"
-            error={passwordValid}
+            error={passwordValid ?? loginAuthError?.fieldsValidations?.password}
             touched={touchedFields.password}
             initialStateIcon={EyeIcon}
             finalStateIcon={EyeOffIcon}
@@ -78,7 +78,7 @@ const LoginPage = () => {
           Forgot your password?
         </a>
         <Button type="submit" className="btn login__button" disabled={!isFormValid || loginLoading}>
-          Login
+          {`${loginLoading ? 'Loading ...' : 'Login'}`}
         </Button>
       </form>
 

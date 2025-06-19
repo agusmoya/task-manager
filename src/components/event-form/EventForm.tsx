@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { Input } from '../input/Input'
 import { Textarea } from '../text-area/Textarea'
-import { Button } from '../button/button'
+import { Button } from '../button/Button'
 
 import { useForm } from '../../hooks/useForm'
 

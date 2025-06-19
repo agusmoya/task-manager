@@ -1,5 +1,5 @@
 import { PlusIcon } from '../icons/Icons'
-import { Button } from '../button/button'
+import { Button } from '../button/Button'
 
 import './FabOpenModal.css'
 

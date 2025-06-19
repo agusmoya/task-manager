@@ -1,10 +1,11 @@
-import { createSlice, isAnyOf } from '@reduxjs/toolkit'
+import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit'
 
 import { AUTH_STATUS } from '../../../auth/constants/status'
 
 import { IBasicUserDto } from '../../../types/dtos/user'
 
 import { authApi } from '../../../services/authApi'
+import { IAuthResponseDto } from '../../../types/dtos/register'
 
 export interface AuthState {
   status: string
@@ -18,13 +19,19 @@ const initialState: AuthState = {
   accessToken: undefined,
 }
 
-const { login, register, refresh } = authApi.endpoints
-
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    // Acción pura para actualizar credenciales desde baseQueryWithReauth
+    setCredentials: (state, { payload }: PayloadAction<IAuthResponseDto>) => {
+      state.user = payload.user
+      state.accessToken = payload.accessToken
+      state.status = AUTH_STATUS.AUTHENTICATED
+    },
+  },
   extraReducers: builder => {
+    const { login, register, refresh } = authApi.endpoints
     builder
       .addMatcher(
         isAnyOf(login.matchFulfilled, register.matchFulfilled, refresh.matchFulfilled),
@@ -44,3 +51,5 @@ export const authSlice = createSlice({
       )
   },
 })
+
+export const { setCredentials } = authSlice.actions

@@ -1,10 +1,9 @@
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 
-import { useAppDispatch, useAppSelector } from '../reduxStore'
+import { useAppSelector, useAppDispatch } from '../reduxStore'
 
-import type { IEvent } from '../../types/event'
+import { selectActiveEvent } from '../selectors/event'
 
-import { setActiveEventId, selectEventById } from '../slices/event/eventSlice'
 import {
   useFetchEventsByUserQuery,
   useCreateEventMutation,
@@ -12,11 +11,16 @@ import {
   useUpdateEventMutation,
 } from '../../services/eventsApi'
 
-import { getErrorMessage } from '../../api/helpers/getErrorMessage'
+import { getErrorMessage, OperationError } from '../../api/helpers/getErrorMessage'
+import { resetActiveEventId, setActiveEventId } from '../slices/event/eventSlice'
 
 export const useEventActions = () => {
+  const activeEvent = useAppSelector(selectActiveEvent)
   const dispatch = useAppDispatch()
-  // 1) datos y flags de RTK Query
+
+  const setActiveEvent = (id: string) => dispatch(setActiveEventId(id))
+  const clearActiveEvent = () => dispatch(resetActiveEventId())
+
   const {
     data: events = [],
     isLoading: fetching,
@@ -27,41 +31,42 @@ export const useEventActions = () => {
   const [updateEvent, { isLoading: updating, error: updateError }] = useUpdateEventMutation()
   const [deleteEvent, { isLoading: deleting, error: deleteError }] = useDeleteEventMutation()
 
-  const rawError = useMemo(() => {
-    return fetchError ?? createError ?? updateError ?? deleteError
-  }, [fetchError, createError, updateError, deleteError])
-
-  const errorMessage = getErrorMessage(rawError)
-
-  // 2) estado local de slice
-  const activeEvent: IEvent | undefined = useAppSelector(state =>
-    state.event.activeEventId ? selectEventById(state, state.event.activeEventId) : undefined
+  const {
+    fetch: fetchEventError,
+    create: createEventError,
+    update: updateEventError,
+    delete: deleteEventError,
+  } = useMemo(
+    () =>
+      getErrorMessage([
+        { operation: OperationError.FETCH, error: fetchError },
+        { operation: OperationError.CREATE, error: createError },
+        { operation: OperationError.UPDATE, error: updateError },
+        { operation: OperationError.DELETE, error: deleteError },
+      ]),
+    [fetchError, createError, updateError, deleteError]
   )
-  // 3) acciones UI
-  const setActiveEvent = useCallback(
-    (event: IEvent) => dispatch(setActiveEventId(event.id)),
-    [dispatch]
-  )
-  const clearActiveEvent = useCallback(() => {
-    dispatch(setActiveEventId(''))
-  }, [dispatch])
 
   return {
     // STATE
     activeEvent,
     setActiveEvent,
     clearActiveEvent,
-    // Datos y flags RTKQ
+    // Data y flags RTKQ
     events,
     fetching,
+    refetch,
     creating,
     updating,
     deleting,
-    errorMessage,
-    refetch,
     // Mutations RTKQ
     createEvent,
     updateEvent,
     deleteEvent,
+    // RTKQ errors
+    fetchEventError,
+    createEventError,
+    updateEventError,
+    deleteEventError,
   }
 }

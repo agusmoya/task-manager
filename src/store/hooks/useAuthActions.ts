@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { useAppSelector } from '../reduxStore'
 import {
@@ -7,65 +7,48 @@ import {
   useRefreshMutation,
   useRegisterMutation,
 } from '../../services/authApi'
-import { LoginRequest } from '../../types/dtos/login'
-import { IRegisterDto } from '../../types/dtos/register'
-import { getErrorMessage } from '../../api/helpers/getErrorMessage'
+
+import { getErrorMessage, OperationError } from '../../api/helpers/getErrorMessage'
 
 export const useAuthActions = () => {
   const { status, user } = useAppSelector(state => state.auth)
 
-  const [loginTrigger, { isLoading: loginLoading, error: loginError }] = useLoginMutation()
-  const [registerTrigger, { isLoading: registerLoading, error: registerError }] =
-    useRegisterMutation()
-  const [refreshTrigger, { error: refreshError }] = useRefreshMutation()
-  const [logoutTrigger] = useLogoutMutation()
+  const [logout, { isLoading: logoutLoading, error: logoutError }] = useLogoutMutation()
+  const [login, { isLoading: loginLoading, error: loginError }] = useLoginMutation()
+  const [register, { isLoading: registerLoading, error: registerError }] = useRegisterMutation()
+  const [refresh, { error: refreshError }] = useRefreshMutation()
 
-  const rawError = useMemo(() => {
-    return loginError ?? registerError ?? refreshError
-  }, [loginError, registerError, refreshError])
-
-  const errorMessage = getErrorMessage(rawError)
-
-  const login = useCallback(
-    (creds: LoginRequest) => {
-      try {
-        loginTrigger(creds).unwrap()
-      } catch (error) {
-        console.error('Auth login error: ', error)
-      }
-    },
-    [loginTrigger]
+  const {
+    login: loginAuthError,
+    register: registerAuthError,
+    refresh: refreshAuthError,
+  } = useMemo(
+    () =>
+      getErrorMessage([
+        { operation: OperationError.LOGIN, error: loginError },
+        { operation: OperationError.REGISTER, error: registerError },
+        { operation: OperationError.REFRESH, error: refreshError },
+      ]),
+    [loginError, registerError, refreshError]
   )
-
-  const register = useCallback(
-    (form: IRegisterDto) => {
-      try {
-        registerTrigger(form).unwrap()
-      } catch (error) {
-        console.error('Auth register error: ', error)
-      }
-    },
-    [registerTrigger]
-  )
-
-  const refresh = useCallback(() => {
-    try {
-      refreshTrigger().unwrap()
-    } catch (error) {
-      console.error('Auth refresh error: ', error)
-    }
-  }, [refreshTrigger])
-  const logout = useCallback(() => logoutTrigger().unwrap(), [logoutTrigger])
 
   return {
+    // STATE
     status,
     user,
-    login,
-    logout,
-    refresh,
-    register,
+    // Data y flags RTKQ
     loginLoading,
     registerLoading,
-    errorMessage,
+    logoutLoading,
+    // Mutations RTKQ
+    logout,
+    login,
+    register,
+    refresh,
+    // RTKQ errors
+    loginAuthError,
+    registerAuthError,
+    refreshAuthError,
+    logoutError,
   }
 }

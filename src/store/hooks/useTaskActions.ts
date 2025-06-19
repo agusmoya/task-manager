@@ -1,6 +1,4 @@
-import { useAppDispatch, useAppSelector } from '../reduxStore'
-
-import { ITask } from '../../types/task'
+import { useMemo } from 'react'
 
 import {
   useFetchTasksQuery,
@@ -9,21 +7,11 @@ import {
   useDeleteTaskMutation,
 } from '../../services/tasksApi'
 
-import { setActiveTaskId, selectTaskById } from './../slices/task/taskSlice'
+import { setActiveTaskId } from './../slices/task/taskSlice'
 
 import { getErrorMessage, OperationError } from '../../api/helpers/getErrorMessage'
-import { useMemo } from 'react'
 
 export const useTaskActions = () => {
-  const dispatch = useAppDispatch()
-  const { activeTaskId } = useAppSelector(state => state.task)
-  const activeTask: ITask | undefined = useAppSelector(state =>
-    activeTaskId ? selectTaskById(state, activeTaskId) : undefined
-  )
-
-  const setActiveTask = (task: ITask) => dispatch(setActiveTaskId(task.id))
-  const clearActiveTask = () => dispatch(setActiveTaskId(undefined))
-
   const { data: tasks = [], isLoading: fetching, error: fetchError, refetch } = useFetchTasksQuery()
   const [createTask, { isSuccess: createSuccess, isLoading: creating, error: createError }] =
     useCreateTaskMutation()
@@ -50,9 +38,7 @@ export const useTaskActions = () => {
 
   return {
     // state
-    activeTask,
-    setActiveTask,
-    clearActiveTask,
+    setActiveTaskId,
     // RTKQ Data and flags
     tasks,
     fetching,

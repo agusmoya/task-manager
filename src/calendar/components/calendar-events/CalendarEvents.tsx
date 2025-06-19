@@ -2,10 +2,11 @@ import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { DeleteIcon, EditIcon } from '../../../components/icons/Icons'
-import { Button } from '../../../components/button/button'
+import { Button } from '../../../components/button/Button'
+import { Loader } from '../../../components/loader-page/Loader'
 
 import { MONTHS } from '../../../types/calendar-day.d'
-import type { IEvent } from '../../../types/event'
+import { IEvent } from '../../../types/event'
 
 import { useCalendarActions } from '../../../store/hooks/useCalendarActions'
 import { useEventActions } from '../../../store/hooks/useEventActions'
@@ -13,12 +14,11 @@ import { useEventActions } from '../../../store/hooks/useEventActions'
 import { isSameDay } from '../../utils/validateManagmentDate'
 
 import './CalendarEvents.css'
-import { Loader } from '../../../components/loader-page/Loader'
 
 export const CalendarEvents = () => {
   const navigate = useNavigate()
   const { month, year, activeCalendarDay } = useCalendarActions()
-  const { events, fetching, fetchError, refetch, updating, deleting, deleteEvent } =
+  const { events, fetching, fetchEventError, refetch, updating, deleting, deleteEvent } =
     useEventActions()
 
   // Filter and sort events for the selected day
@@ -62,7 +62,7 @@ export const CalendarEvents = () => {
   if (fetching) {
     return <Loader />
   }
-  if (fetchError) {
+  if (fetchEventError) {
     return (
       <div className="calendar-events__error">
         <p>Error al cargar eventos.</p>

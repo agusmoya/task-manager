@@ -4,7 +4,7 @@ import { tasksApi } from '../../../services/tasksApi'
 
 import { RootState } from '../../store'
 
-import { type ITask } from '../../../types/task'
+import { ITask } from '../../../types/task'
 
 const tasksAdapter = createEntityAdapter<ITask>()
 

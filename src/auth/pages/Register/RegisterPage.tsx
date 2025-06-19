@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 import { CardIdIcon, EmailIcon, EyeIcon, EyeOffIcon } from '../../../components/icons/Icons'
 import { Input } from '../../../components/input/Input'
-import { Button } from '../../../components/button/button'
+import { Button } from '../../../components/button/Button'
 
 import { useForm } from '../../../hooks/useForm'
 import {
@@ -28,7 +28,7 @@ const RegisterPage = () => {
     onInputChange,
     onBlurField,
   } = useForm(registerFormFields, registerFormValidations)
-  const { register, errorMessage } = useAuthActions()
+  const { register, registerLoading, registerAuthError } = useAuthActions()
 
   const handleRegisterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -43,7 +43,7 @@ const RegisterPage = () => {
   return (
     <>
       <h1 className="register__title">Create new account.</h1>
-      <p className="register__error">{errorMessage}</p>
+      <p className="register__error">{registerAuthError?.message}</p>
       <form className="register__form" onSubmit={handleRegisterSubmit}>
         <div className="register__group">
           <Input
@@ -54,7 +54,7 @@ const RegisterPage = () => {
             placeholder=""
             value={firstName}
             autoComplete="given-name"
-            error={firstNameValid}
+            error={firstNameValid ?? registerAuthError?.fieldsValidations?.firstName}
             touched={touchedFields.firstName}
             finalStateIcon={CardIdIcon}
             onChange={onInputChange}
@@ -69,7 +69,7 @@ const RegisterPage = () => {
             placeholder=""
             value={lastName}
             autoComplete="family-name"
-            error={lastNameValid}
+            error={lastNameValid ?? registerAuthError?.fieldsValidations?.lastName}
             touched={touchedFields.lastName}
             finalStateIcon={CardIdIcon}
             onChange={onInputChange}
@@ -87,7 +87,7 @@ const RegisterPage = () => {
           autoComplete="off"
           hint="user@mail.com"
           error={emailValid}
-          touched={touchedFields.email}
+          touched={touchedFields.email ?? registerAuthError?.fieldsValidations?.email}
           finalStateIcon={EmailIcon}
           onChange={onInputChange}
           onBlur={() => onBlurField('email')}
@@ -102,14 +102,14 @@ const RegisterPage = () => {
           value={password}
           autoComplete="new-password"
           error={passwordValid}
-          touched={touchedFields.password}
+          touched={touchedFields.password ?? registerAuthError?.fieldsValidations?.password}
           initialStateIcon={EyeIcon}
           finalStateIcon={EyeOffIcon}
           onChange={onInputChange}
           onBlur={() => onBlurField('password')}
         />
         <Button type="submit" className="btn btn--filled register__button" disabled={!isFormValid}>
-          Create account
+          {`${registerLoading ? 'Loading ...' : 'Create account'}`}
         </Button>
       </form>
 

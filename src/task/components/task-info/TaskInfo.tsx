@@ -5,10 +5,10 @@ import dayjs from 'dayjs'
 
 import { Clock } from '../clock/Clock'
 import { CalendarIcon } from '../../../components/icons/Icons'
-import { Button } from '../../../components/button/button'
+import { Button } from '../../../components/button/Button'
 import { ConfirmModal } from '../../../components/confirm-modal/ConfirmModal'
 
-import { type ITask } from '../../../types/task'
+import { ITask } from '../../../types/task'
 
 import { getToday } from '../../../calendar/utils/dateUtils'
 import { useTaskActions } from '../../../store/hooks/useTaskActions'
@@ -22,39 +22,42 @@ interface Props {
 export const TaskInfo = ({ task }: Props) => {
   const navigate = useNavigate()
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
-  const { deleteTask } = useTaskActions()
+  const { deleting, deleteTask } = useTaskActions()
 
   const today = dayjs(getToday())
   const { id, title } = task
 
-  const handleConfirmDelete = () => {
-    deleteTask(task.id)
-    setIsConfirmOpen(false)
-    navigate('/home')
+  const handleConfirmDelete = async () => {
+    const result = await deleteTask(id)
+    if (!result?.error) {
+      setIsConfirmOpen(false)
+      navigate('/home', { replace: true })
+    }
   }
 
   return (
     <section className="task-info section container">
       <div className="task-info__time">
         <Clock today={today} />
-        <h2 className="task-info__title">Task: {title}</h2>
+        <h2 className="task-info__title">{title}</h2>
       </div>
 
       <div className="task-info__actions">
         <Link className="btn btn--tonal see-calendar" to="/home/calendar">
           <CalendarIcon />
-          &nbsp;Calendar
+          &nbsp; See Calendar
         </Link>
 
         <Link className="btn btn--filled edit__task-btn" to={`/home/task-form/${id}`}>
-          Edit
+          Edit task
         </Link>
 
         <Button
           className="btn btn--outlined delete__task-btn"
           onClick={() => setIsConfirmOpen(true)}
+          disabled={deleting}
         >
-          Delete
+          Delete task
         </Button>
       </div>
 

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
 import { CloseIcon } from '../icons/Icons'
-import { Button } from '../button/button'
+import { Button } from '../button/Button'
 
 import './Modal.css'
 

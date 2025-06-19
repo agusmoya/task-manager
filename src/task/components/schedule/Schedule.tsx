@@ -1,9 +1,14 @@
-import { Dayjs } from 'dayjs'
+import { useRef } from 'react'
 
-import { PhoneIcon } from '../../../components/icons/Icons'
+import { EventSegment } from './type-ui/event-ui'
+
+import { NextIcon, PhoneIcon } from '../../../components/icons/Icons'
+import { Button } from '../../../components/button/Button'
+
+import { useRowHeight } from './hooks/useRowHeight'
+import { getHoursSchedule } from '../../../utils/computedEvents'
 
 import './Schedule.css'
-import { Button } from '../../../components/button/button'
 
 const userImages = [
   '/images/members/user-2.webp',
@@ -12,44 +17,79 @@ const userImages = [
 ]
 
 interface Props {
-  today: Dayjs
+  segmentsForDay: EventSegment[]
+  onRequestNextDay: () => void
 }
-// 1 hora => 5 rem
-export const Schedule = ({ today }: Props) => {
-  const currentHour = today.hour() // Hora (0-23)
-  // const minutes = today.minute(); // Minutos (0-59)
+
+export const Schedule = ({ segmentsForDay, onRequestNextDay }: Props) => {
+  const tiemscaleRef = useRef<HTMLElement>(null)
+  const rowHeight = useRowHeight(tiemscaleRef)
+  const hoursSchedule = getHoursSchedule(segmentsForDay)
 
   return (
     <section className="schedule section container">
-      <aside className="calendar__schedule">
-        <small>{currentHour}:00 AM</small>
-        <small>09:00 AM</small>
-        <small>10:00 AM</small>
-        <small>11:00 AM</small>
-        <small>12:00 PM</small>
-        <small>13:00 PM</small>
-        <small>14:00 PM</small>
+      <aside className="schedule__timescale" ref={tiemscaleRef}>
+        {hoursSchedule.map(h => (
+          <small key={h}>{`${h}:00`}</small>
+        ))}
       </aside>
-      <div className="calendar__task-list">
-        <article className="calendar__task">
-          <div className="calendar__members">
-            <div className="calendar__members__avatars">
-              {userImages.map((img, index) => (
-                <img
-                  src={`${img}`}
-                  className="calendar__members__avatar"
-                  key={index}
-                  alt={`User ${index + 1}`}
-                />
-              ))}
-              <span className="calendar__members__avatars--more">+1</span>
-            </div>
-            <Button type="submit" className="btn btn--filled calendar__icon-btn">
-              <PhoneIcon className="calendar__icon" />
-            </Button>
-          </div>
-          <h3>Title task</h3>
-        </article>
+      <div className="schedule__event-list">
+        {segmentsForDay.length === 0 && (
+          <div className="schedule__no-events">No events scheduled</div>
+        )}
+        {segmentsForDay.map(
+          ({ event: { id, title, notes }, start, duration, isStartSegment, isEndSegment }) => {
+            const offsetHours = start.hour() - hoursSchedule[0]
+            const offsetMinutes = start.minute() / 60
+            const topRem = Math.round((offsetHours + offsetMinutes) * rowHeight * 2) / 2
+
+            return (
+              <article
+                key={`${id}-${isStartSegment}`}
+                className={[
+                  'schedule__event',
+                  isStartSegment && 'schedule__event--start',
+                  isEndSegment && 'schedule__event--end',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+                style={{
+                  top: `${topRem}rem`,
+                  height: `${Math.round(duration * rowHeight * 2) / 2}rem`,
+                }}
+              >
+                <h3>{title}</h3>
+                <h4>{notes}</h4>
+                <div className="schedule__event-collaborators">
+                  <div className="schedule__avatars">
+                    {userImages.slice(0, 3).map((img, index) => (
+                      <img
+                        src={`${img}`}
+                        className="schedule__avatar"
+                        key={index}
+                        alt={`User ${index + 1}`}
+                      />
+                    ))}
+                    <span className="schedule__avatar schedule__avatar--more">+1</span>
+                  </div>
+                  <Button type="button" className="btn btn--filled schedule__icon-btn">
+                    <PhoneIcon className="schedule__icon" />
+                  </Button>
+                </div>
+                {isStartSegment && (
+                  <Button
+                    type="button"
+                    className="btn schedule__follow-event-btn"
+                    onClick={onRequestNextDay}
+                  >
+                    <span className="schedule__next-text">Follow event</span>
+                    <NextIcon className="schedule__follow-event-icon" />
+                  </Button>
+                )}
+              </article>
+            )
+          }
+        )}
       </div>
     </section>
   )

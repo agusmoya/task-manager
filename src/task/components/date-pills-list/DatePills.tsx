@@ -1,18 +1,30 @@
+import { Dispatch, SetStateAction } from 'react'
+import { Dayjs } from 'dayjs'
+
 import { DatePill } from '../date-pill/DatePill'
 
-import { type WeekDay } from '../../../types/task'
+import { useCurrentWeek } from '../../hooks/useCurrentWeek'
 
 import './DatePills.css'
 
 interface Props {
-  weekDays: WeekDay[]
+  selectedDate: Dayjs
+  onSelectDate: Dispatch<SetStateAction<Dayjs>>
 }
 
-export const DatePills = ({ weekDays }: Props) => {
+export const DatePills = ({ selectedDate, onSelectDate }: Props) => {
+  const { currentWeek } = useCurrentWeek()
+
   return (
     <section className="date-pills section container">
-      {weekDays.map(({ date, isToday }) => (
-        <DatePill key={date} date={date} isToday={isToday} />
+      {currentWeek.map(({ date, isToday }) => (
+        <DatePill
+          key={date.toString()}
+          date={date}
+          isToday={isToday}
+          isSelected={date.isSame(selectedDate, 'day')}
+          onSelect={onSelectDate}
+        />
       ))}
     </section>
   )

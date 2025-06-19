@@ -1,4 +1,4 @@
-import type { ITaskForm } from '../../types/task'
+import { ITaskForm } from '../../types/task'
 import { ITaskCreatePayload, ITaskUpdatePayload } from '../../types/dtos/task'
 import { ICategory } from '../../types/category'
 import { IEventForm, IEventLocal } from '../../types/event'

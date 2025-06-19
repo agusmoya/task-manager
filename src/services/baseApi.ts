@@ -2,14 +2,20 @@ import {
   createApi,
   fetchBaseQuery,
   QueryReturnValue,
-  type BaseQueryFn,
-  type FetchArgs,
-  type FetchBaseQueryError,
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react'
 
-import type { RootState } from '../store/store'
+import { RootState } from '../store/store'
 import { authApi } from './authApi'
 import { IAuthResponseDto } from '../types/dtos/register'
+import { setCredentials } from '../store/slices/auth/authSlice'
+
+function isAuthPath(url?: string): boolean {
+  const AUTH_PATHS = ['/auth/login', '/auth/refresh', '/auth/logout']
+  return !!url && AUTH_PATHS.some(path => url.endsWith(path))
+}
 
 const baseQuery = fetchBaseQuery({
   credentials: 'include', // for HttpOnly cookies (refresh service)
@@ -27,26 +33,25 @@ export const baseQueryWithReauth: BaseQueryFn<
   unknown, // El tipo por defecto de respuesta (no lo forzamos aquí)
   FetchBaseQueryError // Tipo de error
 > = async (args, api, extraOptions) => {
-  // 1️⃣ Llamada normal
+  // 1️⃣ Petición original
   let result = await baseQuery(args, api, extraOptions)
+
+  let url = ''
+  if (typeof args !== 'string' && args.url) {
+    url = args.url
+  }
   // 2️⃣ Si recibimos 401, intentamos refresh
-  if (result.error?.status === 401) {
-    const rawRefreshResult = await baseQuery(
-      { url: '/auth/refresh', method: 'POST' },
-      api,
-      extraOptions
-    )
-    const refreshResult = rawRefreshResult as QueryReturnValue<
-      IAuthResponseDto,
-      FetchBaseQueryError
-    >
+  if (result.error?.status === 401 && !isAuthPath(url)) {
+    const rawData = await baseQuery({ url: '/auth/refresh', method: 'POST' }, api, extraOptions)
+
+    const refreshResult = rawData as QueryReturnValue<IAuthResponseDto, FetchBaseQueryError>
     if (refreshResult.data) {
       // 3️⃣ Guardamos credenciales y reintentamos original
-      await api.dispatch(authApi.endpoints.refresh.initiate()).unwrap()
+      api.dispatch(setCredentials(refreshResult.data))
       result = await baseQuery(args, api, extraOptions)
     } else {
       // 4️⃣ Si refresh falla, forzamos logout
-      await api.dispatch(authApi.endpoints.logout.initiate()).unwrap()
+      await api.dispatch(authApi.endpoints.logout.initiate())
     }
   }
   return result

@@ -9,7 +9,3 @@ export interface IAuthResponseDto {
   user: IUserDto
   accessToken: string
 }
-
-export interface IRegisterResponseDto extends IAuthResponseDto {
-  refreshToken: string
-}

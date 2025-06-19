@@ -1,26 +1,25 @@
 import { baseApi } from './baseApi'
 
-import { IAuthResponse } from '../types/dtos/auth-response'
-import { LoginRequest } from '../types/dtos/login'
-import { RegisterRequest } from '../types/dtos/register'
+import { ILoginDto } from '../types/dtos/login'
+import { IAuthResponseDto, IRegisterDto } from '../types/dtos/register'
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    login: builder.mutation<IAuthResponse, LoginRequest>({
+    login: builder.mutation<IAuthResponseDto, ILoginDto>({
       query: creds => ({
         url: '/auth/login',
         method: 'POST',
         body: creds,
       }),
     }),
-    register: builder.mutation<IAuthResponse, RegisterRequest>({
+    register: builder.mutation<IAuthResponseDto, IRegisterDto>({
       query: form => ({
         url: '/auth/register',
         method: 'POST',
         body: form,
       }),
     }),
-    refresh: builder.mutation<IAuthResponse, void>({
+    refresh: builder.mutation<IAuthResponseDto, void>({
       query: () => ({ url: '/auth/refresh', method: 'POST' }),
     }),
     logout: builder.mutation<void, void>({

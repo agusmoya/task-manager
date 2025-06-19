@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 
-import { type CalendarDay } from '../../types/calendar-day.d'
-import { type IEvent } from '../../types/event'
+import { CalendarDay } from '../../types/calendar-day.d'
+import { IEvent } from '../../types/event'
 
 import { formatToDatetimeLocal } from '../../helpers/form-validations/getEventFormValidations'
 import { getToday } from './dateUtils'

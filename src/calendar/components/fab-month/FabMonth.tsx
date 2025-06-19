@@ -1,4 +1,4 @@
-import { Button } from '../../../components/button/button'
+import { Button } from '../../../components/button/Button'
 import { NextIcon, PreviousIcon } from '../../../components/icons/Icons'
 
 import './FabMonth.css'
