@@ -2,7 +2,7 @@
 
 // import { PlusIcon } from "../../../components/icons/Icons.tsx"
 
-import { ScrollableContainer } from '../scrollable-container/ScrollableContainer'
+import { ScrollableContainer } from '../../../components/scrollable-container/ScrollableContainer'
 
 import { ICountingCategories } from '../../../types/category.d'
 

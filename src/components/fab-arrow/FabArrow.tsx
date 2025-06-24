@@ -5,7 +5,7 @@ import { Button } from '../button/Button'
 
 import './FabArrow.css'
 
-type ArrowButtonProps = {
+interface ArrowButtonProps {
   direction: 'left' | 'right'
   scrollContainerRef: RefObject<HTMLUListElement>
   widthItemClass: string

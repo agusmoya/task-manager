@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 
 import { EventSegment } from '../task/components/schedule/type-ui/event-ui'
 
@@ -13,66 +13,58 @@ import { IEvent } from '../types/event'
  */
 export const getEventsSegments = (events: IEvent[] = []): EventSegment[] => {
   const segments: EventSegment[] = []
+  if (!events.length) return segments
+
   events.forEach(evt => {
     const start = dayjs(evt.start)
     const end = dayjs(evt.end)
 
-    // single-day event
+    // single event segment
     if (end.isSame(start, 'day')) {
-      const fullMinutes = end.diff(start, 'minute')
-      // convert to hours and round to nearest 0.5
-      const fullHoursRaw = fullMinutes / 60
-      const fullHours = Math.round(fullHoursRaw * 2) / 2
-
-      segments.push({
-        event: evt,
-        start,
-        end,
-        duration: fullHours,
-        isStartSegment: false,
-        isEndSegment: false,
-      })
+      segments.push(makeSegment(evt, start, end, false, false))
     } else {
-      // first-day segment
-      const endOfStartDay = start.endOf('day')
-
-      const firstMinutes = endOfStartDay.diff(start, 'minute')
-      const firstHoursRaw = firstMinutes / 60
-      const firstHours = Math.round(firstHoursRaw * 2) / 2
-
-      segments.push({
-        event: evt,
-        start,
-        end: endOfStartDay,
-        duration: firstHours,
-        isStartSegment: true,
-        isEndSegment: false,
-      })
-      // overnight: second-day segment
-      const startOfEndDay = end.startOf('day')
-      const secondMinutes = end.diff(startOfEndDay, 'minute')
-      const secondHoursRaw = secondMinutes / 60
-      const secondHours = Math.round(secondHoursRaw * 2) / 2
-
-      segments.push({
-        event: evt,
-        start: startOfEndDay,
-        end,
-        duration: secondHours,
-        isStartSegment: false,
-        isEndSegment: true,
-      })
+      // first event segment
+      const endOfDay = start.endOf('day')
+      segments.push(makeSegment(evt, start, endOfDay, true, false))
+      // overnight: second event segment
+      const startNext = end.startOf('day')
+      segments.push(makeSegment(evt, startNext, end, false, true))
     }
   })
-  console.log(segments)
 
   return segments
 }
 
-export const getHoursSchedule = (segments: EventSegment[]): number[] => {
-  if (!segments.length) return [8, 9, 10]
+const makeSegment = (
+  event: IEvent,
+  start: Dayjs,
+  end: Dayjs,
+  isStart: boolean,
+  isEnd: boolean
+): EventSegment => {
+  const minutes = end.diff(start, 'minute')
+  const hours = minutes / 60
+  // round to nearest 0.5
+  const totalHours = Math.round(hours * 2) / 2
 
-  // 2) We extract the start and end time for every event, should any exist
+  return {
+    id: event.id,
+    title: event.title,
+    notes: event.notes,
+    start,
+    end,
+    duration: totalHours,
+    isStartSegment: isStart,
+    isEndSegment: isEnd,
+  }
+}
+
+export const getHoursSchedule = (segments: EventSegment[]) => {
+  if (!segments.length) {
+    const now = dayjs().hour()
+    return [now, now + 1, now + 2]
+  }
+
   const minHStart = 24
   const maxHEnd = 0
   const hours = segments.reduce<[number, number]>(
@@ -83,9 +75,13 @@ export const getHoursSchedule = (segments: EventSegment[]): number[] => {
     },
     [minHStart, maxHEnd]
   )
+  const [startH, endH] = hours
+  const arrayHours = createInclusiveArray(startH, endH)
+  // remove possible duplicates
+  const uniqueHours = Array.from(new Set(arrayHours))
+  return uniqueHours
+}
 
-  // 3) We generate an inclusive array: [startHour, startHour+1, …, endHour]
-  const [startHour, endHour] = hours
-  const hoursSchedule = Array.from({ length: endHour - startHour + 1 }, (_, i) => startHour + i)
-  return hoursSchedule
+const createInclusiveArray = (start: number, end: number): number[] => {
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i)
 }

@@ -6,7 +6,7 @@ import { Button } from '../button/Button'
 
 import './Modal.css'
 
-type ModalProps = {
+interface ModalProps {
   title: string
   isOpen: boolean
   onClose: () => void

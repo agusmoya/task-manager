@@ -43,21 +43,20 @@ export const TaskInfo = ({ task }: Props) => {
       </div>
 
       <div className="task-info__actions">
-        <Link className="btn btn--tonal see-calendar" to="/home/calendar">
-          <CalendarIcon />
-          &nbsp; See Calendar
+        <Link className="btn btn--tonal task-info__calendar-btn" to="/home/calendar">
+          <CalendarIcon className="task-info__calendar-icon" />
         </Link>
 
-        <Link className="btn btn--filled edit__task-btn" to={`/home/task-form/${id}`}>
-          Edit task
+        <Link className="btn btn--filled task-info__edit-btn" to={`/home/task-form/${id}`}>
+          Edit
         </Link>
 
         <Button
-          className="btn btn--outlined delete__task-btn"
+          className="btn btn--outlined task-info__delete-btn"
           onClick={() => setIsConfirmOpen(true)}
           disabled={deleting}
         >
-          Delete task
+          Delete
         </Button>
       </div>
 

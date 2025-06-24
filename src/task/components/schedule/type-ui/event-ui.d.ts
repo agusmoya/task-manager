@@ -1,9 +1,9 @@
 import { Dayjs } from 'dayjs'
 
-import { IEvent } from '../../../../types/event'
-
 export interface EventSegment {
-  event: IEvent
+  id: string
+  title: string
+  notes: string
   start: Dayjs
   end: Dayjs
   duration: number

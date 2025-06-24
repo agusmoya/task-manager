@@ -3,7 +3,7 @@ import { NextIcon, PreviousIcon } from '../../../components/icons/Icons'
 
 import './FabMonth.css'
 
-type FabMonthProps = {
+interface FabMonthProps {
   direction: 'left' | 'right'
   onHandleClick: () => void
 }

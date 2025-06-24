@@ -1,10 +1,10 @@
 import { useRef } from 'react'
 
-import { FabArrow } from '../../../components/fab-arrow/FabArrow'
+import { FabArrow } from '../fab-arrow/FabArrow'
 
 import './ScrollableContainer.css'
 
-type ScrollableContainerProps = {
+interface ScrollableContainerProps {
   children: React.ReactNode
   itemClass: string
   className?: string

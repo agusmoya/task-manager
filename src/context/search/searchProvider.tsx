@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { SearchContext } from "./searchContext";
+import { useState } from 'react'
+import { SearchContext } from './searchContext'
 
-type Props = {
+interface Props {
   children: React.ReactNode
 }
 
@@ -12,7 +12,7 @@ export const SearchProvider = ({ children }: Props) => {
     <SearchContext.Provider
       value={{
         search,
-        updateSearch
+        updateSearch,
       }}
     >
       {children}

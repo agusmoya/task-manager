@@ -1,7 +1,7 @@
 :root {
   --state-layer-hover-opacity: 0.1;
   --state-layer-focus-opacity: 0.12;
-  --state-layer-pressed-opacity: 0.14;
+  --state-layer-pressed-opacity: 0.2;
   --state-layer-dragged-opacity: 0.16;
   --state-layer-disabled-opacity: 0.38;
 }
@@ -31,11 +31,15 @@
   right: 0;
   bottom: 0;
   left: 0;
+  border-radius: inherit;
   background-color: currentColor;
-  opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
-  border-radius: inherit;
+  outline: 2px solid currentColor;
+}
+
+.btn:not(:hover):not(:active) .btn__state-layer {
+  opacity: 0;
 }
 
 .btn:hover .btn__state-layer {
@@ -43,6 +47,10 @@
 }
 
 .btn:focus {
+  outline: none;
+}
+
+.btn:focus-visible {
   outline: 2px solid var(--color-outline);
   outline-offset: 1px;
 }
@@ -85,17 +93,18 @@
   color: var(--color-primary);
 }
 
-.btn--elevated {
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
-  box-shadow: var(--elevation-1);
-}
-
 .btn--icon {
   background-color: transparent;
   color: var(--color-primary);
   padding: var(--spacing-2);
   border-radius: 50%;
+}
+
+.btn--elevated {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: var(--elevation-1);
+  will-change: scale;
 }
 
 .btn--fab {

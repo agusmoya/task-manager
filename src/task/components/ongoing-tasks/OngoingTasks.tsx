@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom'
 
 import { ExternalLinkIcon } from '../../../components/icons/Icons'
 import { PlusIcon } from '../../../components/icons/Icons'
-import { ScrollableContainer } from '../scrollable-container/ScrollableContainer'
 import { CircularProgress } from '../circular-progress/CircularProgress'
+import { ScrollableContainer } from '../../../components/scrollable-container/ScrollableContainer'
 
 import { useSearch } from '../../hooks/useSearch'
 import { useTaskActions } from '../../../store/hooks/useTaskActions'

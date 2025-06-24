@@ -1,9 +1,9 @@
 .page-enter {
-  animation: fadeIn 300ms ease forwards;
+  animation: fadeIn 0.3s ease forwards;
 }
 
 .page-exit {
-  animation: fadeOut 300ms ease forwards;
+  animation: fadeOut 0.3s ease forwards;
 }
 
 @keyframes fadeIn {

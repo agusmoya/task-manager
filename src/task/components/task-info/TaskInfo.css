@@ -7,7 +7,7 @@
 .task-info__time {
   display: flex;
   flex-direction: column;
-  row-gap: 0.25rem;
+  row-gap: 0.5rem;
 }
 
 .task-info__actions {
@@ -17,12 +17,18 @@
   gap: var(--spacing-2);
 }
 
-.see-calendar,
-.delete__task-btn,
-.edit__task-btn {
-  /* flex: <flex-grow> <flex-shrink> <flex-basis> */
-  flex: 1 1 auto;
+.task-info__edit-btn,
+.task-info__delete-btn {
   padding-block: var(--spacing-2);
   padding-inline: var(--spacing-4);
-  border-radius: 1rem;
+}
+
+.task-info__calendar-btn {
+  border-radius: 100%;
+  padding: var(--spacing-3);
+}
+
+.task-info__calendar-icon {
+  width: 1.25rem;
+  height: 1.25rem;
 }

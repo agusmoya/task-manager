@@ -20,12 +20,12 @@ const TaskPage = () => {
   const { today } = useCurrentWeek()
   const [selectedDate, setSelectedDate] = useState(today)
 
-  const allEventsSegments = getEventsSegments(task?.events)
-
-  const segmentsForDay = useMemo(
-    () => allEventsSegments.filter(seg => dayjs(seg.start).isSame(selectedDate, 'day')) ?? [],
-    [allEventsSegments, selectedDate]
-  )
+  const [allSegments, segmentsForDay] = useMemo(() => {
+    const allSegments = getEventsSegments(task?.events)
+    const segmentsForDay =
+      allSegments.filter(({ start }) => dayjs(start).isSame(selectedDate, 'day')) ?? []
+    return [allSegments, segmentsForDay]
+  }, [selectedDate, task?.events])
 
   if (isLoading) return <Loader />
 
@@ -41,7 +41,11 @@ const TaskPage = () => {
   return (
     <>
       <TaskInfo task={task!} />
-      <DatePills selectedDate={selectedDate} onSelectDate={setSelectedDate} />
+      <DatePills
+        eventSegments={allSegments}
+        selectedDate={selectedDate}
+        onSelectDate={setSelectedDate}
+      />
       <Schedule
         segmentsForDay={segmentsForDay}
         onRequestNextDay={() => setSelectedDate(selectedDate.add(1, 'day'))}

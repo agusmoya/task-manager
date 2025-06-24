@@ -53,6 +53,7 @@ export const eventFormValidations: FormValidations<typeof eventFormFields> = {
       'The end date cannot be earlier than the start date.',
     ],
   ],
+  notes: [[value => value.trim().length === 0, 'Notes are required.']],
 }
 
 /**

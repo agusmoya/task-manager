@@ -4,7 +4,7 @@ import { BreadcrumbItem } from '../../types/breadbrumb.d'
 
 import { NavigationContext } from './navigationContext'
 
-type Props = {
+interface Props {
   children: React.ReactNode
 }
 

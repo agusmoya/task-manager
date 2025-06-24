@@ -3,7 +3,7 @@ import { Modal } from '../modal/Modal'
 
 import './ConfirmModal.css'
 
-type ConfirmModalProps = {
+interface ConfirmModalProps {
   isOpen: boolean
   title: string
   message: string
@@ -26,7 +26,7 @@ export const ConfirmModal = ({
     <Modal title={title} isOpen={isOpen} onClose={onCancel}>
       <p className="confirm-modal__message">{message}</p>
       <div className="confirm-modal__actions">
-        <Button type="button" className="btn btn--outlined" onClick={onCancel}>
+        <Button type="button" className="btn btn--text" onClick={onCancel}>
           {cancelLabel}
         </Button>
         <Button type="button" className="btn btn--filled" onClick={onConfirm}>

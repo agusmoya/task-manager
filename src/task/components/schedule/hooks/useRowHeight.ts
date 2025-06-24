@@ -4,8 +4,9 @@ import { RefObject, useLayoutEffect, useState } from 'react'
  * Measure the height (in rem) of one "row" in a timescale,
  * combining the <small> element height + rowGap from its container.
  */
-export function useRowHeight(timescaleRef: RefObject<HTMLElement>): number {
+export function useRowHeight(timescaleRef: RefObject<HTMLElement>) {
   const [rowHeight, setRowHeight] = useState(0)
+  const [labelHeight, setLabelHeight] = useState(0)
 
   useLayoutEffect(() => {
     const el = timescaleRef.current
@@ -18,9 +19,10 @@ export function useRowHeight(timescaleRef: RefObject<HTMLElement>): number {
     const styles = getComputedStyle(el)
 
     const gap = parseFloat(styles.rowGap || styles.gap || '0')
-    // convert px to rem (assuming root font-size = 16px)
-    setRowHeight((smallHeight + gap) / 16)
+
+    setRowHeight(smallHeight + gap)
+    setLabelHeight(smallHeight)
   }, [timescaleRef])
 
-  return rowHeight
+  return { rowHeight, labelHeight }
 }

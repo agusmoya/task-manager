@@ -253,8 +253,8 @@ ol {
   }
 
   .calendar-layout {
+    margin: 0 2rem;
     display: flex;
-    flex-direction: row;
   }
 
   .calendar-events .calendar-events__info {
