@@ -72,8 +72,6 @@ picture,
 svg,
 video,
 canvas {
-  max-width: 100%;
-  height: auto;
   vertical-align: middle;
   background-repeat: no-repeat;
   background-size: cover;
@@ -148,11 +146,7 @@ ol {
 
 .container {
   max-width: 968px;
-  margin: 0 var(--spacing-5);
-}
-
-.main {
-  padding-top: var(--header-height);
+  margin-inline: var(--spacing-5);
 }
 
 /* =============== BREAKPOINTS =============== */
@@ -197,28 +191,24 @@ ol {
 
 /* xlg devices */
 @media screen and (min-width: 992px) {
-  .main {
-    padding-top: var(--header-height-max);
-  }
-
   .container {
     margin-inline: auto;
   }
 
   .header-app .header-app__nav {
-    height: var(--header-height-max);
+    height: calc(var(--header-height) + 0.5rem);
   }
 
   .auth {
     position: relative;
-    height: var(--safe-full-height);
+    min-height: 100vh;
   }
 
   svg.auth__blob {
     display: block;
     position: absolute;
     top: 0;
-    right: 0;
+    right: -100px;
     height: 100vh;
     cursor: default;
     z-index: var(--z-deep);
@@ -229,10 +219,9 @@ ol {
   }
 
   div.auth__container {
-    width: 475px;
-    background: transparent;
-    backdrop-filter: blur(10px);
-    margin-inline: auto;
+    width: 430px;
+    /* background: transparent;
+    backdrop-filter: blur(10px); */
     padding: var(--spacing-5);
     border-radius: 1rem;
   }

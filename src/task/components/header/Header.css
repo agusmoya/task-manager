@@ -1,12 +1,9 @@
 .header-app {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  width: 100%;
   z-index: var(--z-fixed);
   box-shadow: var(--elevation-1);
   background-color: var(--color-surface);
-  /* transition: 0.4s; */
 }
 
 .header-app__nav {
@@ -14,10 +11,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.nav__logo {
-  padding: var(--spacing-1);
 }
 
 .nav__logo-text {

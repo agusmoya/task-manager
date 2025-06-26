@@ -14,9 +14,13 @@ import { Loader } from '../components/loader-page/Loader'
 import { NotFoundPage } from './404Page/NotFoundPage'
 
 import { useAuthActions } from '../store/hooks/useAuthActions'
+import { useTransitionPage } from '../hooks/useTransitionPage'
+import { Header } from '../task/components/header/Header'
+import { Breadcrumb } from '../components/breadcrumb/Breadcrumb'
 
 export const AppRouter = () => {
   const { status, refresh } = useAuthActions()
+  const { displayLocation, transitionPage, handleTransitionEnd } = useTransitionPage()
 
   useEffect(() => {
     refresh()
@@ -27,37 +31,43 @@ export const AppRouter = () => {
   }
 
   return (
-    <Routes>
-      {/* PUBLIC ROUTES */}
-      <Route path="/" element={<Navigate to="/home" replace />} />
-      <Route
-        path="/auth/*"
-        element={
-          <PublicRoute>
-            <AuthLayout />
-          </PublicRoute>
-        }
-      />
-      {/* PRIVATE ROUTES */}
-      <Route
-        path="/home/calendar/*"
-        element={
-          <PrivateRoute>
-            <CalendarLayout />
-          </PrivateRoute>
-        }
-      />
+    <>
+      <Header />
+      {status === AUTH_STATUS.AUTHENTICATED && <Breadcrumb />}
+      <main className={`main ${transitionPage}`} onAnimationEnd={handleTransitionEnd}>
+        <Routes location={displayLocation} key={displayLocation.pathname}>
+          {/* PUBLIC ROUTES */}
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route
+            path="/auth/*"
+            element={
+              <PublicRoute>
+                <AuthLayout />
+              </PublicRoute>
+            }
+          />
+          {/* PRIVATE ROUTES */}
+          <Route
+            path="/home/calendar/*"
+            element={
+              <PrivateRoute>
+                <CalendarLayout />
+              </PrivateRoute>
+            }
+          />
 
-      <Route
-        path="/home/*"
-        element={
-          <PrivateRoute>
-            <RootLayout />
-          </PrivateRoute>
-        }
-      />
-      {/* ANY OTHER ROUTE */}
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+          <Route
+            path="/home/*"
+            element={
+              <PrivateRoute>
+                <RootLayout />
+              </PrivateRoute>
+            }
+          />
+          {/* ANY OTHER ROUTE */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </main>
+    </>
   )
 }

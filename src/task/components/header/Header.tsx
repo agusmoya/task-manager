@@ -31,7 +31,12 @@ export const Header = () => {
             <button role="menuitem" type="button" className="dropdown__menu-item">
               Profile
             </button>
-            <button role="menuitem" type="button" className="dropdown__menu-item" onClick={logout}>
+            <button
+              role="menuitem"
+              type="button"
+              className="dropdown__menu-item"
+              onClick={() => logout()}
+            >
               Logout
             </button>
           </Dropdown>

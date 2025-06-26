@@ -1,3 +1,9 @@
+.page-enter,
+.page-exit {
+  will-change: opacity, transform;
+  isolation: isolate;
+}
+
 .page-enter {
   animation: fadeIn 0.3s ease forwards;
 }

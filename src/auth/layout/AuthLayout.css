@@ -1,10 +1,10 @@
-@import url("/src/styles/transition-page.css");
+@import url('/src/styles/transition-page.css');
 
 .auth {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: var(--safe-height);
+  height: calc(100vh - var(--header-height));
   overflow: hidden;
 }
 
