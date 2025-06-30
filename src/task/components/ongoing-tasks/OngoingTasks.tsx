@@ -9,6 +9,7 @@ import { useSearch } from '../../hooks/useSearch'
 import { useTaskActions } from '../../../store/hooks/useTaskActions'
 
 import './OngoingTasks.css'
+import clsx from 'clsx'
 
 export const OngoingTasks = () => {
   const { search } = useSearch()
@@ -38,9 +39,7 @@ export const OngoingTasks = () => {
 
         <ScrollableContainer
           itemClass="ongoing__item"
-          className={['ongoing__list', !areOngoingTasks && 'ongoing__list--no-result']
-            .filter(Boolean)
-            .join(' ')}
+          className={clsx('ongoing__list', !areOngoingTasks && 'ongoing__list--no-result')}
         >
           {
             <li key="newTask" className="ongoing__item ongoing__item--new-task">

@@ -87,7 +87,8 @@ export const CalendarEvents = () => {
                   <article className="calendar-events__item" key={id}>
                     <Button
                       type="button"
-                      className="btn btn--text calendar-events__item-edit-btn"
+                      variant="text"
+                      className="calendar-events__item-edit-btn"
                       onClick={() => handleClickEditEvent(event)}
                       disabled={updating}
                     >
@@ -99,7 +100,8 @@ export const CalendarEvents = () => {
                     </div>
                     <Button
                       type="button"
-                      className="btn btn--text calendar-events__item-delete-btn"
+                      variant="text"
+                      className="calendar-events__item-delete-btn"
                       onClick={() => handleClickDeleteEvent(event)}
                       disabled={deleting}
                     >

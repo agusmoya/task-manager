@@ -1,14 +1,12 @@
+import clsx from 'clsx'
+
 import { Button } from '../../../components/button/Button'
-import { NextIcon, PhoneIcon } from '../../../components/icons/Icons'
+import { ArrowRightIcon, PhoneIcon } from '../../../components/icons/Icons'
 import { EventSegment } from '../schedule/type-ui/event-ui'
 
 import './ScheduleEvent.css'
-
-const userImages = [
-  '/images/members/user-2.webp',
-  '/images/members/user-7.webp',
-  '/images/members/user-4.webp',
-]
+import { CollaboratorAvatars } from '../../../components/collaborators-avatars/CollaboratorAvatars'
+import { IUser } from '../../../types/user'
 
 interface Prop {
   initialLocation: number
@@ -33,15 +31,15 @@ export const ScheduleEvent = ({
   const top = offsetHours * rowHeight + labelHeight / 2
   const height = duration * rowHeight
 
+  const collaborators: IUser[] = []
+
   return (
     <article
-      className={[
+      className={clsx(
         'schedule__event',
         isStartSegment && 'schedule__event--start',
-        isEndSegment && 'schedule__event--end',
-      ]
-        .filter(Boolean)
-        .join(' ')}
+        isEndSegment && 'schedule__event--end'
+      )}
       style={{
         top: `${top}px`,
         height: `${height}px`,
@@ -51,25 +49,15 @@ export const ScheduleEvent = ({
       <h3>{title}</h3>
       <h4>{notes}</h4>
       <div className="schedule__event-collaborators">
-        <div className="schedule__avatars">
-          {userImages.slice(0, 3).map((img, index) => (
-            <img
-              src={`${img}`}
-              className="schedule__avatar"
-              key={index}
-              alt={`User ${index + 1}`}
-            />
-          ))}
-          <span className="schedule__avatar schedule__avatar--more">+1</span>
-        </div>
-        <Button type="button" className="btn btn--filled schedule__icon-btn">
+        <CollaboratorAvatars users={collaborators} />
+        <Button variant="filled" className="schedule__icon-btn">
           <PhoneIcon className="schedule__icon" />
         </Button>
       </div>
       {isStartSegment && (
-        <Button type="button" className="btn schedule__follow-event-btn" onClick={requestNextDay}>
+        <Button variant="text" className="schedule__follow-event-btn" onClick={requestNextDay}>
           <span className="schedule__next-text">Follow event</span>
-          <NextIcon className="schedule__follow-event-icon" />
+          <ArrowRightIcon className="schedule__follow-event-icon" />
         </Button>
       )}
     </article>

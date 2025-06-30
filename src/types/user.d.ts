@@ -3,7 +3,7 @@ export interface IUser {
   firstName: string
   lastName: string
   email: string
-  profileImage: string
+  image: string
   contacts: IUser[]
 }
 

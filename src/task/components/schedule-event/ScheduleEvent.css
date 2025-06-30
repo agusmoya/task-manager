@@ -43,34 +43,6 @@
   align-items: center;
 }
 
-.schedule__avatars {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 10px;
-}
-
-.schedule__avatar,
-.schedule__avatar--more {
-  justify-content: center;
-  align-items: center;
-  margin-left: -10px;
-  border-radius: 50%;
-}
-
-.schedule__avatar {
-  width: 3rem;
-  height: 3rem;
-  border: 2px solid var(--color-on-surface);
-}
-
-.schedule__avatar--more {
-  padding: 0.6rem;
-  background-color: var(--color-on-surface);
-  width: 2.5rem;
-  height: 2.5rem;
-}
-
 .schedule__icon-btn {
   border-radius: 50%;
   padding: 0.3rem;

@@ -1,20 +1,39 @@
 .task-info {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  row-gap: var(--spacing-6);
 }
 
-.task-info__time {
+.task-info__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.task-info__title-block {
   display: flex;
   flex-direction: column;
-  row-gap: 0.5rem;
+  gap: var(--spacing-3);
+}
+
+.task-info__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-5);
+  font-size: var(--text-sm);
+  color: var(--color-on-surface-variant);
+}
+
+.task-info__participants {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .task-info__actions {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-2);
+  justify-content: flex-end;
+  column-gap: var(--spacing-2);
 }
 
 .task-info__edit-btn,

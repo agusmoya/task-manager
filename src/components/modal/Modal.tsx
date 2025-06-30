@@ -60,7 +60,8 @@ export const Modal = ({ title, isOpen, onClose, children }: ModalProps) => {
         <div className="modal__body">{children}</div>
         <Button
           type="button"
-          className="btn btn--icon modal__button-close"
+          variant="icon"
+          className="modal__button-close"
           aria-label="Close dialog"
           onClick={onClose}
         >

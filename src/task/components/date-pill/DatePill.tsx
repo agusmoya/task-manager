@@ -1,3 +1,5 @@
+import clsx from 'clsx'
+
 import { Dayjs } from 'dayjs'
 
 import './DatePill.css'
@@ -18,14 +20,12 @@ export const DatePill = ({ date, isToday, isSelected, hasEvents, onSelect }: Pro
     <>
       <button
         type="button"
-        className={[
+        className={clsx(
           'pill',
           isToday && 'pill--today',
           isSelected && 'pill--selected',
-          hasEvents && 'pill--has-events',
-        ]
-          .filter(Boolean)
-          .join(' ')}
+          hasEvents && 'pill--has-events'
+        )}
         onClick={() => onSelect(date)}
       >
         <h3>{numberDay}</h3>

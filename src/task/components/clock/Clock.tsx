@@ -22,7 +22,7 @@ export const Clock = ({ today }: Props) => {
   return (
     <>
       <time className="clock">{currentTime}</time>
-      <hr className="separator" />
+      {/* <hr className="separator" /> */}
     </>
   )
 }

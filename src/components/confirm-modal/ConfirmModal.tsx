@@ -26,10 +26,10 @@ export const ConfirmModal = ({
     <Modal title={title} isOpen={isOpen} onClose={onCancel}>
       <p className="confirm-modal__message">{message}</p>
       <div className="confirm-modal__actions">
-        <Button type="button" className="btn btn--text" onClick={onCancel}>
+        <Button variant="text" onClick={onCancel}>
           {cancelLabel}
         </Button>
-        <Button type="button" className="btn btn--filled" onClick={onConfirm}>
+        <Button variant="filled" onClick={onConfirm}>
           {confirmLabel}
         </Button>
       </div>

@@ -18,7 +18,7 @@ export function PlusIcon({ size = 24, fill = 'currentColor', ...props }: IconPro
   )
 }
 
-export function NextIcon({ size = 24, fill = 'currentColor', ...props }: IconProps) {
+export function ArrowRightIcon({ size = 24, fill = 'currentColor', ...props }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +33,7 @@ export function NextIcon({ size = 24, fill = 'currentColor', ...props }: IconPro
   )
 }
 
-export function PreviousIcon({ size = 24, fill = 'currentColor', ...props }: IconProps) {
+export function ArrowLeftIcon({ size = 24, fill = 'currentColor', ...props }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

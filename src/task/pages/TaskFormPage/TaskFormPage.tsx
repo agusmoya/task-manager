@@ -245,7 +245,8 @@ const TaskFormPage = () => {
         <footer className="task__form-footer">
           <Button
             type="submit"
-            className="btn btn--filled task__form-button"
+            variant="filled"
+            className="task__form-button"
             disabled={!isFormValid || creatingCat || creatingTask || updatingTask}
           >
             {id ? 'Edit ' : 'Create'}
@@ -253,7 +254,8 @@ const TaskFormPage = () => {
 
           <Button
             type="reset"
-            className="btn btn--outlined task__form-button"
+            variant="outlined"
+            className="task__form-button"
             onClick={onResetForm}
             disabled={isFormValid || creatingCat || creatingTask || updatingTask}
           >

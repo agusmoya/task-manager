@@ -77,7 +77,7 @@ const LoginPage = () => {
         <a href="#" className="login__forgot">
           Forgot your password?
         </a>
-        <Button type="submit" className="btn login__button" disabled={!isFormValid || loginLoading}>
+        <Button type="submit" className="login__button" disabled={!isFormValid || loginLoading}>
           {`${loginLoading ? 'Loading ...' : 'Login'}`}
         </Button>
       </form>

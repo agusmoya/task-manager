@@ -12,7 +12,8 @@ export const FabOpenModal = ({ className, handleClickOpen }: Props) => {
   return (
     <Button
       type="button"
-      className={`btn btn--outlined add-event-btn ${className}`}
+      variant="outlined"
+      className={`add-event-btn ${className}`}
       onClick={handleClickOpen}
     >
       <PlusIcon className="add-event-icon" />

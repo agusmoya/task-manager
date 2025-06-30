@@ -159,12 +159,13 @@ export const EventForm = ({ initialEvent, existingEvents, onAddEvent, onUpdateEv
         <footer className="event__form-footer">
           <Button
             type="submit"
-            className="btn btn--filled event__form-button"
+            variant="filled"
+            className="event__form-button"
             disabled={!isFormValid}
           >
             {initialEvent ? 'Edit' : 'Create'}
           </Button>
-          <Button type="reset" className="btn btn--text event__form-button" onClick={onResetForm}>
+          <Button type="reset" variant="text" className="event__form-button" onClick={onResetForm}>
             Reset
           </Button>
         </footer>

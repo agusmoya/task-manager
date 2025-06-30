@@ -1,0 +1,30 @@
+.chip {
+  display: inline-block;
+  padding: 0.2rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--text-xs);
+  text-transform: capitalize;
+  background-color: var(--color-surface-variant);
+  color: var(--color-on-surface-variant);
+}
+
+.chip--success {
+  background-color: hsl(142, 80%, 90%);
+  color: hsl(145, 60%, 25%);
+}
+
+.chip--warning {
+  background-color: hsl(45, 100%, 90%);
+  color: hsl(35, 80%, 30%);
+}
+
+.chip--info {
+  background-color: hsl(208, 100%, 93%);
+  color: hsl(210, 80%, 35%);
+}
+
+.chip--error {
+  background-color: hsl(0, 100%, 90%);
+  color: hsl(0, 70%, 40%);
+}

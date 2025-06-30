@@ -1,5 +1,5 @@
 import { Button } from '../../../components/button/Button'
-import { NextIcon, PreviousIcon } from '../../../components/icons/Icons'
+import { ArrowRightIcon, ArrowLeftIcon } from '../../../components/icons/Icons'
 
 import './FabMonth.css'
 
@@ -14,8 +14,8 @@ export const FabMonth = ({ direction, onHandleClick }: FabMonthProps) => {
   }
 
   return (
-    <Button className="btn btn--fab fab-month" onClick={handleClickNext}>
-      {direction === 'left' ? <PreviousIcon /> : <NextIcon />}
+    <Button variant="fab" className="fab-month" onClick={handleClickNext}>
+      {direction === 'left' ? <ArrowLeftIcon /> : <ArrowRightIcon />}
     </Button>
   )
 }

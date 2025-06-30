@@ -1,5 +1,7 @@
 import { FC, useId, useState } from 'react'
 
+import clsx from 'clsx'
+
 import { InputProps } from '../../types/input.d'
 
 import './Input.css'
@@ -57,13 +59,11 @@ export const Input: FC<InputProps> = ({
           min={min}
           max={max}
           disabled={disabled}
-          className={[
+          className={clsx(
             'input__field',
-            hasError ? 'input__field--error' : '',
-            disabled ? 'input__field--disabled' : '',
-          ]
-            .filter(Boolean)
-            .join(' ')}
+            hasError && 'input__field--error',
+            disabled && 'input__field--disabled'
+          )}
           onChange={onChange}
           onBlur={onBlur}
           aria-invalid={hasError}

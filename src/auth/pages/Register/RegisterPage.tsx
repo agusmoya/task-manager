@@ -108,7 +108,7 @@ const RegisterPage = () => {
           onChange={onInputChange}
           onBlur={() => onBlurField('password')}
         />
-        <Button type="submit" className="btn btn--filled register__button" disabled={!isFormValid}>
+        <Button type="submit" variant="filled" className="register__button" disabled={!isFormValid}>
           {`${registerLoading ? 'Loading ...' : 'Create account'}`}
         </Button>
       </form>

@@ -1,39 +1,29 @@
-// import { Link } from "react-router-dom"
-
-// import { PlusIcon } from "../../../components/icons/Icons.tsx"
+import clsx from 'clsx'
 
 import { ScrollableContainer } from '../../../components/scrollable-container/ScrollableContainer'
-
-import { ICountingCategories } from '../../../types/category.d'
 
 import { useSearch } from '../../hooks/useSearch'
 import { useCategoryActions } from '../../../store/hooks/useCategoryActions'
 
 import './Categories.css'
+import { useTaskActions } from '../../../store/hooks/useTaskActions'
 
 export function Categories() {
   const { search } = useSearch()
   const { categories } = useCategoryActions()
+  const { tasks } = useTaskActions()
 
-  const organizedCategories: { [key: string]: ICountingCategories } = {}
-
-  categories?.map(cat => {
-    const { name } = cat
-    if (!organizedCategories[name]) {
-      organizedCategories[name] = {
-        ...cat,
-        quantity: 1,
-      }
-    } else {
-      organizedCategories[name].quantity++
-    }
+  const categoryCountMap = new Map<string, number>()
+  tasks.forEach(t => {
+    const catName = t.category.name
+    categoryCountMap.set(catName, (categoryCountMap.get(catName) || 0) + 1)
   })
 
-  const filteredCategories = Object.values(organizedCategories).filter(({ name }) =>
+  const filteredCategories = Object.values(categories).filter(({ name }) =>
     name.toLowerCase().includes(search.toLowerCase())
   )
 
-  const areCategoriesPresent = filteredCategories.length
+  const areCategoriesPresent = filteredCategories.length > 0
 
   return (
     <section className="categories section" id="categories">
@@ -41,44 +31,30 @@ export function Categories() {
         <header className="categories__header">
           <div className="categories__header-content">
             <h2 className="categories__title">Categories</h2>
-            {/* <Link to='new-category' className="btn btn--outlined categories__card-new-button">
-              <span className="btn__state-layer"></span>
-              <span className="btn__content">
-                <PlusIcon />
-              </span>
-            </Link> */}
           </div>
           <a>See all</a>
         </header>
         <ScrollableContainer
           itemClass="categories__item"
-          className={['categories__list', !areCategoriesPresent && 'categories__list--no-result']
-            .filter(Boolean)
-            .join(' ')}
+          className={clsx(
+            'categories__list',
+            !areCategoriesPresent && 'categories__list--no-result'
+          )}
         >
-          {/* <li
-            key="newCategory"
-            className="categories__item categories__item--new-category"
-          >
-            <h3>New Category</h3>
-            <div className="categories__card">
-              <Link to='new-category' className="btn btn--outlined categories__card-new-button">
-                <span className="btn__state-layer"></span>
-                <span className="btn__content">
-                  <PlusIcon />
-                </span>
-              </Link>
-            </div>
-          </li> */}
-          {filteredCategories.length > 0 ? (
-            filteredCategories.map(({ id, name, quantity }) => (
-              <li className="categories__item" key={id}>
-                <div className="categories__card">
-                  <h3 className="section__subtitle">{name}</h3>
-                  <small>{quantity} task(s)</small>
-                </div>
-              </li>
-            ))
+          {areCategoriesPresent ? (
+            filteredCategories.map(({ id, name }) => {
+              const quantity = categoryCountMap.get(name) || 0
+              return (
+                <li className="categories__item" key={id}>
+                  <div className="categories__card">
+                    <h3 className="section__subtitle">{name}</h3>
+                    <small>
+                      In {quantity} {quantity === 1 ? 'task' : 'tasks'}
+                    </small>
+                  </div>
+                </li>
+              )
+            })
           ) : (
             <span>No categories found...</span>
           )}

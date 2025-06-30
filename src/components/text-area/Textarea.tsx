@@ -1,3 +1,5 @@
+import clsx from 'clsx'
+
 import { TextareaProps } from '../../types/text-area.d'
 
 import './Textarea.css'
@@ -17,16 +19,7 @@ export const Textarea = ({
   cols,
   onChange,
   onBlur,
-  // autoResize = false,
 }: TextareaProps) => {
-  // const textareaRef = useRef<HTMLTextAreaElement | null>(null)
-  // useEffect(() => {
-  //   if (autoResize && textareaRef.current) {
-  //     textareaRef.current.style.height = '1rem'
-  //     textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
-  //   }
-  // }, [value, autoResize])
-
   return (
     <div className="textarea">
       <div className="textarea__wrapper">
@@ -41,14 +34,11 @@ export const Textarea = ({
           required={required}
           rows={rows}
           cols={cols}
-          // ref={textareaRef}
-          className={[
+          className={clsx(
             'textarea__field',
-            error && touched ? 'textarea__field--error' : '',
-            disabled ? 'textarea__field--disabled' : '',
-          ]
-            .filter(Boolean)
-            .join(' ')}
+            error && touched && 'textarea__field--error',
+            disabled && 'textarea__field--disabled'
+          )}
           aria-describedby={error && touched ? `${name}-error` : undefined}
         />
         <label htmlFor={name} className="textarea__label">

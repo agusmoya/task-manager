@@ -35,7 +35,7 @@ export const Search: React.FC = () => {
             placeholder="Search categories or tasks..."
           />
         </form>
-        <Button type="submit" className="btn btn--filled search__button-settings">
+        <Button type="submit" variant="filled" className="search__button-settings">
           <ControlIcon className="search__icon-settings" />
         </Button>
       </div>

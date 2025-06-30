@@ -1,3 +1,5 @@
+import clsx from 'clsx'
+
 import { FabMonth } from '../fab-month/FabMonth'
 import { Button } from '../../../components/button/Button'
 
@@ -54,7 +56,8 @@ export const CalendarGridDays = () => {
       <div className="calendar-wrapper__today">
         <Button
           type="button"
-          className="btn btn--text calendar-wrapper__today-button"
+          variant="text"
+          className="calendar-wrapper__today-button"
           onClick={handleClickGoToday}
         >
           {currentDate()}
@@ -84,16 +87,14 @@ export const CalendarGridDays = () => {
             <div
               key={`${type}-${year}-${month}-${day}`}
               onClick={() => handleDayClick(calendarDay)}
-              className={[
+              className={clsx(
                 'calendar-wrapper__day',
                 isActiveDay(activeCalendarDay!, calendarDay) && 'calendar-wrapper__day--active',
                 isToday(calendarDay) && 'calendar-wrapper__day--today',
                 isPrevDay(type) && 'calendar-wrapper__day--prev',
                 isNextDay(type) && 'calendar-wrapper__day--next',
-                dayHasEvents && 'calendar-wrapper__day--event',
-              ]
-                .filter(Boolean)
-                .join(' ')}
+                dayHasEvents && 'calendar-wrapper__day--event'
+              )}
             >
               {day}
             </div>

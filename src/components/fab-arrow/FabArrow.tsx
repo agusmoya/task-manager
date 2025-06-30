@@ -1,6 +1,6 @@
 import { RefObject, useState, useEffect } from 'react'
 
-import { NextIcon, PreviousIcon } from '../icons/Icons'
+import { ArrowRightIcon, ArrowLeftIcon } from '../icons/Icons'
 import { Button } from '../button/Button'
 
 import './FabArrow.css'
@@ -67,12 +67,13 @@ export const FabArrow = ({ direction, scrollContainerRef, widthItemClass }: Arro
   return (
     !scrollDisabled && (
       <Button
-        className={`btn btn--fab arrow-button arrow-button--${direction}`}
+        variant="fab"
+        className={`arrow-button arrow-button--${direction}`}
         onClick={handleScroll}
         disabled={scrollDisabled}
         aria-label={direction === 'left' ? 'Scroll left' : 'Scroll right'}
       >
-        {direction === 'left' ? <PreviousIcon /> : <NextIcon />}
+        {direction === 'left' ? <ArrowLeftIcon /> : <ArrowRightIcon />}
       </Button>
     )
   )

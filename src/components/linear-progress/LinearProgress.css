@@ -1,0 +1,27 @@
+.linear-progress-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-on-surface-variant);
+}
+
+.linear-progress {
+  flex-grow: 1;
+  height: 0.75rem;
+  background-color: var(--color-surface-variant);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.linear-progress__bar {
+  height: 100%;
+  background-color: var(--color-primary);
+  transition: width 0.3s ease;
+  border-radius: 0.5rem;
+}
+
+.linear-progress__label {
+  white-space: nowrap;
+}

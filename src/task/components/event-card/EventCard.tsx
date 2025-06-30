@@ -21,16 +21,16 @@ export const EventCard = ({ event, onEdit, onDelete }: Props) => {
       <div className="event-card__actions">
         <Button
           aria-label="Edit event"
-          type="button"
-          className="btn btn--filled event-card__btn event-card__btn--edit"
+          variant="filled"
+          className="event-card__btn event-card__btn--edit"
           onClick={() => onEdit({ ...event })}
         >
           <EditIcon />
         </Button>
         <Button
           aria-label="Delete event"
-          type="button"
-          className="btn btn--filled event-card__btn event-card__btn--delete"
+          variant="filled"
+          className="event-card__btn event-card__btn--delete"
           onClick={() => onDelete(event.id!)}
         >
           <DeleteIcon />

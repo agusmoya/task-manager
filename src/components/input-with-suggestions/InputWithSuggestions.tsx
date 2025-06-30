@@ -4,6 +4,7 @@ import { InputWithSuggestionsProps } from '../../types/input.d'
 
 import '../input/Input.css'
 import './inputWithSuggestions.css'
+import clsx from 'clsx'
 
 export const InputWithSuggestions: FC<InputWithSuggestionsProps> = ({
   id = null,
@@ -95,13 +96,11 @@ export const InputWithSuggestions: FC<InputWithSuggestionsProps> = ({
           disabled={disabled}
           placeholder={placeholder}
           autoComplete={autoComplete}
-          className={[
+          className={clsx(
             'input__field',
-            error && touched ? 'input__field--error' : '',
-            disabled ? 'input__field--disabled' : '',
-          ]
-            .filter(Boolean)
-            .join(' ')}
+            error && touched && 'input__field--error',
+            disabled && 'input__field--disabled'
+          )}
           role="combobox"
           aria-describedby={describedBy}
           aria-autocomplete="list"
