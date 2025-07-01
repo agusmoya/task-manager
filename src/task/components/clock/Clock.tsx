@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react'
 
-import dayjs, { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 
 import './Clock.css'
 
-interface Props {
-  today: Dayjs
-}
-
-export const Clock = ({ today }: Props) => {
-  const [currentTime, setCurrentTime] = useState(today.format('hh:mm:ss A'))
+export const Clock = () => {
+  const [currentTime, setCurrentTime] = useState<string>(() => dayjs().format('hh:mm:ss A'))
 
   useEffect(() => {
     const interval = setInterval(() => {

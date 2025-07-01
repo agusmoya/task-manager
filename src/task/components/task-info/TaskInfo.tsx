@@ -10,14 +10,14 @@ import { ConfirmModal } from '../../../components/confirm-modal/ConfirmModal'
 import { ButtonLink } from '../../../components/button-link/ButtonLink'
 import { Chip } from '../../../components/chip/Chip'
 import { CollaboratorAvatars } from '../../../components/collaborators-avatars/CollaboratorAvatars'
+import { LinearProgress } from '../../../components/linear-progress/LinearProgress'
 
 import { ITask, TASK_STATUS } from '../../../types/task.d'
+import { EVENT_STATUS } from '../../../types/event.d'
 
-import { getToday } from '../../../calendar/utils/dateUtils'
 import { useTaskActions } from '../../../store/hooks/useTaskActions'
 
 import './TaskInfo.css'
-import { LinearProgress } from '../../../components/linear-progress/LinearProgress'
 
 interface Props {
   task: ITask
@@ -27,9 +27,21 @@ export const TaskInfo = ({ task }: Props) => {
   const navigate = useNavigate()
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
   const { deleting, deleteTask } = useTaskActions()
-  const today = dayjs(getToday())
-  const { id, title, status, category, participants, beginningDate, completionDate, progress } =
-    task
+  const {
+    id,
+    title,
+    status,
+    category,
+    events,
+    participants,
+    beginningDate,
+    completionDate,
+    progress,
+  } = task
+
+  const totalEvents = events?.length ?? 0
+  const completeEvents = events?.filter(e => e.status === EVENT_STATUS.COMPLETED).length ?? 0
+  const eventProgresTask = `${completeEvents}/${totalEvents}`
 
   const chipColor =
     status === TASK_STATUS.COMPLETED
@@ -54,19 +66,22 @@ export const TaskInfo = ({ task }: Props) => {
         <div className="task-info__title-block">
           <h2 className="task-info__title">{title}</h2>
           <div className="task-info__meta">
-            <span className="task-info__category">{category?.name}</span>
+            <Chip label={category?.name} variant="outlined" />
             <Chip label={status} color={chipColor} />
-            <div className="task-info__progress" style={{ width: '10rem' }}>
-              <LinearProgress showLabel value={progress} />
-            </div>
             <span className="task-info__dates">
               {dayjs(beginningDate).format('DD MMM')}
-              <ArrowRightIcon size={15} />
+              <ArrowRightIcon className="task-info__date-separator" />
               {dayjs(completionDate).format('DD MMM')}
             </span>
+            <div className="task-info__progress-group">
+              <LinearProgress showLabel value={progress} />
+              <small className="task-info__event-count">
+                ({eventProgresTask}) events completed.
+              </small>
+            </div>
           </div>
         </div>
-        <Clock today={today} />
+        <Clock />
       </div>
 
       <div className="task-info__participants">

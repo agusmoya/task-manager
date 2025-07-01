@@ -15,7 +15,7 @@ export const LinearProgress = ({ value, showLabel = false }: Props) => {
         aria-valuemin={0}
         aria-valuemax={100}
       >
-        <span className="linear-progress__bar" style={{ width: `${value}%` }} />
+        <div className="linear-progress__bar" style={{ width: `${value}%` }} />
       </div>
       {showLabel && <span className="linear-progress__label">{value}%</span>}
     </div>

@@ -1,8 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs'
 
-import { EventSegment } from '../task/components/schedule/type-ui/event-ui'
-
-import { IEvent } from '../types/event'
+import { EventSegment, IEvent } from '../types/event'
 
 /**
  * Split events into one or two segments:
@@ -50,6 +48,7 @@ const makeSegment = (
   return {
     id: event.id,
     title: event.title,
+    status: event.status,
     notes: event.notes,
     start,
     end,

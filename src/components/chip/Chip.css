@@ -1,7 +1,7 @@
 .chip {
   display: inline-block;
   padding: 0.2rem 0.75rem;
-  border-radius: 9999px;
+  border-radius: 1rem;
   font-weight: var(--font-weight-medium);
   font-size: var(--text-xs);
   text-transform: capitalize;
@@ -27,4 +27,9 @@
 .chip--error {
   background-color: hsl(0, 100%, 90%);
   color: hsl(0, 70%, 40%);
+}
+
+.chip--outlined {
+  background-color: transparent;
+  border: 2px solid var(--color-outline);
 }

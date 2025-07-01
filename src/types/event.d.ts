@@ -1,3 +1,5 @@
+import { Dayjs } from 'dayjs'
+
 import { ITask } from './task'
 import { IUser } from './user'
 
@@ -34,6 +36,7 @@ export interface IEvent {
   end: string
   notes: string
   status: EventStatus
+  collaborators?: IUser[]
   taskId?: string
   task?: ITask
   createdBy?: IUser | string
@@ -43,3 +46,11 @@ export interface IEvent {
 export type EventId = Pick<IEvent, 'id'>
 export type EventTitle = Pick<IEvent, 'title'>
 export type EventDates = Pick<IEvent, 'start' | 'end'>
+
+export interface EventSegment extends IEvent {
+  start: Dayjs
+  end: Dayjs
+  duration: number
+  isStartSegment: boolean
+  isEndSegment: boolean
+}

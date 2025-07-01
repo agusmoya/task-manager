@@ -11,6 +11,7 @@ export enum OperationError {
   FETCH = 'fetch',
   CREATE = 'create',
   UPDATE = 'update',
+  UPDATE_EVENT_STATUS = 'updateEventStatus',
   DELETE = 'delete',
 }
 

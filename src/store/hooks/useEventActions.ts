@@ -9,6 +9,7 @@ import {
   useCreateEventMutation,
   useDeleteEventMutation,
   useUpdateEventMutation,
+  useUpdateEventStatusMutation,
 } from '../../services/eventsApi'
 
 import { getErrorMessage, OperationError } from '../../api/helpers/getErrorMessage'
@@ -29,12 +30,15 @@ export const useEventActions = () => {
   } = useFetchEventsByUserQuery()
   const [createEvent, { isLoading: creating, error: createError }] = useCreateEventMutation()
   const [updateEvent, { isLoading: updating, error: updateError }] = useUpdateEventMutation()
+  const [updateEventStatus, { isLoading: updatingStatus, error: updateEvtStatusError }] =
+    useUpdateEventStatusMutation()
   const [deleteEvent, { isLoading: deleting, error: deleteError }] = useDeleteEventMutation()
 
   const {
     fetch: fetchEventError,
     create: createEventError,
     update: updateEventError,
+    updateEventStatus: updateEventStatusError,
     delete: deleteEventError,
   } = useMemo(
     () =>
@@ -42,9 +46,10 @@ export const useEventActions = () => {
         { operation: OperationError.FETCH, error: fetchError },
         { operation: OperationError.CREATE, error: createError },
         { operation: OperationError.UPDATE, error: updateError },
+        { operation: OperationError.UPDATE_EVENT_STATUS, error: updateEvtStatusError },
         { operation: OperationError.DELETE, error: deleteError },
       ]),
-    [fetchError, createError, updateError, deleteError]
+    [fetchError, createError, updateError, updateEvtStatusError, deleteError]
   )
 
   return {
@@ -58,15 +63,18 @@ export const useEventActions = () => {
     refetch,
     creating,
     updating,
+    updatingStatus,
     deleting,
     // Mutations RTKQ
     createEvent,
     updateEvent,
+    updateEventStatus,
     deleteEvent,
     // RTKQ errors
     fetchEventError,
     createEventError,
     updateEventError,
+    updateEventStatusError,
     deleteEventError,
   }
 }

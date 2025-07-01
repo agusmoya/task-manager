@@ -6,8 +6,15 @@
 
 .task-info__header {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
+}
+
+.task-info__date-separator {
+  width: 1rem;
+  height: 1rem;
+  margin-inline: var(--spacing-1);
+  color: var(--color-on-surface-variant);
 }
 
 .task-info__title-block {
@@ -20,9 +27,26 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--spacing-5);
+  gap: var(--spacing-3);
   font-size: var(--text-sm);
   color: var(--color-on-surface-variant);
+}
+
+.task-info__progress-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  flex-basis: 100%;
+}
+
+.task-info__dates {
+  flex-basis: 100%;
+}
+
+.task-info__event-count {
+  font-size: var(--text-sm);
+  color: var(--color-on-surface-variant);
+  white-space: nowrap;
 }
 
 .task-info__participants {
@@ -43,7 +67,7 @@
 }
 
 .task-info__calendar-btn {
-  border-radius: 100%;
+  border-radius: 50%;
   padding: var(--spacing-3);
 }
 

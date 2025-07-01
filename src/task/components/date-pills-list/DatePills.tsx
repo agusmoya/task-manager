@@ -3,7 +3,7 @@ import { Dayjs } from 'dayjs'
 
 import { DatePill } from '../date-pill/DatePill'
 
-import { EventSegment } from '../schedule/type-ui/event-ui'
+import { EventSegment } from '../../../types/event'
 
 import { useCurrentWeek } from '../../hooks/useCurrentWeek'
 

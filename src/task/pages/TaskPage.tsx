@@ -32,8 +32,8 @@ const TaskPage = () => {
   if (isError) {
     return (
       <div>
-        <p>Error al cargar la tarea.</p>
-        <button onClick={() => refetch()}>Reintentar</button>
+        <p>Error loading task.</p>
+        <button onClick={() => refetch()}>Retry</button>
       </div>
     )
   }

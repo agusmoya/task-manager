@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { TASK_STATUS } from '../../types/task.d'
+
 import { useAuthActions } from '../../store/hooks/useAuthActions'
+import { useTaskActions } from '../../store/hooks/useTaskActions'
 
 import './Dropdown.css'
 
@@ -17,9 +20,12 @@ export const Dropdown = ({
   image = '/images/members/user-1.webp',
   altText = 'Avatar photo',
 }: DropdownProps) => {
+  const { tasks } = useTaskActions()
   const detailsRef = useRef<HTMLDetailsElement>(null)
   const [isOpen, setIsOpen] = useState(false)
   const { user } = useAuthActions()
+
+  const pendingTasks = tasks.filter(t => t.status === TASK_STATUS.PENDING).length
 
   const closeDropdown = () => {
     if (detailsRef.current) {
@@ -58,7 +64,7 @@ export const Dropdown = ({
       >
         <div className="nav__user-info">
           <h1>Hi {user?.firstName}</h1>
-          <small>5 pending tasks</small>
+          <small>{pendingTasks === 1 ? '1 pending task' : `${pendingTasks} pending tasks`}</small>
         </div>
         {image && <img className="dropdown__img" src={image} alt={altText} />}
       </summary>

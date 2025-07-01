@@ -1,7 +1,8 @@
 import { useRef } from 'react'
 
-import { EventSegment } from './type-ui/event-ui'
 import { ScheduleEvent } from '../schedule-event/ScheduleEvent'
+
+import { EventSegment } from '../../../types/event'
 
 import { useRowHeight } from './hooks/useRowHeight'
 import { getHoursSchedule } from '../../../utils/computedEvents'
@@ -39,7 +40,7 @@ export const Schedule = ({ segmentsForDay, onRequestNextDay }: Props) => {
         {segmentsForDay.map((segment, index) => {
           return (
             <ScheduleEvent
-              key={`${segment.id}`}
+              key={`${segment.id}-${index}`}
               segment={segment}
               index={index}
               initialLocation={initialLocation}
