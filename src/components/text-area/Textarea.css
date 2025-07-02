@@ -10,7 +10,10 @@
   position: absolute;
   top: 40%;
   transform: translateY(-50%);
-  transition: transform 0.4s, font-size 0.3s, color 0.3s;
+  transition:
+    transform 0.4s,
+    font-size 0.3s,
+    color 0.3s;
 }
 
 .textarea__field {
@@ -51,7 +54,7 @@
 }
 
 .textarea__field--error {
-  outline: 2px solid var(--color-error);
+  outline: var(--stroke-width-2) solid var(--color-error);
 }
 
 .textarea__field--disabled {

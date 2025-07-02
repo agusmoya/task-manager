@@ -7,44 +7,19 @@
   justify-content: space-evenly;
   height: 5.25rem;
   width: 2.75rem;
-  border-radius: 1.5rem;
+  border-radius: var(--radius-lg);
   position: relative;
-  z-index: 1;
-}
-
-.pill-connector {
-  flex: 1 1 0;
-  height: 0.75rem;
-  background-color: var(--color-on-surface);
-  border-radius: 1rem;
-  max-width: 4rem;
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    var(--color-on-surface) 20%,
-    var(--color-on-surface) 80%,
-    transparent 100%
-  );
-  display: none;
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
-}
-
-.pill-connector--visible {
-  display: flex;
-  opacity: 0.1;
-  transform: scaleX(1);
+  z-index: var(--z-normal);
 }
 
 .pill:hover {
-  outline: 2px dashed var(--color-on-surface);
+  outline: var(--stroke-width-2) dashed var(--color-on-surface);
 }
 
 .pill--today {
   color: var(--color-surface);
   background-color: var(--color-on-surface);
-  border-radius: 1.5rem;
+  border-radius: var(--radius-lg);
 }
 
 .pill--today:not(.pill--selected) .pill__dot {
@@ -54,13 +29,13 @@
 .pill--selected {
   background-color: var(--color-primary-container);
   color: var(--color-on-primary-container);
-  outline: 2px dashed var(--color-on-surface);
+  outline: var(--stroke-width-2) dashed var(--color-on-surface);
 }
 
 .pill__dot {
   opacity: 0;
-  width: 0.4rem;
-  height: 0.4rem;
+  width: 0.5rem;
+  height: 0.5rem;
   border-radius: 50%;
   background-color: var(--color-on-surface);
 }

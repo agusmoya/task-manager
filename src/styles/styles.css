@@ -1,5 +1,4 @@
 @import './variables.css';
-@import './buttons.css';
 
 /*========== BASE (reset) ==========*/
 html {
@@ -17,8 +16,6 @@ input {
   border: none;
   outline: none;
   background: none;
-  padding: 0;
-  margin: 0;
 }
 
 /* hidden default background-color provided for browser */
@@ -116,7 +113,6 @@ svg {
 
 ul,
 ol {
-  padding: 0;
   list-style: none;
   overflow: hidden;
 }
@@ -220,10 +216,10 @@ ol {
 
   div.auth__container {
     width: 430px;
-    /* background: transparent;
-    backdrop-filter: blur(10px); */
+    background-color: var(--color-surface);
+    /* backdrop-filter: blur(10px); */
     padding: var(--spacing-5);
-    border-radius: 1rem;
+    border-radius: var(--radius-md);
   }
 
   h1.register__title,
@@ -232,7 +228,7 @@ ol {
   }
 
   button.login__button {
-    margin-bottom: 3rem;
+    margin-bottom: var(--spacing-12);
   }
 
   .register__group {
@@ -242,7 +238,7 @@ ol {
   }
 
   .calendar-layout {
-    margin: 0 2rem;
+    margin: 0 var(--spacing-8);
     display: flex;
   }
 

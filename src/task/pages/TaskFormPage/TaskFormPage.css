@@ -21,7 +21,7 @@
 .task__form-button {
   margin-block: var(--spacing-3);
   padding: var(--spacing-2) var(--spacing-4);
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
 }
 
 .form__error {

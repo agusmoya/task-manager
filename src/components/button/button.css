@@ -1,35 +1,27 @@
-:root {
-  --state-layer-hover-opacity: 0.1;
-  --state-layer-focus-opacity: 0.12;
-  --state-layer-pressed-opacity: 0.14;
-  --state-layer-dragged-opacity: 0.16;
-  --state-layer-disabled-opacity: 0.38;
-}
-
 .btn {
+  all: unset;
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: none;
   font-family: var(--body-font);
   font-size: var(--text-md);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
-  text-decoration: none;
   user-select: none;
   overflow: hidden;
+  border-radius: var(--radius-md);
   transition:
     background-color 0.3s ease,
     box-shadow 0.3s ease;
 }
 
-.btn__state-layer {
+/* State-layer: pseudo-elemento que pinta hover/focus/pressed */
+.btn::before {
+  content: '';
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  z-index: var(--z-base);
+  inset: 0;
   background-color: currentColor;
   opacity: 0;
   pointer-events: none;
@@ -37,20 +29,20 @@
   border-radius: inherit;
 }
 
-.btn:hover .btn__state-layer {
+.btn:hover::before {
   opacity: var(--state-layer-hover-opacity);
 }
 
-.btn:focus {
-  outline: 1px solid var(--color-outline);
-  outline-offset: 1px;
+.btn:focus-visible {
+  outline: var(--stroke-width-2) solid var(--color-outline);
+  outline-offset: var(--stroke-width-1);
 }
 
-.btn:focus .btn__state-layer {
+.btn:focus-visible::before {
   opacity: var(--state-layer-focus-opacity);
 }
 
-.btn:active .btn__state-layer {
+.btn:active::before {
   opacity: var(--state-layer-pressed-opacity);
 }
 
@@ -59,10 +51,21 @@
   cursor: not-allowed;
 }
 
-.btn:disabled .btn__state-layer {
+.btn:disabled::before {
   opacity: 0;
 }
 
+/* content wrapper (icon + text) */
+.btn__content {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-1);
+}
+
+/* Buttons variants */
 .btn--filled {
   background-color: var(--color-primary);
   color: var(--color-on-primary);
@@ -76,18 +79,13 @@
 .btn--outlined {
   background-color: transparent;
   color: var(--color-primary);
-  border: 2px solid var(--color-outline);
+  border: var(--stroke-width-2) solid var(--color-outline);
 }
 
 .btn--text {
+  border-radius: var(--radius-xs);
   background-color: transparent;
   color: var(--color-primary);
-}
-
-.btn--elevated {
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
-  box-shadow: var(--elevation-1);
 }
 
 .btn--icon {
@@ -95,6 +93,13 @@
   color: var(--color-on-surface);
   padding: var(--spacing-2);
   border-radius: 50%;
+}
+
+.btn--elevated {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: var(--elevation-1);
+  will-change: scale;
 }
 
 .btn--fab {
@@ -108,11 +113,4 @@
 .btn--elevated:not(:disabled):active,
 .btn--fab:not(:disabled):active {
   scale: 0.98;
-}
-
-.btn__content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-1);
 }

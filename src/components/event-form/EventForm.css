@@ -7,7 +7,7 @@
 
 .event__form-button {
   padding: var(--spacing-2) var(--spacing-4);
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
 }
 
 .event__form-footer {

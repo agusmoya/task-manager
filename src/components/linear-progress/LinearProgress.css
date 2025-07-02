@@ -12,7 +12,7 @@
   flex-grow: 1;
   height: 0.75rem;
   background-color: var(--color-surface-variant);
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
   overflow: hidden;
 }
 
@@ -20,7 +20,7 @@
   height: 100%;
   background-color: var(--color-primary);
   transition: width 0.3s ease;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
 }
 
 .linear-progress__label {

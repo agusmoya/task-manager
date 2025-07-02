@@ -10,7 +10,10 @@
 .input__label {
   left: var(--spacing-5);
   font-weight: var(--font-weight-medium);
-  transition: transform 0.4s, font-size 0.3s, color 0.3s;
+  transition:
+    transform 0.4s,
+    font-size 0.3s,
+    color 0.3s;
 }
 
 .input__icon,
@@ -59,7 +62,7 @@
 }
 
 .input__field--error {
-  outline: 2px solid var(--color-error);
+  outline: var(--stroke-width-2) solid var(--color-error);
 }
 
 .input__field--disabled {
@@ -89,14 +92,13 @@
 }
 
 /* Estilos por defecto (tema claro) */
-input[type="datetime-local"].input__field::-webkit-calendar-picker-indicator {
+input[type='datetime-local'].input__field::-webkit-calendar-picker-indicator {
   font-size: 1.1rem;
   cursor: pointer;
   filter: invert(0);
 }
 
 /* Estilos para tema oscuro */
-[data-theme="dark"]
-  input[type="datetime-local"].input__field::-webkit-calendar-picker-indicator {
+[data-theme='dark'] input[type='datetime-local'].input__field::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }

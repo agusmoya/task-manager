@@ -20,7 +20,7 @@
 
 .categories__list--no-result {
   color: var(--color-on-surface-variant);
-  border-radius: 1rem;
+  border-radius: var(--radius-md);
   justify-content: center;
   align-items: center;
   font-style: italic;
@@ -31,7 +31,7 @@
   flex-direction: column;
   color: var(--color-on-primary-container);
   background-color: var(--color-primary-container);
-  border-radius: 1rem;
+  border-radius: var(--radius-md);
   padding: var(--spacing-4);
   min-height: 200px;
   min-width: 150px;

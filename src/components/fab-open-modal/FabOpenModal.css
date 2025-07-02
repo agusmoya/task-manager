@@ -4,9 +4,8 @@
   display: grid;
   place-items: center;
   color: var(--color-primary);
-  border: 2px solid var(--color-primary);
+  border: var(--stroke-width-2) solid var(--color-primary);
   opacity: 0.5;
-  border-radius: 50%;
   z-index: var(--z-tooltip);
 }
 

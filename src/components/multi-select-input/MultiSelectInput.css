@@ -14,18 +14,18 @@
 
 .multi-select-search {
   padding: var(--spacing-2);
-  border: 1px solid var(--color-outline-variant);
-  border-radius: 0.5rem;
+  border: var(--stroke-width-1) solid var(--color-outline-variant);
+  border-radius: var(--radius-sm);
   background-color: var(--color-surface);
   color: var(--color-on-surface);
   font-size: var(--text-md);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .multi-select-search:focus {
-  outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px var(--color-primary-active);
 }
 
 .multi-select-selected {
@@ -35,20 +35,18 @@
 }
 
 .multi-select-chip {
+  outline: none;
+  position: relative;
   display: inline-flex;
   align-items: center;
   padding: var(--spacing-1) var(--spacing-2);
   background-color: var(--color-primary-container);
   color: var(--color-on-primary-container);
-  border-radius: 1rem;
+  border-radius: var(--radius-md);
   font-size: var(--text-sm);
   cursor: pointer;
   user-select: none;
   transition: background-color 0.2s;
-}
-
-.multi-select-chip:hover {
-  background-color: var(--color-primary-hover);
 }
 
 .multi-select-chip--none {
@@ -64,24 +62,19 @@
   overflow-y: auto;
   padding: var(--spacing-2);
   background-color: var(--color-surface);
-  border: 1px solid var(--color-outline-variant);
-  border-radius: 0.5rem;
+  border: var(--stroke-width-1) solid var(--color-outline-variant);
+  border-radius: var(--radius-sm);
   box-shadow: var(--elevation-1);
 }
 
 .multi-select-option {
+  position: relative;
   padding: var(--spacing-2);
-  border-radius: 0.375rem;
+  border-radius: var(--radius-xs);
   font-size: var(--text-md);
   color: var(--color-on-surface);
   cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.multi-select-option:hover,
-.multi-select-option:focus {
-  background-color: var(--color-secondary);
-  outline: none;
+  transition: background-color 0.3s;
 }
 
 .multi-select-input__feedback {
@@ -91,4 +84,24 @@
 .multi-select-input__error-message {
   color: var(--color-error);
   font-size: var(--text-sm);
+}
+
+/* interactions */
+.multi-select-option::before,
+.multi-select-chip::before {
+  content: '';
+  position: absolute;
+  z-index: var(--z-base);
+  inset: 0;
+  background-color: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+}
+
+.multi-select-chip:hover::before,
+.multi-select-option:hover::before,
+.multi-select-option:focus::before {
+  opacity: var(--state-layer-hover-opacity);
 }

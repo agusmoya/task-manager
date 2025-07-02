@@ -22,7 +22,7 @@
   width: 100%;
   padding-block: var(--spacing-6);
   margin-block: var(--spacing-8);
-  border-radius: 2rem;
+  border-radius: var(--radius-lg);
 }
 
 .login__social {
@@ -46,22 +46,22 @@
 }
 
 .login__social-link {
-  padding: 0.5rem;
+  padding: var(--spacing-2);
   box-shadow: var(--elevation-2);
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
   display: grid;
   place-items: center;
   transition: transform 0.4s;
 }
 
 .login__social-link:hover {
-  transform: translateY(-0.25rem);
+  transform: translateY(calc(-1 * var(--spacing-1)));
 }
 
 .login__switch {
   font-size: var(--text-md);
   padding: var(--spacing-1);
-  border-radius: 1rem;
+  border-radius: var(--radius-md);
 }
 
 .login__switch a {

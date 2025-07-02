@@ -11,14 +11,12 @@ import { Schedule } from '../components/schedule/Schedule'
 import { Loader } from '../../components/loader-page/Loader'
 
 import { useFetchTaskByIdQuery } from '../../services/tasksApi'
-import { useCurrentWeek } from '../hooks/useCurrentWeek'
 import { getEventsSegments } from '../../utils/computedEvents'
 
 const TaskPage = () => {
   const { id } = useParams<{ id: TaskId }>()
   const { data: task, isLoading, isError, refetch } = useFetchTaskByIdQuery(id!, { skip: !id })
-  const { today } = useCurrentWeek()
-  const [selectedDate, setSelectedDate] = useState(today)
+  const [selectedDate, setSelectedDate] = useState(dayjs())
 
   const [allSegments, segmentsForDay] = useMemo(() => {
     const allSegments = getEventsSegments(task?.events)

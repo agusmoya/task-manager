@@ -11,7 +11,7 @@
 
 .calendar-wrapper::after,
 .calendar-wrapper::before {
-  content: "";
+  content: '';
   position: absolute;
   width: 5px;
   height: 96%;
@@ -35,7 +35,7 @@
   color: var(--color-on-surface-variant);
   background-color: var(--color-surface-variant);
   font-weight: var(--font-weight-medium);
-  border-radius: 1rem;
+  border-radius: var(--radius-md);
   width: 10rem;
 }
 
@@ -46,7 +46,7 @@
 .calendar-wrapper__month {
   background-color: var(--color-secondary-container);
   color: var(--color-on-secondary-container);
-  border-radius: var(--spacing-2);
+  border-radius: var(--radius-sm);
   font-size: var(--text-lg);
   text-transform: capitalize;
   align-items: center;
@@ -83,7 +83,10 @@
   aspect-ratio: 1 / 1;
   cursor: pointer;
   will-change: transform, background-color;
-  transition: transform 0.3s, background-color 0.3s, color 0.3s;
+  transition:
+    transform 0.3s,
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .calendar-wrapper__day--active,
@@ -141,10 +144,10 @@
   bottom: 15%;
   left: 50%;
   transform: translateX(-50%);
-  content: "";
+  content: '';
   width: 30%;
   height: 7%;
-  border-radius: 1rem;
+  border-radius: var(--radius-md);
   background-color: #982828;
 }
 

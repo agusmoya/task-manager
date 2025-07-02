@@ -1,6 +1,8 @@
 import { Link, LinkProps } from 'react-router-dom'
 import clsx from 'clsx'
 
+import '../button/Button.css'
+
 interface ButtonLinkProps extends LinkProps {
   variant?: 'filled' | 'outlined' | 'text' | 'tonal'
   size?: 'small' | 'medium' | 'large'
@@ -11,7 +13,7 @@ interface ButtonLinkProps extends LinkProps {
 
 export const ButtonLink = ({
   to,
-  variant = 'filled',
+  variant = 'text',
   size = 'medium',
   disabled = false,
   children,
@@ -28,7 +30,6 @@ export const ButtonLink = ({
 
   return (
     <Link to={to} className={classNames} aria-disabled={disabled} {...rest}>
-      <span className="btn__state-layer" />
       <span className="btn__content">{children}</span>
     </Link>
   )

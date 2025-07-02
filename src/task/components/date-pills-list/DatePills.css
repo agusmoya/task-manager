@@ -1,5 +1,28 @@
+.date-pills-nav {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--spacing-2);
+}
+
+.date-pills-actions {
+  display: flex;
+  column-gap: var(--spacing-5);
+  justify-content: center;
+  align-items: center;
+}
+
+.date-pills-nav__btn {
+  padding: var(--spacing-1);
+}
+
+.date-pills-nav__icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 .date-pills {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
+  column-gap: var(--spacing-1);
 }

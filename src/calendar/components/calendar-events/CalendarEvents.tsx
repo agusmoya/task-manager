@@ -65,8 +65,8 @@ export const CalendarEvents = () => {
   if (fetchEventError) {
     return (
       <div className="calendar-events__error">
-        <p>Error al cargar eventos.</p>
-        <Button onClick={() => refetch()}>Reintentar</Button>
+        <p>Error loading events.</p>
+        <Button onClick={() => refetch()}>Retry</Button>
       </div>
     )
   }

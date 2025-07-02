@@ -15,5 +15,5 @@
 .confirm-modal__actions > .btn {
   min-width: 5rem;
   padding: var(--spacing-2) var(--spacing-4);
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
 }

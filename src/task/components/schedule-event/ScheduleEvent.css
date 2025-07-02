@@ -58,11 +58,11 @@
 
 .schedule-event__status-btn {
   padding: var(--spacing-1);
-  border-radius: 100%;
+  border-radius: 50%;
   background-color: transparent;
   transition: background-color 0.2s;
   color: var(--color-outline);
-  border: 2px solid var(--color-outline);
+  border: var(--stroke-width-2) solid var(--color-outline);
 }
 
 .schedule-event__status-icon {
@@ -73,7 +73,7 @@
 
 .schedule-event__status-btn--completed {
   color: var(--color-primary);
-  border: 2px solid var(--color-on-primary);
+  border: var(--stroke-width-2) solid var(--color-on-primary);
 }
 
 .schedule-event__status-btn--completed .schedule-event__status-icon {
@@ -88,14 +88,14 @@
 
 .schedule-event__phone-btn {
   border-radius: 50%;
-  padding: 0.3rem;
+  padding: var(--spacing-1);
   background-color: var(--color-on-surface);
 }
 
 .schedule-event__follow-btn {
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: var(--spacing-2);
+  top: var(--spacing-2);
   padding: var(--spacing-3) var(--spacing-6);
   gap: var(--spacing-2);
 }

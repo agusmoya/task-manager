@@ -1,80 +1,42 @@
-import { RefObject, useState, useEffect } from 'react'
+import { RefObject } from 'react'
 
 import { ArrowRightIcon, ArrowLeftIcon } from '../icons/Icons'
 import { Button } from '../button/Button'
+
+import { useHorizontalScroll } from '../../hooks/useHorizontalScroll'
 
 import './FabArrow.css'
 
 interface ArrowButtonProps {
   direction: 'left' | 'right'
   scrollContainerRef: RefObject<HTMLUListElement>
-  widthItemClass: string
+  itemClass: string
 }
 
-export const FabArrow = ({ direction, scrollContainerRef, widthItemClass }: ArrowButtonProps) => {
-  const [scrollDisabled, setScrollDisabled] = useState(false)
+export const FabArrow = ({ direction, scrollContainerRef, itemClass }: ArrowButtonProps) => {
+  const { canScrollPrev, canScrollNext, scrollByItem } = useHorizontalScroll(
+    scrollContainerRef,
+    itemClass
+  )
 
-  useEffect(() => {
-    const container = scrollContainerRef.current
-    if (!container) return
-
-    const updateButtonState = () => {
-      const { scrollLeft, scrollWidth, clientWidth } = container
-
-      if (direction === 'left') {
-        setScrollDisabled(scrollLeft <= 0)
-      } else {
-        setScrollDisabled(scrollLeft + clientWidth >= scrollWidth - 1)
-      }
-    }
-
-    // Actualiza en scroll
-    container.addEventListener('scroll', updateButtonState)
-
-    // Observa cambios en tamaño
-    const resizeObserver = new ResizeObserver(updateButtonState)
-    resizeObserver.observe(container)
-
-    // Observa cambios en los hijos (por si cambia el contenido de la lista)
-    const mutationObserver = new MutationObserver(updateButtonState)
-    mutationObserver.observe(container, { childList: true, subtree: true })
-
-    // Llamada inicial
-    updateButtonState()
-
-    return () => {
-      container.removeEventListener('scroll', updateButtonState)
-      resizeObserver.disconnect()
-      mutationObserver.disconnect()
-    }
-  }, [direction, scrollContainerRef, widthItemClass])
-
-  const handleScroll = () => {
-    if (scrollContainerRef.current && !scrollDisabled) {
-      const firstItem = scrollContainerRef.current.querySelector(
-        `.${widthItemClass}`
-      ) as HTMLElement
-      if (firstItem) {
-        const itemWidth = firstItem.offsetWidth + 8 // plus gap between items
-        scrollContainerRef.current.scrollBy({
-          left: direction === 'left' ? -itemWidth : itemWidth,
-          behavior: 'smooth',
-        })
-      }
-    }
+  const handleClick = () => {
+    scrollByItem(direction)
   }
 
+  const scrollDisabled = direction === 'left' ? !canScrollPrev : !canScrollNext
+
+  // Only render the button when scrolling is possible
+  if (scrollDisabled) return null
+
   return (
-    !scrollDisabled && (
-      <Button
-        variant="fab"
-        className={`arrow-button arrow-button--${direction}`}
-        onClick={handleScroll}
-        disabled={scrollDisabled}
-        aria-label={direction === 'left' ? 'Scroll left' : 'Scroll right'}
-      >
-        {direction === 'left' ? <ArrowLeftIcon /> : <ArrowRightIcon />}
-      </Button>
-    )
+    <Button
+      variant="fab"
+      className={`arrow-button arrow-button--${direction}`}
+      onClick={handleClick}
+      disabled={scrollDisabled}
+      aria-label={direction === 'left' ? 'Scroll left' : 'Scroll right'}
+    >
+      {direction === 'left' ? <ArrowLeftIcon /> : <ArrowRightIcon />}
+    </Button>
   )
 }

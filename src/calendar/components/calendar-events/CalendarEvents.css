@@ -65,7 +65,7 @@
   display: grid;
   place-content: center;
   padding: var(--spacing-1);
-  border-radius: 1rem;
+  border-radius: var(--radius-md);
 }
 
 @keyframes slideRight {

@@ -4,10 +4,11 @@
 
 .scrollable-container__list {
   display: flex;
-  gap: var(--spacing-2);
-  padding-inline: var(--spacing-1);
-  scroll-padding-inline: var(--spacing-1); /* Snap inicia después del padding */
-  scroll-snap-type: x mandatory;
+  column-gap: var(--spacing-2);
+  padding: var(--spacing-1) var(--spacing-2);
+  scroll-padding-inline: var(--spacing-1); /* start snap after padding */
+  overflow-x: auto;
+  scroll-snap-type: x mandatory; /* snap children to start */
   scroll-behavior: smooth;
 }
 
