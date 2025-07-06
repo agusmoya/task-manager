@@ -15,10 +15,5 @@ export const Clock = () => {
     return () => clearInterval(interval)
   }, [])
 
-  return (
-    <>
-      <time className="clock">{currentTime}</time>
-      {/* <hr className="separator" /> */}
-    </>
-  )
+  return <time className="clock">{currentTime}</time>
 }

@@ -9,17 +9,17 @@
   color: var(--color-on-surface-variant);
 }
 
-.chip--success {
+.chip--completed {
   background-color: var(--color-on-success);
   color: var(--color-success);
 }
 
-.chip--warning {
+.chip--pending {
   background-color: var(--color-on-warning);
   color: var(--color-warning);
 }
 
-.chip--info {
+.chip--progress {
   background-color: var(--color-on-info);
   color: var(--color-info);
 }

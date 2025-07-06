@@ -7,9 +7,9 @@ export type FormValidations<T> = {
   [K in keyof T]?: Array<[ValidationFunction<T, K>, string]>
 }
 
-// Estado de validaciones: Cada campo se transforma en campoValid que puede ser string o null
+// Estado de validaciones: Cada campo se transforma en campoValid que puede ser string o undefined
 type ValidationState<T> = {
-  [K in keyof T as `${string & K}Valid`]: string | null
+  [K in keyof T as `${string & K}Valid`]: string | undefined
 }
 
 export const useForm = <T extends object>(
@@ -39,7 +39,7 @@ export const useForm = <T extends object>(
   }, [initialForm])
 
   const isFormValid = useMemo(() => {
-    return Object.values(formValidation).every(value => value === null)
+    return Object.values(formValidation).every(value => value === undefined)
   }, [formValidation])
 
   const onInputChange = (
@@ -89,7 +89,7 @@ export const useForm = <T extends object>(
   // Crea los mensajes de validación según el estado actual del formulario
   const createValidators = () => {
     // ✅ Hacemos un objeto mutable, no readonly
-    const formCheckedValues: Record<string, string | null> = {}
+    const formCheckedValues: Record<string, string | undefined> = {}
 
     for (const formField of Object.keys(formValidations) as Array<keyof T>) {
       const validations = formValidations[formField]
@@ -100,7 +100,7 @@ export const useForm = <T extends object>(
       const validationKey = `${String(formField)}Valid` as keyof ValidationState<T>
       // ✅ Ahora asignamos null o string (según lo que diga ValidationState<T>)
       const firstError = validations.find(([fn]) => fn(fieldValue, formState.values))
-      formCheckedValues[validationKey] = firstError ? firstError[1] : null
+      formCheckedValues[validationKey] = firstError ? firstError[1] : undefined
     }
 
     setFormValidation(formCheckedValues as ValidationState<T>)

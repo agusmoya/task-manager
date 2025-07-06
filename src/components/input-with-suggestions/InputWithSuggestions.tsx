@@ -69,8 +69,8 @@ export const InputWithSuggestions: FC<InputWithSuggestionsProps> = ({
       },
     } as React.ChangeEvent<HTMLInputElement>
 
-    onChange(syntheticEvent)
-    setShowSuggestions(false)
+    onChange?.(syntheticEvent)
+    setShowSuggestions?.(false)
   }
 
   const handleCreateNew = () => {
@@ -136,11 +136,6 @@ export const InputWithSuggestions: FC<InputWithSuggestionsProps> = ({
         )}
 
         {loading && <span>Loading...</span>}
-        {/* {backendError && (
-          <span id={`${name}-error`} className="input__error-message">
-            {backendError}
-          </span>
-        )} */}
         {hasError && !showSuggestions && (
           <span id={errorId} className="input__error-message" role="alert">
             {error}

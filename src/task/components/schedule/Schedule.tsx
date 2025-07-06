@@ -15,11 +15,11 @@ interface Props {
 }
 
 export const Schedule = ({ segmentsForDay, onRequestNextDay }: Props) => {
-  const tiemscaleRef = useRef<HTMLElement>(null)
-  const { rowHeight, labelHeight } = useRowHeight(tiemscaleRef)
+  const timescaleRef = useRef<HTMLElement>(null)
+  const { rowHeight, labelHeight } = useRowHeight(timescaleRef)
   const visualRowHeight = rowHeight
   const hoursSchedule = getHoursSchedule(segmentsForDay)
-  const initialLocation = hoursSchedule[0]
+  const initialLocation = hoursSchedule[0] ?? 0
 
   const transitionKey =
     segmentsForDay
@@ -28,19 +28,23 @@ export const Schedule = ({ segmentsForDay, onRequestNextDay }: Props) => {
 
   return (
     <section className={`schedule section container`}>
-      <aside className="schedule__timescale" ref={tiemscaleRef}>
+      <aside className="schedule__timescale" ref={timescaleRef} aria-hidden="true">
         {hoursSchedule.map(h => (
           <small key={h}>{`${h}:00`}</small>
         ))}
       </aside>
-      <div key={transitionKey} className="schedule__event-list schedule__event-list--animate">
+      <div
+        key={transitionKey}
+        className="schedule__event-list schedule__event-list--animate"
+        role="list"
+      >
         {segmentsForDay.length === 0 && (
           <div className="schedule__no-events">No events scheduled</div>
         )}
         {segmentsForDay.map((segment, index) => {
           return (
             <ScheduleEvent
-              key={`${segment.id}-${index}`}
+              key={`${segment.id}-${segment.isStartSegment}`}
               segment={segment}
               index={index}
               initialLocation={initialLocation}

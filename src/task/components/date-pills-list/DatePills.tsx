@@ -2,12 +2,12 @@ import { Dispatch, SetStateAction, useMemo, useState } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 
 import { DatePill } from '../date-pill/DatePill'
+import { Button } from '../../../components/button/Button'
+import { ArrowLeftIcon, ArrowRightIcon } from '../../../components/icons/Icons'
 
 import { EventSegment } from '../../../types/event'
 
 import './DatePills.css'
-import { Button } from '../../../components/button/Button'
-import { ArrowLeftIcon, ArrowRightIcon } from '../../../components/icons/Icons'
 
 interface Props {
   eventSegments: EventSegment[]
@@ -17,6 +17,7 @@ interface Props {
 
 export const DatePills = ({ eventSegments, selectedDate, onSelectDate }: Props) => {
   const [weekStart, setWeekStart] = useState<Dayjs>(() => selectedDate.startOf('week'))
+  const [animation, setAnimation] = useState<'slide-left' | 'slide-right' | ''>('')
 
   const daysWithEvents = useMemo(() => {
     const set = new Set<string>()
@@ -36,17 +37,20 @@ export const DatePills = ({ eventSegments, selectedDate, onSelectDate }: Props) 
     const newStart = weekStart.subtract(1, 'week')
     setWeekStart(newStart)
     onSelectDate(newStart)
+    setAnimation('slide-right')
   }
 
   const handleNextWeek = () => {
     const newStart = weekStart.add(1, 'week')
     setWeekStart(newStart)
     onSelectDate(newStart)
+    setAnimation('slide-left')
   }
 
   const handleResetCurrentWeek = () => {
     setWeekStart(dayjs().startOf('week'))
     onSelectDate(dayjs())
+    setAnimation('')
   }
 
   return (
@@ -67,7 +71,7 @@ export const DatePills = ({ eventSegments, selectedDate, onSelectDate }: Props) 
           <ArrowRightIcon className="date-pills-nav__icon" />
         </Button>
       </div>
-      <div className="date-pills">
+      <div key={weekStart.toString()} className={`date-pills ${animation}`}>
         {weekDays.map(date => {
           const isToday = date.isSame(dayjs(), 'day')
           const isSelected = date.isSame(selectedDate, 'day')

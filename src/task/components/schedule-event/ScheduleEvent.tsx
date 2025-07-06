@@ -61,6 +61,7 @@ export const ScheduleEvent = ({
         height: `${height}px`,
         animationDelay: `${index * 60}ms`,
       }}
+      role="listitem"
     >
       <header className="schedule-event__header">
         <h3 className="schedule-event__title">

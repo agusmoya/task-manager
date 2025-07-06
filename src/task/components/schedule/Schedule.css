@@ -1,16 +1,12 @@
 .schedule {
   display: grid;
   grid-template-columns: 1fr 5fr;
-  overflow-y: auto;
 }
 
 .schedule__timescale {
   display: flex;
   flex-direction: column;
-}
-
-.schedule__timescale {
-  row-gap: 8rem;
+  row-gap: 7rem;
 }
 
 .schedule__timescale small {
@@ -40,5 +36,5 @@
 .schedule__no-events {
   display: grid;
   place-content: center;
-  height: 10rem;
+  height: 5rem;
 }

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { Button } from '../../../components/button/Button'
 import { DeleteIcon, EditIcon, SeparatorIcon } from '../../../components/icons/Icons'
 
@@ -12,12 +13,13 @@ interface Props {
 }
 
 export const EventCard = ({ event, onEdit, onDelete }: Props) => {
-  const { title, start, end, notes } = event
-  const formattedStart = new Date(start).toLocaleString()
-  const formattedEnd = new Date(end).toLocaleString()
+  const { id, title, start, end, notes } = event
+
+  const formattedStart = dayjs(start).format('YYYY-MM-DD HH:mm') + ' hs'
+  const formattedEnd = dayjs(end).format('YYYY-MM-DD HH:mm') + ' hs'
 
   return (
-    <article className="event-card" aria-label={`Event: ${title || 'no title'}`}>
+    <article className="event-card" aria-label={`Event: ${title}`}>
       <div className="event-card__actions">
         <Button
           aria-label="Edit event"
@@ -31,17 +33,19 @@ export const EventCard = ({ event, onEdit, onDelete }: Props) => {
           aria-label="Delete event"
           variant="filled"
           className="event-card__btn event-card__btn--delete"
-          onClick={() => onDelete(event.id!)}
+          onClick={() => onDelete(id)}
         >
           <DeleteIcon />
         </Button>
       </div>
       <header className="event-card__header">
-        <span className="event-card__title">{title || 'No title'}</span>
+        <span className="event-card__title">{title}</span>
       </header>
       <div className="event-card__content">
         <time className="event-card__time">
-          {formattedStart} <SeparatorIcon size={20} /> {formattedEnd}
+          <span>{formattedStart}</span>
+          <SeparatorIcon size={20} />
+          <span>{formattedEnd}</span>
         </time>
         {notes && <p className="event-card__notes">{notes}</p>}
       </div>

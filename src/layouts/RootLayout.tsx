@@ -2,8 +2,6 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { HomePage, TaskFormPage, TaskPage } from '../router/lazy-pages'
 
-import './RootLayout.css'
-
 export const RootLayout = () => {
   return (
     <div className="root-layout">

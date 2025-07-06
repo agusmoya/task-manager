@@ -28,7 +28,6 @@
 
 .ongoing__list--no-result {
   color: var(--color-on-surface-variant);
-  /* background-color: var(--color-surface-variant); */
   font-style: italic;
   border-radius: var(--radius-md);
   justify-content: center;
@@ -72,6 +71,10 @@
 .ongoing__card-new-button {
   width: 2rem;
   height: 2rem;
+}
+
+.ongoing__item-title {
+  color: var(--color-on-primary);
 }
 
 .ongoing__item-title,

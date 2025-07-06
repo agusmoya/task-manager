@@ -26,6 +26,7 @@ export interface ITask {
 }
 
 export interface ITaskForm {
+  status?: TaskStatus
   title: string
   category: string
   events: IEventLocal[]

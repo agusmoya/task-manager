@@ -18,6 +18,8 @@ import { useTransitionPage } from '../hooks/useTransitionPage'
 import { Header } from '../task/components/header/Header'
 import { Breadcrumb } from '../components/breadcrumb/Breadcrumb'
 
+import '../styles/transition-page.css'
+
 export const AppRouter = () => {
   const { status, refresh } = useAuthActions()
   const { displayLocation, transitionPage, handleTransitionEnd } = useTransitionPage()

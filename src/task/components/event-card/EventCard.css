@@ -43,7 +43,15 @@
   color: var(--color-on-surface);
 }
 
+.event-card__content {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--spacing-2);
+}
+
 .event-card__time {
+  display: flex;
+  align-items: center;
   font-size: var(--text-sm);
   color: var(--color-on-surface);
 }

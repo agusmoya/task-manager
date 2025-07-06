@@ -7,13 +7,13 @@ import { Button } from '../button/Button'
 import './Modal.css'
 
 interface ModalProps {
-  title: string
+  // title: string
   isOpen: boolean
   onClose: () => void
   children: React.ReactNode
 }
 
-export const Modal = ({ title, isOpen, onClose, children }: ModalProps) => {
+export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   const dialogRef = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
@@ -56,7 +56,6 @@ export const Modal = ({ title, isOpen, onClose, children }: ModalProps) => {
       onClick={handleBackdropClick}
     >
       <div className="modal__content">
-        <h1 className="modal__title">{title}</h1>
         <div className="modal__body">{children}</div>
         <Button
           type="button"

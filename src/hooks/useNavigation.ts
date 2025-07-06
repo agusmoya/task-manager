@@ -4,7 +4,7 @@ import { useLocation, matchPath, useNavigate } from 'react-router-dom'
 import { BreadcrumbNavigation } from '../types/breadbrumb.d'
 
 import { NavigationContext } from '../context/navigation/navigationContext'
-import { breadcrumbMap } from '../helpers/getBreadcrumbsLabels'
+import { breadcrumbMap } from '../helpers/getBreadcrumbLabels'
 
 export function useNavigation(): BreadcrumbNavigation {
   const navigationContext = useContext(NavigationContext)

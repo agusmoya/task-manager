@@ -12,7 +12,7 @@ export const EVENT_STATUS = {
 
 export type EventStatus = (typeof EVENT_STATUS)[keyof typeof EVENT_STATUS]
 
-// start and end --> formato "YYYY-MM-DDTHH:mm"
+// start & end --> format "YYYY-MM-DDTHH:mm"
 export interface IEventForm {
   title: string
   start: string
@@ -21,12 +21,13 @@ export interface IEventForm {
 }
 
 /**
- * Tipo “local” que se almacena en el form de tareas:
- *  - Hereda todos los campos de IEventForm
- *  - Añade un `id` (temporal o el _id que venga del servidor)
+ * To manage existing or new events (generated ID):
+ *  - Inherits all fields from IEventForm
+ *  - Add an `id` (temporary or the _id that comes from the server)
  */
 interface IEventLocal extends IEventForm {
   id: string
+  status?: EventStatus
 }
 
 export interface IEvent {

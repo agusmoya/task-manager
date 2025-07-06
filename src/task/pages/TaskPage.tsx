@@ -20,8 +20,9 @@ const TaskPage = () => {
 
   const [allSegments, segmentsForDay] = useMemo(() => {
     const allSegments = getEventsSegments(task?.events)
-    const segmentsForDay =
-      allSegments.filter(({ start }) => dayjs(start).isSame(selectedDate, 'day')) ?? []
+    const segmentsForDay = allSegments.filter(({ start }) =>
+      dayjs(start).isSame(selectedDate, 'day')
+    )
     return [allSegments, segmentsForDay]
   }, [selectedDate, task?.events])
 

@@ -22,3 +22,15 @@ export interface InputWithSuggestionsProps
   onSuggestionClick?: (value: string) => void
   onCreateNew?: (value: string) => void
 }
+
+interface MultiSelectProps<T> {
+  label: string
+  options: T[]
+  selectedOptions: T[]
+  touched: boolean
+  error?: string
+  getOptionLabel: (item: T) => string
+  getOptionKey: (item: T) => string
+  onAddItem: (item: T) => void
+  onRemoveItem: (item: T) => void
+}

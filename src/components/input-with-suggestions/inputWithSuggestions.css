@@ -15,13 +15,37 @@
 }
 
 .input-suggestion {
+  overflow: hidden;
+  position: relative;
   cursor: pointer;
   padding: var(--spacing-4) var(--spacing-5);
   font-size: var(--text-sm);
   transition: background-color 0.2s;
 }
 
-.input-suggestion:hover {
-  background-color: var(--color-outline);
-  color: var(--color-on-surface);
+.input-suggestion::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+}
+
+.input-suggestion:hover::before {
+  opacity: var(--state-layer-hover-opacity);
+}
+
+.input-suggestion:focus::before {
+  opacity: var(--state-layer-focus-opacity);
+}
+
+.input-suggestion:active::before {
+  opacity: var(--state-layer-pressed-opacity);
+}
+
+.input-suggestion:focus-visible {
+  outline: var(--stroke-width-1) solid var(--color-outline);
 }

@@ -1,34 +1,32 @@
 import { useEffect } from 'react'
 
+import clsx from 'clsx'
+
 import { Input } from '../input/Input'
 import { Textarea } from '../text-area/Textarea'
 import { Button } from '../button/Button'
+import { Chip } from '../chip/Chip'
+
+import { EVENT_STATUS, IEventForm, IEventLocal } from '../../types/event.d'
 
 import { useForm } from '../../hooks/useForm'
-
-import { IEventForm, IEventLocal } from '../../types/event'
-
 import {
   eventFormFields,
   eventFormValidations,
-  formatToDatetimeLocal,
-  getNextStartDateForEvent,
+  getNextStartDate,
 } from '../../helpers/form-validations/getEventFormValidations'
 
 import './EventForm.css'
+import dayjs from 'dayjs'
 
 interface Props {
-  /** Si viene, precargo el form para editar ese evento */
-  initialEvent?: IEventLocal
-  /** Todos los eventos locales actuales (para calcular “next start”) */
-  existingEvents?: IEventForm[]
-  /** Devuelvo IEventLocal al padre para agregarlo */
+  eventToEdit?: IEventLocal
+  existingEvents?: IEventLocal[]
   onAddEvent: (event: IEventLocal) => void
-  /** Devuelvo IEventLocal al padre para actualizarlo */
   onUpdateEvent: (event: IEventLocal) => void
 }
 
-export const EventForm = ({ initialEvent, existingEvents, onAddEvent, onUpdateEvent }: Props) => {
+export const EventForm = ({ eventToEdit, existingEvents, onAddEvent, onUpdateEvent }: Props) => {
   const {
     title,
     titleValid,
@@ -47,19 +45,26 @@ export const EventForm = ({ initialEvent, existingEvents, onAddEvent, onUpdateEv
     onResetForm,
   } = useForm<IEventForm>(eventFormFields, eventFormValidations)
 
+  const currentStatus = eventToEdit?.status ?? EVENT_STATUS.PENDING
+  const isCompleted = currentStatus === EVENT_STATUS.COMPLETED
+  const colorChip =
+    currentStatus === EVENT_STATUS.COMPLETED
+      ? 'completed'
+      : currentStatus === EVENT_STATUS.PROGRESS
+        ? 'progress'
+        : 'pending'
+
   useEffect(() => {
-    onResetForm()
-    if (initialEvent) {
-      const { title, start, end, notes } = initialEvent
+    if (eventToEdit) {
       setFormState({
-        title,
-        start,
-        end,
-        notes,
+        title: eventToEdit.title,
+        start: eventToEdit.start,
+        end: eventToEdit.end,
+        notes: eventToEdit.notes,
       })
     } else {
-      const nextStart = getNextStartDateForEvent(existingEvents)
-      const nextEnd = formatToDatetimeLocal(nextStart)
+      const nextStart = getNextStartDate(existingEvents)
+      const nextEnd = dayjs(nextStart).add(1, 'hour').format('YYYY-MM-DDTHH:mm')
       setFormState({
         title: '',
         start: nextStart,
@@ -67,38 +72,37 @@ export const EventForm = ({ initialEvent, existingEvents, onAddEvent, onUpdateEv
         notes: '',
       })
     }
+
+    return () => onResetForm()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialEvent, existingEvents])
+  }, [eventToEdit, existingEvents])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!isFormValid) return
+    if (!isFormValid || isCompleted) return
 
-    if (initialEvent) {
-      const updated: IEventLocal = {
-        id: initialEvent.id,
-        title: formState.title,
-        start: formState.start,
-        end: formState.end,
-        notes: formState.notes,
-      }
-      onUpdateEvent(updated)
-    } else {
-      const created: IEventLocal = {
-        id: crypto.randomUUID(),
-        title: formState.title,
-        start: formState.start,
-        end: formState.end,
-        notes: formState.notes,
-      }
-      onAddEvent(created)
+    const submitEvent: IEventLocal = {
+      id: eventToEdit?.id ?? crypto.randomUUID(),
+      ...formState,
+      status: currentStatus,
     }
+
+    if (eventToEdit) onUpdateEvent(submitEvent)
+    else onAddEvent(submitEvent)
+
     onResetForm()
   }
 
   return (
-    <>
-      <form className="event__form" onSubmit={handleSubmit}>
+    <form className="event-form" onSubmit={handleSubmit}>
+      <header className="event-form__header">
+        <h1 className="event-form__title">{eventToEdit ? 'Edit ' : 'Create '} event</h1>
+        <Chip label={currentStatus} role="status" color={colorChip} />
+      </header>
+      <fieldset
+        disabled={isCompleted}
+        className={clsx('event-form__fieldset', isCompleted && 'event-form__fieldset--readonly')}
+      >
         <Input
           type="text"
           name="title"
@@ -121,6 +125,7 @@ export const EventForm = ({ initialEvent, existingEvents, onAddEvent, onUpdateEv
           placeholder=""
           min={start}
           value={start}
+          step="900"
           autoComplete="off"
           error={startValid}
           touched={touchedFields.start}
@@ -136,6 +141,7 @@ export const EventForm = ({ initialEvent, existingEvents, onAddEvent, onUpdateEv
           placeholder=""
           min={start}
           value={end}
+          step="900"
           autoComplete="off"
           error={endValid}
           touched={touchedFields.end}
@@ -156,20 +162,20 @@ export const EventForm = ({ initialEvent, existingEvents, onAddEvent, onUpdateEv
           onBlur={() => onBlurField('notes')}
           autoResize
         />
-        <footer className="event__form-footer">
+        <footer className="event-form__footer">
           <Button
             type="submit"
             variant="filled"
-            className="event__form-button"
+            className="event-form__button"
             disabled={!isFormValid}
           >
-            {initialEvent ? 'Edit' : 'Create'}
+            {eventToEdit ? 'Edit' : 'Create'}
           </Button>
-          <Button type="reset" variant="text" className="event__form-button" onClick={onResetForm}>
+          <Button variant="text" className="event-form__button" onClick={onResetForm}>
             Reset
           </Button>
         </footer>
-      </form>
-    </>
+      </fieldset>
+    </form>
   )
 }

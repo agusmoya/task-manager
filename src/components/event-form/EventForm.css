@@ -1,16 +1,34 @@
-.event__form {
+.event-form {
   width: 100%;
   display: flex;
   flex-direction: column;
   text-align: center;
 }
 
-.event__form-button {
+.event-form__fieldset {
+  all: unset;
+}
+
+.event-form__fieldset--readonly {
+  opacity: 0.5;
+  cursor: alias;
+  pointer-events: none;
+}
+
+.event-form__header {
+  display: flex;
+  margin-block: var(--spacing-5);
+  align-items: center;
+  justify-content: center;
+  column-gap: var(--spacing-2);
+}
+
+.event-form__button {
   padding: var(--spacing-2) var(--spacing-4);
   border-radius: var(--radius-sm);
 }
 
-.event__form-footer {
+.event-form__footer {
   display: flex;
   align-items: center;
   justify-content: center;

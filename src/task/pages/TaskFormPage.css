@@ -1,0 +1,51 @@
+.task-form-page__error {
+  min-height: 1rem;
+  color: var(--color-error);
+  margin-block: 0 var(--spacing-1);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+}
+
+.task-form-page__header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: var(--spacing-4);
+}
+
+.task-form-page__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: var(--spacing-3);
+  margin-inline: auto;
+  max-width: 400px;
+  margin-block: var(--spacing-3);
+}
+
+.task-form-page__title {
+  text-align: center;
+}
+
+.task-form-page__fieldset {
+  all: unset;
+}
+
+.task-form-page__fieldset--readonly {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.task-form-page__footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+}
+
+.task-form-page__button {
+  margin-block: var(--spacing-3);
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--radius-sm);
+}

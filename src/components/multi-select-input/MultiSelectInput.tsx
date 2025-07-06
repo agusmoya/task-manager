@@ -1,18 +1,10 @@
 import { useId, useState } from 'react'
 
-import './MultiSelectInput.css'
+import { CloseIcon } from '../icons/Icons'
 
-interface MultiSelectProps<T> {
-  label: string
-  options: T[]
-  selectedOptions: T[]
-  touched: boolean
-  error?: string
-  getOptionLabel: (item: T) => string
-  getOptionKey: (item: T) => string
-  onAddItem: (item: T) => void
-  onRemoveItem: (item: T) => void
-}
+import { MultiSelectProps } from '../../types/input'
+
+import './MultiSelectInput.css'
 
 export function MultiSelectInput<T>({
   label,
@@ -62,7 +54,8 @@ export function MultiSelectInput<T>({
               onClick={() => onRemoveItem(item)}
               onKeyDown={e => handleKeyDown(e, item)}
             >
-              {getOptionLabel(item)} <span aria-hidden>&nbsp;✕</span>
+              <span>{getOptionLabel(item)}</span>
+              <CloseIcon />
             </li>
           ))
         ) : (

@@ -12,10 +12,7 @@
 }
 
 .categories__list {
-  display: flex;
-  gap: var(--spacing-2);
   min-height: 200px;
-  overflow-x: hidden;
 }
 
 .categories__list--no-result {

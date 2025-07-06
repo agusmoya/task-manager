@@ -40,8 +40,7 @@ const makeSegment = (
   isStart: boolean,
   isEnd: boolean
 ): EventSegment => {
-  const minutes = end.diff(start, 'minute')
-  const hours = minutes / 60
+  const hours = end.diff(start, 'hours', true)
   // round to nearest 0.5
   const totalHours = Math.round(hours * 2) / 2
 
@@ -76,6 +75,14 @@ export const getHoursSchedule = (segments: EventSegment[]) => {
   )
   const [startH, endH] = hours
   const arrayHours = createInclusiveArray(startH, endH)
+  // Add an extra hour before the start (if startH > 0) and after the end
+  // (if endH < 24) so the timeline has some padding for better UX
+  if (startH > 0) {
+    arrayHours.unshift(startH - 1)
+  }
+  if (endH < 24) {
+    arrayHours.push(endH + 1)
+  }
   // remove possible duplicates
   const uniqueHours = Array.from(new Set(arrayHours))
   return uniqueHours

@@ -4,13 +4,26 @@ import './Chip.css'
 
 interface ChipProps {
   label: string
-  color?: 'default' | 'success' | 'warning' | 'info' | 'error'
+  role: string
+  color?: 'default' | 'completed' | 'progress' | 'pending' | 'info' | 'error'
   variant?: 'filled' | 'outlined'
   className?: string
 }
 
-export const Chip = ({ label, color = 'default', variant, className }: ChipProps) => {
+export const Chip = ({
+  label,
+  role,
+  color = 'default',
+  variant = 'filled',
+  className,
+}: ChipProps) => {
   return (
-    <span className={clsx('chip', `chip--${color}`, `chip--${variant}`, className)}>{label}</span>
+    <span
+      role={role}
+      className={clsx('chip', `chip--${color}`, `chip--${variant}`, className)}
+      aria-readonly="true"
+    >
+      {label}
+    </span>
   )
 }

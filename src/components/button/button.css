@@ -10,7 +10,7 @@
   cursor: pointer;
   user-select: none;
   overflow: hidden;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   transition:
     background-color 0.3s ease,
     box-shadow 0.3s ease;
@@ -20,7 +20,6 @@
 .btn::before {
   content: '';
   position: absolute;
-  z-index: var(--z-base);
   inset: 0;
   background-color: currentColor;
   opacity: 0;
@@ -62,7 +61,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-1);
 }
 
 /* Buttons variants */

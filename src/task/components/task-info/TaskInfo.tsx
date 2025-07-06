@@ -43,14 +43,12 @@ export const TaskInfo = ({ task }: Props) => {
   const completeEvents = events?.filter(e => e.status === EVENT_STATUS.COMPLETED).length ?? 0
   const eventProgresTask = `${completeEvents}/${totalEvents}`
 
-  const chipColor =
+  const colorChip =
     status === TASK_STATUS.COMPLETED
-      ? 'success'
+      ? 'completed'
       : status === TASK_STATUS.PROGRESS
-        ? 'info'
-        : status === TASK_STATUS.PENDING
-          ? 'warning'
-          : 'default'
+        ? 'progress'
+        : 'pending'
 
   const handleConfirmDelete = async () => {
     const result = await deleteTask(id)
@@ -66,8 +64,8 @@ export const TaskInfo = ({ task }: Props) => {
         <div className="task-info__title-block">
           <h2 className="task-info__title">{title}</h2>
           <div className="task-info__meta">
-            <Chip label={category?.name} variant="outlined" />
-            <Chip label={status} color={chipColor} />
+            <Chip label={category?.name} variant="outlined" role="category" />
+            <Chip label={status} color={colorChip} role="status" />
             <span className="task-info__dates">
               {dayjs(beginningDate).format('DD MMM')}
               <ArrowRightIcon className="task-info__date-separator" />
@@ -94,7 +92,7 @@ export const TaskInfo = ({ task }: Props) => {
         </ButtonLink>
 
         <ButtonLink variant="filled" className="task-info__edit-btn" to={`/home/task-form/${id}`}>
-          Edit
+          Edit task
         </ButtonLink>
 
         <Button
@@ -103,7 +101,7 @@ export const TaskInfo = ({ task }: Props) => {
           onClick={() => setIsConfirmOpen(true)}
           disabled={deleting}
         >
-          Delete
+          Delete task
         </Button>
       </div>
 
