@@ -10,6 +10,7 @@ export const TASK_STATUS = {
 } as const
 
 export type TaskStatus = (typeof TASK_STATUS)[keyof typeof TASK_STATUS]
+
 export interface ITask {
   id: string
   title: string
@@ -19,7 +20,9 @@ export interface ITask {
   ownerUserId: string
   status: TaskStatus
   progress: number
-  duration: number
+  durationDays: number
+  durationHours: number
+  durationMinutes: number
   participants: IUser[]
   category: ICategory
   events: IEvent[]

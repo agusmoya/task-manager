@@ -41,22 +41,17 @@ export const OngoingTasks = () => {
           itemClass="ongoing__item"
           className={clsx('ongoing__list', !areOngoingTasks && 'ongoing__list--no-result')}
         >
-          {
-            <li key="newTask" className="ongoing__item ongoing__item--new-task">
-              <h3 className="ongoing__item-title">New Task</h3>
-              <div className="ongoing__card ongoing__card--new">
-                <ButtonLink className="ongoing__card-new-button" variant="outlined" to="task-form">
-                  <span className="btn__state-layer"></span>
-                  <span className="btn__content">
-                    <PlusIcon />
-                  </span>
-                </ButtonLink>
-              </div>
-            </li>
-          }
           {areOngoingTasks ? (
             filteredTasks.map(
-              ({ id, title, duration, beginningDate, completionDate, progress }) => (
+              ({
+                id,
+                title,
+                durationDays,
+                durationHours,
+                beginningDate,
+                completionDate,
+                progress,
+              }) => (
                 <li className="ongoing__item" key={id}>
                   <section className="ongoing__card">
                     <ButtonLink variant="text" to={`task/${id}`}>
@@ -65,7 +60,7 @@ export const OngoingTasks = () => {
                         <ExternalLinkIcon size={18} />
                       </h3>
                     </ButtonLink>
-                    <small className="ongoing__duration">{`${duration} d`}</small>
+                    <small className="ongoing__duration">{`~ ${durationDays}d ${durationHours}h`}</small>
                   </section>
                   <section className="ongoing__card">
                     <small className="ongoing__schedule">

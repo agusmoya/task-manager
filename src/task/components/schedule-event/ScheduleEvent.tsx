@@ -89,13 +89,13 @@ export const ScheduleEvent = ({
             <PhoneIcon className="schedule-event__phone-icon" />
           </Button>
         </div>
-        {isStartSegment && (
-          <Button className="schedule-event__follow-btn" onClick={requestNextDay}>
-            <span className="schedule-event__next-text">Follow event&nbsp;</span>
-            <ArrowRightIcon className="schedule-event__follow-icon" />
-          </Button>
-        )}
       </div>
+      {isStartSegment && (
+        <Button className="schedule-event__follow-btn" onClick={requestNextDay}>
+          <span className="schedule-event__next-text">Follow event&nbsp;</span>
+          <ArrowRightIcon className="schedule-event__follow-icon" />
+        </Button>
+      )}
     </article>
   )
 }

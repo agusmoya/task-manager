@@ -11,6 +11,8 @@ import { Chip } from '../../../components/chip/Chip'
 import { CollaboratorAvatars } from '../../../components/collaborators-avatars/CollaboratorAvatars'
 import { LinearProgress } from '../../../components/linear-progress/LinearProgress'
 
+import { ModalIds } from '../../../constants/modalIds'
+
 import { ITask, TASK_STATUS } from '../../../types/task.d'
 import { EVENT_STATUS } from '../../../types/event'
 
@@ -18,7 +20,6 @@ import { useTaskActions } from '../../../store/hooks/useTaskActions'
 import { useModalActions } from '../../../store/hooks/useModalActions'
 
 import './TaskInfo.css'
-import { ModalIds } from '../../../constants/modalIds'
 
 interface Props {
   task: ITask
@@ -38,6 +39,9 @@ export const TaskInfo = ({ task }: Props) => {
     beginningDate,
     completionDate,
     progress,
+    durationDays,
+    durationHours,
+    durationMinutes,
   } = task
 
   const totalEvents = events?.length ?? 0
@@ -72,11 +76,10 @@ export const TaskInfo = ({ task }: Props) => {
               <ArrowRightIcon className="task-info__date-separator" />
               {dayjs(completionDate).format('DD MMM')}
             </span>
+            <span>Duration: {`${durationDays} d > ${durationHours} h > ${durationMinutes} m`}</span>
             <div className="task-info__progress-group">
               <LinearProgress showLabel value={progress} />
-              <small className="task-info__event-count">
-                ({eventProgresTask}) events completed.
-              </small>
+              <small className="task-info__event-count">({eventProgresTask}) events done.</small>
             </div>
           </div>
         </div>

@@ -37,8 +37,8 @@
   border-radius: var(--radius-md);
 }
 
-.calendar-wrapper__today:hover {
-  color: var(--color-on-surface);
+.calendar-wrapper__today-button {
+  padding: var(--spacing-1);
 }
 
 .calendar-wrapper__month {
@@ -48,7 +48,7 @@
   font-size: var(--text-lg);
   text-transform: capitalize;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   display: flex;
 }
 
@@ -122,21 +122,22 @@
 .calendar-wrapper__day:not(
     .calendar-wrapper__day--prev,
     .calendar-wrapper__day--next,
-    .calendar-wrapper__day--active
+    .calendar-wrapper__day--active,
+    .calendar-wrapper__day--today
   ):hover::before {
   color: var(--color-on-primary-container);
-  background-color: var(--color-primary-container);
+  background-color: var(--color-surface);
   border: 1px solid var(--color-on-secondary-container);
 }
 
 .calendar-wrapper__day--active::before {
-  border: 1px solid var(--color-on-secondary-container);
-  background-color: var(--color-primary-container);
+  border: 2px dashed var(--color-on-secondary-container);
+  background-color: var(--color-surface);
 }
 
 .calendar-wrapper__day--today:not(.calendar-wrapper__day--active)::before {
   box-shadow: var(--elevation-1);
-  background-color: var(--color-primary-container);
+  background-color: var(--color-surface);
   z-index: var(--z-deep);
 }
 
