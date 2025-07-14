@@ -30,20 +30,21 @@ export const tasksApi = baseApi.injectEndpoints({
         method: 'PUT',
         body: task,
       }),
-      invalidatesTags: (_result, _error, arg) => [
-        { type: 'Task', id: 'LIST' },
-        { type: 'Task', id: arg.id },
-      ],
+      invalidatesTags: (_result, error, arg) => {
+        if (error) return []
+        return [
+          { type: 'Task', id: 'LIST' },
+          { type: 'Task', id: arg.id },
+          { type: 'Event', id: 'LIST' },
+        ]
+      },
     }),
     deleteTask: builder.mutation<{ id: string }, TaskId>({
       query: id => ({
         url: `/tasks/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (_result, _error, id) => [
-        { type: 'Task', id: 'LIST' },
-        { type: 'Task', id },
-      ],
+      invalidatesTags: () => [{ type: 'Task', id: 'LIST' }],
     }),
   }),
   overrideExisting: false,

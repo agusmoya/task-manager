@@ -1,22 +1,22 @@
 import dayjs, { Dayjs } from 'dayjs'
 
-import { IEventForm } from '../../types/event.d'
+import { IEventForm, IEventLocal } from '../../types/event'
 
 import { FormValidations } from '../../hooks/useForm'
 
 const MAX_EVENT_HOURS = 8
 
 /**
- * TODO ELIMINAR
- * Implementation with: dayjs.
- * Formatea una fecha al formato 'yyyy-MM-ddTHH:mm', requerido por inputs de tipo datetime-local.
- * @param date - La fecha a formatear.
- * @returns Una cadena con el formato adecuado o una cadena vacía si la fecha no es válida.
+ * Formats a date (Date, ISO string or Dayjs) to the 'yyyy-MM-ddTHH:mm' format,
+ * required by <input type="datetime-local">.
+ * If you pass in a Dayjs instance, it uses it directly.
+ * @param date - The date to format.
+ * @returns A properly formatted string or an empty string if the date is not valid.
  */
-export const formatToDatetimeLocal = (date: Date | string): string => {
+export const formatToDatetimeLocal = (date: Date | string | Dayjs): string => {
   if (!date) return ''
 
-  const parsed = dayjs(date)
+  const parsed: Dayjs = dayjs.isDayjs(date) ? date : dayjs(date)
   if (!parsed.isValid()) return ''
 
   return parsed.format('YYYY-MM-DDTHH:mm')
@@ -111,4 +111,26 @@ export const getNextStartDate = (events: IEventForm[] = []): string => {
 
   const nextRounded = ceilToQuarter(now).format('YYYY-MM-DDTHH:mm')
   return nextRounded
+}
+
+/**
+ * Checks if the interval [newStart, newEnd] collides
+ * with any of the events in existingEvents (ignoring
+ * eventToEdit itself if there is one).
+ */
+export function hasOverlap(
+  newStart: string,
+  newEnd: string,
+  existingEvents: IEventLocal[],
+  editingId?: string
+): boolean {
+  const s = dayjs(newStart, 'YYYY-MM-DDTHH:mm')
+  const e = dayjs(newEnd, 'YYYY-MM-DDTHH:mm')
+
+  return existingEvents.some(evt => {
+    if (evt.id === editingId) return false
+    const evtStart = dayjs(evt.start, 'YYYY-MM-DDTHH:mm')
+    const evtEnd = dayjs(evt.end, 'YYYY-MM-DDTHH:mm')
+    return s.isBefore(evtEnd) && e.isAfter(evtStart)
+  })
 }

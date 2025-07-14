@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import dayjs from 'dayjs'
@@ -13,11 +12,13 @@ import { CollaboratorAvatars } from '../../../components/collaborators-avatars/C
 import { LinearProgress } from '../../../components/linear-progress/LinearProgress'
 
 import { ITask, TASK_STATUS } from '../../../types/task.d'
-import { EVENT_STATUS } from '../../../types/event.d'
+import { EVENT_STATUS } from '../../../types/event'
 
 import { useTaskActions } from '../../../store/hooks/useTaskActions'
+import { useModalActions } from '../../../store/hooks/useModalActions'
 
 import './TaskInfo.css'
+import { ModalIds } from '../../../constants/modalIds'
 
 interface Props {
   task: ITask
@@ -25,7 +26,7 @@ interface Props {
 
 export const TaskInfo = ({ task }: Props) => {
   const navigate = useNavigate()
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+  const { isOpen, open, close } = useModalActions(ModalIds.Confirm)
   const { deleting, deleteTask } = useTaskActions()
   const {
     id,
@@ -53,7 +54,7 @@ export const TaskInfo = ({ task }: Props) => {
   const handleConfirmDelete = async () => {
     const result = await deleteTask(id)
     if (!result?.error) {
-      setIsConfirmOpen(false)
+      close()
       navigate('/home', { replace: true })
     }
   }
@@ -98,22 +99,23 @@ export const TaskInfo = ({ task }: Props) => {
         <Button
           variant="outlined"
           className="task-info__delete-btn"
-          onClick={() => setIsConfirmOpen(true)}
+          onClick={() => open()}
           disabled={deleting}
         >
           Delete task
         </Button>
       </div>
-
-      <ConfirmModal
-        isOpen={isConfirmOpen}
-        title="Delete Task"
-        message="Are you sure you want to delete this task?"
-        confirmLabel="Delete"
-        cancelLabel="Cancel"
-        onConfirm={handleConfirmDelete}
-        onCancel={() => setIsConfirmOpen(false)}
-      />
+      {isOpen && (
+        <ConfirmModal
+          isOpen={isOpen}
+          title="Delete Task"
+          message="Are you sure you want to delete this task?"
+          confirmLabel="Delete"
+          cancelLabel="Cancel"
+          onConfirm={handleConfirmDelete}
+          onCancel={() => close()}
+        />
+      )}
     </section>
   )
 }

@@ -5,7 +5,7 @@ import './ConfirmModal.css'
 
 interface ConfirmModalProps {
   isOpen: boolean
-  title: string
+  title?: string
   message: string
   confirmLabel?: string
   cancelLabel?: string
@@ -15,7 +15,7 @@ interface ConfirmModalProps {
 
 export const ConfirmModal = ({
   isOpen,
-  title,
+  title = '',
   message,
   confirmLabel = 'Confirm',
   cancelLabel = 'Cancel',

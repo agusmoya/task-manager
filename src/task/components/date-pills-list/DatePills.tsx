@@ -5,12 +5,12 @@ import { DatePill } from '../date-pill/DatePill'
 import { Button } from '../../../components/button/Button'
 import { ArrowLeftIcon, ArrowRightIcon } from '../../../components/icons/Icons'
 
-import { EventSegment } from '../../../types/event'
+import { IEventSegment } from '../../../types/event'
 
 import './DatePills.css'
 
 interface Props {
-  eventSegments: EventSegment[]
+  eventSegments: IEventSegment[]
   selectedDate: Dayjs
   onSelectDate: Dispatch<SetStateAction<Dayjs>>
 }

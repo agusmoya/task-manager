@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs'
 
-import { EventSegment, IEvent } from '../types/event'
+import { IEventSegment, IEvent } from '../types/event'
 
 /**
  * Split events into one or two segments:
@@ -9,8 +9,8 @@ import { EventSegment, IEvent } from '../types/event'
  *   • a first-day segment (isStartSegment=true)
  *   • a second-day segment (isStartSegment=false)
  */
-export const getEventsSegments = (events: IEvent[] = []): EventSegment[] => {
-  const segments: EventSegment[] = []
+export const getEventsSegments = (events: IEvent[] = []): IEventSegment[] => {
+  const segments: IEventSegment[] = []
   if (!events.length) return segments
 
   events.forEach(evt => {
@@ -39,7 +39,7 @@ const makeSegment = (
   end: Dayjs,
   isStart: boolean,
   isEnd: boolean
-): EventSegment => {
+): IEventSegment => {
   const hours = end.diff(start, 'hours', true)
   // round to nearest 0.5
   const totalHours = Math.round(hours * 2) / 2
@@ -57,7 +57,7 @@ const makeSegment = (
   }
 }
 
-export const getHoursSchedule = (segments: EventSegment[]) => {
+export const getHoursSchedule = (segments: IEventSegment[]) => {
   if (!segments.length) {
     const now = dayjs().hour()
     return [now, now + 1, now + 2]

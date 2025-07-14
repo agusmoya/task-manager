@@ -1,10 +1,12 @@
 import { Link, LinkProps } from 'react-router-dom'
 import clsx from 'clsx'
 
+import { VARIANT, VariantType } from '../../types/ui/Variant'
+
 import '../button/Button.css'
 
 interface ButtonLinkProps extends LinkProps {
-  variant?: 'filled' | 'outlined' | 'text' | 'tonal'
+  variant?: VariantType
   size?: 'small' | 'medium' | 'large'
   disabled?: boolean
   children: React.ReactNode
@@ -13,7 +15,7 @@ interface ButtonLinkProps extends LinkProps {
 
 export const ButtonLink = ({
   to,
-  variant = 'text',
+  variant = VARIANT.text,
   size = 'medium',
   disabled = false,
   children,

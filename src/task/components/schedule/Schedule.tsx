@@ -2,7 +2,7 @@ import { useRef } from 'react'
 
 import { ScheduleEvent } from '../schedule-event/ScheduleEvent'
 
-import { EventSegment } from '../../../types/event'
+import { IEventSegment } from '../../../types/event'
 
 import { useRowHeight } from './hooks/useRowHeight'
 import { getHoursSchedule } from '../../../utils/computedEvents'
@@ -10,7 +10,7 @@ import { getHoursSchedule } from '../../../utils/computedEvents'
 import './Schedule.css'
 
 interface Props {
-  segmentsForDay: EventSegment[]
+  segmentsForDay: IEventSegment[]
   onRequestNextDay: () => void
 }
 

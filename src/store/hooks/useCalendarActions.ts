@@ -1,6 +1,8 @@
-import { CalendarDay } from '../../types/calendar-day.d'
+import { useCallback } from 'react'
+import { CalendarDay } from '../../types/calendar-day'
 
 import { useAppDispatch, useAppSelector } from '../reduxStore'
+
 import {
   onGetNextMonth,
   onGetPreviousMonth,
@@ -8,7 +10,6 @@ import {
   onSetMonth,
   onSetYear,
 } from '../slices/calendar/calendarDaySlice'
-import { useCallback } from 'react'
 
 export const useCalendarActions = () => {
   const dispatch = useAppDispatch()

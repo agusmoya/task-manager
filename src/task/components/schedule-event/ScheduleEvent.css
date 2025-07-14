@@ -95,7 +95,7 @@
 .schedule-event__follow-btn {
   position: absolute;
   right: var(--spacing-2);
-  top: var(--spacing-2);
+  bottom: var(--spacing-6);
   padding: var(--spacing-3) var(--spacing-6);
   gap: var(--spacing-2);
 }

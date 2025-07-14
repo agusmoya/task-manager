@@ -7,7 +7,7 @@ import { useAuthActions } from '../../../store/hooks/useAuthActions'
 import './Header.css'
 
 export const Header = () => {
-  const imgLogo = '/images/icon-todo.webp'
+  const imgLogo = '/images/todo.webp'
   const { user, logout } = useAuthActions()
 
   return (
@@ -15,8 +15,9 @@ export const Header = () => {
       <div className="header-app__nav container">
         <div className="nav__logo">
           <Link className="nav__logo-text" to="/home">
-            ToDo&nbsp;
             <img className="nav__logo-img" src={imgLogo} alt="logo-app" />
+            &nbsp;
+            <span>ToDo</span>
           </Link>
         </div>
         {user ? (
@@ -25,7 +26,7 @@ export const Header = () => {
               <h3>{user?.firstName}</h3>
             </header>
             <div role="menuitem" className="dropdown__menu-item">
-              Select theme:&nbsp;
+              <span>Select theme:&nbsp;</span>
               <ButtonTheme />
             </div>
             <button role="menuitem" type="button" className="dropdown__menu-item">

@@ -4,7 +4,7 @@ import { Button } from '../../../components/button/Button'
 import { ArrowRightIcon, CheckIcon, PhoneIcon } from '../../../components/icons/Icons'
 import { CollaboratorAvatars } from '../../../components/collaborators-avatars/CollaboratorAvatars'
 
-import { EVENT_STATUS, EventSegment } from '../../../types/event.d'
+import { EVENT_STATUS, IEventSegment } from '../../../types/event'
 
 import { useEventActions } from '../../../store/hooks/useEventActions'
 
@@ -14,7 +14,7 @@ interface Prop {
   initialLocation: number
   rowHeight: number
   labelHeight: number
-  segment: EventSegment
+  segment: IEventSegment
   index: number
   requestNextDay: () => void
 }
@@ -90,8 +90,8 @@ export const ScheduleEvent = ({
           </Button>
         </div>
         {isStartSegment && (
-          <Button variant="text" className="schedule-event__follow-btn" onClick={requestNextDay}>
-            <span className="schedule-event__next-text">Follow event</span>
+          <Button className="schedule-event__follow-btn" onClick={requestNextDay}>
+            <span className="schedule-event__next-text">Follow event&nbsp;</span>
             <ArrowRightIcon className="schedule-event__follow-icon" />
           </Button>
         )}

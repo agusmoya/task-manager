@@ -1,19 +1,23 @@
+import { IEvent } from './event'
+
 export const CALENDAR_DAY_TYPE = {
   PREVIOUS: 'prev',
   CURRENT: 'current',
   NEXT: 'next',
 } as const
 
-interface CalendarDayType {
-  name: 'prev' | 'current' | 'next'
-}
+export type TypeCalendarDay = (typeof CALENDAR_DAY_TYPE)[keyof typeof CALENDAR_DAY_TYPE]
 
 export interface CalendarDay {
   day: number
   dayName: string
-  type: (typeof CALENDAR_DAY_TYPE)[keyof typeof CALENDAR_DAY_TYPE]
+  type: TypeCalendarDay
   month: number
   year: number
+}
+
+export interface CalendarDayWithEvents extends CalendarDay {
+  events: IEvent[]
 }
 
 export const WEEKDAYS = [

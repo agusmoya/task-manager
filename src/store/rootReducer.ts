@@ -17,9 +17,8 @@ export const rootReducer = combineReducers({
   auth: authSlice.reducer,
   user: userSlice.reducer,
   task: taskSlice.reducer,
-  // category: categorySlice.reducer,
-  calendarDay: calendarDaySlice.reducer,
   event: eventSlice.reducer,
+  calendarDay: calendarDaySlice.reducer,
   // UI
   modal: modalSlice.reducer,
   toast: toastSlice.reducer,

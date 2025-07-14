@@ -1,20 +1,23 @@
 import clsx from 'clsx'
 
+import { COLOR_PROGRESS, ColorProgressType } from '../../types/ui/Progress'
+import { VARIANT, VariantType } from '../../types/ui/Variant'
+
 import './Chip.css'
 
 interface ChipProps {
   label: string
   role: string
-  color?: 'default' | 'completed' | 'progress' | 'pending' | 'info' | 'error'
-  variant?: 'filled' | 'outlined'
+  color?: ColorProgressType
+  variant?: VariantType
   className?: string
 }
 
 export const Chip = ({
   label,
   role,
-  color = 'default',
-  variant = 'filled',
+  color = COLOR_PROGRESS.default,
+  variant = VARIANT.filled,
   className,
 }: ChipProps) => {
   return (

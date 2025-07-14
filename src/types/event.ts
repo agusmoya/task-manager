@@ -25,9 +25,10 @@ export interface IEventForm {
  *  - Inherits all fields from IEventForm
  *  - Add an `id` (temporary or the _id that comes from the server)
  */
-interface IEventLocal extends IEventForm {
+export interface IEventLocal extends IEventForm {
   id: string
   status?: EventStatus
+  taskId?: string
 }
 
 export interface IEvent {
@@ -48,7 +49,7 @@ export type EventId = Pick<IEvent, 'id'>
 export type EventTitle = Pick<IEvent, 'title'>
 export type EventDates = Pick<IEvent, 'start' | 'end'>
 
-export interface EventSegment extends IEvent {
+export interface IEventSegment extends Omit<IEvent, 'start' | 'end'> {
   start: Dayjs
   end: Dayjs
   duration: number

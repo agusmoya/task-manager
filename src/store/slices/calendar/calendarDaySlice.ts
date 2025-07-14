@@ -1,19 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { CALENDAR_DAY_TYPE, WEEKDAYS, CalendarDay } from '../../../types/calendar-day.d'
-import { IEvent } from '../../../types/event'
+import { CALENDAR_DAY_TYPE, WEEKDAYS, CalendarDay } from '../../../types/calendar-day'
 
-import { getToday } from '../../../calendar/utils/dateUtils'
 import { computeCalendar } from '../../../calendar/utils/computeCalendar'
 
-const now = getToday()
+const now = new Date()
 
 const calendarDay: CalendarDay = {
   day: now.getDate(),
+  dayName: WEEKDAYS[now.getDay()],
   month: now.getMonth(),
   year: now.getFullYear(),
   type: CALENDAR_DAY_TYPE.CURRENT,
-  dayName: WEEKDAYS[now.getDay()],
 }
 
 export interface CalendarDayState {
@@ -23,7 +21,6 @@ export interface CalendarDayState {
   year: number
   calendarDays: CalendarDay[]
   activeCalendarDay: CalendarDay
-  activeCalendarEvent: IEvent | undefined
 }
 
 const initialState: CalendarDayState = {
@@ -33,7 +30,6 @@ const initialState: CalendarDayState = {
   year: now.getFullYear(),
   calendarDays: computeCalendar(now.getMonth(), now.getFullYear()),
   activeCalendarDay: calendarDay,
-  activeCalendarEvent: undefined,
 }
 
 export const calendarDaySlice = createSlice({
@@ -49,6 +45,7 @@ export const calendarDaySlice = createSlice({
     },
     onSetYear: (state, { payload }: PayloadAction<number>) => {
       state.year = payload
+      state.calendarDays = computeCalendar(state.month, state.year)
     },
     onGetNextMonth: state => {
       if (state.month === 11) {

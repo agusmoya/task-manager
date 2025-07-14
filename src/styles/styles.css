@@ -183,7 +183,12 @@ ol {
   }
 
   .event-card-list__scrollable {
-    max-height: 280px; /* 2 cards max en mobile */
+    max-height: 280px; /* 2 cards max in mobile */
+  }
+
+  section.calendar-page {
+    justify-content: center;
+    flex-direction: row;
   }
 }
 
@@ -197,13 +202,9 @@ ol {
     margin-inline: auto;
   }
 
-  .header-app .header-app__nav {
-    height: calc(var(--header-height) + 0.5rem);
-  }
-
   .auth {
     position: relative;
-    min-height: 100vh;
+    min-height: calc(100vh - var(--header-height));
   }
 
   svg.auth__blob {
@@ -223,7 +224,6 @@ ol {
   div.auth__container {
     width: 430px;
     background-color: var(--color-surface);
-    /* backdrop-filter: blur(10px); */
     padding: var(--spacing-5);
     border-radius: var(--radius-md);
   }
@@ -241,20 +241,5 @@ ol {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-4);
-  }
-
-  .calendar-layout {
-    margin: 0 var(--spacing-8);
-    display: flex;
-  }
-
-  .calendar-events .calendar-events__info {
-    padding-inline: var(--spacing-13);
-  }
-}
-
-@media screen and (min-width: 1600px) {
-  section.calendar {
-    margin-inline: auto;
   }
 }

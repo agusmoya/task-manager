@@ -18,6 +18,11 @@
   font-weight: var(--font-weight-bold);
 }
 
+.nav-logo {
+  display: flex;
+  align-items: center;
+}
+
 .nav__logo-img {
   width: 3rem;
 }

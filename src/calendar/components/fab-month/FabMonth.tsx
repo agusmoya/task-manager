@@ -9,9 +9,7 @@ interface FabMonthProps {
 }
 
 export const FabMonth = ({ direction, onHandleClick }: FabMonthProps) => {
-  const handleClickNext = () => {
-    onHandleClick()
-  }
+  const handleClickNext = () => onHandleClick()
 
   return (
     <Button variant="fab" className="fab-month" onClick={handleClickNext}>

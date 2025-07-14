@@ -2,11 +2,9 @@ import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolki
 
 import { tasksApi } from '../../../services/tasksApi'
 
-import { RootState } from '../../store'
-
 import { ITask } from '../../../types/task'
 
-const tasksAdapter = createEntityAdapter<ITask>()
+export const tasksAdapter = createEntityAdapter<ITask>()
 
 export interface ITaskState {
   activeTaskId?: string
@@ -22,6 +20,9 @@ export const taskSlice = createSlice({
   name: 'task',
   initialState,
   reducers: {
+    addTask: tasksAdapter.addOne,
+    updateTask: tasksAdapter.updateOne,
+    removeTask: tasksAdapter.removeOne,
     setActiveTaskId: (state, { payload }: PayloadAction<string | undefined>) => {
       state.activeTaskId = payload
     },
@@ -46,9 +47,3 @@ export const taskSlice = createSlice({
 })
 
 export const { setActiveTaskId } = taskSlice.actions
-
-export const {
-  selectAll: selectAllTasks,
-  selectById: selectTaskById,
-  selectIds: selectTaskIds,
-} = tasksAdapter.getSelectors<RootState>(state => state.task)

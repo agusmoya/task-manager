@@ -2,24 +2,30 @@ import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolki
 
 import { eventsApi } from '../../../services/eventsApi'
 
-import { IEvent } from '../../../types/event'
+import { IEventLocal } from '../../../types/event'
 
-export const eventsAdapter = createEntityAdapter<IEvent>({
-  sortComparer: (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime(),
+export const eventsAdapter = createEntityAdapter<IEventLocal>({
+  sortComparer: (a, b) => a.start.localeCompare(b.start),
 })
 
-export interface IEventState {
+export interface IEventState extends ReturnType<typeof eventsAdapter.getInitialState> {
   activeEventId?: string
 }
 
-const initialState = eventsAdapter.getInitialState<IEventState>({
+const initialState: IEventState = {
+  ...eventsAdapter.getInitialState(),
   activeEventId: undefined,
-})
+}
 
 export const eventSlice = createSlice({
   name: 'event',
   initialState,
   reducers: {
+    // This is possible thanks to the adapter extension
+    addEvent: eventsAdapter.addOne,
+    updateEvent: eventsAdapter.updateOne,
+    removeEvent: eventsAdapter.removeOne,
+    setAllEvents: eventsAdapter.setAll,
     setActiveEventId: (state, { payload }: PayloadAction<string>) => {
       state.activeEventId = payload
     },
@@ -27,6 +33,7 @@ export const eventSlice = createSlice({
       state.activeEventId = undefined
     },
   },
+
   extraReducers: builder => {
     const { fetchEventsByUser, createEvent, updateEvent, deleteEvent } = eventsApi.endpoints
 

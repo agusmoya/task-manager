@@ -65,13 +65,15 @@ export const OngoingTasks = () => {
                         <ExternalLinkIcon size={18} />
                       </h3>
                     </ButtonLink>
-                    <small className="ongoing__duration">{duration}&nbsp;d</small>
+                    <small className="ongoing__duration">{`${duration} d`}</small>
                   </section>
                   <section className="ongoing__card">
                     <small className="ongoing__schedule">
-                      Start: {beginningDate.split('T')[0]}&nbsp;
+                      Start: {beginningDate?.split('T')[0]}&nbsp;
                     </small>
-                    <small className="ongoing__schedule">End: {completionDate.split('T')[0]}</small>
+                    <small className="ongoing__schedule">
+                      End: {completionDate?.split('T')[0]}
+                    </small>
                     <CircularProgress progress={progress} />
                   </section>
                 </li>

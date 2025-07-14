@@ -1,9 +1,13 @@
 import React from 'react'
-import './Button.css'
+
 import clsx from 'clsx'
 
+import { VARIANT, VariantType } from '../../types/ui/Variant'
+
+import './Button.css'
+
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'filled' | 'outlined' | 'text' | 'fab' | 'icon'
+  variant?: VariantType
   size?: 'small' | 'medium' | 'large'
   disabled?: boolean
   children: React.ReactNode
@@ -11,7 +15,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const Button: React.FC<ButtonProps> = ({
-  variant = 'filled',
+  variant = VARIANT.filled,
   size = 'medium',
   type = 'button',
   disabled = false,

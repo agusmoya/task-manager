@@ -52,7 +52,10 @@ export const eventsApi = baseApi.injectEndpoints({
         url: `/events/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (_r, _e, id) => [{ type: 'Event', id }],
+      invalidatesTags: () => [
+        { type: 'Event', id: 'LIST' },
+        { type: 'Task', id: 'LIST' },
+      ],
     }),
   }),
   overrideExisting: false,

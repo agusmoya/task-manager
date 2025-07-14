@@ -31,5 +31,12 @@ export const selectEventsByDate = (date: Date) =>
     })
   )
 
-export const selectEventsByTaskId = (taskId: string) =>
-  createSelector(selectAllEvents, events => events.filter(evt => evt.taskId === taskId))
+/**
+ * Returns events whose taskId matches the active event,
+ * or [] if there is no active event.
+ */
+export const selectEventsByTask = createSelector(
+  [selectActiveEvent, selectAllEvents],
+  (activeEvent, events) =>
+    activeEvent ? events.filter(evt => evt.taskId === activeEvent.taskId) : []
+)

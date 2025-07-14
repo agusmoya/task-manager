@@ -40,6 +40,11 @@
   margin-block: var(--spacing-3);
 }
 
+.event-card-list__error {
+  color: var(--color-error);
+  font-size: var(--text-sm);
+}
+
 [data-theme='dark'] .event-card-list {
   box-shadow:
     inset 0 4px 8px var(--color-surface),

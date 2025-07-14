@@ -3,52 +3,36 @@ import clsx from 'clsx'
 import { FabMonth } from '../fab-month/FabMonth'
 import { Button } from '../../../components/button/Button'
 
-import { MONTHS, type CalendarDay } from '../../../types/calendar-day.d'
-import { type IEvent } from '../../../types/event'
+import { CalendarDay, CALENDAR_DAY_TYPE } from '../../../types/calendar-day'
 
+import { isActiveDay, isToday } from '../../utils/validateManagmentDate'
+
+import { useCalendar } from '../../hooks/useCalendar'
 import { useCalendarActions } from '../../../store/hooks/useCalendarActions'
-import { useEventActions } from '../../../store/hooks/useEventActions'
-
-import {
-  isSameDay,
-  isActiveDay,
-  isNextDay,
-  isPrevDay,
-  isToday,
-  currentDate,
-} from '../../utils/validateManagmentDate'
-import { getToday } from '../../utils/dateUtils'
 
 import './CalendarGridDays.css'
 
 export const CalendarGridDays = () => {
+  const { calendarDays, todayDateLabel, monthYearLabel } = useCalendar()
   const {
     weekDays,
-    month,
-    year,
-    calendarDays,
     activeCalendarDay,
     setActiveCalendarDay,
-    getPreviousMonth,
-    getNextMonth,
     setMonth,
     setYear,
+    getPreviousMonth,
+    getNextMonth,
   } = useCalendarActions()
 
-  const { events } = useEventActions()
-
   const handleDayClick = (day: CalendarDay) => {
-    if (day.type !== 'current') return
+    if (day.type !== CALENDAR_DAY_TYPE.CURRENT) return
     setActiveCalendarDay(day)
   }
 
-  const filterEventsByDays = (events: IEvent[], calendarDay: CalendarDay) => {
-    return events.filter(event => isSameDay(event, calendarDay))
-  }
-
   const handleClickGoToday = () => {
-    setMonth(getToday().getMonth())
-    setYear(getToday().getFullYear())
+    const today = new Date()
+    setMonth(today.getMonth())
+    setYear(today.getFullYear())
   }
 
   return (
@@ -60,13 +44,13 @@ export const CalendarGridDays = () => {
           className="calendar-wrapper__today-button"
           onClick={handleClickGoToday}
         >
-          {currentDate()}
+          {todayDateLabel}
         </Button>
       </div>
 
       <div className="calendar-wrapper__month">
         <FabMonth onHandleClick={getPreviousMonth} direction="left" />
-        <span className="calendar-wrapper__month__date">{`${MONTHS[month]} ${year}`}</span>
+        <span className="calendar-wrapper__month__date">{monthYearLabel}</span>
         <FabMonth onHandleClick={getNextMonth} direction="right" />
       </div>
 
@@ -80,8 +64,8 @@ export const CalendarGridDays = () => {
 
       <div className="calendar-wrapper__days">
         {calendarDays.map(calendarDay => {
-          const { day, month, year, type } = calendarDay
-          const dayHasEvents = filterEventsByDays(events, calendarDay).length > 0
+          const { day, month, year, type, events } = calendarDay
+          const dayHasEvents = events.length > 0
 
           return (
             <div
@@ -89,10 +73,10 @@ export const CalendarGridDays = () => {
               onClick={() => handleDayClick(calendarDay)}
               className={clsx(
                 'calendar-wrapper__day',
+                type === CALENDAR_DAY_TYPE.PREVIOUS && 'calendar-wrapper__day--prev',
+                type === CALENDAR_DAY_TYPE.NEXT && 'calendar-wrapper__day--next',
                 isActiveDay(activeCalendarDay!, calendarDay) && 'calendar-wrapper__day--active',
                 isToday(calendarDay) && 'calendar-wrapper__day--today',
-                isPrevDay(type) && 'calendar-wrapper__day--prev',
-                isNextDay(type) && 'calendar-wrapper__day--next',
                 dayHasEvents && 'calendar-wrapper__day--event'
               )}
             >

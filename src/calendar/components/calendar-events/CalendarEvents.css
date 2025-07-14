@@ -7,7 +7,7 @@
   color: var(--color-on-surface-variant);
   background: var(--color-surface-variant);
   height: 50px;
-  padding-inline: var(--spacing-10);
+  padding-inline: var(--spacing-5);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -100,8 +100,7 @@
 
 .calendar-events__no-day-selected,
 .calendar-events__no-events {
-  height: 100%;
-  font-size: var(--text-lg);
+  font-size: var(--text-md);
   font-weight: var(--font-weight-medium);
   display: grid;
   place-content: center;
