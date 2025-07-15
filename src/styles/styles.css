@@ -1,4 +1,5 @@
 @import './variables.css';
+@import './browser-fixes.css';
 
 /*========== BASE (reset) ==========*/
 * {
@@ -22,30 +23,6 @@ input {
   border: none;
   outline: none;
   background: none;
-}
-
-/* hidden default background-color provided for browser */
-/* Chrome, Safari, Edge */
-input:-webkit-autofill {
-  border: none !important;
-  outline: none !important;
-  -webkit-box-shadow: 0 0 0 1000px var(--color-surface-variant) inset !important;
-  box-shadow: 0 0 0 1000px var(--color-surface-variant) inset !important;
-  -webkit-text-fill-color: var(--color-on-surface) !important;
-  transition:
-    background-color 9999s ease-in-out,
-    color 9999s ease-in-out !important;
-  transition:
-    background-color 6000s,
-    color 6000s,
-    box-shadow 6000s;
-}
-
-/* Firefox */
-input:-moz-autofill {
-  box-shadow: none;
-  -moz-text-fill-color: var(--color-on-surface);
-  background-color: transparent;
 }
 
 body,
@@ -123,21 +100,14 @@ ol {
   overflow: hidden;
 }
 
-/* --- scroll bar --- */
-::-webkit-scrollbar {
-  background-color: var(--scrollbar-color);
-  width: var(--spacing-2);
-  height: var(--spacing-2);
-  border-radius: var(--spacing-2);
+/* --- scrollbar --- */
+* {
+  scrollbar-color: var(--scrollbar-thumb-color-darker) transparent;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: var(--scrollbar-thumb-color);
-  border-radius: var(--spacing-2);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--scrollbar-thumb-color-darker);
+*:hover {
+  /* thumb más opaco al pasar el mouse */
+  scrollbar-color: var(--scrollbar-thumb-color) transparent;
 }
 
 /* =============== REUSABLE CSS CLASSES =============== */
@@ -162,17 +132,9 @@ ol {
 
 /* md devices */
 @media screen and (min-width: 576px) {
-  /* .ongoing__header-content .ongoing__card-new-button {
-    display: none;
-  } */
-
   li.ongoing__item--new-task {
     display: flex;
   }
-
-  /* .categories__header-content .categories__card-new-button {
-    display: none;
-  } */
 
   li.categories__item--new-category {
     display: flex;
@@ -183,7 +145,7 @@ ol {
   }
 
   .event-card-list__scrollable {
-    max-height: 280px; /* 2 cards max in mobile */
+    max-height: 280px;
   }
 
   section.calendar-page {

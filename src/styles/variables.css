@@ -29,8 +29,8 @@
 
   --state-layer-hover-opacity: 0.1;
   --state-layer-focus-opacity: 0.12;
-  --state-layer-pressed-opacity: 0.14;
-  --state-layer-dragged-opacity: 0.16;
+  --state-layer-pressed-opacity: 0.17;
+  --state-layer-dragged-opacity: 0.19;
   --state-layer-disabled-opacity: 0.38;
 
   /* ========== SPACING ========== */
@@ -65,9 +65,8 @@
 
   /* ========== SCROLL BAR ========== */
 
-  --scrollbar-thumb-color: hsl(0, 0%, 40%);
-  --scrollbar-thumb-color-darker: hsl(0, 1%, 30%);
-  --scrollbar-color: hsl(0, 1%, 60%);
+  --scrollbar-thumb-color: hsla(0, 0%, 39%, 0.8);
+  --scrollbar-thumb-color-darker: hsla(0, 0%, 39%, 0.5);
 
   /* ========== SHADOW ========== */
 

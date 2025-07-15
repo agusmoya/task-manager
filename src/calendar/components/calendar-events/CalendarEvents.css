@@ -6,7 +6,7 @@
 .calendar-events__info {
   color: var(--color-on-surface-variant);
   background: var(--color-surface-variant);
-  height: 50px;
+  height: 3rem;
   padding-inline: var(--spacing-5);
   display: flex;
   align-items: center;
@@ -30,14 +30,9 @@
 }
 
 .calendar-events__item {
-  min-height: 70px;
+  min-height: 4rem;
   color: var(--color-on-secondary-container);
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--color-primary-container) 50%,
-    transparent
-  );
+  background: linear-gradient(to right, transparent, var(--color-surface-variant) 50%, transparent);
   display: flex;
   align-items: center;
   justify-content: space-evenly;

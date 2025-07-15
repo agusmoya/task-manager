@@ -127,11 +127,11 @@
   ):hover::before {
   color: var(--color-on-primary-container);
   background-color: var(--color-surface);
-  border: 1px solid var(--color-on-secondary-container);
+  border: var(--stroke-width-1) solid var(--color-on-secondary-container);
 }
 
 .calendar-wrapper__day--active::before {
-  border: 2px dashed var(--color-on-secondary-container);
+  border: var(--stroke-width-2) dashed var(--color-on-secondary-container);
   background-color: var(--color-surface);
 }
 

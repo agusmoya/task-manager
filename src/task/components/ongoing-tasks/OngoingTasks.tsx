@@ -28,10 +28,7 @@ export const OngoingTasks = () => {
           <div className="ongoing__header-content">
             <h2 className="ongoing__title">Ongoing Tasks</h2>
             <ButtonLink className="ongoing__card-new-button" variant="outlined" to="task-form">
-              <span className="btn__state-layer"></span>
-              <span className="btn__content">
-                <PlusIcon />
-              </span>
+              <PlusIcon />
             </ButtonLink>
           </div>
           <a className="ongoing__see-all">See all</a>

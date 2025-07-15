@@ -19,7 +19,7 @@ export const authApi = baseApi.injectEndpoints({
         body: form,
       }),
     }),
-    refresh: builder.mutation<IAuthResponseDto, void>({
+    refreshToken: builder.mutation<IAuthResponseDto, void>({
       query: () => ({ url: '/auth/refresh', method: 'POST' }),
     }),
     logout: builder.mutation<void, void>({
@@ -29,5 +29,5 @@ export const authApi = baseApi.injectEndpoints({
   overrideExisting: false, // no sobreescribe si ya existe
 })
 
-export const { useLoginMutation, useRegisterMutation, useRefreshMutation, useLogoutMutation } =
+export const { useLoginMutation, useRegisterMutation, useRefreshTokenMutation, useLogoutMutation } =
   authApi

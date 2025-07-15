@@ -25,8 +25,8 @@ export const getEventsSegments = (events: IEvent[] = []): IEventSegment[] => {
       const endOfDay = start.endOf('day')
       segments.push(makeSegment(evt, start, endOfDay, true, false))
       // overnight: second event segment
-      const startNext = end.startOf('day')
-      segments.push(makeSegment(evt, startNext, end, false, true))
+      const startOfNextDay = end.startOf('day')
+      segments.push(makeSegment(evt, startOfNextDay, end, false, true))
     }
   })
 
@@ -40,9 +40,8 @@ const makeSegment = (
   isStart: boolean,
   isEnd: boolean
 ): IEventSegment => {
-  const hours = end.diff(start, 'hours', true)
-  // round to nearest 0.5
-  const totalHours = Math.round(hours * 2) / 2
+  const minutes = end.diff(start, 'minutes', true)
+  const totalHours = minutes / 60
 
   return {
     id: event.id,
@@ -80,7 +79,7 @@ export const getHoursSchedule = (segments: IEventSegment[]) => {
   if (startH > 0) {
     arrayHours.unshift(startH - 1)
   }
-  if (endH < 24) {
+  if (endH < 23) {
     arrayHours.push(endH + 1)
   }
   // remove possible duplicates

@@ -4,7 +4,7 @@ import { useAppSelector } from '../reduxStore'
 import {
   useLoginMutation,
   useLogoutMutation,
-  useRefreshMutation,
+  useRefreshTokenMutation,
   useRegisterMutation,
 } from '../../services/authApi'
 
@@ -16,7 +16,7 @@ export const useAuthActions = () => {
   const [logout, { isLoading: logoutLoading, error: logoutError }] = useLogoutMutation()
   const [login, { isLoading: loginLoading, error: loginError }] = useLoginMutation()
   const [register, { isLoading: registerLoading, error: registerError }] = useRegisterMutation()
-  const [refresh, { error: refreshError }] = useRefreshMutation()
+  const [refreshToken, { error: refreshError }] = useRefreshTokenMutation()
 
   const {
     login: loginAuthError,
@@ -44,7 +44,7 @@ export const useAuthActions = () => {
     logout,
     login,
     register,
-    refresh,
+    refreshToken,
     // RTKQ errors
     loginAuthError,
     registerAuthError,

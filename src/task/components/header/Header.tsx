@@ -14,7 +14,7 @@ export const Header = () => {
     <header className="header-app" id="header-app">
       <div className="header-app__nav container">
         <div className="nav__logo">
-          <Link className="nav__logo-text" to="/home">
+          <Link className="nav__logo-text" to={user ? '/home' : '/auth/login'}>
             <img className="nav__logo-img" src={imgLogo} alt="logo-app" />
             &nbsp;
             <span>ToDo</span>

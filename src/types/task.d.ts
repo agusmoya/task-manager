@@ -14,7 +14,7 @@ export type TaskStatus = (typeof TASK_STATUS)[keyof typeof TASK_STATUS]
 export interface ITask {
   id: string
   title: string
-  creationDate: string
+  createdAt: string
   beginningDate: string
   completionDate: string
   ownerUserId: string

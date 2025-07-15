@@ -21,12 +21,12 @@ import { Breadcrumb } from '../components/breadcrumb/Breadcrumb'
 import '../styles/transition-page.css'
 
 export const AppRouter = () => {
-  const { status, refresh } = useAuthActions()
+  const { status, refreshToken } = useAuthActions()
   const { displayLocation, transitionPage, handleTransitionEnd } = useTransitionPage()
 
   useEffect(() => {
-    refresh()
-  }, [refresh])
+    refreshToken()
+  }, [refreshToken])
 
   if (status === AUTH_STATUS.CHECKING) {
     return <Loader />
@@ -39,7 +39,16 @@ export const AppRouter = () => {
       <main className={`main ${transitionPage}`} onAnimationEnd={handleTransitionEnd}>
         <Routes location={displayLocation} key={displayLocation.pathname}>
           {/* PUBLIC ROUTES */}
-          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route
+            path="/"
+            element={
+              status === AUTH_STATUS.AUTHENTICATED ? (
+                <Navigate to="/home" replace />
+              ) : (
+                <Navigate to="/auth/login" replace />
+              )
+            }
+          />
           <Route
             path="/auth/*"
             element={
