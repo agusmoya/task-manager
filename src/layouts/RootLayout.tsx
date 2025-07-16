@@ -10,7 +10,6 @@ export const RootLayout = () => {
         <Route path="task/:id" element={<TaskPage />} />
         <Route path="task-form" element={<TaskFormPage />} />
         <Route path="task-form/:id" element={<TaskFormPage />} />
-        {/* <Route path="*" element={<Navigate to="/home" replace />} /> */}
       </Routes>
     </div>
   )

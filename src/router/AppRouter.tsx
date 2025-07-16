@@ -21,12 +21,12 @@ import { Breadcrumb } from '../components/breadcrumb/Breadcrumb'
 import '../styles/transition-page.css'
 
 export const AppRouter = () => {
-  const { status, refreshToken } = useAuthActions()
+  const { status, refresh } = useAuthActions()
   const { displayLocation, transitionPage, handleTransitionEnd } = useTransitionPage()
 
   useEffect(() => {
-    refreshToken()
-  }, [refreshToken])
+    refresh()
+  }, [refresh])
 
   if (status === AUTH_STATUS.CHECKING) {
     return <Loader />

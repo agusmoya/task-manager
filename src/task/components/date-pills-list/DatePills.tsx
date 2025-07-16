@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useMemo, useState } from 'react'
+
 import dayjs, { Dayjs } from 'dayjs'
 
 import { DatePill } from '../date-pill/DatePill'
@@ -8,6 +9,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from '../../../components/icons/Icons'
 import { IEventSegment } from '../../../types/event'
 
 import './DatePills.css'
+import { SlideTransition } from '../../../components/slide-transition/SlideTransition'
 
 interface Props {
   eventSegments: IEventSegment[]
@@ -17,7 +19,7 @@ interface Props {
 
 export const DatePills = ({ eventSegments, selectedDate, onSelectDate }: Props) => {
   const [weekStart, setWeekStart] = useState<Dayjs>(() => selectedDate.startOf('week'))
-  const [animation, setAnimation] = useState<'slide-left' | 'slide-right' | ''>('')
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right' | 'center' | null>(null)
 
   const daysWithEvents = useMemo(() => {
     const set = new Set<string>()
@@ -34,23 +36,23 @@ export const DatePills = ({ eventSegments, selectedDate, onSelectDate }: Props) 
   )
 
   const handlePrevWeek = () => {
+    setSlideDirection('right')
     const newStart = weekStart.subtract(1, 'week')
     setWeekStart(newStart)
     onSelectDate(newStart)
-    setAnimation('slide-right')
   }
 
   const handleNextWeek = () => {
+    setSlideDirection('left')
     const newStart = weekStart.add(1, 'week')
     setWeekStart(newStart)
     onSelectDate(newStart)
-    setAnimation('slide-left')
   }
 
   const handleResetCurrentWeek = () => {
+    setSlideDirection('center')
     setWeekStart(dayjs().startOf('week'))
     onSelectDate(dayjs())
-    setAnimation('')
   }
 
   return (
@@ -71,25 +73,28 @@ export const DatePills = ({ eventSegments, selectedDate, onSelectDate }: Props) 
           <ArrowRightIcon className="date-pills-nav__icon" />
         </Button>
       </div>
-      <div key={weekStart.toString()} className={`date-pills ${animation}`}>
-        {weekDays.map(date => {
-          const isToday = date.isSame(dayjs(), 'day')
-          const isSelected = date.isSame(selectedDate, 'day')
-          const isoKey = date.startOf('day').toISOString()
-          const hasEvents = daysWithEvents.has(isoKey)
 
-          return (
-            <DatePill
-              key={date.toString()}
-              date={date}
-              isToday={isToday}
-              isSelected={isSelected}
-              onSelect={onSelectDate}
-              hasEvents={hasEvents}
-            />
-          )
-        })}
-      </div>
+      <SlideTransition direction={slideDirection} onAnimationEnd={() => setSlideDirection(null)}>
+        <div className="date-pills" onAnimationEnd={() => setSlideDirection(null)}>
+          {weekDays.map(date => {
+            const isToday = date.isSame(dayjs(), 'day')
+            const isSelected = date.isSame(selectedDate, 'day')
+            const isoKey = date.startOf('day').toISOString()
+            const hasEvents = daysWithEvents.has(isoKey)
+
+            return (
+              <DatePill
+                key={date.toString()}
+                date={date}
+                isToday={isToday}
+                isSelected={isSelected}
+                onSelect={onSelectDate}
+                hasEvents={hasEvents}
+              />
+            )
+          })}
+        </div>
+      </SlideTransition>
     </section>
   )
 }

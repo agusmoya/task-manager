@@ -1,0 +1,50 @@
+/* viewport that hides overflow */
+.slide-viewport {
+  overflow: hidden;
+  position: relative;
+  padding: var(--spacing-1);
+}
+
+/* inner container, starts in place */
+.slide-inner {
+  transform: translateX(0);
+}
+
+.slide-center {
+  animation: slide-center 0.3s ease-in-out forwards;
+}
+
+.slide-left {
+  animation: slide-left 0.3s ease-in-out forwards;
+}
+
+.slide-right {
+  animation: slide-right 0.3s ease-in-out forwards;
+}
+
+@keyframes slide-center {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

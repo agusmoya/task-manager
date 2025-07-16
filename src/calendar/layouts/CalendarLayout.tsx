@@ -7,7 +7,6 @@ export const CalendarLayout = () => {
     <div className="calendar-layout">
       <Routes>
         <Route index element={<CalendarPage />} />
-        {/* <Route path="*" element={<Navigate to="" replace />} /> */}
       </Routes>
     </div>
   )

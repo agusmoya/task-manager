@@ -10,7 +10,7 @@ import { useEventActions } from '../../store/hooks/useEventActions'
 import { useCalendarActions } from '../../store/hooks/useCalendarActions'
 
 export const useCalendar = () => {
-  const { activeCalendarDay, year, month } = useCalendarActions()
+  const { activeCalendarDay, resetActiveCalendarDay, year, month } = useCalendarActions()
   const { events } = useEventActions()
 
   // Generate the basic 42 CalendarDay grid
@@ -46,21 +46,21 @@ export const useCalendar = () => {
     })?.events ?? []
 
   // Labels for calendar tags
-  const todayDateLabel = dayjs().format('dddd, DD MMMM')
-  const monthYearLabel = dayjs().year(year).month(month).format('MMMM YYYY')
-  const activeCalendarDayDate = dayjs()
+  const { day: acdDay, month: acdMonth, year: acdYear } = activeCalendarDay
+  const todayDateLabel = dayjs().format('ddd, DD MMMM')
+  const fullDateLabel = dayjs().year(acdYear).month(acdMonth).date(acdDay).format('DD MMM YYYY')
+  const activeCalendarDayName = dayjs()
     .year(year)
     .month(month)
-    .date(activeCalendarDay.day)
-    .format('DD MMMM YYYY')
-  const activeCalendarDayName = activeCalendarDay.dayName
+    .day(activeCalendarDay.day + 1)
+    .format('dddd')
 
   return {
     activeCalendarDayName,
-    activeCalendarDayDate,
+    resetActiveCalendarDay,
+    fullDateLabel,
+    todayDateLabel,
     eventsForSelectedDay,
     calendarDays,
-    todayDateLabel,
-    monthYearLabel,
   }
 }

@@ -7,6 +7,7 @@ import {
   onGetNextMonth,
   onGetPreviousMonth,
   onSetActiveCalendarDay,
+  onResetActiveCalendarDay,
   onSetMonth,
   onSetYear,
 } from '../slices/calendar/calendarDaySlice'
@@ -46,6 +47,10 @@ export const useCalendarActions = () => {
     [dispatch]
   )
 
+  const resetActiveCalendarDay = useCallback(() => {
+    dispatch(onResetActiveCalendarDay())
+  }, [dispatch])
+
   return {
     //* Properties:
     today,
@@ -61,5 +66,6 @@ export const useCalendarActions = () => {
     getNextMonth,
     getPreviousMonth,
     setActiveCalendarDay,
+    resetActiveCalendarDay,
   }
 }

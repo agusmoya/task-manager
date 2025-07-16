@@ -1,21 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+import dayjs, { Dayjs } from 'dayjs'
+import localeData from 'dayjs/plugin/localeData'
+
 import { CALENDAR_DAY_TYPE, WEEKDAYS, CalendarDay } from '../../../types/calendar-day'
 
 import { computeCalendar } from '../../../calendar/utils/computeCalendar'
 
-const now = new Date()
-
-const calendarDay: CalendarDay = {
-  day: now.getDate(),
-  dayName: WEEKDAYS[now.getDay()],
-  month: now.getMonth(),
-  year: now.getFullYear(),
-  type: CALENDAR_DAY_TYPE.CURRENT,
-}
-
+dayjs.extend(localeData)
+const now = dayjs()
 export interface CalendarDayState {
-  today: Date
+  today: Dayjs
   weekDays: string[]
   month: number
   year: number
@@ -26,10 +21,16 @@ export interface CalendarDayState {
 const initialState: CalendarDayState = {
   today: now,
   weekDays: WEEKDAYS,
-  month: now.getMonth(),
-  year: now.getFullYear(),
-  calendarDays: computeCalendar(now.getMonth(), now.getFullYear()),
-  activeCalendarDay: calendarDay,
+  month: now.month(),
+  year: now.year(),
+  calendarDays: computeCalendar(now.month(), now.year()),
+  activeCalendarDay: {
+    day: now.date(),
+    dayName: WEEKDAYS[now.day()],
+    month: now.month(),
+    year: now.year(),
+    type: CALENDAR_DAY_TYPE.CURRENT,
+  },
 }
 
 export const calendarDaySlice = createSlice({
@@ -68,6 +69,9 @@ export const calendarDaySlice = createSlice({
     onSetActiveCalendarDay: (state, { payload }: PayloadAction<CalendarDay>) => {
       state.activeCalendarDay = payload
     },
+    onResetActiveCalendarDay: state => {
+      state.activeCalendarDay = initialState.activeCalendarDay
+    },
   },
 })
 
@@ -77,6 +81,7 @@ export const {
   onGetNextMonth,
   onGetPreviousMonth,
   onSetActiveCalendarDay,
+  onResetActiveCalendarDay,
   onSetMonth,
   onSetYear,
 } = calendarDaySlice.actions

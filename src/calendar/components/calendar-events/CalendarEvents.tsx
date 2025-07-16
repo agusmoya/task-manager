@@ -8,7 +8,7 @@ import { Loader } from '../../../components/loader-page/Loader'
 import { ConfirmModal } from '../../../components/confirm-modal/ConfirmModal'
 
 import { ModalIds } from '../../../constants/modalIds'
-import { IEvent } from '../../../types/event'
+import { EVENT_STATUS, IEvent } from '../../../types/event'
 
 import { useCalendar } from '../../hooks/useCalendar'
 import { useModalActions } from '../../../store/hooks/useModalActions'
@@ -16,6 +16,7 @@ import { useEventActions } from '../../../store/hooks/useEventActions'
 import { useCalendarActions } from '../../../store/hooks/useCalendarActions'
 
 import './CalendarEvents.css'
+import clsx from 'clsx'
 
 export const CalendarEvents = () => {
   const navigate = useNavigate()
@@ -30,7 +31,7 @@ export const CalendarEvents = () => {
     clearActiveEvent,
     deleteEvent,
   } = useEventActions()
-  const { eventsForSelectedDay, activeCalendarDayDate, activeCalendarDayName } = useCalendar()
+  const { eventsForSelectedDay, activeCalendarDayName, fullDateLabel } = useCalendar()
 
   const handleClickDeleteEvent = (id: string) => {
     setActiveEvent(id)
@@ -57,36 +58,42 @@ export const CalendarEvents = () => {
       <aside className="calendar-events">
         {activeCalendarDay ? (
           <>
-            <header className="calendar-events__info">
-              <span className="calendar-events__day">{activeCalendarDayName}</span>
-              <span className="calendar-events__date">{activeCalendarDayDate}</span>
+            <header className="calendar-events__header">
+              <span className="calendar-events__header-day">{activeCalendarDayName}</span>
+              <span className="calendar-events__header-date">{fullDateLabel}</span>
             </header>
             <section className="calendar-events__list">
               {eventsForSelectedDay.length > 0 ? (
                 eventsForSelectedDay.map(event => {
-                  const { id, title } = event
+                  const { id, title, status } = event
                   return (
-                    <article className="calendar-events__item" key={id}>
+                    <article
+                      key={id}
+                      className={clsx(
+                        'calendar-event',
+                        status === EVENT_STATUS.COMPLETED && 'calendar-event--disabled'
+                      )}
+                    >
                       <Button
-                        type="button"
-                        variant="text"
-                        className="calendar-events__item-edit-btn"
+                        variant="icon"
+                        className="calendar-event__button calendar-event__button--edit"
                         onClick={() => handleClickEditEvent(event)}
                         disabled={updating}
                       >
                         <EditIcon />
                       </Button>
-                      <div className="calendar-events__item-info">
-                        <h3 className="calendar-events__item-title">{title}</h3>
-                        <span className="calendar-events__item-time">
-                          {dayjs(event.start).format('HH:mm')} - {dayjs(event.end).format('HH:mm')}
-                          &nbsp;hs
+                      <div className="calendar-event__info">
+                        <p className="calendar-event__title">{title}</p>
+                        {status === EVENT_STATUS.COMPLETED && (
+                          <p className="calendar-event__status">{EVENT_STATUS.COMPLETED}</p>
+                        )}
+                        <span className="calendar-event__time">
+                          {`${dayjs(event.start).format('HH:mm')} hs - ${dayjs(event.end).format('HH:mm')} hs`}
                         </span>
                       </div>
                       <Button
-                        type="button"
-                        variant="text"
-                        className="calendar-events__item-delete-btn"
+                        variant="icon"
+                        className="calendar-event__button calendar-event__button--delete"
                         onClick={() => handleClickDeleteEvent(id)}
                         disabled={deleting}
                       >
@@ -96,12 +103,12 @@ export const CalendarEvents = () => {
                   )
                 })
               ) : (
-                <span className="calendar-events__no-events">No events</span>
+                <span className="calendar-events__list-empty">No events</span>
               )}
             </section>
           </>
         ) : (
-          <span className="calendar-events__no-day-selected">No day selected</span>
+          <span className="calendar-events__empty">No day selected</span>
         )}
       </aside>
       {isOpen && (

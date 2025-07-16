@@ -1,7 +1,11 @@
-import clsx from 'clsx'
+import { useEffect, useState } from 'react'
 
-import { FabMonth } from '../fab-month/FabMonth'
+import clsx from 'clsx'
+import dayjs from 'dayjs'
+
 import { Button } from '../../../components/button/Button'
+import { ArrowLeftIcon, ArrowRightIcon } from '../../../components/icons/Icons'
+import { SlideTransition } from '../../../components/slide-transition/SlideTransition'
 
 import { CalendarDay, CALENDAR_DAY_TYPE } from '../../../types/calendar-day'
 
@@ -13,7 +17,8 @@ import { useCalendarActions } from '../../../store/hooks/useCalendarActions'
 import './CalendarGridDays.css'
 
 export const CalendarGridDays = () => {
-  const { calendarDays, todayDateLabel, monthYearLabel } = useCalendar()
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right' | 'center' | null>(null)
+  const { calendarDays, todayDateLabel, resetActiveCalendarDay } = useCalendar()
   const {
     weekDays,
     activeCalendarDay,
@@ -24,67 +29,93 @@ export const CalendarGridDays = () => {
     getNextMonth,
   } = useCalendarActions()
 
+  useEffect(() => {
+    return () => resetActiveCalendarDay()
+  }, [resetActiveCalendarDay])
+
   const handleDayClick = (day: CalendarDay) => {
     if (day.type !== CALENDAR_DAY_TYPE.CURRENT) return
     setActiveCalendarDay(day)
   }
 
   const handleClickGoToday = () => {
-    const today = new Date()
-    setMonth(today.getMonth())
-    setYear(today.getFullYear())
+    setSlideDirection('center')
+    const today = dayjs()
+    setMonth(today.month())
+    setYear(today.year())
+  }
+
+  const handleGetPreviousMonth = () => {
+    setSlideDirection('left')
+    getPreviousMonth()
+  }
+
+  const handleGetNextMonth = () => {
+    setSlideDirection('right')
+    getNextMonth()
   }
 
   return (
-    <div className="calendar-wrapper">
-      <div className="calendar-wrapper__today">
+    <div className="calendar">
+      <section className="calendar__header">
         <Button
-          type="button"
+          variant="fab"
+          className="calendar__nav-btn calendar__nav-btn--prev"
+          onClick={handleGetPreviousMonth}
+        >
+          <ArrowLeftIcon />
+        </Button>
+
+        <Button
           variant="text"
-          className="calendar-wrapper__today-button"
+          className="calendar__button calendar__button--today"
           onClick={handleClickGoToday}
         >
           {todayDateLabel}
         </Button>
-      </div>
 
-      <div className="calendar-wrapper__month">
-        <FabMonth onHandleClick={getPreviousMonth} direction="left" />
-        <span className="calendar-wrapper__month__date">{monthYearLabel}</span>
-        <FabMonth onHandleClick={getNextMonth} direction="right" />
-      </div>
+        <Button
+          variant="fab"
+          className="calendar__nav-btn calendar__nav-btn--prev"
+          onClick={handleGetNextMonth}
+        >
+          <ArrowRightIcon />
+        </Button>
+      </section>
 
-      <div className="calendar-wrapper__weekdays">
+      <section className="calendar__weekdays">
         {weekDays.map(dayName => (
-          <div key={dayName} className="calendar-wrapper__weekday">
-            {dayName.slice(0, 3)}
-          </div>
+          <span key={dayName} className="calendar__weekday">
+            {dayName}
+          </span>
         ))}
-      </div>
+      </section>
 
-      <div className="calendar-wrapper__days">
-        {calendarDays.map(calendarDay => {
-          const { day, month, year, type, events } = calendarDay
-          const dayHasEvents = events.length > 0
+      <SlideTransition direction={slideDirection} onAnimationEnd={() => setSlideDirection(null)}>
+        <section className="calendar__days">
+          {calendarDays.map(calendarDay => {
+            const { day, month, year, type, events } = calendarDay
+            const dayHasEvents = events.length > 0
 
-          return (
-            <div
-              key={`${type}-${year}-${month}-${day}`}
-              onClick={() => handleDayClick(calendarDay)}
-              className={clsx(
-                'calendar-wrapper__day',
-                type === CALENDAR_DAY_TYPE.PREVIOUS && 'calendar-wrapper__day--prev',
-                type === CALENDAR_DAY_TYPE.NEXT && 'calendar-wrapper__day--next',
-                isActiveDay(activeCalendarDay!, calendarDay) && 'calendar-wrapper__day--active',
-                isToday(calendarDay) && 'calendar-wrapper__day--today',
-                dayHasEvents && 'calendar-wrapper__day--event'
-              )}
-            >
-              {day}
-            </div>
-          )
-        })}
-      </div>
+            return (
+              <div
+                key={`${type}-${year}-${month}-${day}`}
+                onClick={() => handleDayClick(calendarDay)}
+                className={clsx(
+                  'calendar__day',
+                  type === CALENDAR_DAY_TYPE.PREVIOUS && 'calendar__day--prev',
+                  type === CALENDAR_DAY_TYPE.NEXT && 'calendar__day--next',
+                  isActiveDay(activeCalendarDay!, calendarDay) && 'calendar__day--active',
+                  isToday(calendarDay) && 'calendar__day--today',
+                  dayHasEvents && 'calendar__day--event'
+                )}
+              >
+                {day}
+              </div>
+            )
+          })}
+        </section>
+      </SlideTransition>
     </div>
   )
 }

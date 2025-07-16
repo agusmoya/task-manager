@@ -1,3 +1,8 @@
+import dayjs from 'dayjs'
+import localeData from 'dayjs/plugin/localeData'
+
+dayjs.extend(localeData)
+
 import { IEvent } from './event'
 
 export const CALENDAR_DAY_TYPE = {
@@ -20,15 +25,7 @@ export interface CalendarDayWithEvents extends CalendarDay {
   events: IEvent[]
 }
 
-export const WEEKDAYS = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-]
+export const WEEKDAYS = dayjs.weekdaysShort()
 
 export const MONTHS = Array.from({ length: 12 }, (_, i) =>
   new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(2000, i))
