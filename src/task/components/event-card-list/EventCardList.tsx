@@ -1,6 +1,6 @@
 import { EventCard } from '../event-card/EventCard'
-
-import { FabOpenModal } from '../../../components/fab-open-modal/FabOpenModal'
+import { Button } from '../../../components/button/Button'
+import { PlusIcon } from '../../../components/icons/Icons'
 
 import { IEventLocal } from '../../../types/event'
 
@@ -23,12 +23,16 @@ export const EventCardList = ({
 }: Props) => {
   return (
     <section className="event-card-list" aria-label="Related events to this task">
-      <span className="event-card-list__error" role="alert">
-        {!eventsValid ? 'You must add at least one event.' : ''}
-      </span>
+      {!eventsValid && (
+        <span className="event-card-list__error" role="alert">
+          You must add at least one event.
+        </span>
+      )}
       <div className="event-card-list__header">
         <p className="event-card-list__title">Related events:</p>
-        <FabOpenModal className="event-card-list__btn" handleClickOpen={onOpenNewEventModal} />
+        <Button variant="outlined" className={`event-card-list__btn`} onClick={onOpenNewEventModal}>
+          <PlusIcon className="add-event-icon" />
+        </Button>
       </div>
       <div className="event-card-list__scrollable">
         {events.length === 0 ? (

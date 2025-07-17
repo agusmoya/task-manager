@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 
 import { useForm } from '../../hooks/useForm'
@@ -18,6 +18,7 @@ export function useEventFormLogic(
   onAddEvent: (evt: IEventLocal) => void,
   onUpdateEvent: (evt: IEventLocal) => void
 ) {
+  const originalFormRef = useRef<IEventForm | null>(null)
   // Initialize the form with "raw" fields (ISO or empty)
   const {
     titleValid,
@@ -51,6 +52,8 @@ export function useEventFormLogic(
         start: formatToDatetimeLocal(start),
         end: formatToDatetimeLocal(end),
       })
+
+      originalFormRef.current = eventToEdit
     } else {
       const start = getNextStartDate(existingEvents)
       const end = formatToDatetimeLocal(dayjs(start).add(1, 'hour'))
@@ -60,13 +63,19 @@ export function useEventFormLogic(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventToEdit, existingEvents])
 
-  // 3) Check for overlap between events
   const [hasConflict, setHasConflict] = useState(false)
   useEffect(() => {
     setHasConflict(hasOverlap(formState.start, formState.end, existingEvents, eventToEdit?.id))
   }, [formState.start, formState.end, existingEvents, eventToEdit?.id])
 
-  // 4) handleSubmit orquesta add vs update
+  const handleResetForm = () => {
+    if (eventToEdit && originalFormRef?.current) {
+      setFormState(originalFormRef.current)
+      return
+    }
+    onResetForm()
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!isFormValid || hasConflict) return
@@ -99,6 +108,6 @@ export function useEventFormLogic(
     onInputChange,
     onBlurField,
     handleSubmit,
-    onResetForm,
+    handleResetForm,
   }
 }

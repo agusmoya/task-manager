@@ -1,22 +1,24 @@
 .event-card {
-  background-color: var(--color-primary-container);
+  background-color: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
   border-radius: var(--spacing-3);
   padding: var(--spacing-4);
+  min-height: 7rem;
+
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   box-shadow:
     inset 0 1px 2px rgba(0, 0, 0, 0.05),
     0 1px 3px rgba(0, 0, 0, 0.1);
-  border: var(--stroke-width-1) solid var(--color-outline-variant);
-  display: flex;
-  flex-direction: column;
-  margin: var(--spacing-1);
-
   animation: fadeInUp 0.3s ease forwards;
   transition:
     box-shadow 0.3s ease,
     background-color 0.3s ease transform 0.2s;
-  position: relative;
-  overflow: hidden;
-  min-height: 120px;
 }
 
 @keyframes fadeInUp {
@@ -40,25 +42,21 @@
 .event-card__title {
   font-size: var(--text-md);
   font-weight: var(--font-weight-medium);
-  color: var(--color-on-surface);
 }
 
 .event-card__content {
   display: flex;
   flex-direction: column;
   row-gap: var(--spacing-2);
+  font-size: var(--text-sm);
 }
 
 .event-card__time {
   display: flex;
   align-items: center;
-  font-size: var(--text-sm);
-  color: var(--color-on-surface);
 }
 
 .event-card__notes {
-  font-size: var(--text-sm);
-  color: var(--color-on-surface);
   line-height: 1.5;
 }
 
@@ -81,8 +79,7 @@
 }
 
 .event-card__btn {
-  padding: var(--spacing-2);
-  border-radius: 50%;
+  padding: var(--spacing-1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,13 +87,13 @@
 }
 
 .event-card__btn--edit {
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
+  background-color: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
 }
 
 .event-card__btn--delete {
-  background-color: var(--color-secondary);
-  color: var(--color-on-secondary);
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary-container);
 }
 
 .event-card__content {

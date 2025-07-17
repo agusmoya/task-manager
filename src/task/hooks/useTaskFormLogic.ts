@@ -72,6 +72,7 @@ export const useTaskFormLogic = () => {
     onInputChange,
     onCustomChange,
     onBlurField,
+    setFormState,
     onResetForm,
   } = useForm<ITaskForm>(taskFormFields, taskFormValidations)
 
@@ -152,6 +153,14 @@ export const useTaskFormLogic = () => {
     }
   }
 
+  const handleResetForm = () => {
+    if (task && originalFormRef?.current) {
+      setFormState(originalFormRef.current)
+      return
+    }
+    onResetForm()
+  }
+
   const handleTaskSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -181,7 +190,7 @@ export const useTaskFormLogic = () => {
     creatingTask ||
     updatingTask
 
-  const isResetDisabled = !isFormValid || creatingCat || creatingTask || updatingTask
+  const isResetDisabled = creatingCat || creatingTask || updatingTask
 
   const errorMessage =
     createCategoryError?.message ||
@@ -223,7 +232,8 @@ export const useTaskFormLogic = () => {
     onInputChange,
     onCustomChange,
     onBlurField,
-    onResetForm,
+    // onResetForm,
+    handleResetForm,
     handleAddEvent,
     handleEditEvent,
     handleDeleteEvent,

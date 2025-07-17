@@ -47,7 +47,6 @@ const TaskFormPage = () => {
     // Handlers
     onInputChange,
     onBlurField,
-    onResetForm,
     handleAddEvent,
     handleEditEvent,
     handleDeleteEvent,
@@ -55,6 +54,7 @@ const TaskFormPage = () => {
     handleRemoveParticipant,
     handleCreateNewCategory,
     handleTaskSubmit,
+    handleResetForm,
   } = useTaskFormLogic()
 
   const {
@@ -167,7 +167,7 @@ const TaskFormPage = () => {
               type="reset"
               variant="outlined"
               className="task-form-page__button"
-              onClick={onResetForm}
+              onClick={handleResetForm}
               disabled={isResetDisabled}
             >
               Reset
