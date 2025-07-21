@@ -1,7 +1,8 @@
 .event-card {
-  background-color: var(--color-secondary-container);
+  background-color: transparent;
+  border: var(--stroke-width-2) solid var(--color-secondary-container);
   color: var(--color-on-secondary-container);
-  border-radius: var(--spacing-3);
+  border-radius: var(--radius-sm);
   padding: var(--spacing-4);
   min-height: 7rem;
 
@@ -12,13 +13,16 @@
   flex-direction: column;
   justify-content: space-between;
 
-  box-shadow:
-    inset 0 1px 2px rgba(0, 0, 0, 0.05),
-    0 1px 3px rgba(0, 0, 0, 0.1);
-  animation: fadeInUp 0.3s ease forwards;
+  animation: fadeInUp 0.3s ease backwards;
   transition:
     box-shadow 0.3s ease,
-    background-color 0.3s ease transform 0.2s;
+    background-color 0.3s ease,
+    transform 0.3s;
+}
+
+.event-card:hover {
+  box-shadow: var(--elevation-1);
+  transform: scale(1.01);
 }
 
 @keyframes fadeInUp {
@@ -32,9 +36,13 @@
   }
 }
 
+.event-card--completed {
+  color: var(--color-outline);
+  pointer-events: none;
+}
+
 .event-card__header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -44,11 +52,16 @@
   font-weight: var(--font-weight-medium);
 }
 
+.event-card__title--completed {
+  text-decoration: line-through;
+}
+
 .event-card__content {
   display: flex;
   flex-direction: column;
   row-gap: var(--spacing-2);
   font-size: var(--text-sm);
+  color: var(--color-on-surface-variant);
 }
 
 .event-card__time {
@@ -58,10 +71,6 @@
 
 .event-card__notes {
   line-height: 1.5;
-}
-
-.event-card:hover {
-  box-shadow: var(--elevation-1);
 }
 
 .event-card__actions {

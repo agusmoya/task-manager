@@ -148,15 +148,14 @@ ol {
   .event-card-list__scrollable {
     max-height: 280px;
   }
-
-  section.calendar-page {
-    justify-content: center;
-    flex-direction: row;
-  }
 }
 
 /* lg devices */
 @media screen and (min-width: 767px) {
+  section.calendar-page {
+    justify-content: center;
+    flex-direction: row;
+  }
 }
 
 /* xlg devices */

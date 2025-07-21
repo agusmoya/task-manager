@@ -1,9 +1,10 @@
 import dayjs from 'dayjs'
+import clsx from 'clsx'
 
 import { Button } from '../../../components/button/Button'
 import { DeleteIcon, EditIcon, SeparatorIcon } from '../../../components/icons/Icons'
 
-import { IEventLocal } from '../../../types/event'
+import { EVENT_STATUS, IEventLocal } from '../../../types/event'
 
 import './EventCard.css'
 
@@ -14,14 +15,17 @@ interface Props {
 }
 
 export const EventCard = ({ event, onEdit, onDelete }: Props) => {
-  const { id, title, start, end, notes } = event
+  const { id, status, title, start, end, notes } = event
 
   const formattedStart = `${dayjs(start).format('MMM-DD HH:mm')} h`
   const formattedEnd = `${dayjs(end).format('MMM-DD HH:mm')} h`
-  const notesFormatted = notes.length > 30 ? `${notes.slice(0, 30)}...` : notes
+  const formattedNotes = notes.length > 30 ? `${notes.slice(0, 30)}...` : notes
 
   return (
-    <article className="event-card" aria-label={`Event: ${title}`}>
+    <article
+      className={clsx('event-card', status === EVENT_STATUS.COMPLETED && 'event-card--completed')}
+      aria-label={`Event: ${title}`}
+    >
       <section className="event-card__actions">
         <Button
           aria-label="Edit event"
@@ -41,7 +45,15 @@ export const EventCard = ({ event, onEdit, onDelete }: Props) => {
         </Button>
       </section>
       <header className="event-card__header">
-        <span className="event-card__title">{title}</span>
+        <span
+          className={clsx(
+            'event-card__title',
+            status === EVENT_STATUS.COMPLETED && 'event-card__title--completed'
+          )}
+        >
+          {title}
+        </span>
+        {status === EVENT_STATUS.COMPLETED && <small>&nbsp;(done)</small>}
       </header>
       <div className="event-card__content">
         <time className="event-card__time">
@@ -49,7 +61,7 @@ export const EventCard = ({ event, onEdit, onDelete }: Props) => {
           <SeparatorIcon size={15} />
           <span>{formattedEnd}</span>
         </time>
-        {notes && <p className="event-card__notes">{notesFormatted}</p>}
+        {notes && <p className="event-card__notes">{formattedNotes}</p>}
       </div>
     </article>
   )

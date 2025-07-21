@@ -65,9 +65,9 @@ export const ScheduleEvent = ({
     >
       <header className="schedule-event__header">
         <h3 className="schedule-event__title">
-          <span className="schedule-event__title-text">{title}</span>&nbsp;
+          <span className="schedule-event__title-text">{title}</span>
           {status === EVENT_STATUS.COMPLETED && (
-            <small className="schedule-event__text-completed">(done)</small>
+            <small className="schedule-event__text-completed">&nbsp;(done)</small>
           )}
         </h3>
         <Button

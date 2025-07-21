@@ -3,10 +3,12 @@
   flex: 1 1 50%;
   display: flex;
   flex-direction: column;
-  row-gap: var(--spacing-2);
+  align-items: center;
+  width: 100%;
 }
 
 .calendar-events__header {
+  width: 100%;
   color: var(--color-on-surface-variant);
   background: linear-gradient(
     to right,
@@ -31,82 +33,19 @@
   font-size: var(--text-md);
 }
 
-.calendar-events__list {
+.events-timeline {
+  margin-block: var(--spacing-4);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  row-gap: var(--spacing-1);
+  row-gap: var(--spacing-7);
+  height: 15rem;
 }
 
-.calendar-event:nth-child(odd) {
-  background: transparent;
-}
-
-.calendar-event {
-  min-height: 5rem;
-  color: var(--color-on-primary-container);
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--color-primary-container) 50%,
-    transparent
-  );
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
-.calendar-event:hover .calendar-event__button {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.calendar-event__button {
+.calendar-events--empty,
+.events-timeline--empty {
   display: grid;
   place-content: center;
-  padding: var(--spacing-1);
-  border-radius: var(--radius-sm);
-
-  opacity: 0;
-  transform: translateX(-10px);
-  transition:
-    opacity 0.2s ease-in-out,
-    transform 0.2s ease-in-out;
-}
-
-.calendar-event__button--delete {
-  transform: translateX(10px);
-}
-
-.calendar-event--disabled {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-.calendar-event__info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-3);
-  font-weight: var(--font-weight-medium);
-}
-
-.calendar-event__title {
-  font-size: var(--text-lg);
-}
-
-.calendar-event__time {
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-normal);
-}
-
-.calendar-events__empty,
-.calendar-events__list-empty {
-  opacity: 0.75;
-  font-size: var(--text-md);
-  font-weight: var(--font-weight-medium);
-  display: grid;
-  place-content: center;
-  padding-top: var(--spacing-10);
+  height: 7rem;
+  color: var(--color-on-surface-variant);
 }
