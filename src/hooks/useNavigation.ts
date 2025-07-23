@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react'
-import { useLocation, matchPath, useNavigate } from 'react-router-dom'
+import { useLocation, matchPath } from 'react-router-dom'
 
 import { BreadcrumbNavigation } from '../types/breadbrumb.d'
 
@@ -13,63 +13,42 @@ export function useNavigation(): BreadcrumbNavigation {
   }
 
   const location = useLocation()
-  const navigate = useNavigate()
-
   const { breadcrumbs, setBreadcrumbs } = navigationContext
 
-  const getCrumbLabel = () => {
-    const entries = Object.entries(breadcrumbMap)
+  useEffect(() => {
+    const newPath = location.pathname
 
-    for (const [routePath, crumb] of entries) {
-      const match = matchPath(routePath, location.pathname)
+    // We calculate the label for the current route
+    let newLabel = ''
+    for (const [routePath, crumb] of Object.entries(breadcrumbMap)) {
+      const match = matchPath(routePath, newPath)
       if (match) {
-        if (typeof crumb === 'function') {
-          return crumb(match.params as Record<string, string>)
-        }
-        return crumb
+        newLabel =
+          typeof crumb === 'function' ? crumb(match.params as Record<string, string>) : crumb
+        break
       }
     }
-    return ''
-  }
 
-  const handleNavigation = () => {
-    const newPath = location.pathname
     setBreadcrumbs(prev => {
-      // Si ya es el último breadcrumb, no hacemos nada
+      // If it's already the last breadcrumb, we don't do anything.
       if (prev.length > 0 && prev[prev.length - 1].path === newPath) {
         return prev
       }
 
-      // Si existe antes en la lista, reemplazamos para no repetir
+      // If it exists earlier in the list, we replace it to avoid repetition
       const existingIndex = prev.findIndex(item => item.path === newPath)
-      const newLabel = getCrumbLabel()
+
       if (existingIndex >= 0) {
         return [...prev.slice(0, existingIndex), { path: newPath, label: newLabel }]
       }
 
-      // Si vamos a Home, reseteamos el breadcrumb
+      // If we're going to Home, we reset the breadcrumb
       if (newLabel === 'Home') return [{ path: newPath, label: newLabel }]
 
-      // Si no existe, lo agregamos al final
+      // If it doesn't exist, we add it to the end
       return [...prev, { path: newPath, label: newLabel }]
     })
-  }
+  }, [location.pathname, setBreadcrumbs])
 
-  const saveBreadcrumbLocalStorage = () => {
-    localStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs))
-  }
-
-  // Efecto para sincronizar con la ubicación actual
-  useEffect(() => {
-    handleNavigation()
-    saveBreadcrumbLocalStorage()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location])
-
-  // Función para navegar programáticamente
-  const navigateTo = (path: string) => {
-    navigate(path)
-  }
-
-  return { breadcrumbs, navigateTo }
+  return { breadcrumbs }
 }

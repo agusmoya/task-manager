@@ -4,6 +4,7 @@ import { MoonIcon, SunIcon } from '../icons/Icons.tsx'
 import { Button } from '../button/Button.tsx'
 
 import './ButtonTheme.css'
+import clsx from 'clsx'
 
 export const ButtonTheme = () => {
   const lightTheme = 'light'
@@ -19,14 +20,16 @@ export const ButtonTheme = () => {
   }, [theme])
 
   const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === lightTheme ? darkTheme : lightTheme))
+    setTheme(prev => (prev === lightTheme ? darkTheme : lightTheme))
   }
 
   return (
-    <Button id="theme-button" className="btn btn--icon button-theme" onClick={toggleTheme}>
+    <Button variant="icon" id="button-theme" onClick={toggleTheme} aria-label="Toggle theme">
       <span
-        className={`btn__content button-theme__icon
-        ${theme === lightTheme ? 'light' : 'dark'}`}
+        className={clsx('button-theme__icon', {
+          'button-theme__icon--light': theme === lightTheme,
+          'button-theme__icon--dark': theme === darkTheme,
+        })}
       >
         {theme === lightTheme ? <MoonIcon /> : <SunIcon />}
       </span>

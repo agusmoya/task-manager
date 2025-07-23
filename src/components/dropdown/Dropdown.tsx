@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
+import clsx from 'clsx'
+
 import { TASK_STATUS } from '../../types/task.d'
 
 import { useAuthActions } from '../../store/hooks/useAuthActions'
@@ -14,36 +16,36 @@ interface DropdownProps {
   altText?: string
 }
 
+/**
+ * Dropdown wraps its children in a native <details> element,
+ * managing open state and outside clicks, with proper BEM classes.
+ */
 export const Dropdown = ({
   children,
   className,
   image = '/images/members/user-1.webp',
   altText = 'Avatar photo',
 }: DropdownProps) => {
-  const { tasks } = useTaskActions()
   const detailsRef = useRef<HTMLDetailsElement>(null)
   const [isOpen, setIsOpen] = useState(false)
+
+  const { tasks } = useTaskActions()
   const { user } = useAuthActions()
 
   const pendingTasks = tasks.filter(t => t.status === TASK_STATUS.PENDING).length
 
-  const closeDropdown = () => {
-    if (detailsRef.current) {
-      detailsRef.current.open = false
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDetailsElement>) => {
+    if (e.key === 'Escape') {
+      detailsRef.current?.removeAttribute('open')
       setIsOpen(false)
     }
   }
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDetailsElement>) => {
-    if (event.key === 'Escape') {
-      closeDropdown()
-    }
-  }
-
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (detailsRef.current && !detailsRef.current.contains(event.target as Node)) {
-        closeDropdown()
+    const handleClickOutside = (e: MouseEvent) => {
+      if (detailsRef.current && !detailsRef.current.contains(e.target as Node)) {
+        detailsRef.current.removeAttribute('open')
+        setIsOpen(false)
       }
     }
 
@@ -54,7 +56,11 @@ export const Dropdown = ({
   }, [])
 
   return (
-    <details className={`dropdown ${className || ''}`} ref={detailsRef} open={isOpen}>
+    <details
+      className={clsx('dropdown', className)}
+      ref={detailsRef}
+      onToggle={e => setIsOpen(e.currentTarget.open)}
+    >
       <summary
         onKeyDown={handleKeyDown}
         className="dropdown__label"
@@ -62,7 +68,7 @@ export const Dropdown = ({
         aria-haspopup="true"
         aria-expanded={isOpen}
       >
-        <div className="nav__user-info">
+        <div className="dropdown__user-info">
           <h1>Hi {user?.firstName}</h1>
           <small>{pendingTasks === 1 ? '1 pending task' : `${pendingTasks} pending tasks`}</small>
         </div>

@@ -12,7 +12,7 @@ export const Search: React.FC = () => {
     event.preventDefault()
   }
 
-  const startWithBlanks = (text: string): boolean => text.startsWith(' ')
+  const startWithBlanks = (text: string) => text.startsWith(' ')
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newQuery = event.target.value

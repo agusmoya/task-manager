@@ -39,9 +39,7 @@ export const TaskInfo = ({ task }: Props) => {
     beginningDate,
     completionDate,
     progress,
-    durationDays,
-    durationHours,
-    durationMinutes,
+    totalHours,
   } = task
 
   const totalEvents = events?.length ?? 0
@@ -76,7 +74,7 @@ export const TaskInfo = ({ task }: Props) => {
               <ArrowRightIcon className="task-info__date-separator" />
               {dayjs(completionDate).format('DD MMM')}
             </span>
-            <span>Duration: {`${durationDays} d > ${durationHours} h > ${durationMinutes} m`}</span>
+            <span>Duration: {`${totalHours} h`}</span>
             <div className="task-info__progress-group">
               <LinearProgress showLabel value={progress} />
               <small className="task-info__event-count">({eventProgresTask}) events done.</small>

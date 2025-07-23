@@ -28,10 +28,10 @@
   --stroke-width-2: 2px;
   --stroke-width-3: 3px;
 
-  --state-layer-hover-opacity: 0.1;
-  --state-layer-focus-opacity: 0.12;
-  --state-layer-pressed-opacity: 0.17;
-  --state-layer-dragged-opacity: 0.19;
+  --state-layer-hover-opacity: 0.08;
+  --state-layer-focus-opacity: 0.1;
+  --state-layer-pressed-opacity: 0.13;
+  --state-layer-dragged-opacity: 0.16;
   --state-layer-disabled-opacity: 0.38;
 
   /* ========== SPACING ========== */
@@ -87,16 +87,19 @@
 
   --color-primary: hsl(242, 24%, 46%);
   --color-on-primary: hsl(0, 0%, 100%);
+
   --color-primary-container: hsl(246, 100%, 95%);
   --color-on-primary-container: hsl(243, 59%, 18%);
 
   --color-secondary: hsl(246, 10%, 40%);
   --color-on-secondary: hsl(0, 0%, 100%);
+
   --color-secondary-container: hsl(247, 68%, 93%);
   --color-on-secondary-container: hsl(240, 26%, 14%);
 
   --color-surface: hsl(274, 100%, 99%);
   --color-on-surface: hsl(250, 10%, 12%);
+
   --color-surface-variant: hsl(256, 22%, 90%);
   --color-on-surface-variant: hsl(247, 6%, 29%);
 
@@ -105,21 +108,25 @@
 
   --color-error: hsl(0, 75%, 42%);
   --color-on-error: hsl(0, 0%, 100%);
+
   --color-error-container: hsl(6, 100%, 92%);
   --color-on-error-container: hsl(358, 100%, 13%);
 
   --color-warning: hsl(35, 80%, 30%);
   --color-on-warning: hsl(45, 100%, 90%);
+
   --color-warning-container: hsl(45, 100%, 90%);
   --color-on-warning-container: hsl(35, 80%, 30%);
 
   --color-info: hsl(210, 80%, 35%);
   --color-on-info: hsl(208, 100%, 93%);
+
   --color-info-container: hsl(208, 100%, 93%);
   --color-on-info-container: hsl(210, 80%, 35%);
 
   --color-success: hsl(145, 60%, 25%);
   --color-on-success: hsl(142, 80%, 90%);
+
   --color-success-container: hsl(142, 80%, 90%);
   --color-on-success-container: hsl(145, 60%, 25%);
 }
@@ -133,16 +140,19 @@
 
   --color-primary: hsl(243, 100%, 88%);
   --color-on-primary: hsl(242, 39%, 27%);
+
   --color-primary-container: hsl(242, 30%, 36%);
   --color-on-primary-container: hsl(246, 100%, 94%);
 
   --color-secondary: hsl(247, 27%, 82%);
   --color-on-secondary: hsl(243, 18%, 22%);
+
   --color-secondary-container: hsl(243, 13%, 31%);
   --color-on-secondary-container: hsl(247, 68%, 93%);
 
   --color-surface: hsla(240, 12%, 8%);
   --color-on-surface: hsl(270, 15%, 90%);
+
   --color-surface-variant: hsl(247, 6%, 29%);
   --color-on-surface-variant: hsl(256, 10%, 79%);
 
@@ -151,21 +161,25 @@
 
   --color-error: hsl(6, 100%, 84%);
   --color-on-error: hsl(357, 100%, 21%);
+
   --color-error-container: hsl(356, 100%, 29%);
   --color-on-error-container: hsl(6, 100%, 92%);
 
   --color-warning: hsl(35, 80%, 60%);
   --color-on-warning: hsl(0, 0%, 10%);
+
   --color-warning-container: hsl(35, 80%, 30%);
   --color-on-warning-container: hsl(45, 100%, 90%);
 
   --color-info: hsl(210, 80%, 60%);
   --color-on-info: hsl(0, 0%, 10%);
+
   --color-info-container: hsl(210, 80%, 30%);
   --color-on-info-container: hsl(208, 100%, 93%);
 
   --color-success: hsl(145, 60%, 60%);
   --color-on-success: hsl(0, 0%, 10%);
+
   --color-success-container: hsl(142, 80%, 30%);
   --color-on-success-container: hsl(142, 80%, 90%);
 

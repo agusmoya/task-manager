@@ -39,7 +39,7 @@
   display: flex;
   flex-direction: column;
   row-gap: var(--spacing-7);
-  height: 15rem;
+  min-height: 15rem;
 }
 
 .calendar-events--empty,

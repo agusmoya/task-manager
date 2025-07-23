@@ -1,12 +1,13 @@
-.circular__progress {
-  position: relative;
+.circular-progress {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  color: var(--color-on-surface);
+  background:
+    radial-gradient(var(--color-surface) 60%, transparent 63%),
+    conic-gradient(var(--color-on-surface) var(--progress), var(--color-outline) var(--progress));
   display: grid;
   place-items: center;
-}
-
-.circular__progress-text {
-  position: absolute;
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: var(--color-surface);
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-medium);
 }

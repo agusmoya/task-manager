@@ -91,14 +91,12 @@
   justify-content: center;
 }
 
-/* Estilos por defecto (tema claro) */
 input[type='datetime-local'].input__field::-webkit-calendar-picker-indicator {
-  font-size: 1.1rem;
+  font-size: var(--h3-font-size);
   cursor: pointer;
   filter: invert(0);
 }
 
-/* Estilos para tema oscuro */
 [data-theme='dark'] input[type='datetime-local'].input__field::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }

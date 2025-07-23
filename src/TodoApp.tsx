@@ -5,7 +5,7 @@ import { AppRouter } from './router/AppRouter'
 import { NavigationProvider } from './context/navigation/navigationProvider'
 
 import { store } from './store/store'
-import { ToastContainer } from './components/toast/Toast'
+import { ToastContainer } from './components/toast/ToastContainer'
 
 const v7DocDisabledWarnings = {
   v7_startTransition: true,

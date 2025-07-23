@@ -2,6 +2,10 @@ import { Link } from 'react-router-dom'
 
 import { Dropdown } from '../../../components/dropdown/Dropdown'
 import { ButtonTheme } from '../../../components/button-theme/ButtonTheme'
+import { LogoutIcon, UserSettingIcon } from '../../../components/icons/Icons'
+import { ButtonLink } from '../../../components/button-link/ButtonLink'
+import { Button } from '../../../components/button/Button'
+
 import { useAuthActions } from '../../../store/hooks/useAuthActions'
 
 import './Header.css'
@@ -11,40 +15,37 @@ export const Header = () => {
   const { user, logout } = useAuthActions()
 
   return (
-    <header className="header-app" id="header-app">
-      <div className="header-app__nav container">
-        <div className="nav__logo">
-          <Link className="nav__logo-text" to={user ? '/home' : '/auth/login'}>
-            <img className="nav__logo-img" src={imgLogo} alt="logo-app" />
-            &nbsp;
-            <span>ToDo</span>
-          </Link>
-        </div>
+    <header className="header-app">
+      <nav className="header-app__nav container" aria-label="Profile navigation">
+        <Link className="header-app__logo" to={user ? '/home' : '/auth/login'}>
+          <img className="header-app__logo-img" src={imgLogo} alt="ToDo logo" />
+          &nbsp;
+          <span className="header-app__logo-text">ToDo</span>
+        </Link>
         {user ? (
-          <Dropdown>
-            <header role="menuitem" className="dropdown__menu-item--header">
-              <h3>{user?.firstName}</h3>
-            </header>
-            <div role="menuitem" className="dropdown__menu-item">
-              <span>Select theme:&nbsp;</span>
+          <Dropdown className="header-app__user-dropdown">
+            <span className="dropdown__menu-item" role="menuitem">
+              <p>Theme:</p>
               <ButtonTheme />
-            </div>
-            <button role="menuitem" type="button" className="dropdown__menu-item">
-              Profile
-            </button>
-            <button
-              role="menuitem"
-              type="button"
+            </span>
+            <ButtonLink className="dropdown__menu-item" role="menuitem" to="/home">
+              <UserSettingIcon />
+              <span>Profile</span>
+            </ButtonLink>
+            <Button
+              variant="text"
               className="dropdown__menu-item"
+              role="menuitem"
               onClick={() => logout()}
             >
+              <LogoutIcon />
               Logout
-            </button>
+            </Button>
           </Dropdown>
         ) : (
           <ButtonTheme />
         )}
-      </div>
+      </nav>
     </header>
   )
 }

@@ -31,13 +31,13 @@
 }
 
 .schedule-event--start {
-  mask-image: linear-gradient(to bottom, black calc(100% - 1.5rem), transparent 100%);
+  mask-image: linear-gradient(to bottom, var(--color-surface) calc(100% - 1rem), transparent 100%);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
 .schedule-event--end {
-  mask-image: linear-gradient(to top, black calc(100% - 1.5rem), transparent 100%);
+  mask-image: linear-gradient(to top, var(--color-surface) calc(100% - 1rem), transparent 100%);
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }

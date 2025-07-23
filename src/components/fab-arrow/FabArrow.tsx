@@ -29,14 +29,16 @@ export const FabArrow = ({ direction, scrollContainerRef, itemClass }: ArrowButt
   if (scrollDisabled) return null
 
   return (
-    <Button
-      variant="fab"
-      className={`arrow-button arrow-button--${direction}`}
-      onClick={handleClick}
-      disabled={scrollDisabled}
-      aria-label={direction === 'left' ? 'Scroll left' : 'Scroll right'}
-    >
-      {direction === 'left' ? <ArrowLeftIcon /> : <ArrowRightIcon />}
-    </Button>
+    <div className={`arrow-button-wrapper arrow-button-wrapper--${direction}`}>
+      <Button
+        variant="icon"
+        className={`arrow-button arrow-button--${direction}`}
+        onClick={handleClick}
+        disabled={scrollDisabled}
+        aria-label={direction === 'left' ? 'Scroll left' : 'Scroll right'}
+      >
+        {direction === 'left' ? <ArrowLeftIcon /> : <ArrowRightIcon />}
+      </Button>
+    </div>
   )
 }

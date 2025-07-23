@@ -11,10 +11,9 @@ type BreadcrumbNavigation = {
     path: string
     label: string
   }>
-  navigateTo: (path: string) => void
 }
 
-// ✅ Tipo extendido para que TypeScript reconozca crumb
+// Extended type for TypeScript to recognize crumb
 type MatchWithCrumb = RouteMatch & {
   handle?: {
     crumb?: string | ((match: RouteMatch) => string)

@@ -1,5 +1,5 @@
 .btn {
-  all: unset;
+  /* all: unset; */
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -61,6 +61,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  column-gap: var(--spacing-2);
 }
 
 /* Buttons variants */
@@ -83,7 +84,6 @@
 .btn--text {
   border-radius: var(--radius-xs);
   background-color: transparent;
-  color: var(--color-primary);
 }
 
 .btn--icon {

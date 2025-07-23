@@ -20,9 +20,7 @@ export interface ITask {
   ownerUserId: string
   status: TaskStatus
   progress: number
-  durationDays: number
-  durationHours: number
-  durationMinutes: number
+  totalHours: number
   participants: IUser[]
   category: ICategory
   events: IEvent[]

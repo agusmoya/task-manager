@@ -5,3 +5,10 @@ export const TOAST_STATUS = {
 } as const
 
 export type ToastStatus = (typeof TOAST_STATUS)[keyof typeof TOAST_STATUS]
+
+export interface IToast {
+  id: string
+  message: string
+  status: ToastStatus
+  duration?: number
+}

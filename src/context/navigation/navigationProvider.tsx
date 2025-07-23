@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { BreadcrumbItem } from '../../types/breadbrumb.d'
 
@@ -9,8 +9,24 @@ interface Props {
 }
 
 export const NavigationProvider = ({ children }: Props) => {
-  const breadcrumbsInitialState = JSON.parse(localStorage.getItem('breadcrumbs') || '[]')
-  const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbItem[]>(breadcrumbsInitialState)
+  // a) Hydrate while riding
+  const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbItem[]>(() => {
+    const stored = localStorage.getItem('breadcrumbs')
+    try {
+      return stored ? JSON.parse(stored) : []
+    } catch {
+      return []
+    }
+  })
+
+  // b) Persist every time they change
+  useEffect(() => {
+    try {
+      localStorage.setItem('breadcrumbs', JSON.stringify(breadcrumbs))
+    } catch (error) {
+      console.error('Error saving breadcrumbs to localStorage:', error)
+    }
+  }, [breadcrumbs])
 
   return (
     <NavigationContext.Provider

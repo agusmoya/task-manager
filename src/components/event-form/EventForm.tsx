@@ -39,7 +39,6 @@ export const EventForm = ({
     onInputChange,
     onBlurField,
     handleSubmit,
-    // onResetForm,
     handleResetForm,
   } = useEventFormLogic(eventToEdit, existingEvents, onAddEvent, onUpdateEvent)
 
@@ -128,7 +127,7 @@ export const EventForm = ({
           >
             {eventToEdit ? 'Edit' : 'Create'}
           </Button>
-          <Button variant="text" className="event-form__button" onClick={handleResetForm}>
+          <Button variant="outlined" className="event-form__button" onClick={handleResetForm}>
             Reset
           </Button>
         </footer>

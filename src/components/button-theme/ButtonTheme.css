@@ -1,19 +1,20 @@
 .button-theme {
-  z-index: var(--z-normal);
-  box-shadow: var(--elevation-3);
+  position: relative;
 }
 
 .button-theme__icon {
   display: inline-block;
-  transition: transform 0.4s ease, opacity 0.4s ease;
+  transition:
+    transform 0.4s ease,
+    opacity 0.4s ease;
 }
 
-.button-theme__icon.light {
+.button-theme__icon--light {
   transform: rotate(0deg) scale(1);
   opacity: 1;
 }
 
-.button-theme__icon.dark {
+.button-theme__icon--dark {
   transform: rotate(180deg) scale(1.1);
   opacity: 1;
 }

@@ -1,24 +1,42 @@
-.toast-container {
-  position: fixed;
-  bottom: var(--spacing-15);
-  left: var(--spacing-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  z-index: var(--z-modal);
-}
-
 .toast {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
-  background-color: var(--color-survace-variant);
-  color: var(--color-on-surface-variant);
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
   padding: var(--spacing-3) var(--spacing-4);
   border-radius: var(--radius-sm);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  min-width: 200px;
+  box-shadow: var(--elevation-3);
+  min-width: 12.5rem;
+  min-height: 3.5rem;
   animation: slideIn 0.3s ease;
+}
+
+.toast--success {
+  border-left: var(--stroke-width-3) solid var(--color-success);
+}
+
+.toast--error {
+  border-left: var(--stroke-width-3) solid var(--color-error);
+}
+
+.toast--loading {
+  border-left: var(--stroke-width-3) solid var(--color-info);
+}
+
+.toast__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast--success .toast__icon {
+  color: var(--color-success);
+}
+
+.toast--error .toast__icon {
+  color: var(--color-error);
 }
 
 @keyframes slideIn {
@@ -32,23 +50,8 @@
   }
 }
 
-.toast.success {
-  border-left: var(--stroke-width-2) solid var(--color-success);
-}
-
-.toast.error {
-  border-left: var(--stroke-width-2) solid var(--color-error);
-}
-
-.toast.loading {
-  border-left: var(--stroke-width-2) solid var(--color-info);
-}
-
-.icon {
-  font-size: var(--h2-font-size);
-}
-
-.loader {
+.toast__loader {
+  display: inline-block;
   width: 1rem;
   height: 1rem;
   border: var(--stroke-width-2) solid var(--color-outline);
@@ -63,15 +66,27 @@
   }
 }
 
-.toast-progress {
+.toast__message {
+  flex: 1;
+}
+
+.toast__progress {
   position: absolute;
   bottom: 0;
-  left: 0;
-  height: 2px;
-  background-color: currentColor;
-  animation-name: shrink;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
+  left: 3px;
+  right: 3px;
+  height: 3px;
+  width: 100%;
+  color: var(--color-on-surface-variant);
+  background: linear-gradient(
+    to right,
+    transparent,
+    2%,
+    var(--color-surface-variant),
+    98%,
+    transparent
+  );
+  animation: shrink 0.8s linear forwards;
 }
 
 @keyframes shrink {
@@ -80,5 +95,20 @@
   }
   to {
     width: 0%;
+  }
+}
+
+.toast--exiting {
+  animation: slideOut 0.3s ease forwards;
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(50%);
   }
 }

@@ -1,18 +1,49 @@
+.arrow-button-wrapper {
+  content: '';
+  position: absolute;
+  width: 2.25rem;
+  height: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: var(--z-tooltip);
+}
+
+.arrow-button-wrapper--left {
+  left: -10px;
+  background: linear-gradient(
+    to left,
+    transparent 0%,
+    var(--color-surface) 15%,
+    var(--color-surface) 85%,
+    transparent 100%
+  );
+}
+
+.arrow-button-wrapper--right {
+  right: -10px;
+  background: linear-gradient(
+    to left,
+    transparent 0%,
+    var(--color-surface) 15%,
+    var(--color-surface) 85%,
+    transparent 100%
+  );
+}
+
 .arrow-button {
   position: absolute;
-  transform: translateY(-50%);
   top: 50%;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  padding: var(--spacing-1);
+  transform: translateY(-50%);
+  width: 1.5rem;
+  height: 1.5rem;
   z-index: var(--z-normal);
+  padding: var(--spacing-1);
 }
 
 .arrow-button--left {
-  left: calc(var(--spacing-2) * -1);
+  left: 10px;
 }
 
 .arrow-button--right {
-  right: calc(var(--spacing-2) * -1);
+  right: 10px;
 }

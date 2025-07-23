@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const EventTimelineItem = ({ event, onEditEvent, onDeleteEvent }: Props) => {
-  const { id, status, title } = event
+  const { id, status, title, task } = event
   const { updating, deleting } = useEventActions()
 
   return (
@@ -45,6 +45,7 @@ export const EventTimelineItem = ({ event, onEditEvent, onDeleteEvent }: Props) 
 
       <div className="event-timeline__content">
         <p className="event-timeline__title">{title}</p>
+        <small className="event-timeline__subtitle">{task?.title}</small>
         <span className="event-timeline__time">
           {`${dayjs(event.start).format('HH:mm')} hs - ${dayjs(event.end).format('HH:mm')} hs`}
         </span>
