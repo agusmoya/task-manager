@@ -12,6 +12,7 @@ export enum OperationError {
   CREATE = 'create',
   UPDATE = 'update',
   UPDATE_EVENT_STATUS = 'updateEventStatus',
+  UPLOAD = 'upload',
   DELETE = 'delete',
 }
 
@@ -51,6 +52,7 @@ function parseError(operation: OperationError, error: RTKQueryError): ParsedErro
     if (
       operation === OperationError.CREATE ||
       operation === OperationError.UPDATE ||
+      operation === OperationError.UPLOAD ||
       operation === OperationError.LOGIN ||
       operation === OperationError.REGISTER
     ) {

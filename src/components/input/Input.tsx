@@ -2,7 +2,7 @@ import { FC, useId, useState } from 'react'
 
 import clsx from 'clsx'
 
-import { InputProps } from '../../types/input.d'
+import { InputProps } from '../../types/ui/input'
 
 import './Input.css'
 
@@ -16,7 +16,7 @@ export const Input: FC<InputProps> = ({
   label,
   value,
   placeholder = '',
-  autoComplete,
+  autoComplete = 'off',
   hint,
   error,
   touched,
@@ -48,6 +48,11 @@ export const Input: FC<InputProps> = ({
     <div className="input">
       <div className="input__wrapper">
         <input
+          className={clsx(
+            'input__field',
+            hasError && 'input__field--error',
+            disabled && 'input__field--disabled'
+          )}
           id={inputId}
           name={name}
           type={type === 'password' && stateInput ? 'text' : type}
@@ -59,18 +64,16 @@ export const Input: FC<InputProps> = ({
           min={min}
           max={max}
           disabled={disabled}
-          className={clsx(
-            'input__field',
-            hasError && 'input__field--error',
-            disabled && 'input__field--disabled'
-          )}
           onChange={onChange}
           onBlur={onBlur}
           aria-invalid={hasError}
           aria-describedby={describedBy}
           {...rest}
         />
-        <label htmlFor={inputId} className="input__label">
+        <label
+          htmlFor={inputId}
+          className={clsx('input__label', disabled && 'input__label--disabled')}
+        >
           {label}
         </label>
         {

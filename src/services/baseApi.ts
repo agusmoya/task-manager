@@ -27,30 +27,30 @@ const baseQuery = fetchBaseQuery({
   },
 })
 
-// BaseQuery que detecta 401 y dispara refresh automáticamente
+// BaseQuery that detects 401 and triggers refresh automatically
 export const baseQueryWithReauth: BaseQueryFn<
-  string | FetchArgs, // Puede ser URL simple o FetchArgs
-  unknown, // El tipo por defecto de respuesta (no lo forzamos aquí)
-  FetchBaseQueryError // Tipo de error
+  string | FetchArgs,
+  unknown, // The default response type
+  FetchBaseQueryError // Error type
 > = async (args, api, extraOptions) => {
-  // 1️⃣ Petición original
+  // 1. Original request
   let result = await baseQuery(args, api, extraOptions)
 
   let url = ''
   if (typeof args !== 'string' && args.url) {
     url = args.url
   }
-  // 2️⃣ Si recibimos 401, intentamos refresh
+  // 2. If we receive 401, we try to refresh
   if (result.error?.status === 401 && !isAuthPath(url)) {
     const rawData = await baseQuery({ url: '/auth/refresh', method: 'POST' }, api, extraOptions)
 
     const refreshResult = rawData as QueryReturnValue<IAuthResponseDto, FetchBaseQueryError>
     if (refreshResult.data) {
-      // 3️⃣ Guardamos credenciales y reintentamos original
+      // 3. We save credentials and retry original
       api.dispatch(setCredentials(refreshResult.data))
       result = await baseQuery(args, api, extraOptions)
     } else {
-      // 4️⃣ Si refresh falla, forzamos logout
+      // 4. If refresh fails, we force logout
       await api.dispatch(authApi.endpoints.logout.initiate())
     }
   }

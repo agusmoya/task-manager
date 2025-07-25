@@ -1,33 +1,33 @@
 import { baseApi } from './baseApi'
 
 import { IUser } from '../types/user'
-import { IUserDto } from '../types/dtos/user'
+
+import { IUpdateUserDto } from '../types/dtos/user'
 
 export const usersApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    fetchContacts: builder.query<IUser[], void>({
-      query: () => '/users/contacts',
-      providesTags: (result = []) => [
-        { type: 'User', id: 'LIST' },
-        ...result.map(u => ({ type: 'User' as const, id: u.id })),
-      ],
+    getProfile: builder.query<IUser, void>({
+      query: () => ({ url: '/users/me', method: 'GET' }),
+      providesTags: () => [{ type: 'User' }],
     }),
-    fetchUserById: builder.query<IUser, string>({
-      query: id => `/users/${id}`,
-      providesTags: (_result, _error, id) => [{ type: 'User', id }],
-    }),
-    updateUser: builder.mutation<IUser, IUserDto>({
-      query: user => ({
-        url: `/users/${user.id}`,
-        method: 'PUT',
-        body: user,
+    uploadAvatar: builder.mutation<{ profileImageURL: string }, FormData>({
+      // FormData with key "avatar"
+      query: formData => ({
+        url: '/users/me/avatar',
+        method: 'POST',
+        body: formData,
       }),
-      invalidatesTags: (_result, _error, user) => [
-        { type: 'User', id: 'LIST' },
-        { type: 'User', id: user.id },
-      ],
+      invalidatesTags: ['User'],
+    }),
+    updateProfile: builder.mutation<IUser, IUpdateUserDto>({
+      query: data => ({
+        url: '/users/me',
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['User'],
     }),
   }),
 })
 
-export const { useFetchContactsQuery, useFetchUserByIdQuery, useUpdateUserMutation } = usersApi
+export const { useGetProfileQuery, useUpdateProfileMutation, useUploadAvatarMutation } = usersApi

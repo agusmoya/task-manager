@@ -10,7 +10,7 @@ import {
   hasOverlap,
 } from '../../helpers/form-validations/getEventFormValidations'
 import { EVENT_STATUS, IEventForm, IEventLocal } from '../../types/event'
-import { ColorProgressType } from '../../types/ui/Progress'
+import { ColorProgressType } from '../../types/ui/progress'
 
 export function useEventFormLogic(
   eventToEdit: IEventLocal | undefined,

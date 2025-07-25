@@ -28,7 +28,7 @@ export const Header = () => {
               <p>Theme:</p>
               <ButtonTheme />
             </span>
-            <ButtonLink className="dropdown__menu-item" role="menuitem" to="/home">
+            <ButtonLink className="dropdown__menu-item" role="menuitem" to="/home/profile">
               <UserSettingIcon />
               <span>Profile</span>
             </ButtonLink>

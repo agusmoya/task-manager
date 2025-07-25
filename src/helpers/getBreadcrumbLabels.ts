@@ -5,4 +5,5 @@ export const breadcrumbMap: Record<string, string | ((params: Record<string, str
     '/home/task-form': 'New task form',
     '/home/task-form/:id': 'Edit task form',
     '/home/calendar': 'Calendar',
+    '/home/profile': 'Profile',
   }

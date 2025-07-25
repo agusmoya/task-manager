@@ -1,5 +1,3 @@
-import { ChangeEvent } from "react"
-
 export interface TextareaProps {
   id: string
   name: string
@@ -14,6 +12,6 @@ export interface TextareaProps {
   autoResize?: boolean
   rows?: number
   cols?: number
-  onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void
+  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
   onBlur: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 }

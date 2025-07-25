@@ -1,7 +1,3 @@
-/**
- * Custom hook that encapsulates all the business logic for TaskFormPage
- * Separates concerns and makes the component more testable
- */
 import { useEffect, useMemo, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { skipToken } from '@reduxjs/toolkit/query'
@@ -10,7 +6,7 @@ import isEqual from 'lodash.isequal'
 import { IUser } from '../../types/user'
 import { IEventLocal } from '../../types/event'
 import { ITaskForm, TASK_STATUS } from '../../types/task.d'
-import { COLOR_PROGRESS } from '../../types/ui/Progress'
+import { COLOR_PROGRESS } from '../../types/ui/progress'
 
 import { useFetchTaskByIdQuery } from '../../services/tasksApi'
 
@@ -28,6 +24,10 @@ import { useCategoryActions } from '../../store/hooks/useCategoryActions'
 import { useUserActions } from '../../store/hooks/useUserActions'
 import { useTaskActions } from '../../store/hooks/useTaskActions'
 
+/**
+ * Custom hook that encapsulates all the business logic for TaskFormPage
+ * Separates concerns and makes the component more testable
+ */
 export const useTaskFormLogic = () => {
   const navigate = useNavigate()
   const originalFormRef = useRef<ITaskForm | null>(null)
@@ -41,7 +41,7 @@ export const useTaskFormLogic = () => {
   } = useFetchTaskByIdQuery(id ?? skipToken)
 
   // Actions
-  const { contacts = [] } = useUserActions()
+  const { contacts } = useUserActions()
   const {
     createTask,
     creating: creatingTask,

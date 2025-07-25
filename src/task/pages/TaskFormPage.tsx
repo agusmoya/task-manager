@@ -84,18 +84,15 @@ const TaskFormPage = () => {
 
   return (
     <section className="task-form-page section container">
-      <p className="task-form-page__error">{errorMessage}</p>
-      <form className="task-form-page__form" onSubmit={handleTaskSubmit}>
-        <header className="task-form-page__header">
-          <h1 className="task-form-page__title">{task?.id ? 'Edit ' : 'Create '} task</h1>
+      <form className="task-form" onSubmit={handleTaskSubmit}>
+        <p className="task-form__backend-error">{errorMessage}</p>
+        <header className="task-form__header">
+          <h1 className="task-form__title">{task?.id ? 'Edit ' : 'Create '} task</h1>
           <Chip label={currentStatus!} role="status" color={colorChip} />
         </header>
         <fieldset
           disabled={isCompleted}
-          className={clsx(
-            'task-form-page__fieldset',
-            isCompleted && 'task-form-page__fieldset--readonly'
-          )}
+          className={clsx('task-form__fieldset', isCompleted && 'task-form__fieldset--readonly')}
         >
           <Input
             type="text"
@@ -104,7 +101,6 @@ const TaskFormPage = () => {
             required
             placeholder=""
             value={title}
-            autoComplete="off"
             error={
               titleValid ??
               createTaskError?.fieldsValidations?.title ??
@@ -153,11 +149,11 @@ const TaskFormPage = () => {
             eventsValid={eventsValid}
           />
 
-          <footer className="task-form-page__footer">
+          <footer className="task-form__footer">
             <Button
               type="submit"
               variant="filled"
-              className="task-form-page__button"
+              className="task-form__btn"
               disabled={isSubmitDisabled}
             >
               {task?.id ? 'Edit ' : 'Create'}
@@ -166,7 +162,7 @@ const TaskFormPage = () => {
             <Button
               type="reset"
               variant="outlined"
-              className="task-form-page__button"
+              className="task-form__btn"
               onClick={handleResetForm}
               disabled={isResetDisabled}
             >

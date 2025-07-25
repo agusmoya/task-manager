@@ -1,11 +1,9 @@
-export interface IBasicUserDto {
-  id: string
+export interface IUpdateUserDto {
   firstName: string
   lastName: string
-  email: string
-  profileImage: string
+  profileImageURL: string
 }
 
-export interface IUserDto extends IBasicUserDto {
+export interface IUserDto {
   contacts: IUser[]
 }

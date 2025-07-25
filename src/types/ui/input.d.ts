@@ -10,8 +10,8 @@ export interface InputProps
   touched?: boolean
   initialStateIcon?: React.ElementType | null
   finalStateIcon?: React.ElementType | null
-  onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
-  onBlur: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  onChange?: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  onBlur?: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 }
 
 export interface InputWithSuggestionsProps

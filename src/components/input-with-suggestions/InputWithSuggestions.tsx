@@ -1,10 +1,10 @@
 import { FC, useEffect, useId, useRef, useState } from 'react'
 
-import { InputWithSuggestionsProps } from '../../types/input.d'
-
-import '../input/Input.css'
-import './inputWithSuggestions.css'
 import clsx from 'clsx'
+
+import { InputWithSuggestionsProps } from '../../types/ui/input'
+
+import './inputWithSuggestions.css'
 
 export const InputWithSuggestions: FC<InputWithSuggestionsProps> = ({
   id = null,

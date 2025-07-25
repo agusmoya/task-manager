@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 
-import { TextareaProps } from '../../types/text-area.d'
+import { TextareaProps } from '../../types/ui/text-area'
 
 import './Textarea.css'
 

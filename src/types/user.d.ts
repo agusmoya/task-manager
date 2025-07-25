@@ -3,8 +3,16 @@ export interface IUser {
   firstName: string
   lastName: string
   email: string
-  image: string
+  profileImageURL: string
   contacts: IUser[]
 }
 
 export type UserId = Pick<IUser, 'id'>
+
+export interface IUserForm {
+  email: string
+  firstName: string
+  lastName: string
+  profileImageURL: string
+  contacts: IUser[]
+}

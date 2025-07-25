@@ -65,8 +65,9 @@
   outline: var(--stroke-width-2) solid var(--color-error);
 }
 
+.input__label--disabled,
 .input__field--disabled {
-  background-color: var(--color-outline);
+  opacity: var(--state-layer-disabled-opacity);
   cursor: not-allowed;
 }
 

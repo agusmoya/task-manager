@@ -2,14 +2,14 @@ import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit'
 
 import { AUTH_STATUS } from '../../../auth/constants/status'
 
-import { IBasicUserDto } from '../../../types/dtos/user'
+import { IUserDto } from '../../../types/dtos/user'
 
 import { authApi } from '../../../services/authApi'
 import { IAuthResponseDto } from '../../../types/dtos/register'
 
 export interface AuthState {
   status: string
-  user?: IBasicUserDto
+  user?: IUserDto
   accessToken?: string
 }
 
@@ -23,7 +23,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    // Acción pura para actualizar credenciales desde baseQueryWithReauth
+    // Action to update credentials from baseQueryWithReauth
     setCredentials: (state, { payload }: PayloadAction<IAuthResponseDto>) => {
       state.user = payload.user
       state.accessToken = payload.accessToken

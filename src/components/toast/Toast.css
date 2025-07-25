@@ -73,19 +73,13 @@
 .toast__progress {
   position: absolute;
   bottom: 0;
-  left: 3px;
-  right: 3px;
+  left: 5px;
+  right: 5px;
   height: 3px;
   width: 100%;
-  color: var(--color-on-surface-variant);
-  background: linear-gradient(
-    to right,
-    transparent,
-    2%,
-    var(--color-surface-variant),
-    98%,
-    transparent
-  );
+  border-radius: var(--radius-sm);
+  color: var(--color-on-surface);
+  background: linear-gradient(to right, transparent, 2%, var(--color-on-surface), 98%, transparent);
   animation: shrink 0.8s linear forwards;
 }
 

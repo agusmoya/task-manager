@@ -9,3 +9,5 @@ export const CalendarPage = lazy(() => import('../calendar/pages/calendar-page/C
 export const HomePage = lazy(() => import('../task/pages/HomePage'))
 export const TaskPage = lazy(() => import('../task/pages/TaskPage'))
 export const TaskFormPage = lazy(() => import('../task/pages/TaskFormPage'))
+// USER
+export const UserProfilePage = lazy(() => import('../user/pages/UserProfilePage'))

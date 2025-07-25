@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 
-import { COLOR_PROGRESS, ColorProgressType } from '../../types/ui/Progress'
+import { COLOR_PROGRESS, ColorProgressType } from '../../types/ui/progress'
 import { VARIANT, VariantType } from '../../types/ui/Variant'
 
 import './Chip.css'

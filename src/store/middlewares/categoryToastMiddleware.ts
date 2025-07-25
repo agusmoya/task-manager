@@ -3,7 +3,7 @@ import { registerToastFor } from './toastHelper'
 
 const { fetchCategories, createCategory } = categoriesApi.endpoints
 
-const listCategoryOperations = {
+const listCategoryOperation = {
   endpoints: {
     matchPending: fetchCategories.matchPending,
     matchFulfilled: fetchCategories.matchFulfilled,
@@ -16,7 +16,7 @@ const listCategoryOperations = {
   },
 }
 
-const createCategoryOperations = {
+const createCategoryOperation = {
   endpoints: {
     matchPending: createCategory.matchPending,
     matchFulfilled: createCategory.matchFulfilled,
@@ -29,11 +29,7 @@ const createCategoryOperations = {
   },
 }
 
-const toastCategoryOperations = [
-  //opreations
-  listCategoryOperations,
-  createCategoryOperations,
-]
+const toastCategoryOperations = [listCategoryOperation, createCategoryOperation]
 
 toastCategoryOperations.forEach(({ endpoints, messages }) =>
   registerToastFor({ endpoints, messages })

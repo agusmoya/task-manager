@@ -7,6 +7,7 @@ import { listenerMiddleware } from './listenerMiddleware'
 // Custom middlewares imports
 import './middlewares/categoryToastMiddleware'
 import './middlewares/taskToastMiddleware'
+import './middlewares/userToastMiddleware'
 
 export const store = configureStore({
   reducer: rootReducer,

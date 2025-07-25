@@ -2,7 +2,7 @@ import { useId, useState } from 'react'
 
 import { CloseIcon } from '../icons/Icons'
 
-import { MultiSelectProps } from '../../types/input'
+import { MultiSelectProps } from '../../types/ui/input'
 
 import './MultiSelectInput.css'
 

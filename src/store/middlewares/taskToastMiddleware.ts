@@ -3,7 +3,7 @@ import { registerToastFor } from './toastHelper'
 
 const { fetchTaskById, fetchTasks, createTask, updateTask, deleteTask } = tasksApi.endpoints
 
-const taskOperations = {
+const taskOperation = {
   endpoints: {
     matchPending: fetchTaskById.matchPending,
     matchFulfilled: fetchTaskById.matchFulfilled,
@@ -16,7 +16,7 @@ const taskOperations = {
   },
 }
 
-const listTaskOperations = {
+const listTaskOperation = {
   endpoints: {
     matchPending: fetchTasks.matchPending,
     matchFulfilled: fetchTasks.matchFulfilled,
@@ -29,7 +29,7 @@ const listTaskOperations = {
   },
 }
 
-const createTaskOperations = {
+const createTaskOperation = {
   endpoints: {
     matchPending: createTask.matchPending,
     matchFulfilled: createTask.matchFulfilled,
@@ -42,7 +42,7 @@ const createTaskOperations = {
   },
 }
 
-const updateTaskOperations = {
+const updateTaskOperation = {
   endpoints: {
     matchPending: updateTask.matchPending,
     matchFulfilled: updateTask.matchFulfilled,
@@ -55,7 +55,7 @@ const updateTaskOperations = {
   },
 }
 
-const deleteTaskOperations = {
+const deleteTaskOperation = {
   endpoints: {
     matchPending: deleteTask.matchPending,
     matchFulfilled: deleteTask.matchFulfilled,
@@ -69,11 +69,11 @@ const deleteTaskOperations = {
 }
 
 const toastTaskOperations = [
-  taskOperations,
-  listTaskOperations,
-  createTaskOperations,
-  updateTaskOperations,
-  deleteTaskOperations,
+  taskOperation,
+  listTaskOperation,
+  createTaskOperation,
+  updateTaskOperation,
+  deleteTaskOperation,
 ]
 
 toastTaskOperations.forEach(({ endpoints, messages }) => registerToastFor({ endpoints, messages }))
