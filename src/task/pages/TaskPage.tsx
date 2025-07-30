@@ -8,7 +8,7 @@ import { TaskId } from '../../types/task'
 import { TaskInfo } from '../components/task-info/TaskInfo'
 import { DatePills } from '../components/date-pills-list/DatePills'
 import { Schedule } from '../components/schedule/Schedule'
-import { Loader } from '../../components/loader-page/Loader'
+import { LoaderPage } from '../../components/loader-page/LoaderPage'
 
 import { useFetchTaskByIdQuery } from '../../services/tasksApi'
 import { getEventsSegments } from '../../utils/computedEvents'
@@ -26,7 +26,7 @@ const TaskPage = () => {
     return [allSegments, segmentsForDay]
   }, [selectedDate, task?.events])
 
-  if (isLoading) return <Loader />
+  if (isLoading) return <LoaderPage />
 
   if (isError) {
     return (

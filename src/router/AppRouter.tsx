@@ -10,7 +10,7 @@ import { RootLayout } from '../layouts/RootLayout'
 
 import { PublicRoute } from './PublicRoute'
 import { PrivateRoute } from './PrivateRoute'
-import { Loader } from '../components/loader-page/Loader'
+import { LoaderPage } from '../components/loader-page/LoaderPage'
 import { NotFoundPage } from './404Page/NotFoundPage'
 
 import { useAuthActions } from '../store/hooks/useAuthActions'
@@ -28,9 +28,7 @@ export const AppRouter = () => {
     refresh()
   }, [refresh])
 
-  if (status === AUTH_STATUS.CHECKING) {
-    return <Loader />
-  }
+  if (status === AUTH_STATUS.CHECKING) return <LoaderPage />
 
   return (
     <>

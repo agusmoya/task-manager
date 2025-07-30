@@ -6,7 +6,7 @@ import { EventCardList } from '../components/event-card-list/EventCardList'
 import { EventForm } from '../../components/event-form/EventForm'
 import { Input } from '../../components/input/Input'
 import { InputWithSuggestions } from '../../components/input-with-suggestions/InputWithSuggestions'
-import { Loader } from '../../components/loader-page/Loader'
+import { LoaderPage } from '../../components/loader-page/LoaderPage'
 import { Modal } from '../../components/modal/Modal'
 import { MultiSelectInput } from '../../components/multi-select-input/MultiSelectInput'
 
@@ -71,7 +71,7 @@ const TaskFormPage = () => {
     handleEditModalEvent: handleEditEvent,
   })
 
-  if (task?.id && loadingTask) return <Loader />
+  if (task?.id && loadingTask) return <LoaderPage />
 
   if (fetchError) {
     return (
@@ -132,13 +132,13 @@ const TaskFormPage = () => {
 
           <MultiSelectInput<IUser>
             label="Participants"
+            typeOption="email"
             options={contacts}
             selectedOptions={participants}
             onAddItem={handleAddParticipant}
             onRemoveItem={handleRemoveParticipant}
             getOptionLabel={(user: IUser) => user.email}
             getOptionKey={(user: IUser) => user.id}
-            touched={touchedFields.participants}
           />
 
           <EventCardList

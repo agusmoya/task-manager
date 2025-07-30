@@ -8,6 +8,7 @@ import { listenerMiddleware } from './listenerMiddleware'
 import './middlewares/categoryToastMiddleware'
 import './middlewares/taskToastMiddleware'
 import './middlewares/userToastMiddleware'
+import './middlewares/invitationToastMiddleware'
 
 export const store = configureStore({
   reducer: rootReducer,

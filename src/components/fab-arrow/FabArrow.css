@@ -1,7 +1,7 @@
 .arrow-button-wrapper {
   content: '';
   position: absolute;
-  width: 2.25rem;
+  width: 2.2rem;
   height: 100%;
   top: 50%;
   transform: translateY(-50%);
@@ -46,4 +46,9 @@
 
 .arrow-button--right {
   right: 10px;
+}
+
+.arrow-button--left,
+.arrow-button--right {
+  z-index: var(--z-modal);
 }

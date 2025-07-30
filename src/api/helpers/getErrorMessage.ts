@@ -14,6 +14,9 @@ export enum OperationError {
   UPDATE_EVENT_STATUS = 'updateEventStatus',
   UPLOAD = 'upload',
   DELETE = 'delete',
+  INVITE = 'invite',
+  ACCEPT = 'accept',
+  REJECT = 'reject',
 }
 
 export type RTKQueryError = FetchBaseQueryError | SerializedError | undefined
@@ -45,7 +48,8 @@ function parseError(operation: OperationError, error: RTKQueryError): ParsedErro
     const fieldsErrors: Record<string, string> = {}
     if (body?.errors) {
       for (const [field, detail] of Object.entries(body.errors)) {
-        fieldsErrors[field] = detail.msg
+        // Handle both string and object error formats
+        fieldsErrors[field] = typeof detail === 'string' ? detail : detail.msg
       }
     }
 
@@ -54,7 +58,10 @@ function parseError(operation: OperationError, error: RTKQueryError): ParsedErro
       operation === OperationError.UPDATE ||
       operation === OperationError.UPLOAD ||
       operation === OperationError.LOGIN ||
-      operation === OperationError.REGISTER
+      operation === OperationError.REGISTER ||
+      operation === OperationError.INVITE ||
+      operation === OperationError.ACCEPT ||
+      operation === OperationError.REJECT
     ) {
       return {
         message: body?.message,

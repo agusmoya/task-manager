@@ -8,14 +8,18 @@ export const buildImageUrl = (imagePath: string, apiUrl: string): string => {
   // Return empty string for falsy values
   if (!imagePath) return ''
 
-  // Return as-is if already a complete URL
-  if (imagePath.startsWith('http')) return imagePath
-
+  // Return as-is if already a complete URL (http/https) or blob URL
+  if (imagePath.startsWith('http') || imagePath.startsWith('blob:')) {
+    return imagePath
+  }
   // Build complete URL for relative paths starting with /uploads
   if (imagePath.startsWith('/uploads')) {
     return `${apiUrl}${imagePath}`
   }
 
-  // Return as-is for other cases (blob URLs, data URLs, etc.)
+  // Handle data URLs and other edge cases
+  if (imagePath.startsWith('data:')) return imagePath
+
+  console.warn(`Unexpected image path format: ${imagePath}`)
   return imagePath
 }

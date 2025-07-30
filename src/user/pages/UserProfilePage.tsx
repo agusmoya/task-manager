@@ -1,16 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import isEqual from 'lodash.isequal'
 
 import { useUserActions } from '../../store/hooks/useUserActions'
 
 import { IUpdateUserDto } from '../../types/dtos/user'
-import { IUserForm } from '../../types/user'
+import { IUserForm, IUser } from '../../types/user'
 
-import { Loader } from '../../components/loader-page/Loader'
 import { Input } from '../../components/input/Input'
 import { Button } from '../../components/button/Button'
 import { ButtonLink } from '../../components/button-link/ButtonLink'
+import { MultiSelectInput } from '../../components/multi-select-input/MultiSelectInput'
+
+import { LoaderPage } from '../../components/loader-page/LoaderPage'
 
 import { useForm } from '../../hooks/useForm'
+
+import { useInvitationActions } from '../../store/hooks/useInvitationActions'
 
 import {
   userFormFields,
@@ -31,10 +36,11 @@ const ALLOWED_TYPES = ['image/png', 'image/jpeg']
  */
 const UserProfilePage = () => {
   const { VITE_API_URL } = getEnvVariables()
-
+  const originalFormRef = useRef<IUserForm | null>(null)
   // Custom hook for user operations
   const {
     user,
+    contacts,
     fetchingProfile: isLoading,
     updatingProfile: updating,
     uploadingAvatar,
@@ -45,20 +51,40 @@ const UserProfilePage = () => {
     uploadUserAvatarError,
   } = useUserActions()
 
-  // Local state for file handling
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [preview, setPreview] = useState<string>(user?.profileImageURL || '')
-  const [fileError, setFileError] = useState<string>('')
+  const { inviteContact, inviting, inviteContactError } = useInvitationActions()
 
   const {
     formState: { firstName, lastName, email, profileImageURL },
     firstNameValid,
     lastNameValid,
     touchedFields,
+    isFormValid,
+    formState,
     setFormState,
     onInputChange,
     onBlurField,
   } = useForm<IUserForm>(userFormFields, userFormValidations)
+
+  // Local state for file handling
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [fileError, setFileError] = useState<string>('')
+  const [preview, setPreview] = useState<string>('')
+
+  const formHasChanges = useMemo(() => {
+    if (!originalFormRef.current) return false
+
+    const hasFormChanges = !isEqual(formState, originalFormRef.current)
+
+    return hasFormChanges || selectedFile !== null
+  }, [formState, selectedFile])
+
+  useEffect(() => {
+    return () => {
+      if (preview && preview.startsWith('blob:')) {
+        URL.revokeObjectURL(preview)
+      }
+    }
+  }, [preview])
 
   useEffect(() => {
     if (user) {
@@ -70,7 +96,15 @@ const UserProfilePage = () => {
         profileImageURL,
         contacts,
       })
-      setPreview(user.profileImageURL)
+      setPreview(profileImageURL)
+
+      originalFormRef.current = {
+        email,
+        firstName,
+        lastName,
+        profileImageURL,
+        contacts,
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
@@ -101,12 +135,19 @@ const UserProfilePage = () => {
     setPreview(URL.createObjectURL(file))
   }
 
+  const sendEmailInvitation = (email: string) => {
+    inviteContact({ email })
+  }
+
   /**
    * Handle form submission with avatar upload and profile update
    * @param e - Form submit event
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!formHasChanges && !selectedFile) return
+    if (formHasChanges && !isFormValid) return
 
     let avatarUrl = profileImageURL
 
@@ -136,11 +177,17 @@ const UserProfilePage = () => {
     setSelectedFile(null)
   }
 
-  if (isLoading) return <Loader />
+  if (isLoading) return <LoaderPage />
 
   const initials = `${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase()
 
-  // Get the most relevant error to display
+  // Allow submit if form is valid OR only changing avatar
+  const isSubmitDisabled =
+    (!formHasChanges && !selectedFile) ||
+    (formHasChanges && !isFormValid) ||
+    updating ||
+    uploadingAvatar
+
   const displayError =
     fetchUserError?.message ||
     updateUserError?.message ||
@@ -159,9 +206,9 @@ const UserProfilePage = () => {
           <label className="avatar-picker">
             {preview ? (
               <img
+                className="avatar-picker__img"
                 src={buildImageUrl(preview, VITE_API_URL)}
                 alt={`${firstName} ${lastName} avatar`}
-                className="avatar-picker__img"
               />
             ) : (
               <div className="avatar-picker__placeholder">{initials}</div>
@@ -198,18 +245,31 @@ const UserProfilePage = () => {
           error={lastNameValid}
         />
 
+        <MultiSelectInput<IUser>
+          label="Contacts"
+          typeOption="email"
+          options={contacts}
+          actionOnEmpty
+          actionLabel="Invite"
+          actionMethod={sendEmailInvitation}
+          loading={inviting}
+          error={inviteContactError?.fieldsValidations?.email || inviteContactError?.message}
+          getOptionLabel={(user: IUser) => user.email}
+          getOptionKey={(user: IUser) => user.id}
+        />
+
         <footer className="user-profile-form__footer">
           <Button
             className="user-profile-form__btn"
             type="submit"
             variant="filled"
-            disabled={updating || uploadingAvatar}
+            disabled={isSubmitDisabled}
           >
-            {updating || uploadingAvatar ? 'Saving…' : 'Save Changes'}
+            {updating || uploadingAvatar ? 'Saving…' : 'Save changes'}
           </Button>
 
           <ButtonLink variant="outlined" className="user-profile-form__btn" to="/home">
-            Go Home
+            Go home
           </ButtonLink>
         </footer>
       </form>

@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { Loader } from '../../../components/loader-page/Loader'
+import { LoaderPage } from '../../../components/loader-page/LoaderPage'
 import { ConfirmModal } from '../../../components/confirm-modal/ConfirmModal'
 import { EventTimelineItem } from '../../event-timeline-item/EventTimelineItem'
 
@@ -69,7 +69,7 @@ export const CalendarEvents = () => {
     ))
   }, [eventsForActiveDay, handleClickEditEvent, handleClickDeleteEvent])
 
-  if (fetching) return <Loader />
+  if (fetching) return <LoaderPage />
 
   return (
     <aside className="calendar-events">

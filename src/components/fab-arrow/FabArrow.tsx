@@ -31,7 +31,7 @@ export const FabArrow = ({ direction, scrollContainerRef, itemClass }: ArrowButt
   return (
     <div className={`arrow-button-wrapper arrow-button-wrapper--${direction}`}>
       <Button
-        variant="icon"
+        variant="fab"
         className={`arrow-button arrow-button--${direction}`}
         onClick={handleClick}
         disabled={scrollDisabled}

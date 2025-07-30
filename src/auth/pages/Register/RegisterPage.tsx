@@ -86,8 +86,8 @@ const RegisterPage = () => {
           value={email}
           autoComplete="off"
           hint="user@mail.com"
-          error={emailValid}
-          touched={touchedFields.email ?? registerAuthError?.fieldsValidations?.email}
+          error={emailValid ?? registerAuthError?.fieldsValidations?.email}
+          touched={touchedFields.email}
           finalStateIcon={EmailIcon}
           onChange={onInputChange}
           onBlur={() => onBlurField('email')}
@@ -101,7 +101,7 @@ const RegisterPage = () => {
           placeholder=""
           value={password}
           autoComplete="new-password"
-          error={passwordValid}
+          error={passwordValid ?? registerAuthError?.fieldsValidations?.password}
           touched={touchedFields.password ?? registerAuthError?.fieldsValidations?.password}
           initialStateIcon={EyeIcon}
           finalStateIcon={EyeOffIcon}
