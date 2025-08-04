@@ -4,7 +4,7 @@ import { IUser } from '../types/user'
 
 import { IUpdateUserDto } from '../types/dtos/user'
 
-export const usersApi = baseApi.injectEndpoints({
+export const userApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getProfile: builder.query<IUser, void>({
       query: () => ({ url: '/users/me', method: 'GET' }),
@@ -30,4 +30,4 @@ export const usersApi = baseApi.injectEndpoints({
   }),
 })
 
-export const { useGetProfileQuery, useUpdateProfileMutation, useUploadAvatarMutation } = usersApi
+export const { useGetProfileQuery, useUpdateProfileMutation, useUploadAvatarMutation } = userApi

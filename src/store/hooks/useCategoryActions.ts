@@ -3,7 +3,7 @@ import {
   useDeleteCategoryMutation,
   useFetchCategoriesQuery,
   useUpdateCategoryMutation,
-} from '../../services/categoriesApi'
+} from '../../services/categoryApi'
 
 import { getErrorMessage, OperationError } from '../../api/helpers/getErrorMessage'
 import { useMemo } from 'react'

@@ -8,7 +8,7 @@ import { IEventLocal } from '../../types/event'
 import { ITaskForm, TASK_STATUS } from '../../types/task.d'
 import { COLOR_PROGRESS } from '../../types/ui/progress'
 
-import { useFetchTaskByIdQuery } from '../../services/tasksApi'
+import { useFetchTaskByIdQuery } from '../../services/taskApi'
 
 import {
   mapTaskFormToCreatePayload,

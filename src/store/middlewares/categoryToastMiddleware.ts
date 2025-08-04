@@ -1,7 +1,7 @@
-import { categoriesApi } from '../../services/categoriesApi'
+import { categoryApi } from '../../services/categoryApi'
 import { registerToastFor } from './toastHelper'
 
-const { fetchCategories, createCategory } = categoriesApi.endpoints
+const { fetchCategories, createCategory } = categoryApi.endpoints
 
 const listCategoryOperation = {
   endpoints: {

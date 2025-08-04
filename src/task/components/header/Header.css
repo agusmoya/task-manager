@@ -20,11 +20,17 @@
 }
 
 .header-app__logo-img {
-  width: 3rem;
-  height: 3rem;
+  width: 3.5rem;
+  height: 3.5rem;
 }
 
 .header-app__logo-text {
   font-size: var(--text-lg);
   font-weight: var(--font-weight-bold);
+}
+
+.header-app__actions {
+  display: flex;
+  align-items: center;
+  column-gap: var(--spacing-2);
 }

@@ -10,7 +10,7 @@ import {
   useDeleteEventMutation,
   useUpdateEventMutation,
   useUpdateEventStatusMutation,
-} from '../../services/eventsApi'
+} from '../../services/eventApi'
 
 import { getErrorMessage, OperationError } from '../../api/helpers/getErrorMessage'
 import { resetActiveEventId, setActiveEventId } from '../slices/event/eventSlice'

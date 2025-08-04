@@ -1,10 +1,8 @@
 import { Link } from 'react-router-dom'
 
-import { Dropdown } from '../../../components/dropdown/Dropdown'
 import { ButtonTheme } from '../../../components/button-theme/ButtonTheme'
-import { LogoutIcon, UserSettingIcon } from '../../../components/icons/Icons'
-import { ButtonLink } from '../../../components/button-link/ButtonLink'
-import { Button } from '../../../components/button/Button'
+import { NotificationDropdown } from '../../../components/notification-dropdown/NotificationDropdown'
+import { AvatarDropdown } from '../../../components/avatar-dropdown/AvatarDropdown'
 
 import { useAuthActions } from '../../../store/hooks/useAuthActions'
 
@@ -12,7 +10,7 @@ import './Header.css'
 
 export const Header = () => {
   const imgLogo = '/images/todo.webp'
-  const { user, logout } = useAuthActions()
+  const { user } = useAuthActions()
 
   return (
     <header className="header-app">
@@ -23,25 +21,15 @@ export const Header = () => {
           <span className="header-app__logo-text">ToDo</span>
         </Link>
         {user ? (
-          <Dropdown className="header-app__user-dropdown">
-            <span className="dropdown__menu-item" role="menuitem">
-              <p>Theme:</p>
-              <ButtonTheme />
-            </span>
-            <ButtonLink className="dropdown__menu-item" role="menuitem" to="/home/profile">
-              <UserSettingIcon />
-              <span>Profile</span>
-            </ButtonLink>
-            <Button
-              variant="text"
-              className="dropdown__menu-item"
-              role="menuitem"
-              onClick={() => logout()}
-            >
-              <LogoutIcon />
-              Logout
-            </Button>
-          </Dropdown>
+          <div className="header-app__actions">
+            <NotificationDropdown
+              className="header-app__notifications-dropdown"
+              maxNotifications={5}
+              size="md"
+            />
+
+            <AvatarDropdown />
+          </div>
         ) : (
           <ButtonTheme />
         )}

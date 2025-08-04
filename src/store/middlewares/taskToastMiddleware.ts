@@ -1,7 +1,7 @@
-import { tasksApi } from '../../services/tasksApi'
+import { taskApi } from '../../services/taskApi'
 import { registerToastFor } from './toastHelper'
 
-const { fetchTaskById, fetchTasks, createTask, updateTask, deleteTask } = tasksApi.endpoints
+const { fetchTaskById, fetchTasks, createTask, updateTask, deleteTask } = taskApi.endpoints
 
 const taskOperation = {
   endpoints: {

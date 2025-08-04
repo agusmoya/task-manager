@@ -28,10 +28,7 @@ const LoginPage = () => {
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!isFormValid) {
-      console.error('Form with errors')
-      return
-    }
+    if (!isFormValid) return
     await login({ email, password })
   }
 

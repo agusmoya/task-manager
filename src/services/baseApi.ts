@@ -8,7 +8,9 @@ import {
 } from '@reduxjs/toolkit/query/react'
 
 import { RootState } from '../store/store'
+
 import { authApi } from './authApi'
+
 import { IAuthResponseDto } from '../types/dtos/register'
 import { setCredentials } from '../store/slices/auth/authSlice'
 
@@ -27,6 +29,20 @@ const baseQuery = fetchBaseQuery({
   },
 })
 
+/**
+ * Promise Deduplication Pattern (Single Flight Pattern)
+ * Prevents multiple simultaneous refresh calls when multiple requests receive 401
+ * Only the first request executes refresh, others wait for the same promise result
+ * @see https://redux-toolkit.js.org/rtk-query/usage/customizing-queries#preventing-duplicate-requests
+ */
+let refreshPromise: Promise<QueryReturnValue<IAuthResponseDto, FetchBaseQueryError>> | null = null
+
+/**
+ * Promise Deduplication Pattern for logout operations
+ * Prevents multiple simultaneous logout calls when refresh fails for multiple requests
+ */
+let logoutPromise: Promise<void> | null = null
+
 // BaseQuery that detects 401 and triggers refresh automatically
 export const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
@@ -42,16 +58,29 @@ export const baseQueryWithReauth: BaseQueryFn<
   }
   // 2. If we receive 401, we try to refresh
   if (result.error?.status === 401 && !isAuthPath(url)) {
-    const rawData = await baseQuery({ url: '/auth/refresh', method: 'POST' }, api, extraOptions)
+    // If refresh is already in progress, wait for it
+    if (!refreshPromise) {
+      refreshPromise = baseQuery(
+        { url: '/auth/refresh', method: 'POST' },
+        api,
+        extraOptions
+      ) as Promise<QueryReturnValue<IAuthResponseDto, FetchBaseQueryError>>
+    }
 
-    const refreshResult = rawData as QueryReturnValue<IAuthResponseDto, FetchBaseQueryError>
+    const refreshResult = await refreshPromise
+    refreshPromise = null // Reset after completion
+
     if (refreshResult.data) {
-      // 3. We save credentials and retry original
+      // 3. Save credentials and retry original request
       api.dispatch(setCredentials(refreshResult.data))
       result = await baseQuery(args, api, extraOptions)
     } else {
-      // 4. If refresh fails, we force logout
-      await api.dispatch(authApi.endpoints.logout.initiate())
+      // 4. If refresh fails, we force logout (prevent multiple logout calls)
+      if (!logoutPromise) {
+        logoutPromise = api.dispatch(authApi.endpoints.logout.initiate()).unwrap()
+      }
+      await logoutPromise
+      logoutPromise = null // Reset after completion
     }
   }
   return result
@@ -60,6 +89,6 @@ export const baseQueryWithReauth: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: 'baseApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Auth', 'Task', 'Event', 'Category', 'User', 'Invitation'] as const,
+  tagTypes: ['Auth', 'Task', 'Event', 'Category', 'User', 'Invitation', 'Notification'] as const,
   endpoints: () => ({}),
 })

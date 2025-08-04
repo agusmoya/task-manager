@@ -1,3 +1,5 @@
+import { IUser } from '../user'
+
 export interface IRegisterDto {
   firstName: string
   lastName: string
@@ -6,6 +8,6 @@ export interface IRegisterDto {
 }
 
 export interface IAuthResponseDto {
-  user: IUserDto
+  user: IUser
   accessToken: string
 }

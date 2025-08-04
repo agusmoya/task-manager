@@ -2,14 +2,14 @@ import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit'
 
 import { AUTH_STATUS } from '../../../auth/constants/status'
 
-import { IUserDto } from '../../../types/dtos/user'
+import { IUser } from '../../../types/user'
 
 import { authApi } from '../../../services/authApi'
 import { IAuthResponseDto } from '../../../types/dtos/register'
 
 export interface AuthState {
   status: string
-  user?: IUserDto
+  user?: IUser
   accessToken?: string
 }
 

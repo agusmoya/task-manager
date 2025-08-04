@@ -3,7 +3,7 @@ import { baseApi } from './baseApi'
 import { IEvent } from '../types/event'
 import { IEventCreatePayload, IEventStatusPayload, IEventUpdatePayload } from '../types/dtos/event'
 
-export const eventsApi = baseApi.injectEndpoints({
+export const eventApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     fetchEventsByUser: builder.query<IEvent[], void>({
       query: () => '/events/by-user',
@@ -67,4 +67,4 @@ export const {
   useUpdateEventMutation,
   useUpdateEventStatusMutation,
   useDeleteEventMutation,
-} = eventsApi
+} = eventApi

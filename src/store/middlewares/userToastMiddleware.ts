@@ -1,7 +1,7 @@
-import { usersApi } from '../../services/userApi'
+import { userApi } from '../../services/userApi'
 import { registerToastFor } from './toastHelper'
 
-const { getProfile, updateProfile, uploadAvatar } = usersApi.endpoints
+const { getProfile, updateProfile, uploadAvatar } = userApi.endpoints
 
 const getProfileOperation = {
   endpoints: {

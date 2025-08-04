@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 import {
   useGetProfileQuery,
@@ -6,6 +7,7 @@ import {
   useUploadAvatarMutation,
 } from '../../services/userApi'
 
+import { useAppSelector } from '../reduxStore'
 import { getErrorMessage, OperationError } from '../../api/helpers/getErrorMessage'
 
 /**
@@ -13,12 +15,14 @@ import { getErrorMessage, OperationError } from '../../api/helpers/getErrorMessa
  * @returns User actions, data, loading states, and error handling
  */
 export const useUserActions = () => {
+  const { accessToken } = useAppSelector(state => state.auth)
+
   const {
     data: user,
     isLoading: fetchingProfile,
     error: fetchProfileError,
     refetch: refetchProfile,
-  } = useGetProfileQuery()
+  } = useGetProfileQuery(accessToken ? undefined : skipToken)
 
   const [
     updateProfile,
@@ -47,7 +51,6 @@ export const useUserActions = () => {
   return {
     // RTKQ Data and flags
     user,
-    contacts: user?.contacts || [],
     fetchingProfile,
     updatingProfile,
     uploadingAvatar,

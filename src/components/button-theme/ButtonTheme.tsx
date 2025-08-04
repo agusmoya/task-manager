@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 
+import clsx from 'clsx'
+
 import { MoonIcon, SunIcon } from '../icons/Icons.tsx'
 import { Button } from '../button/Button.tsx'
 
 import './ButtonTheme.css'
-import clsx from 'clsx'
 
 export const ButtonTheme = () => {
   const lightTheme = 'light'
@@ -24,7 +25,13 @@ export const ButtonTheme = () => {
   }
 
   return (
-    <Button variant="icon" id="button-theme" onClick={toggleTheme} aria-label="Toggle theme">
+    <Button
+      variant="icon"
+      id="button-theme"
+      className="button-theme"
+      onClick={toggleTheme}
+      aria-label="Toggle theme"
+    >
       <span
         className={clsx('button-theme__icon', {
           'button-theme__icon--light': theme === lightTheme,

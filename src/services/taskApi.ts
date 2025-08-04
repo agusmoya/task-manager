@@ -3,7 +3,7 @@ import { baseApi } from './baseApi'
 import { ITaskCreatePayload, ITaskUpdatePayload } from '../types/dtos/task'
 import { ITask, TaskId } from '../types/task'
 
-export const tasksApi = baseApi.injectEndpoints({
+export const taskApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     fetchTasks: builder.query<ITask[], void>({
       query: () => ({ url: '/tasks', method: 'GET' }),
@@ -56,4 +56,4 @@ export const {
   useCreateTaskMutation,
   useUpdateTaskMutation,
   useDeleteTaskMutation,
-} = tasksApi
+} = taskApi

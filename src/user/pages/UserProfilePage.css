@@ -36,29 +36,32 @@
   border-radius: var(--radius-sm);
 }
 
-.user-profile-form__avatar-wrapper {
-  width: 6rem;
-  aspect-ratio: 1 / 1;
-}
-
 .avatar-picker {
-  position: relative;
-  width: 10rem;
-  height: 10rem;
+  border: 2px solid var(--color-outline);
   border-radius: 50%;
   overflow: hidden;
   background: var(--color-surface-variant);
-  display: grid;
-  place-items: center;
   cursor: pointer;
+  position: relative;
+  width: 10rem;
+  height: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.avatar-picker:hover {
+  border-color: var(--color-primary);
+  opacity: 0.8;
 }
 
 .avatar-picker__img {
   position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  font-size: var(--text-sm);
+  color: var(--color-on-surface-variant);
+  text-align: center;
 }
 
 .avatar-picker__placeholder {
@@ -69,7 +72,6 @@
 
 .avatar-picker__input {
   display: none;
-  cursor: pointer;
 }
 
 .user-profile-page__file-error {

@@ -9,6 +9,7 @@ import './middlewares/categoryToastMiddleware'
 import './middlewares/taskToastMiddleware'
 import './middlewares/userToastMiddleware'
 import './middlewares/invitationToastMiddleware'
+import './middlewares/notificationToastMiddleware'
 
 export const store = configureStore({
   reducer: rootReducer,

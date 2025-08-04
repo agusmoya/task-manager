@@ -1,6 +1,7 @@
 import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { eventsApi } from '../../../services/eventsApi'
+import { eventApi } from '../../../services/eventApi'
+import { authApi } from '../../../services/authApi'
 
 import { IEventLocal } from '../../../types/event'
 
@@ -35,7 +36,7 @@ export const eventSlice = createSlice({
   },
 
   extraReducers: builder => {
-    const { fetchEventsByUser, createEvent, updateEvent, deleteEvent } = eventsApi.endpoints
+    const { fetchEventsByUser, createEvent, updateEvent, deleteEvent } = eventApi.endpoints
 
     builder
       .addMatcher(fetchEventsByUser.matchFulfilled, (state, { payload }) => {
@@ -51,6 +52,11 @@ export const eventSlice = createSlice({
         const deletedId = action.meta.arg.originalArgs
         eventsAdapter.removeOne(state, deletedId)
         if (state.activeEventId === deletedId) state.activeEventId = undefined
+      })
+      // Clear all events when user logs out
+      .addMatcher(authApi.endpoints.logout.matchFulfilled, state => {
+        eventsAdapter.removeAll(state)
+        state.activeEventId = undefined
       })
   },
 })

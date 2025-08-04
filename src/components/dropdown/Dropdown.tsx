@@ -2,38 +2,29 @@ import { useEffect, useRef, useState } from 'react'
 
 import clsx from 'clsx'
 
-import { TASK_STATUS } from '../../types/task.d'
-
-import { useAuthActions } from '../../store/hooks/useAuthActions'
-import { useTaskActions } from '../../store/hooks/useTaskActions'
-
 import './Dropdown.css'
 
 interface DropdownProps {
   children: React.ReactNode
   className?: string
-  image?: string
-  altText?: string
+  trigger: React.ReactNode
 }
 
 /**
- * Dropdown wraps its children in a native <details> element,
- * managing open state and outside clicks, with proper BEM classes.
+ * Generic dropdown component using native HTML details element
+ * @param children - Menu items to render inside dropdown
+ * @param className - Additional CSS classes for styling
+ * @param trigger - Element that triggers the dropdown (button, image, icon, etc.)
+ * @returns @returns JSX.Element - Accessible dropdown component
  */
-export const Dropdown = ({
-  children,
-  className,
-  image = '/images/members/user-1.webp',
-  altText = 'Avatar photo',
-}: DropdownProps) => {
+export const Dropdown = ({ children, className, trigger }: DropdownProps) => {
   const detailsRef = useRef<HTMLDetailsElement>(null)
   const [isOpen, setIsOpen] = useState(false)
 
-  const { tasks } = useTaskActions()
-  const { user } = useAuthActions()
-
-  const pendingTasks = tasks.filter(t => t.status === TASK_STATUS.PENDING).length
-
+  /**
+   * Handle keyboard navigation for dropdown
+   * @param e - Keyboard event
+   */
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDetailsElement>) => {
     if (e.key === 'Escape') {
       detailsRef.current?.removeAttribute('open')
@@ -57,24 +48,21 @@ export const Dropdown = ({
 
   return (
     <details
+      name="dropdown"
       className={clsx('dropdown', className)}
       ref={detailsRef}
       onToggle={e => setIsOpen(e.currentTarget.open)}
     >
       <summary
+        className="dropdown__summary"
         onKeyDown={handleKeyDown}
-        className="dropdown__label"
         role="button"
         aria-haspopup="true"
         aria-expanded={isOpen}
       >
-        <div className="dropdown__user-info">
-          <h1>Hi {user?.firstName}</h1>
-          <small>{pendingTasks === 1 ? '1 pending task' : `${pendingTasks} pending tasks`}</small>
-        </div>
-        {image && <img className="dropdown__img" src={image} alt={altText} />}
+        {trigger}
       </summary>
-      <div className="dropdown__menu">{children}</div>
+      <div className="dropdown__menu-wrapper">{children}</div>
     </details>
   )
 }

@@ -3,7 +3,3 @@ export interface IUpdateUserDto {
   lastName: string
   profileImageURL: string
 }
-
-export interface IUserDto {
-  contacts: IUser[]
-}

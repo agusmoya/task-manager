@@ -3,20 +3,23 @@ import { SerializedError } from '@reduxjs/toolkit'
 import { ApiResponseBody } from '../types/response'
 
 export enum OperationError {
+  ACCEPT = 'accept',
+  CREATE = 'create',
+  DELETE = 'delete',
+  FETCH = 'fetch',
+  FETCH_BY_ID = 'fetchById',
+  FETCH_COUNT = 'fetchCount',
+  INVITE = 'invite',
   LOGIN = 'login',
   LOGOUT = 'logout',
-  REGISTER = 'register',
+  MARK_ALL_READ = 'markAllRead',
+  MARK_READ = 'markRead',
   REFRESH = 'refresh',
-  FETCH_BY_ID = 'fetchById',
-  FETCH = 'fetch',
-  CREATE = 'create',
+  REGISTER = 'register',
+  REJECT = 'reject',
   UPDATE = 'update',
   UPDATE_EVENT_STATUS = 'updateEventStatus',
   UPLOAD = 'upload',
-  DELETE = 'delete',
-  INVITE = 'invite',
-  ACCEPT = 'accept',
-  REJECT = 'reject',
 }
 
 export type RTKQueryError = FetchBaseQueryError | SerializedError | undefined

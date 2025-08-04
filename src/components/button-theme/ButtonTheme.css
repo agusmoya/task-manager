@@ -1,5 +1,7 @@
 .button-theme {
-  position: relative;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .button-theme__icon {
@@ -10,16 +12,9 @@
 }
 
 .button-theme__icon--light {
-  transform: rotate(0deg) scale(1);
-  opacity: 1;
+  transform: rotate(0deg);
 }
 
 .button-theme__icon--dark {
-  transform: rotate(180deg) scale(1.1);
-  opacity: 1;
-}
-
-.button-theme__icon-wrapper {
-  position: relative;
-  display: inline-block;
+  transform: rotate(360deg);
 }

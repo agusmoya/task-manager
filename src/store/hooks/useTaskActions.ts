@@ -1,18 +1,24 @@
 import { useMemo } from 'react'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 import {
   useFetchTasksQuery,
   useCreateTaskMutation,
   useUpdateTaskMutation,
   useDeleteTaskMutation,
-} from '../../services/tasksApi'
+} from '../../services/taskApi'
 
 import { setActiveTaskId } from './../slices/task/taskSlice'
+import { useAppSelector } from '../reduxStore'
 
 import { getErrorMessage, OperationError } from '../../api/helpers/getErrorMessage'
 
 export const useTaskActions = () => {
-  const { data: tasks = [], isLoading: fetching, error: fetchError, refetch } = useFetchTasksQuery()
+  const { accessToken } = useAppSelector(state => state.auth)
+  
+  const { data: tasks = [], isLoading: fetching, error: fetchError, refetch } = useFetchTasksQuery(
+    accessToken ? undefined : skipToken
+  )
   const [createTask, { isSuccess: createSuccess, isLoading: creating, error: createError }] =
     useCreateTaskMutation()
   const [updateTask, { isSuccess: updateSuccess, isLoading: updating, error: updateError }] =

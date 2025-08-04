@@ -1,6 +1,7 @@
 import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { tasksApi } from '../../../services/tasksApi'
+import { taskApi } from '../../../services/taskApi'
+import { authApi } from '../../../services/authApi'
 
 import { ITask } from '../../../types/task'
 
@@ -14,7 +15,7 @@ const initialState = tasksAdapter.getInitialState<ITaskState>({
   activeTaskId: undefined,
 })
 
-const { fetchTasks, createTask, updateTask, deleteTask } = tasksApi.endpoints
+const { fetchTasks, createTask, updateTask, deleteTask } = taskApi.endpoints
 
 export const taskSlice = createSlice({
   name: 'task',
@@ -42,6 +43,11 @@ export const taskSlice = createSlice({
         const deletedId = action.meta.arg.originalArgs
         tasksAdapter.removeOne(state, deletedId)
         if (state.activeTaskId === deletedId) state.activeTaskId = undefined
+      })
+      // Clear all tasks when user logs out
+      .addMatcher(authApi.endpoints.logout.matchFulfilled, state => {
+        tasksAdapter.removeAll(state)
+        state.activeTaskId = undefined
       })
   },
 })

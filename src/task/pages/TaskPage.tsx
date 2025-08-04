@@ -10,7 +10,7 @@ import { DatePills } from '../components/date-pills-list/DatePills'
 import { Schedule } from '../components/schedule/Schedule'
 import { LoaderPage } from '../../components/loader-page/LoaderPage'
 
-import { useFetchTaskByIdQuery } from '../../services/tasksApi'
+import { useFetchTaskByIdQuery } from '../../services/taskApi'
 import { getEventsSegments } from '../../utils/computedEvents'
 
 const TaskPage = () => {

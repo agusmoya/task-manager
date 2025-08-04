@@ -3,7 +3,7 @@ import { baseApi } from './baseApi'
 import { ICategory } from '../types/category'
 import { ICategoryCreatePayload, ICategoryUpdatePayload } from '../types/dtos/category'
 
-export const categoriesApi = baseApi.injectEndpoints({
+export const categoryApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     fetchCategories: builder.query<ICategory[], void>({
       query: () => ({ url: '/categories', method: 'GET' }),
@@ -44,4 +44,4 @@ export const {
   useCreateCategoryMutation,
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
-} = categoriesApi
+} = categoryApi

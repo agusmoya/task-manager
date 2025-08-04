@@ -5,13 +5,23 @@ import { useLocation } from 'react-router-dom'
 export const useTransitionPage = () => {
   const location = useLocation()
   const [displayLocation, setDisplayLocation] = useState(location)
-  const [transitionPage, setTransitionPage] = useState('page page-enter')
+  const [transitionPage, setTransitionPage] = useState('')
+  const [isInitialized, setIsInitialized] = useState(false)
+
+  // Initialize on first render to prevent race conditions
+  useEffect(() => {
+    if (!isInitialized) {
+      setTransitionPage('page page-enter')
+      setIsInitialized(true)
+    }
+  }, [isInitialized])
 
   useEffect(() => {
-    if (location.pathname !== displayLocation.pathname) {
+    // Only trigger transitions after initialization and on actual route changes
+    if (isInitialized && location.pathname !== displayLocation.pathname) {
       setTransitionPage('page page-exit')
     }
-  }, [location, displayLocation])
+  }, [location, displayLocation, isInitialized])
 
   const handleTransitionEnd = () => {
     if (transitionPage === 'page page-exit') {

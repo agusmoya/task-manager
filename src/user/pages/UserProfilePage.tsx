@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import isEqual from 'lodash.isequal'
 
+import { UserAvatar } from '../../components/user-avatar/UserAvatar'
 import { useUserActions } from '../../store/hooks/useUserActions'
 
 import { IUpdateUserDto } from '../../types/dtos/user'
@@ -21,13 +22,8 @@ import {
   userFormFields,
   userFormValidations,
 } from '../../helpers/form-validations/getUserFormValidations'
-import { getEnvVariables } from '../../helpers/getEnvVariables'
-import { buildImageUrl } from '../../helpers/buildImageUrl'
 
 import './UserProfilePage.css'
-
-const MAX_FILE_SIZE = 1024 * 1024 // 1MB
-const ALLOWED_TYPES = ['image/png', 'image/jpeg']
 
 /**
  * User profile page component for editing user information and avatar
@@ -35,14 +31,12 @@ const ALLOWED_TYPES = ['image/png', 'image/jpeg']
  * @returns JSX.Element - User profile form with avatar upload
  */
 const UserProfilePage = () => {
-  const { VITE_API_URL } = getEnvVariables()
   const originalFormRef = useRef<IUserForm | null>(null)
   // Custom hook for user operations
   const {
     user,
-    contacts,
-    fetchingProfile: isLoading,
-    updatingProfile: updating,
+    fetchingProfile,
+    updatingProfile,
     uploadingAvatar,
     updateProfile,
     uploadAvatar,
@@ -67,7 +61,6 @@ const UserProfilePage = () => {
 
   // Local state for file handling
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [fileError, setFileError] = useState<string>('')
   const [preview, setPreview] = useState<string>('')
 
   const formHasChanges = useMemo(() => {
@@ -110,27 +103,10 @@ const UserProfilePage = () => {
   }, [user])
 
   /**
-   * Handle file selection and validation for avatar upload
-   * @param e - File input change event
+   * Handle file selection for avatar upload
+   * @param file - Selected file from UserAvatar component
    */
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    // Validate file type
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      setFileError('Only PNG or JPEG allowed')
-      return
-    }
-
-    // Validate file size
-    if (file.size > MAX_FILE_SIZE) {
-      setFileError('The file must be less than 1 MB.')
-      return
-    }
-
-    // Clear errors and set file
-    setFileError('')
+  const handleFileChange = (file: File) => {
     setSelectedFile(file)
     setPreview(URL.createObjectURL(file))
   }
@@ -177,22 +153,17 @@ const UserProfilePage = () => {
     setSelectedFile(null)
   }
 
-  if (isLoading) return <LoaderPage />
-
-  const initials = `${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase()
+  if (fetchingProfile || !user) return <LoaderPage />
 
   // Allow submit if form is valid OR only changing avatar
   const isSubmitDisabled =
     (!formHasChanges && !selectedFile) ||
     (formHasChanges && !isFormValid) ||
-    updating ||
+    updatingProfile ||
     uploadingAvatar
 
   const displayError =
-    fetchUserError?.message ||
-    updateUserError?.message ||
-    uploadUserAvatarError?.message ||
-    fileError
+    fetchUserError?.message || updateUserError?.message || uploadUserAvatarError?.message
 
   return (
     <section className="user-profile-page section container">
@@ -201,29 +172,22 @@ const UserProfilePage = () => {
           {displayError}
         </p>
         <header className="user-profile-form__header">
-          <h1 className="user-profile-form__header-title">Profile: {user?.firstName}</h1>
+          <h1 className="user-profile-form__header-title">Profile: {firstName}</h1>
 
-          <label className="avatar-picker">
-            {preview ? (
-              <img
-                className="avatar-picker__img"
-                src={buildImageUrl(preview, VITE_API_URL)}
-                alt={`${firstName} ${lastName} avatar`}
-              />
-            ) : (
-              <div className="avatar-picker__placeholder">{initials}</div>
-            )}
-            <input
-              type="file"
-              accept="image/png,image/jpeg"
-              className="avatar-picker__input"
-              onChange={handleFileChange}
-              aria-label="Upload profile picture"
-            />
-          </label>
+          <UserAvatar
+            imageUrl={preview || user.profileImageURL}
+            firstName={firstName}
+            lastName={lastName}
+            size="lg"
+            editable
+            loading={uploadingAvatar}
+            onFileChange={handleFileChange}
+            ariaLabel="Upload profile picture"
+          />
         </header>
 
         <Input label="Email" name="email" value={email} required disabled />
+
         <Input
           label="First Name"
           name="firstName"
@@ -234,6 +198,7 @@ const UserProfilePage = () => {
           touched={touchedFields.firstName}
           error={firstNameValid}
         />
+
         <Input
           label="Last Name"
           name="lastName"
@@ -248,7 +213,7 @@ const UserProfilePage = () => {
         <MultiSelectInput<IUser>
           label="Contacts"
           typeOption="email"
-          options={contacts}
+          options={user.contacts}
           actionOnEmpty
           actionLabel="Invite"
           actionMethod={sendEmailInvitation}
@@ -265,7 +230,7 @@ const UserProfilePage = () => {
             variant="filled"
             disabled={isSubmitDisabled}
           >
-            {updating || uploadingAvatar ? 'Saving…' : 'Save changes'}
+            {updatingProfile || uploadingAvatar ? 'Saving…' : 'Save changes'}
           </Button>
 
           <ButtonLink variant="outlined" className="user-profile-form__btn" to="/home">
