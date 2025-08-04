@@ -1,3 +1,9 @@
+/* Base state - ensures content is visible without transition classes */
+.main {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .page-enter,
 .page-exit {
   will-change: opacity, transform;

@@ -1,34 +1,70 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 
 // Related to: transition-page.css
 export const useTransitionPage = () => {
   const location = useLocation()
   const [displayLocation, setDisplayLocation] = useState(location)
-  const [transitionPage, setTransitionPage] = useState('')
-  const [isInitialized, setIsInitialized] = useState(false)
+  const [transitionPage, setTransitionPage] = useState('page page-enter') // Start visible
 
-  // Initialize on first render to prevent race conditions
-  useEffect(() => {
-    if (!isInitialized) {
-      setTransitionPage('page page-enter')
-      setIsInitialized(true)
-    }
-  }, [isInitialized])
+  /**
+   * Safety timeout to prevent stuck transitions
+   * If animation doesn't complete (browser reload, interruption), force completion
+   */
+  const timeoutRef = useRef<number>()
 
   useEffect(() => {
-    // Only trigger transitions after initialization and on actual route changes
-    if (isInitialized && location.pathname !== displayLocation.pathname) {
+    /**
+     * ROUTE CHANGE DETECTION: Trigger transition only on actual navigation
+     *
+     * Key insight: With CSS base state (.main), content is visible by default
+     * This eliminates the need for complex initialization logic
+     */
+    if (location.pathname !== displayLocation.pathname) {
       setTransitionPage('page page-exit')
-    }
-  }, [location, displayLocation, isInitialized])
 
+      /**
+       * SAFETY TIMEOUT: Prevent stuck page-exit state
+       *
+       * Problem: Browser reloads can interrupt CSS animations
+       * Solution: Force transition completion if onAnimationEnd doesn't fire
+       * Timeout is longer than CSS animation (0.3s) to avoid conflicts
+       */
+      timeoutRef.current = window.setTimeout(() => {
+        console.warn('Animation timeout - forcing page-enter state')
+        setDisplayLocation(location)
+        setTransitionPage('page page-enter')
+      }, 500)
+    }
+  }, [location, displayLocation])
+
+  /**
+   * Handle CSS animation completion
+   * When page-exit animation finishes, update displayLocation and start page-enter
+   */
   const handleTransitionEnd = () => {
     if (transitionPage === 'page page-exit') {
+      // Clear timeout since animation completed successfully
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+        timeoutRef.current = undefined
+      }
+
       setDisplayLocation(location)
       setTransitionPage('page page-enter')
     }
   }
+
+  /**
+   * Cleanup timeout on unmount to prevent memory leaks
+   */
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
 
   return { displayLocation, transitionPage, handleTransitionEnd }
 }
