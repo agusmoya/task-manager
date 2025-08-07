@@ -11,7 +11,7 @@ import {
 import { getErrorMessage, OperationError } from '../../api/helpers/getErrorMessage'
 
 export const useAuthActions = () => {
-  const { status, user } = useAppSelector(state => state.auth)
+  const { status, currentUserId } = useAppSelector(state => state.auth)
 
   const [logout, { isLoading: logoutLoading, error: logoutError }] = useLogoutMutation()
   const [login, { isLoading: loginLoading, error: loginError }] = useLoginMutation()
@@ -33,9 +33,10 @@ export const useAuthActions = () => {
   )
 
   return {
-    // STATE
+    // STATE - Optimized auth data only
     status,
-    user,
+    currentUserId,
+    isAuthenticated: status === 'authenticated',
     // Data y flags RTKQ
     loginLoading,
     registerLoading,

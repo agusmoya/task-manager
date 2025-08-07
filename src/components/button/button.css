@@ -16,7 +16,7 @@
     box-shadow 0.3s ease;
 }
 
-/* State-layer: pseudo-elemento que pinta hover/focus/pressed */
+/* State layer: pseudo-element that paints hover/focus/pressed */
 .btn::before {
   content: '';
   position: absolute;

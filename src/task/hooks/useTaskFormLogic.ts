@@ -5,7 +5,7 @@ import isEqual from 'lodash.isequal'
 
 import { IUser } from '../../types/user'
 import { IEventLocal } from '../../types/event'
-import { ITaskForm, TASK_STATUS } from '../../types/task.d'
+import { ITaskForm, TASK_STATUS } from '../../types/task'
 import { COLOR_PROGRESS } from '../../types/ui/progress'
 
 import { useFetchTaskByIdQuery } from '../../services/taskApi'
@@ -41,7 +41,7 @@ export const useTaskFormLogic = () => {
   } = useFetchTaskByIdQuery(id ?? skipToken)
 
   // Actions
-  const { contacts } = useUserActions()
+  const { user, fetchingProfile } = useUserActions()
   const {
     createTask,
     creating: creatingTask,
@@ -220,7 +220,8 @@ export const useTaskFormLogic = () => {
     validSelectedCategory,
     isSubmitDisabled,
     isResetDisabled,
-    contacts,
+    user,
+    fetchingProfile,
     fetchingCat,
     // Form errors
     fetchError,

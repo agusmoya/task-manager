@@ -7,12 +7,13 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  column-gap: var(--spacing-2);
+  justify-content: center;
   border-radius: 50%;
 }
 
 .dropdown__summary:hover {
-  outline: var(--stroke-width-1) solid var(--color-outline);
+  outline: var(--stroke-width-2) solid var(--color-outline);
+  outline-offset: var(--stroke-width-1);
   background-color: var(--color-surface-variant);
 }
 

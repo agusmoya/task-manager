@@ -4,9 +4,6 @@
   align-items: center;
   justify-content: center;
   padding: var(--spacing-2);
-  border-radius: var(--border-radius-md);
-  cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
 .notification-dropdown__icon {
@@ -16,8 +13,8 @@
 
 .notification-dropdown__badge {
   position: absolute;
-  bottom: -0.25rem;
-  right: -0.25rem;
+  bottom: calc(-1 * var(--spacing-1));
+  right: calc(-1 * var(--spacing-1));
   min-width: 1rem;
   height: 1rem;
   display: flex;
@@ -28,7 +25,7 @@
   font-size: var(--text-xs);
   font-weight: var(--font-weight-bold);
   border-radius: 50%;
-  padding: 0 var(--spacing-1);
+  padding-inline: var(--spacing-1);
   line-height: 1;
 }
 
@@ -60,7 +57,7 @@
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   padding: var(--spacing-1);
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--radius-sm);
   transition: background-color 0.2s ease;
 }
 
@@ -88,12 +85,23 @@
   padding: var(--spacing-3);
   cursor: pointer;
   transition: background-color 0.2s ease;
-  border-bottom: var(--stroke-width-1, 1px) solid var(--color-outline-variant);
+  border-radius: var(--radius-xs);
   position: relative;
 }
 
-.notification-dropdown__item:hover {
-  background-color: var(--color-surface-variant);
+.notification-dropdown__item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+}
+
+.notification-dropdown__item:hover::before {
+  opacity: var(--state-layer-hover-opacity);
 }
 
 .notification-dropdown__item:last-child {
@@ -105,7 +113,8 @@
 }
 
 .notification-dropdown__item--unread:hover {
-  background-color: var(--color-primary-container-hover);
+  background-color: var(--color-primary-container);
+  border-color: var(--color-secondary);
 }
 
 .notification-dropdown__item-icon {
@@ -176,12 +185,8 @@
   font-weight: var(--font-weight-medium);
   padding: var(--spacing-2);
   cursor: pointer;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-sm);
   transition: background-color 0.2s ease;
-}
-
-.notification-dropdown__view-all:hover {
-  background-color: var(--color-primary-container);
 }
 
 .notification-dropdown__icon--sm {
@@ -197,22 +202,4 @@
 .notification-dropdown__icon--lg {
   width: 1.5rem;
   height: 1.5rem;
-}
-
-/* Scrollbar styling for notification list */
-.notification-dropdown__list::-webkit-scrollbar {
-  width: 4px;
-}
-
-.notification-dropdown__list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.notification-dropdown__list::-webkit-scrollbar-thumb {
-  background-color: var(--color-outline-variant);
-  border-radius: 2px;
-}
-
-.notification-dropdown__list::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-outline);
 }

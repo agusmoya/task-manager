@@ -13,7 +13,7 @@ import { LinearProgress } from '../../../components/linear-progress/LinearProgre
 
 import { ModalIds } from '../../../constants/modalIds'
 
-import { ITask, TASK_STATUS } from '../../../types/task.d'
+import { ITask, TASK_STATUS } from '../../../types/task'
 import { EVENT_STATUS } from '../../../types/event'
 
 import { useTaskActions } from '../../../store/hooks/useTaskActions'

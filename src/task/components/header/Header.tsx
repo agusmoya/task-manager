@@ -10,17 +10,17 @@ import './Header.css'
 
 export const Header = () => {
   const imgLogo = '/images/todo.webp'
-  const { user } = useAuthActions()
+  const { isAuthenticated } = useAuthActions()
 
   return (
     <header className="header-app">
       <nav className="header-app__nav container" aria-label="Profile navigation">
-        <Link className="header-app__logo" to={user ? '/home' : '/auth/login'}>
+        <Link className="header-app__logo" to={isAuthenticated ? '/home' : '/auth/login'}>
           <img className="header-app__logo-img" src={imgLogo} alt="ToDo logo" />
           &nbsp;
           <span className="header-app__logo-text">ToDo</span>
         </Link>
-        {user ? (
+        {isAuthenticated ? (
           <div className="header-app__actions">
             <NotificationDropdown
               className="header-app__notifications-dropdown"

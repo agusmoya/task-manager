@@ -1,5 +1,5 @@
 import { FormValidations } from '../../hooks/useForm'
-import { IUserForm } from './../../types/user.d'
+import { IUserForm } from '../../types/user'
 
 export const userFormFields: IUserForm = {
   firstName: '',

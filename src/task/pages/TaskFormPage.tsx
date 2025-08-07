@@ -37,7 +37,8 @@ const TaskFormPage = () => {
     categorySuggestions,
     isSubmitDisabled,
     isResetDisabled,
-    contacts,
+    fetchingProfile,
+    user,
     fetchingCat,
     // Form errors
     fetchError,
@@ -133,7 +134,8 @@ const TaskFormPage = () => {
           <MultiSelectInput<IUser>
             label="Participants"
             typeOption="email"
-            options={contacts}
+            options={user?.contacts || []}
+            loading={fetchingProfile}
             selectedOptions={participants}
             onAddItem={handleAddParticipant}
             onRemoveItem={handleRemoveParticipant}

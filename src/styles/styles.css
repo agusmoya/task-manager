@@ -107,7 +107,6 @@ ol {
 }
 
 *:hover {
-  /* thumb más opaco al pasar el mouse */
   scrollbar-color: var(--scrollbar-thumb-color) transparent;
 }
 

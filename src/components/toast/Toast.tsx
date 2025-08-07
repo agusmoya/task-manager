@@ -66,7 +66,9 @@ export const Toast = ({ toast, removeToast }: ToastProps) => {
 
       <span className="toast__message">{message}</span>
 
-      <span className="toast__progress" style={{ animationDuration: `${duration}ms` }} />
+      {status !== TOAST_STATUS.LOADING && (
+        <span className="toast__progress" style={{ animationDuration: `${duration}ms` }} />
+      )}
     </div>
   )
 }

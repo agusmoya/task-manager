@@ -1,9 +1,11 @@
 import { NotificationIcon } from '../icons/Icons'
 import { Dropdown } from '../dropdown/Dropdown'
+import { Button } from '../button/Button'
+import { ButtonLink } from '../button-link/ButtonLink'
 
 import { useNotificationActions } from '../../store/hooks/useNotificationActions'
 
-import { INotification } from '../../types/notification.d'
+import { INotification, NOTIFICATION_TYPE } from '../../types/notification'
 
 import './NotificationDropdown.css'
 
@@ -88,7 +90,7 @@ export const NotificationDropdown = ({
    * @param type - Notification type
    * @returns Icon component or null
    */
-  const getNotificationTypeIcon = (type: string) => {
+  const getNotificationTypeIcon = (type: NOTIFICATION_TYPE) => {
     switch (type) {
       case 'TASK_ASSIGNED':
       case 'TASK_COMPLETED':
@@ -126,13 +128,13 @@ export const NotificationDropdown = ({
         <header className="notification-dropdown__header">
           <h3 className="notification-dropdown__title">Notifications</h3>
           {unreadCount > 0 && (
-            <button
+            <Button
               className="notification-dropdown__mark-all"
               onClick={handleMarkAllAsRead}
               aria-label="Mark all notifications as read"
             >
               Mark all as read
-            </button>
+            </Button>
           )}
         </header>
 
@@ -179,7 +181,9 @@ export const NotificationDropdown = ({
 
         {notifications.length >= maxNotifications && (
           <footer className="notification-dropdown__footer">
-            <button className="notification-dropdown__view-all">View all notifications</button>
+            <ButtonLink className="notification-dropdown__view-all" to="/home">
+              View all notifications
+            </ButtonLink>
           </footer>
         )}
       </div>

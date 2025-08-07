@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { useLocation, matchPath } from 'react-router-dom'
 
-import { BreadcrumbNavigation } from '../types/breadbrumb.d'
+import { BreadcrumbNavigation } from '../types/breadbrumb'
 
 import { NavigationContext } from '../context/navigation/navigationContext'
 import { breadcrumbMap } from '../helpers/getBreadcrumbLabels'

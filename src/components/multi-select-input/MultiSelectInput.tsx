@@ -28,7 +28,6 @@ export function MultiSelectInput<T>({
   const inputId = useId()
   const labelId = `${inputId}-label`
   const errorId = `${inputId}-error`
-  // const hasError = touched && !!error
 
   const optionsAvailable = options.length > 0
 
@@ -42,8 +41,11 @@ export function MultiSelectInput<T>({
       onAddItem?.(item)
     }
   }
-  const handleActionOnEmpty = () => {
+
+  const handleActionMethod = () => {
+    if (!searchTerm) return
     if (typeOption === 'email') actionMethod?.(searchTerm)
+    setSearchTerm('')
   }
 
   return (
@@ -93,7 +95,7 @@ export function MultiSelectInput<T>({
             variant="text"
             className="multi-select-search__action-on-empty-btn"
             disabled={loading || !searchTerm}
-            onClick={handleActionOnEmpty}
+            onClick={handleActionMethod}
           >
             {loading ? <Loader /> : actionLabel}
           </Button>
@@ -101,7 +103,9 @@ export function MultiSelectInput<T>({
       </div>
 
       <ul className="multi-select-options" role="listbox" aria-label={`Available ${label}`}>
-        {optionsAvailable ? (
+        {loading ? (
+          <Loader />
+        ) : optionsAvailable ? (
           filteredOptions.map(item => (
             <li
               key={getOptionKey(item)}

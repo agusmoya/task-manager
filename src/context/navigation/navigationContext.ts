@@ -1,6 +1,6 @@
 import { Dispatch, createContext, SetStateAction } from 'react'
 
-import { BreadcrumbItem } from '../../types/breadbrumb.d'
+import { BreadcrumbItem } from '../../types/breadbrumb'
 
 type NavigationContextType = {
   breadcrumbs: BreadcrumbItem[]

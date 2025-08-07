@@ -2,20 +2,18 @@ import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit'
 
 import { AUTH_STATUS } from '../../../auth/constants/status'
 
-import { IUser } from '../../../types/user'
-
 import { authApi } from '../../../services/authApi'
-import { IAuthResponseDto } from '../../../types/dtos/register'
+import { IAuthResponseDto } from '../../../types/dtos/auth'
 
 export interface AuthState {
   status: string
-  user?: IUser
   accessToken?: string
+  currentUserId?: string
 }
 
 const initialState: AuthState = {
   status: AUTH_STATUS.NOT_AUTHENTICATED,
-  user: undefined,
+  currentUserId: undefined,
   accessToken: undefined,
 }
 
@@ -25,7 +23,7 @@ export const authSlice = createSlice({
   reducers: {
     // Action to update credentials from baseQueryWithReauth
     setCredentials: (state, { payload }: PayloadAction<IAuthResponseDto>) => {
-      state.user = payload.user
+      state.currentUserId = payload.userId
       state.accessToken = payload.accessToken
       state.status = AUTH_STATUS.AUTHENTICATED
     },
@@ -33,19 +31,21 @@ export const authSlice = createSlice({
   extraReducers: builder => {
     const { login, register, refresh } = authApi.endpoints
     builder
-      .addMatcher(
-        isAnyOf(login.matchFulfilled, register.matchFulfilled, refresh.matchFulfilled),
-        (state, { payload }) => {
-          state.user = payload.user
-          state.accessToken = payload.accessToken
-          state.status = AUTH_STATUS.AUTHENTICATED
-        }
-      )
+      .addMatcher(refresh.matchFulfilled, (state, { payload }) => {
+        state.currentUserId = payload.userId
+        state.accessToken = payload.accessToken
+        state.status = AUTH_STATUS.AUTHENTICATED
+      })
+      .addMatcher(isAnyOf(login.matchFulfilled, register.matchFulfilled), (state, { payload }) => {
+        state.currentUserId = payload.userId
+        state.accessToken = payload.accessToken
+        state.status = AUTH_STATUS.AUTHENTICATED
+      })
       .addMatcher(
         isAnyOf(authApi.endpoints.refresh.matchRejected, authApi.endpoints.logout.matchFulfilled),
         state => {
           state.status = AUTH_STATUS.NOT_AUTHENTICATED
-          state.user = undefined
+          state.currentUserId = undefined
           state.accessToken = undefined
         }
       )

@@ -2,7 +2,7 @@ import React from 'react'
 
 import clsx from 'clsx'
 
-import { VARIANT, VariantType } from '../../types/ui/Variant'
+import { VARIANT, VariantType } from '../../types/ui/variant'
 
 import './Button.css'
 

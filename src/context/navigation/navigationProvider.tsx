@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { BreadcrumbItem } from '../../types/breadbrumb.d'
+import { BreadcrumbItem } from '../../types/breadbrumb'
 
 import { NavigationContext } from './navigationContext'
 

@@ -1,7 +1,7 @@
 import { baseApi } from './baseApi'
 
-import { ILoginDto } from '../types/dtos/login'
-import { IAuthResponseDto, IRegisterDto } from '../types/dtos/register'
+import { ILoginDto } from '../types/dtos/auth'
+import { IAuthResponseDto, IRegisterDto } from '../types/dtos/auth'
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: builder => ({

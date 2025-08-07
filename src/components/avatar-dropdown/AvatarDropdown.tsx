@@ -7,9 +7,10 @@ import { ButtonTheme } from '../button-theme/ButtonTheme'
 import { UserAvatar } from '../user-avatar/UserAvatar'
 import { UserSettingIcon, LogoutIcon } from '../icons/Icons'
 
-import { TASK_STATUS } from '../../types/task.d'
+import { TASK_STATUS } from '../../types/task'
 
 import { useAuthActions } from '../../store/hooks/useAuthActions'
+import { useUserActions } from '../../store/hooks/useUserActions'
 import { useTaskActions } from '../../store/hooks/useTaskActions'
 
 import './AvatarDropdown.css'
@@ -20,7 +21,8 @@ import './AvatarDropdown.css'
  * @returns JSX.Element - Avatar dropdown with user menu
  */
 export const AvatarDropdown = () => {
-  const { user, logout } = useAuthActions()
+  const { currentUserId, logout } = useAuthActions()
+  const { user: fullProfile } = useUserActions() // Full profile from RTK Query
   const { tasks } = useTaskActions()
 
   /**
@@ -36,8 +38,8 @@ export const AvatarDropdown = () => {
     logout()
   }
 
-  // Guard clause for when user is not loaded
-  if (!user) return null
+  // Guard clause - use currentUser for basic auth check, fullProfile for complete data
+  if (!currentUserId || !fullProfile) return null
 
   return (
     <Dropdown
@@ -45,9 +47,9 @@ export const AvatarDropdown = () => {
       trigger={
         <UserAvatar
           className="user-dropdown__trigger"
-          imageUrl={user.profileImageURL}
-          firstName={user.firstName}
-          lastName={user.lastName}
+          imageUrl={fullProfile.profileImageURL}
+          firstName={fullProfile.firstName}
+          lastName={fullProfile.lastName}
           size="md"
           ariaLabel="User menu"
         />
@@ -57,7 +59,7 @@ export const AvatarDropdown = () => {
         <div className="user-dropdown__header">
           <div className="user-dropdown__info">
             <span className="user-dropdown__name">
-              {user.firstName} {user.lastName}
+              {fullProfile.firstName} {fullProfile.lastName}
             </span>
             <small className="user-dropdown__tasks">
               {pendingTasksCount === 1 ? '1 pending task' : `${pendingTasksCount} pending tasks`}
