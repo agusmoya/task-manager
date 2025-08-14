@@ -23,7 +23,7 @@ export interface InputWithSuggestionsProps
   onCreateNew?: (value: string) => void
 }
 
-interface MultiSelectProps<T> {
+export interface MultiSelectProps<T> {
   label: string
   typeOption: string
   options: T[]

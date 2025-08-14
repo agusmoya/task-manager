@@ -25,7 +25,7 @@ export const invitationsApi = baseApi.injectEndpoints({
         url: `/invitations/${invitationId}/accept`,
         method: 'PUT',
       }),
-      invalidatesTags: ['Invitation', 'User'], // Refresh invitations and contacts
+      invalidatesTags: ['Invitation', 'User', 'Notification'],
     }),
     /**
      * Reject a pending invitation
@@ -36,7 +36,7 @@ export const invitationsApi = baseApi.injectEndpoints({
         url: `/invitations/${invitationId}/reject`,
         method: 'PUT',
       }),
-      invalidatesTags: ['Invitation'], // Refresh invitations list
+      invalidatesTags: ['Invitation', 'Notification'],
     }),
   }),
 })

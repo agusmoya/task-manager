@@ -55,6 +55,7 @@
   outline: none;
   position: relative;
   display: inline-flex;
+  column-gap: var(--spacing-1);
   align-items: center;
   padding: var(--spacing-1) var(--spacing-2);
   background-color: var(--color-primary-container);
@@ -63,6 +64,11 @@
   font-size: var(--text-sm);
   cursor: pointer;
   transition: background-color 0.2s;
+}
+
+.multi-select-chip__remove-btn {
+  width: 0.5rem;
+  height: 0.5rem;
 }
 
 .multi-select-chip--none {

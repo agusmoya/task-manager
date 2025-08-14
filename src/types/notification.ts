@@ -1,14 +1,14 @@
+import { InvitationStatus } from './invitation'
+
 /**
  * Notification type enumeration
  * Defines different types of notifications in the system
  */
 export enum NOTIFICATION_TYPE {
-  TASK_ASSIGNED = 'TASK_ASSIGNED',
-  TASK_COMPLETED = 'TASK_COMPLETED',
-  TASK_DUE_SOON = 'TASK_DUE_SOON',
-  EVENT_REMINDER = 'EVENT_REMINDER',
-  INVITATION_RECEIVED = 'INVITATION_RECEIVED',
-  SYSTEM_UPDATE = 'SYSTEM_UPDATE',
+  TASK = 'task',
+  EVENT = 'event',
+  INVITATION = 'invitation',
+  SYSTEM = 'system',
 }
 
 /**
@@ -33,6 +33,7 @@ export interface INotification {
  */
 export interface INotificationData {
   invitationId?: string // For invitation notifications
+  invitationStatus?: InvitationStatus
   taskId?: string // For task notifications
   eventId?: string // For event notifications
   fromUserId?: string // User who triggered the notification

@@ -9,7 +9,7 @@
   width: 100%;
   background-color: var(--color-surface-variant);
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-  z-index: var(--z-normal);
+  z-index: var(--z-tooltip);
   overflow: hidden;
   outline: var(--stroke-width-1) solid var(--color-surface);
 }

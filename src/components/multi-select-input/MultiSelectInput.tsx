@@ -15,7 +15,6 @@ export function MultiSelectInput<T>({
   actionOnEmpty = false,
   actionLabel = '',
   selectedOptions = [],
-  // touched = true,
   loading = false,
   error = undefined,
   actionMethod,
@@ -29,14 +28,12 @@ export function MultiSelectInput<T>({
   const labelId = `${inputId}-label`
   const errorId = `${inputId}-error`
 
-  const optionsAvailable = options.length > 0
-
   const filteredOptions = options
     .filter(op => !selectedOptions.some(sop => getOptionKey(sop) === getOptionKey(op)))
     .filter(op => getOptionLabel(op).toLowerCase().includes(searchTerm.toLowerCase()))
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLLIElement>, item: T) => {
-    if (e.key === 'Enter' || e.key === ' ') {
+    if (e.key === 'Enter') {
       e.preventDefault()
       onAddItem?.(item)
     }
@@ -64,11 +61,15 @@ export function MultiSelectInput<T>({
                 role="button"
                 aria-label={`Remove ${getOptionLabel(item)}`}
                 tabIndex={0}
-                onClick={() => onRemoveItem?.(item)}
-                onKeyDown={e => handleKeyDown(e, item)}
               >
                 <span>{getOptionLabel(item)}</span>
-                <CloseIcon />
+                <Button
+                  variant="icon"
+                  className="multi-select-chip__remove-btn"
+                  onClick={() => onRemoveItem?.(item)}
+                >
+                  <CloseIcon size={20} />
+                </Button>
               </li>
             ))
           ) : (
@@ -105,7 +106,7 @@ export function MultiSelectInput<T>({
       <ul className="multi-select-options" role="listbox" aria-label={`Available ${label}`}>
         {loading ? (
           <Loader />
-        ) : optionsAvailable ? (
+        ) : filteredOptions.length > 0 ? (
           filteredOptions.map(item => (
             <li
               key={getOptionKey(item)}

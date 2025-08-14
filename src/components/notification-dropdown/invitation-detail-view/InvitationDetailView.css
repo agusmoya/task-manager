@@ -1,0 +1,51 @@
+.notification-dropdown__invitation-detail {
+  border-radius: var(--radius-xs);
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--spacing-3);
+}
+
+.notification-dropdown__detail-header {
+  border-bottom: var(--stroke-width-1) solid var(--color-outline);
+  padding-block: var(--spacing-2);
+  display: flex;
+  column-gap: var(--spacing-1);
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.notification-dropdown__back-button {
+  padding: var(--spacing-1);
+}
+
+.notification-dropdown__detail-content {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--spacing-3);
+}
+
+.notification-dropdown__invitation-info {
+  line-height: 1.5;
+}
+
+.notification-dropdown__invitation-title {
+  font-weight: var(--font-weight-bold);
+}
+
+.notification-dropdown__invitation-message {
+  color: var(--color-on-surface-variant);
+}
+
+.notification-dropdown__invitation-from {
+  font-weight: var(--font-weight-medium);
+}
+
+.notification-dropdown__invitation-actions {
+  display: flex;
+  column-gap: var(--spacing-2);
+  justify-content: flex-end;
+}
+
+.notification-dropdown__invitation-actions button {
+  padding: var(--spacing-1) var(--spacing-2);
+}

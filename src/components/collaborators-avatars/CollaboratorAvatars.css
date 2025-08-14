@@ -2,21 +2,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: var(--spacing-2);
 }
 
-.schedule__avatar,
+.schedule__avatar:not(:first-child),
 .schedule__avatar--more {
-  justify-content: center;
-  align-items: center;
   margin-left: calc(-1 * var(--spacing-2));
   border-radius: 50%;
-}
-
-.schedule__avatar {
-  width: 3rem;
-  height: 3rem;
-  border: var(--stroke-width-2) solid var(--color-on-surface);
 }
 
 .schedule__avatar--more {

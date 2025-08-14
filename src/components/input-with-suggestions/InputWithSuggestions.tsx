@@ -88,7 +88,7 @@ export const InputWithSuggestions: FC<InputWithSuggestionsProps> = ({
           value={value}
           onBlur={onBlur}
           onChange={e => {
-            onChange(e)
+            onChange?.(e)
             setShowSuggestions(true)
           }}
           onFocus={() => setShowSuggestions(true)}

@@ -23,9 +23,9 @@ export const Header = () => {
         {isAuthenticated ? (
           <div className="header-app__actions">
             <NotificationDropdown
+              size="md"
               className="header-app__notifications-dropdown"
               maxNotifications={5}
-              size="md"
             />
 
             <AvatarDropdown />

@@ -89,7 +89,7 @@ export const useTaskFormLogic = () => {
   const eventsValid = events.length > 0
 
   const formHasChanges = useMemo(() => {
-    if (!originalFormRef.current) return false
+    if (!originalFormRef.current) return true
     return !isEqual(formState, originalFormRef.current)
   }, [formState])
 

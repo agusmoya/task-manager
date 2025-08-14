@@ -1,7 +1,7 @@
 import { invitationsApi } from '../../services/invitationApi'
 import { registerToastFor } from './toastHelper'
 
-const { inviteContact } = invitationsApi.endpoints
+const { inviteContact, acceptInvitation, rejectInvitation } = invitationsApi.endpoints
 
 const sendInvitationOperation = {
   endpoints: {
@@ -16,7 +16,37 @@ const sendInvitationOperation = {
   },
 }
 
-const toastInvitationOperations = [sendInvitationOperation]
+const acceptInvitationOperation = {
+  endpoints: {
+    matchPending: acceptInvitation.matchPending,
+    matchFulfilled: acceptInvitation.matchFulfilled,
+    matchRejected: acceptInvitation.matchRejected,
+  },
+  messages: {
+    loading: 'Accepting invitation…',
+    success: 'Invitation accepted successfully',
+    error: 'Error accepting invitation',
+  },
+}
+
+const rejectInvitationOperation = {
+  endpoints: {
+    matchPending: rejectInvitation.matchPending,
+    matchFulfilled: rejectInvitation.matchFulfilled,
+    matchRejected: rejectInvitation.matchRejected,
+  },
+  messages: {
+    loading: 'Rejecting invitation…',
+    success: 'Invitation rejected successfully',
+    error: 'Error rejecting invitation',
+  },
+}
+
+const toastInvitationOperations = [
+  sendInvitationOperation,
+  acceptInvitationOperation,
+  rejectInvitationOperation,
+]
 
 toastInvitationOperations.forEach(({ endpoints, messages }) =>
   registerToastFor({ endpoints, messages })

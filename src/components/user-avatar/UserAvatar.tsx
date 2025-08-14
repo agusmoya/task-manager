@@ -3,6 +3,8 @@ import clsx from 'clsx'
 
 import { Loader } from '../loader/Loader'
 
+import { Size } from '../../types/ui/size'
+
 import { buildImageUrl } from '../../helpers/buildImageUrl'
 import { getEnvVariables } from '../../helpers/getEnvVariables'
 
@@ -16,7 +18,7 @@ interface UserAvatarProps {
   /** User's last name for initials fallback */
   lastName: string
   /** Size variant of the avatar */
-  size?: 'xs' | 'sm' | 'md' | 'lg'
+  size?: Size
   /** Whether the avatar is clickable (for file upload) */
   editable?: boolean
   /** Loading state for upload operations */
@@ -42,7 +44,7 @@ export const UserAvatar = ({
   imageUrl,
   firstName,
   lastName,
-  size = 'xs',
+  size = 'sm',
   editable = false,
   loading = false,
   onFileChange,
